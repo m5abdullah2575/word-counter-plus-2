@@ -3,7 +3,7 @@ import { lazy, Suspense } from 'react';
 const WordCounterTool = lazy(() => import('@/components/word-counter/WordCounterTool'));
 import { Link } from 'wouter';
 import { FaArrowRight, FaBolt, FaChartLine, FaCheckCircle, FaDownload, FaGraduationCap, FaPenFancy } from 'react-icons/fa';
-import { getCurrentOrigin } from '@/lib/site';
+import { getCurrentOrigin, getDomainUrl } from '@/lib/site';
 
 export default function Home() {
   const currentOrigin = getCurrentOrigin();
@@ -65,56 +65,18 @@ export default function Home() {
     }
   };
 
-  const textCaseConverterSchema = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "@id": "https://wordcounterplusapp.com/text-case-converter#software",
-    "name": "Text Case Converter",
-    "url": "https://wordcounterplusapp.com/text-case-converter",
-    "description": "Free online text case converter tool. Convert text between 12 different case formats including camelCase, PascalCase, snake_case, UPPERCASE, lowercase, and more with file upload support.",
-    "applicationCategory": "UtilityApplication",
-    "operatingSystem": "Web Browser",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "featureList": [
-      "camelCase Conversion",
-      "PascalCase Conversion",
-      "snake_case Conversion",
-      "kebab-case Conversion",
-      "CONSTANT_CASE Conversion",
-      "UPPERCASE Conversion",
-      "lowercase Conversion",
-      "Title Case Conversion",
-      "Sentence case Conversion",
-      "dot.case Conversion",
-      "Alternating Case",
-      "Reverse Case",
-      "File Upload Support",
-      "Copy to Clipboard",
-      "Download Results"
-    ],
-    "keywords": "text case converter, camelcase converter, uppercase converter, lowercase converter, snake case converter, kebab case converter, pascal case converter, text formatter, case converter online, text transformation tool",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "bestRating": "5",
-      "ratingCount": "89"
-    }
-  };
+  // Text Case Converter schema removed - now lives on separate domain
 
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "@id": "https://wordcounterplusapp.com/#organization",
+    "@id": `${currentOrigin}/#organization`,
     "name": "Word Counter Plus",
-    "url": "https://wordcounterplusapp.com/",
-    "logo": "https://wordcounterplusapp.com/logo.png",
+    "url": `${currentOrigin}/`,
+    "logo": `${currentOrigin}/logo.png`,
     "description": "Providing free online text analysis tools for writers, students, and content creators worldwide.",
     "sameAs": [
-      "https://wordcounterplusapp.com/"
+      `${currentOrigin}/`
     ]
   };
 
@@ -126,7 +88,7 @@ export default function Home() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://wordcounterplusapp.com/"
+        "item": `${currentOrigin}/`
       }
     ]
   };
@@ -191,7 +153,7 @@ export default function Home() {
                 <li className="flex items-start">
                   <FaCheckCircle className="text-primary mr-3 mt-1" aria-label="Check Circle Icon" />
                   <div>
-                    <strong>Text Case Converter:</strong> <Link href="/text-case-converter" className="text-primary hover:text-primary/80 underline">Convert text between 12 different case formats</Link> including camelCase, snake_case, and more
+                    <strong>Text Case Converter:</strong> <a href={getDomainUrl('case')} className="text-primary hover:text-primary/80 underline">Convert text between 12 different case formats</a> including camelCase, snake_case, and more
                   </div>
                 </li>
                 <li className="flex items-start">
@@ -307,9 +269,9 @@ export default function Home() {
                 <li>• File upload support (TXT, HTML, RTF)</li>
                 <li>• Copy and download converted text</li>
               </ul>
-              <Link href="/text-case-converter" className="text-primary hover:text-primary/80 font-medium text-sm">
+              <a href={getDomainUrl('case')} className="text-primary hover:text-primary/80 font-medium text-sm">
                 Use Case Converter Tool →
-              </Link>
+              </a>
             </div>
           </div>
           
@@ -344,10 +306,6 @@ export default function Home() {
       <script 
         type="application/ld+json" 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script 
-        type="application/ld+json" 
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(textCaseConverterSchema) }}
       />
     </>
   );

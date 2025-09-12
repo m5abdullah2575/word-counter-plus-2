@@ -3,6 +3,8 @@ import { useSEO } from '@/hooks/useSEO';
 import { getCurrentOrigin } from '@/lib/site';
 
 export default function TextCaseConverterPage() {
+  const currentOrigin = getCurrentOrigin();
+  
   useSEO({
     title: 'Text Case Converter - Convert Text Cases Online | Word Counter Plus',
     description: 'Free online text case converter tool. Convert text to uppercase, lowercase, title case, camelCase, snake_case, kebab-case and more. Perfect for developers and writers.',

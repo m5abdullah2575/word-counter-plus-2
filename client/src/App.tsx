@@ -42,7 +42,6 @@ function Router() {
         {currentIsMainHost && (
           <>
             <Route path="/" component={Home} />
-            <Route path="/text-case-converter" component={TextCaseConverterPage} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
             <Route path="/blog/:slug" component={BlogPost} />
