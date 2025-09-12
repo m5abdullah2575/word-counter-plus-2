@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { getCurrentOrigin, BRAND_CONFIG } from '@/lib/site';
+import { getCurrentOrigin, BRAND_CONFIG, isMainHost, isCaseHost } from '@/lib/site';
 
 interface SEOProps {
   title: string;
@@ -14,6 +14,9 @@ interface SEOProps {
   author?: string;
   siteName?: string;
   baseUrl?: string; // Override for origin-specific URLs
+  structuredData?: any; // JSON-LD structured data
+  hreflang?: { [lang: string]: string }; // International SEO
+  breadcrumbs?: Array<{ name: string; url: string }>;
 }
 
 export const useSEO = ({
@@ -28,7 +31,10 @@ export const useSEO = ({
   noindex = false,
   author,
   siteName,
-  baseUrl
+  baseUrl,
+  structuredData,
+  hreflang,
+  breadcrumbs
 }: SEOProps) => {
   useEffect(() => {
     // Get current origin for origin-aware URLs
@@ -102,7 +108,68 @@ export const useSEO = ({
     }
     
     canonicalLink.href = finalCanonical;
-  }, [title, description, keywords, canonical, ogImage, ogType, ogSiteName, twitterCard, noindex, author, siteName, baseUrl]);
+
+    // Additional SEO meta tags for enhanced optimization
+    updateMetaTag('article:modified_time', new Date().toISOString(), true);
+    updateMetaTag('theme-color', '#2563eb');
+    updateMetaTag('msapplication-TileColor', '#2563eb');
+    
+    // Language and alternate versions (hreflang)
+    updateMetaTag('language', 'en-US');
+    updateMetaTag('content-language', 'en');
+    
+    // Remove existing hreflang links
+    document.querySelectorAll('link[hreflang]').forEach(link => link.remove());
+    
+    if (hreflang) {
+      Object.entries(hreflang).forEach(([lang, url]) => {
+        const hreflangLink = document.createElement('link');
+        hreflangLink.rel = 'alternate';
+        hreflangLink.hreflang = lang;
+        hreflangLink.href = url;
+        document.head.appendChild(hreflangLink);
+      });
+    }
+
+    // Structured Data (JSON-LD)
+    let existingStructuredData = document.querySelector('script[data-seo-structured]');
+    if (existingStructuredData) {
+      existingStructuredData.remove();
+    }
+    
+    if (structuredData) {
+      const structuredDataScript = document.createElement('script');
+      structuredDataScript.type = 'application/ld+json';
+      structuredDataScript.setAttribute('data-seo-structured', 'true');
+      structuredDataScript.textContent = JSON.stringify(structuredData);
+      document.head.appendChild(structuredDataScript);
+    }
+
+    // Breadcrumbs structured data
+    if (breadcrumbs && breadcrumbs.length > 0) {
+      const breadcrumbData = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": breadcrumbs.map((crumb, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "name": crumb.name,
+          "item": crumb.url
+        }))
+      };
+      
+      let existingBreadcrumbData = document.querySelector('script[data-breadcrumb-structured]');
+      if (existingBreadcrumbData) {
+        existingBreadcrumbData.remove();
+      }
+      
+      const breadcrumbScript = document.createElement('script');
+      breadcrumbScript.type = 'application/ld+json';
+      breadcrumbScript.setAttribute('data-breadcrumb-structured', 'true');
+      breadcrumbScript.textContent = JSON.stringify(breadcrumbData);
+      document.head.appendChild(breadcrumbScript);
+    }
+  }, [title, description, keywords, canonical, ogImage, ogType, ogSiteName, twitterCard, noindex, author, siteName, baseUrl, structuredData, hreflang, breadcrumbs]);
 };
 
 export default useSEO;
