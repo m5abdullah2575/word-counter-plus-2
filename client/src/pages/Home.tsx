@@ -4,94 +4,24 @@ const WordCounterTool = lazy(() => import('@/components/word-counter/WordCounter
 import { Link } from 'wouter';
 import { FaArrowRight, FaBolt, FaChartLine, FaCheckCircle, FaDownload, FaGraduationCap, FaPenFancy } from 'react-icons/fa';
 import { getCurrentOrigin, getDomainUrl } from '@/lib/site';
+import { getWordCounterSEO } from '@/lib/seo-config';
 
 export default function Home() {
   const currentOrigin = getCurrentOrigin();
+  const seoConfig = getWordCounterSEO();
   
   useSEO({
-    title: "Free Word Counter, Character Counter & Text Counter - Word Counter Plus",
-    description: "Free online word counter, character counter, and text counter tool. Count words, characters, paragraphs, sentences instantly. Best text analysis tool with readability scores, keyword density, and export options for writers, students, and content creators.",
-    keywords: "word counter, character counter, text counter, text analyzer, count words, count characters, free word counter, free word counter tool, online word counter, text analysis, word count tool, character count tool, text count tool, paragraph counter, sentence counter, readability score, keyword density, keyword density checker, word count with reading time, SEO tool, writing tool, content analysis, text statistics, word frequency, character frequency, text counter online, free character counter, count text, word counter online free, character counter online, text counter free, writing analysis, document word count, essay word counter, blog word counter, social media character counter, twitter character counter, facebook character counter, instagram character counter, letter counter, symbol counter, space counter, line counter, page counter, text length checker, word limit checker, character limit checker, text editor, writing assistant, content writing tool, copywriting tool, academic writing, student writing tool, author tool, blogger tool, journalist tool, content creator tool, marketing tool, digital marketing tool, social media tool, email marketing tool, content marketing tool, writing productivity, text processing, document analysis, manuscript analysis, thesis word count, dissertation word count, research paper word count, article word count, story word count, novel word count, book word count, script word count, screenplay word count, poetry word count, lyrics word count, speech word count, presentation word count, report word count, proposal word count, resume word count, cover letter word count, press release word count, website content analysis, web copy analysis, ad copy analysis, product description analysis, meta description counter, title tag counter, heading counter, alt text counter, caption counter, subtitle counter, translation word count, proofreading tool, editing tool, revision tool, draft analysis, final copy analysis, word tracker, character tracker, text tracker, writing goal tracker, daily word count, weekly word count, monthly word count, yearly word count, writing progress, writing metrics, writing statistics, text metrics, content metrics, word density, character density, text density, vocabulary analysis, language analysis, linguistic analysis, readability analysis, flesch reading ease, flesch kincaid grade level, gunning fog index, automated readability index, coleman liau index, simple measure of gobbledygook, reading time calculator, speaking time calculator, typing time calculator",
-    canonical: `${currentOrigin}/`,
-    ogType: "website"
+    title: seoConfig.title,
+    description: seoConfig.description,
+    keywords: seoConfig.keywords,
+    canonical: seoConfig.canonical,
+    ogImage: seoConfig.ogImage,
+    ogType: "website",
+    structuredData: seoConfig.structuredData,
+    breadcrumbs: seoConfig.breadcrumbs
   });
 
-  // ✅ Comprehensive Structured Data Schemas
-  const websiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "@id": `${currentOrigin}/#website`,
-    "name": "Word Counter Plus",
-    "url": `${currentOrigin}/`,
-    "description": "Free online word counter, character counter, and text analysis tool with readability scores, keyword density, and export options.",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": `${currentOrigin}/?q={search_term_string}`,
-      "query-input": "required name=search_term_string"
-    }
-  };
-
-  const softwareSchema = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "@id": `${currentOrigin}/#software`,
-    "name": "Word Counter Plus",
-    "url": `${currentOrigin}/`,
-    "description": "Free online word counter, character counter, and text analysis tool with readability scores, keyword density, and export options for writers, students, and content creators.",
-    "applicationCategory": "UtilityApplication",
-    "operatingSystem": "Web Browser",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "featureList": [
-      "Word Count",
-      "Character Count", 
-      "Paragraph Count",
-      "Sentence Count",
-      "Text Case Converter",
-      "Readability Score",
-      "Keyword Density",
-      "Reading Time Calculator",
-      "Export to PDF/CSV/TXT",
-      "File Upload Support"
-    ],
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "bestRating": "5",
-      "ratingCount": "128"
-    }
-  };
-
-  // Text Case Converter schema removed - now lives on separate domain
-
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "@id": `${currentOrigin}/#organization`,
-    "name": "Word Counter Plus",
-    "url": `${currentOrigin}/`,
-    "logo": `${currentOrigin}/logo.png`,
-    "description": "Providing free online text analysis tools for writers, students, and content creators worldwide.",
-    "sameAs": [
-      `${currentOrigin}/`
-    ]
-  };
-
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": `${currentOrigin}/`
-      }
-    ]
-  };
+  // SEO configuration with structured data is now handled by the useSEO hook
 
   return (
     <>
@@ -290,23 +220,7 @@ export default function Home() {
       </section>
       
       
-      {/* ✅ Inject Structured Data Schemas */}
-      <script 
-        type="application/ld+json" 
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-      />
-      <script 
-        type="application/ld+json" 
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
-      />
-      <script 
-        type="application/ld+json" 
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-      />
-      <script 
-        type="application/ld+json" 
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      {/* Structured data is now handled by the useSEO hook */}
     </>
   );
 }

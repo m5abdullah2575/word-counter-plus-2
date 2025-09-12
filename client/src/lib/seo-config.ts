@@ -20,7 +20,7 @@ export const getWordCounterSEO = (): SEOConfig => {
     description: "Free online word counter, character counter, and text counter tool. Count words, characters, paragraphs, sentences instantly. Best text analysis tool with readability scores, keyword density, and export options for writers, students, and content creators. No registration required.",
     keywords: "word counter, character counter, text counter, count words, count characters, free word counter, online word counter, text analysis, word count tool, character count tool, text count tool, paragraph counter, sentence counter, readability score, keyword density, SEO tool, writing tool, content analysis, text statistics, word frequency, character frequency, text counter online, free character counter, count text, word counter online free, character counter online, text counter free, writing analysis, document word count, essay word counter, blog word counter, social media character counter, twitter character counter, facebook character counter, instagram character counter, letter counter, symbol counter, space counter, line counter, page counter, text length checker, word limit checker, character limit checker, text editor, writing assistant, content writing tool, copywriting tool, academic writing, student writing tool, author tool, blogger tool, journalist tool, content creator tool, marketing tool, digital marketing tool, social media tool, email marketing tool, content marketing tool, writing productivity, text processing, document analysis, manuscript analysis, thesis word count, dissertation word count, research paper word count, article word count, story word count, novel word count, book word count, script word count, screenplay word count, poetry word count, lyrics word count, speech word count, presentation word count, report word count, proposal word count, resume word count, cover letter word count, press release word count, website content analysis, web copy analysis, ad copy analysis, product description analysis, meta description counter, title tag counter, heading counter, alt text counter, caption counter, subtitle counter, translation word count, proofreading tool, editing tool, revision tool, draft analysis, final copy analysis, word tracker, character tracker, text tracker, writing goal tracker, daily word count, weekly word count, monthly word count, annual word count, writing stats, writing metrics, writing analytics, text insights, content insights, writing performance, productivity tracker, writing efficiency, content optimization, SEO optimization, content strategy, content planning, content creation, content development, content management, content marketing strategy, digital content, online content, web content, blog content, article content, social content, email content, marketing content, advertising content, copywriting content, technical writing, creative writing, academic writing, business writing, professional writing, freelance writing, content writing services, writing tools, writing software, writing apps, text tools, text software, text apps, online tools, web tools, browser tools, free tools, productivity tools, efficiency tools, optimization tools, analysis tools, measurement tools, tracking tools, monitoring tools, reporting tools, export tools, import tools, file tools, document tools, office tools, writing suite, text suite, content suite, analysis suite, SEO suite, marketing suite, productivity suite, business tools, student tools, academic tools, research tools, professional tools",
     canonical: `${origin}/`,
-    ogImage: `${origin}/word-counter-og-image.png`,
+    ogImage: `${origin}/og-image.png`,
     structuredData: {
       "@context": "https://schema.org",
       "@type": ["WebApplication", "SoftwareApplication"],
@@ -127,7 +127,10 @@ export const getWordCounterSEO = (): SEOConfig => {
           }
         ]
       }
-    }
+    },
+    breadcrumbs: [
+      { name: "Word Counter", url: `${origin}/` }
+    ]
   };
 };
 
@@ -140,14 +143,14 @@ export const getTextCaseSEO = (): SEOConfig => {
     description: "Free online text case converter tool. Convert text to uppercase, lowercase, title case, camel case, snake case, kebab case, and more. Perfect for developers, writers, and content creators. Instant case conversion with copy-paste functionality. No registration required.",
     keywords: "text case converter, case converter, convert text case, uppercase converter, lowercase converter, title case converter, camel case converter, snake case converter, kebab case converter, pascal case converter, sentence case converter, alternating case converter, inverse case converter, text transformation, text manipulation, string converter, text formatter, case changer, text case tool, online case converter, free case converter, text converter online, case conversion tool, programming text tools, developer tools, coding tools, text processing, string processing, text utility, case utility, format text, text formatting tool, convert uppercase, convert lowercase, convert title case, convert camel case, convert snake case, convert kebab case, text editor, string editor, text modifier, case modifier, programming helper, coding helper, development tools, web development, software development, text editor online, string manipulation, character case, letter case, text style, writing tools, content tools, formatting tools, developer utilities, programmer tools, code formatting, variable naming, function naming, file naming, url formatting, css class naming, javascript naming, python naming, java naming, c++ naming, php naming, ruby naming, go naming, rust naming, swift naming, kotlin naming, typescript naming, react naming, vue naming, angular naming, html formatting, xml formatting, json formatting, yaml formatting, configuration file formatting, environment variable formatting, database naming, table naming, column naming, api naming, endpoint naming, method naming, property naming, constant naming, enum naming, interface naming, class naming, namespace naming, module naming, package naming, library naming, framework naming, plugin naming, extension naming, component naming, service naming, controller naming, model naming, view naming, template naming, stylesheet naming, script naming, image naming, asset naming, resource naming, documentation formatting, readme formatting, markdown formatting, comment formatting, annotation formatting, label formatting, tag formatting, slug formatting, seo friendly urls, permalink formatting, breadcrumb formatting, navigation formatting, menu formatting, link formatting, anchor formatting, title formatting, heading formatting, subtitle formatting, caption formatting, description formatting, summary formatting, abstract formatting, excerpt formatting, teaser formatting",
     canonical: `${origin}/`,
-    ogImage: `${origin}/text-case-converter-og-image.png`,
+    ogImage: `${origin}/og-image.png`,
     structuredData: {
       "@context": "https://schema.org",
       "@type": ["WebApplication", "SoftwareApplication"],
       "name": "Text Case Converter - Convert to Upper, Lower, Title, Camel Case Online",
       "alternateName": ["Case Converter", "Text Case Tool", "Case Changer", "Text Transformer", "String Converter"],
       "url": `${origin}`,
-      "logo": `${origin}/text-case-converter-logo.png`,
+      "logo": `${origin}/word-counter-plus-logo.png`,
       "description": "Free online text case converter tool. Convert text to uppercase, lowercase, title case, camel case, snake case, kebab case, and more. Perfect for developers, writers, and content creators.",
       "keywords": "text case converter, case converter, convert text case, uppercase converter, lowercase converter, title case converter, camel case converter, snake case converter, kebab case converter, text transformation, text manipulation, string converter, developer tools, programming tools",
       "applicationCategory": ["Productivity", "Developer Tools", "Text Processing", "Utilities"],
@@ -257,7 +260,6 @@ export const getTextCaseSEO = (): SEOConfig => {
       }
     },
     breadcrumbs: [
-      { name: "Home", url: "https://wordcounterplusapp.com/" },
       { name: "Text Case Converter", url: `${origin}/` }
     ]
   };
