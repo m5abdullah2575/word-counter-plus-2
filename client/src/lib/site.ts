@@ -32,6 +32,10 @@ export const getOtherOrigin = (): string => {
   return isMainHost() ? CASE_ORIGIN : MAIN_ORIGIN;
 };
 
+export const getDomainUrl = (domain: 'main' | 'case'): string => {
+  return domain === 'main' ? MAIN_ORIGIN : CASE_ORIGIN;
+};
+
 // Tool-specific configurations
 export const getToolConfig = () => {
   const isMain = isMainHost();
