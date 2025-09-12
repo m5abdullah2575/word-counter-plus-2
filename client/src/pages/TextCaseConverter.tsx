@@ -1,12 +1,13 @@
 import TextCaseConverter from '@/components/text-tools/TextCaseConverter';
 import { useSEO } from '@/hooks/useSEO';
+import { getCurrentOrigin } from '@/lib/site';
 
 export default function TextCaseConverterPage() {
   useSEO({
     title: 'Text Case Converter - Convert Text Cases Online | Word Counter Plus',
     description: 'Free online text case converter tool. Convert text to uppercase, lowercase, title case, camelCase, snake_case, kebab-case and more. Perfect for developers and writers.',
     keywords: 'text case converter, uppercase, lowercase, title case, camelCase, snake_case, kebab-case, PascalCase, text formatting, case conversion tool',
-    canonical: "https://wordcounterplusapp.com/text-case-converter",
+    canonical: `${currentOrigin}/`,
     ogType: 'website'
   });
 
@@ -14,9 +15,9 @@ export default function TextCaseConverterPage() {
   const textCaseConverterSchema = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "@id": "https://wordcounterplusapp.com/text-case-converter#webapplication",
+    "@id": `${currentOrigin}/#webapplication`,
     "name": "Text Case Converter",
-    "url": "https://wordcounterplusapp.com/text-case-converter",
+    "url": `${currentOrigin}/`,
     "description": "Free online text case converter tool. Convert text between 12 different case formats including camelCase, PascalCase, snake_case, UPPERCASE, lowercase, and more with file upload support.",
     "applicationCategory": "UtilityApplication",
     "operatingSystem": "Web Browser",
@@ -59,13 +60,13 @@ export default function TextCaseConverterPage() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://wordcounterplusapp.com/"
+        "item": `${currentOrigin}/`
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Text Case Converter",
-        "item": "https://wordcounterplusapp.com/text-case-converter"
+        "item": `${currentOrigin}/`
       }
     ]
   };

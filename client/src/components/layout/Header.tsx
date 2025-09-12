@@ -2,17 +2,25 @@ import { useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import MobileMenu from './MobileMenu';
 import { FaPenNib, FaBars } from "@/components/common/Icons";
+import { isMainHost, BRAND_CONFIG, getDomainUrl } from '@/lib/site';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [location] = useLocation();
 
+  const currentIsMainHost = isMainHost();
+  
+  // Dynamic navigation based on current host
   const navigation = [
-    { name: 'Home', href: '/' },
-    { name: 'Text Case Converter', href: '/text-case-converter' },
-    { name: 'About', href: '/about' },
-    { name: 'Contact', href: '/contact' },
-    { name: 'Blog', href: '/blog' }
+    // Always show current tool as "Home"
+    { name: 'Home', href: '/', internal: true },
+    // Cross-domain link to the other tool
+    currentIsMainHost 
+      ? { name: 'Text Case Converter', href: getDomainUrl('case'), internal: false }
+      : { name: 'Word Counter', href: getDomainUrl('main'), internal: false },
+    { name: 'About', href: '/about', internal: true },
+    { name: 'Contact', href: '/contact', internal: true },
+    { name: 'Blog', href: '/blog', internal: true }
   ];
 
   return (
@@ -30,17 +38,40 @@ export default function Header() {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-6">
-              {navigation.map((item) => (
-                <Link key={item.name} href={item.href} data-testid={`link-${item.name.toLowerCase().replace(/\s+/g, '-')}`}>
-                  <span className={`relative transition-all duration-300 ease-in-out font-medium ${
-                    location === item.href 
+              {navigation.map((item) => {
+                const isActiveInternal = item.internal && location === item.href;
+                const linkProps = {
+                  key: item.name,
+                  'data-testid': `link-${item.name.toLowerCase().replace(/\s+/g, '-')}`,
+                  className: `relative transition-all duration-300 ease-in-out font-medium ${
+                    isActiveInternal 
                       ? 'text-primary scale-105' 
                       : 'text-muted-foreground hover:text-primary hover:scale-105'
-                  } ${location === item.href ? 'after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 after:bg-primary after:rounded-full' : ''}`}>
-                    {item.name}
-                  </span>
-                </Link>
-              ))}
+                  } ${isActiveInternal ? 'after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 after:bg-primary after:rounded-full' : ''}`
+                };
+
+                if (item.internal) {
+                  return (
+                    <Link key={item.name} href={item.href} data-testid={`link-${item.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                      <span className={linkProps.className}>
+                        {item.name}
+                      </span>
+                    </Link>
+                  );
+                } else {
+                  return (
+                    <a 
+                      key={item.name}
+                      href={item.href}
+                      data-testid={`link-${item.name.toLowerCase().replace(/\s+/g, '-')}`}
+                      className={linkProps.className}
+                      rel="noopener noreferrer"
+                    >
+                      {item.name}
+                    </a>
+                  );
+                }
+              })}
             </nav>
 
             {/* Mobile Menu */}
