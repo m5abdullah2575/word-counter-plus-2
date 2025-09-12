@@ -10,6 +10,7 @@ import Footer from "@/components/layout/Footer";
 import Home from "@/pages/Home";
 import { OptimizedLoader } from '@/components/ui/optimized-loader';
 import { lazy, Suspense } from "react";
+import { isMainHost, isCaseHost } from "@/lib/site";
 
 // Lazy load non-critical pages
 const About = lazy(() => import("@/pages/About"));
@@ -31,19 +32,42 @@ const PageLoader = () => (
 );
 
 function Router() {
+  const currentIsMainHost = isMainHost();
+  const currentIsCaseHost = isCaseHost();
+
   return (
     <Suspense fallback={<PageLoader />}>
       <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/text-case-converter" component={TextCaseConverterPage} />
-        <Route path="/about" component={About} />
-        <Route path="/contact" component={Contact} />
-        <Route path="/blog/:slug" component={BlogPost} />
-        <Route path="/blog" component={Blog} />
-        <Route path="/faq" component={FAQ} />
-        <Route path="/privacy" component={Privacy} />
-        <Route path="/terms" component={Terms} />
-        <Route path="/disclaimer" component={Disclaimer} />
+        {/* Host-specific routing */}
+        {currentIsMainHost && (
+          <>
+            <Route path="/" component={Home} />
+            <Route path="/text-case-converter" component={TextCaseConverterPage} />
+            <Route path="/about" component={About} />
+            <Route path="/contact" component={Contact} />
+            <Route path="/blog/:slug" component={BlogPost} />
+            <Route path="/blog" component={Blog} />
+            <Route path="/faq" component={FAQ} />
+            <Route path="/privacy" component={Privacy} />
+            <Route path="/terms" component={Terms} />
+            <Route path="/disclaimer" component={Disclaimer} />
+          </>
+        )}
+        
+        {currentIsCaseHost && (
+          <>
+            <Route path="/" component={TextCaseConverterPage} />
+            <Route path="/about" component={About} />
+            <Route path="/contact" component={Contact} />
+            <Route path="/blog/:slug" component={BlogPost} />
+            <Route path="/blog" component={Blog} />
+            <Route path="/faq" component={FAQ} />
+            <Route path="/privacy" component={Privacy} />
+            <Route path="/terms" component={Terms} />
+            <Route path="/disclaimer" component={Disclaimer} />
+          </>
+        )}
+        
         <Route component={NotFound} />
       </Switch>
     </Suspense>

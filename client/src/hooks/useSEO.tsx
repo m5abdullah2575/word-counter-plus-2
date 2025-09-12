@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { getCurrentOrigin, BRAND_CONFIG } from '@/lib/site';
 
 interface SEOProps {
   title: string;
@@ -12,6 +13,7 @@ interface SEOProps {
   noindex?: boolean;
   author?: string;
   siteName?: string;
+  baseUrl?: string; // Override for origin-specific URLs
 }
 
 export const useSEO = ({
@@ -25,9 +27,13 @@ export const useSEO = ({
   twitterCard = "summary_large_image",
   noindex = false,
   author,
-  siteName
+  siteName,
+  baseUrl
 }: SEOProps) => {
   useEffect(() => {
+    // Get current origin for origin-aware URLs
+    const currentOrigin = baseUrl || getCurrentOrigin();
+    
     // Update document title
     document.title = title;
 
@@ -63,7 +69,7 @@ export const useSEO = ({
     updateMetaTag('og:title', title, true);
     updateMetaTag('og:description', description, true);
     updateMetaTag('og:type', ogType, true);
-    updateMetaTag('og:image', ogImage.startsWith('http') ? ogImage : `${window.location.origin}${ogImage}`, true);
+    updateMetaTag('og:image', ogImage.startsWith('http') ? ogImage : `${currentOrigin}${ogImage}`, true);
     updateMetaTag('og:image:width', '1200', true);
     updateMetaTag('og:image:height', '630', true);
     updateMetaTag('og:image:alt', title, true);
@@ -81,23 +87,22 @@ export const useSEO = ({
     updateMetaTag('twitter:card', twitterCard, true);
     updateMetaTag('twitter:title', title, true);
     updateMetaTag('twitter:description', description, true);
-    updateMetaTag('twitter:image', ogImage.startsWith('http') ? ogImage : `${window.location.origin}${ogImage}`, true);
+    updateMetaTag('twitter:image', ogImage.startsWith('http') ? ogImage : `${currentOrigin}${ogImage}`, true);
     updateMetaTag('twitter:site', '@wordcounterplusapp', true);
     updateMetaTag('twitter:creator', '@wordcounterplusapp', true);
 
-    // Canonical URL
-    if (canonical) {
-      let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
-      
-      if (!canonicalLink) {
-        canonicalLink = document.createElement('link');
-        canonicalLink.rel = 'canonical';
-        document.head.appendChild(canonicalLink);
-      }
-      
-      canonicalLink.href = canonical;
+    // Canonical URL - default to current origin + path if not provided
+    const finalCanonical = canonical || `${currentOrigin}${window.location.pathname}`;
+    let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+    
+    if (!canonicalLink) {
+      canonicalLink = document.createElement('link');
+      canonicalLink.rel = 'canonical';
+      document.head.appendChild(canonicalLink);
     }
-  }, [title, description, keywords, canonical, ogImage, ogType, ogSiteName, twitterCard, noindex, author, siteName]);
+    
+    canonicalLink.href = finalCanonical;
+  }, [title, description, keywords, canonical, ogImage, ogType, ogSiteName, twitterCard, noindex, author, siteName, baseUrl]);
 };
 
 export default useSEO;
