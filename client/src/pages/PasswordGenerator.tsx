@@ -53,6 +53,12 @@ export default function PasswordGenerator() {
     return { score: 100, level: 'Strong', color: 'bg-green-500' };
   };
 
+  const getSecureRandomInt = (max: number): number => {
+    const array = new Uint32Array(1);
+    crypto.getRandomValues(array);
+    return array[0] % max;
+  };
+
   const generatePassword = useCallback(() => {
     let charset = '';
     
@@ -83,22 +89,22 @@ export default function PasswordGenerator() {
       const chars = options.excludeAmbiguous 
         ? CHARACTER_SETS.lowercase.split('').filter(char => !CHARACTER_SETS.ambiguous.includes(char))
         : CHARACTER_SETS.lowercase.split('');
-      requiredChars.push(chars[Math.floor(Math.random() * chars.length)]);
+      requiredChars.push(chars[getSecureRandomInt(chars.length)]);
     }
     if (options.uppercase) {
       const chars = options.excludeAmbiguous 
         ? CHARACTER_SETS.uppercase.split('').filter(char => !CHARACTER_SETS.ambiguous.includes(char))
         : CHARACTER_SETS.uppercase.split('');
-      requiredChars.push(chars[Math.floor(Math.random() * chars.length)]);
+      requiredChars.push(chars[getSecureRandomInt(chars.length)]);
     }
     if (options.numbers) {
       const chars = options.excludeAmbiguous 
         ? CHARACTER_SETS.numbers.split('').filter(char => !CHARACTER_SETS.ambiguous.includes(char))
         : CHARACTER_SETS.numbers.split('');
-      requiredChars.push(chars[Math.floor(Math.random() * chars.length)]);
+      requiredChars.push(chars[getSecureRandomInt(chars.length)]);
     }
     if (options.symbols) {
-      requiredChars.push(CHARACTER_SETS.symbols[Math.floor(Math.random() * CHARACTER_SETS.symbols.length)]);
+      requiredChars.push(CHARACTER_SETS.symbols[getSecureRandomInt(CHARACTER_SETS.symbols.length)]);
     }
     
     // Add required characters
@@ -108,17 +114,22 @@ export default function PasswordGenerator() {
     
     // Fill remaining length with random characters
     for (let i = requiredChars.length; i < passwordLength; i++) {
-      result += charset.charAt(Math.floor(Math.random() * charset.length));
+      result += charset.charAt(getSecureRandomInt(charset.length));
     }
     
-    // Shuffle the password to avoid predictable patterns
-    result = result.split('').sort(() => Math.random() - 0.5).join('');
+    // Shuffle the password to avoid predictable patterns using secure randomness
+    const shuffled = result.split('');
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = getSecureRandomInt(i + 1);
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    result = shuffled.join('');
     
     setPassword(result);
     
     toast({
       title: "Password Generated",
-      description: `Generated a ${passwordLength}-character password.`,
+      description: `Generated a ${passwordLength}-character password using secure randomness.`,
     });
   }, [length, options, toast]);
 

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -36,9 +36,8 @@ export default function FindReplace() {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   };
 
-  const findMatches = useCallback(() => {
+  const matches = useMemo(() => {
     if (!text || !findText) {
-      setStats({ totalMatches: 0, replacements: 0 });
       return [];
     }
 
@@ -57,20 +56,21 @@ export default function FindReplace() {
         searchPattern = new RegExp(pattern, flags);
       }
 
-      const matches = text.match(searchPattern) || [];
-      setStats(prev => ({ ...prev, totalMatches: matches.length }));
-      
-      return matches;
+      return text.match(searchPattern) || [];
     } catch (error) {
       toast({
         title: "Invalid Pattern",
         description: "The search pattern is invalid. Please check your regex syntax.",
         variant: "destructive",
       });
-      setStats({ totalMatches: 0, replacements: 0 });
       return [];
     }
   }, [text, findText, options, toast]);
+
+  // Update stats when matches change
+  useEffect(() => {
+    setStats(prev => ({ ...prev, totalMatches: matches.length }));
+  }, [matches]);
 
   const performReplace = useCallback(() => {
     if (!text || !findText) {
@@ -154,8 +154,7 @@ export default function FindReplace() {
     setOptions(prev => ({ ...prev, [option]: !prev[option] }));
   };
 
-  // Update matches when text or search options change
-  const matches = findMatches();
+  // matches are computed via useMemo above
 
   return (
     <div className="container mx-auto px-4 py-8">
