@@ -211,6 +211,102 @@ export default function TextEncoder() {
     setIsEncoding(true);
   };
 
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Check file type - allow text/* MIME types OR specific extensions
+    const allowedExtensions = [/\.txt$/i, /\.md$/i, /\.csv$/i, /\.log$/i, /\.json$/i];
+    const isTextMime = file.type.startsWith('text/');
+    const hasAllowedExtension = allowedExtensions.some(regex => regex.test(file.name));
+    
+    if (!isTextMime && !hasAllowedExtension) {
+      toast({
+        title: "Invalid File Type",
+        description: "Please upload a text file (.txt, .md, .csv, .log, .json, etc.)",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check file size (limit to 10MB)
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    if (file.size > maxSize) {
+      toast({
+        title: "File Too Large",
+        description: "Please upload a file smaller than 10MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target?.result as string;
+      setInputText(content);
+      setOutputText(''); // Reset output when new file is loaded
+      
+      toast({
+        title: "File Uploaded",
+        description: `Successfully loaded ${file.name} (${content.length} characters)`,
+      });
+    };
+
+    reader.onerror = () => {
+      toast({
+        title: "Upload Failed",
+        description: "Unable to read the file. Please try again.",
+        variant: "destructive",
+      });
+    };
+
+    reader.readAsText(file);
+    event.target.value = ''; // Reset input to allow same file upload again
+  };
+
+  const downloadResult = (useOutput: boolean = true) => {
+    const textToDownload = useOutput && outputText ? outputText : inputText;
+    
+    if (!textToDownload.trim()) {
+      toast({
+        title: "No Content",
+        description: "Please enter some text or process the input first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const blob = new Blob([textToDownload], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      
+      const filePrefix = useOutput && outputText 
+        ? `${currentMethod.name.toLowerCase().replace(/\s+/g, '-')}-${isEncoding ? 'encoded' : 'decoded'}` 
+        : 'text-encoder-input';
+      link.download = `${filePrefix}-${Date.now()}.txt`;
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      toast({
+        title: "File Downloaded",
+        description: useOutput && outputText
+          ? "Processed text has been saved to your device."
+          : "Input text has been saved to your device.",
+      });
+    } catch (error) {
+      toast({
+        title: "Download Failed",
+        description: "Unable to download the file.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
@@ -275,10 +371,29 @@ export default function TextEncoder() {
                 </Button>
               </div>
               <CardDescription>
-                Enter the text you want to {isEncoding ? 'encode' : 'decode'}
+                Enter the text you want to {isEncoding ? 'encode' : 'decode'}, or upload a text file
               </CardDescription>
             </CardHeader>
             <CardContent>
+              <input
+                type="file"
+                id="text-encoder-file-upload"
+                accept=".txt,.md,.csv,.log,.json,text/*"
+                onChange={handleFileUpload}
+                className="hidden"
+                data-testid="input-file-upload"
+              />
+              <div className="mb-4">
+                <Button 
+                  variant="destructive" 
+                  size="sm" 
+                  onClick={() => document.getElementById('text-encoder-file-upload')?.click()}
+                  data-testid="button-upload"
+                >
+                  <FaUpload className="mr-2" />
+                  Upload File
+                </Button>
+              </div>
               <Textarea
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
@@ -293,14 +408,22 @@ export default function TextEncoder() {
           </Card>
 
           {/* Control Buttons */}
-          <div className="flex justify-center gap-2">
-            <Button onClick={() => processText(true)} data-testid="button-encode">
+          <div className="flex justify-center gap-2 flex-wrap">
+            <Button 
+              onClick={() => { processText(true); setIsEncoding(true); }} 
+              variant={isEncoding ? "default" : "outline"}
+              data-testid="button-encode"
+            >
               <FaLock className="mr-2" />
               Encode
             </Button>
             
             {currentMethod.canDecode && (
-              <Button onClick={() => processText(false)} variant="outline" data-testid="button-decode">
+              <Button 
+                onClick={() => { processText(false); setIsEncoding(false); }} 
+                variant={!isEncoding ? "default" : "outline"}
+                data-testid="button-decode"
+              >
                 <FaUnlock className="mr-2" />
                 Decode
               </Button>
@@ -318,18 +441,27 @@ export default function TextEncoder() {
           {outputText && (
             <Card>
               <CardHeader>
-                <div className="flex justify-between items-center">
-                  <CardTitle>Output Text</CardTitle>
-                  <Button variant="outline" size="sm" onClick={copyToClipboard} data-testid="button-copy">
-                    <FaCopy className="mr-2" />
-                    Copy
-                  </Button>
-                </div>
+                <CardTitle>Output Text</CardTitle>
                 <CardDescription>
                   Result of {isEncoding ? 'encoding' : 'decoding'} using {currentMethod.name}
                 </CardDescription>
               </CardHeader>
               <CardContent>
+                <div className="flex gap-2 mb-4">
+                  <Button 
+                    variant="destructive" 
+                    size="sm" 
+                    onClick={() => downloadResult(true)}
+                    data-testid="button-download-output"
+                  >
+                    <FaDownload className="mr-2" />
+                    Download Result
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={copyToClipboard} data-testid="button-copy">
+                    <FaCopy className="mr-2" />
+                    Copy
+                  </Button>
+                </div>
                 <Textarea
                   value={outputText}
                   onChange={(e) => setOutputText(e.target.value)}
