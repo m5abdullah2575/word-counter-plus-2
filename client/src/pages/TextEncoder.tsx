@@ -46,13 +46,13 @@ const ENCODING_METHODS: EncodingMethod[] = [
     name: 'HTML Entities',
     description: 'HTML entity encoding for special characters',
     encode: (input: string) => {
-      const div = document.createElement('div');
-      div.textContent = input;
-      return div.innerHTML
-        .replace(/'/g, '&#39;')
-        .replace(/"/g, '&#34;')
+      // Use a deterministic character-by-character mapping
+      return input
+        .replace(/&/g, '&amp;')   // Must be first to avoid double-encoding
         .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
     },
     decode: (input: string) => {
       const div = document.createElement('div');
