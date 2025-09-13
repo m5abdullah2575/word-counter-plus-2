@@ -256,9 +256,9 @@ export default function LoremGenerator() {
                       <FaCopy className="mr-2" />
                       Copy Text
                     </Button>
-                    <Button variant="destructive" size="sm" onClick={downloadFile} data-testid="button-download">
+                    <Button className="flex-1 sm:flex-none px-3 py-1.5 rounded=10 text-sm transition-colors text-center" title='Download the Text file' size="sm" onClick={downloadFile} data-testid="button-download">
                       <FaDownload className="mr-2" />
-                      Download File
+                      Download
                     </Button>
                   </div>
                 </div>

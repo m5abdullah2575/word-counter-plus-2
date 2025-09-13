@@ -290,13 +290,14 @@ export default function FindReplace() {
               />
               <div className="mb-4">
                 <Button 
-                  variant="destructive" 
+                  className="flex-1 sm:flex-none px-3 py-1.5 rounded=10 text-sm transition-colors text-center"
+                  title='Uplode the Text, CSV, Log, JSON file'
                   size="sm" 
                   onClick={() => document.getElementById('file-upload')?.click()}
                   data-testid="button-upload"
                 >
                   <FaUpload className="mr-2" />
-                  Upload File
+                  Upload 
                 </Button>
               </div>
               <Textarea
@@ -450,13 +451,14 @@ export default function FindReplace() {
               <CardContent>
                 <div className="flex gap-2 mb-4">
                   <Button 
-                    variant="destructive" 
+                    className="flex-1 sm:flex-none px-3 py-1.5 rounded=10 text-sm transition-colors text-center"
+                    title='Download the Text file'
                     size="sm" 
                     onClick={downloadResult}
                     data-testid="button-download-result"
                   >
                     <FaDownload className="mr-2" />
-                    Download Result
+                    Download
                   </Button>
                   <Button variant="outline" size="sm" onClick={copyToClipboard} data-testid="button-copy">
                     <FaCopy className="mr-2" />
