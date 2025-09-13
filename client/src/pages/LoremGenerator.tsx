@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
-import { FaQuoteLeft, FaCopy, FaRedo, FaCog } from 'react-icons/fa';
+import { FaQuoteLeft, FaCopy, FaRedo, FaCog, FaDownload } from 'react-icons/fa';
 
 const LOREM_WORDS = [
   'lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit', 'sed', 'do',
@@ -117,6 +117,40 @@ export default function LoremGenerator() {
     }
   };
 
+  const downloadFile = () => {
+    if (!generatedText.trim()) {
+      toast({
+        title: "No Content",
+        description: "Please generate some text first before downloading.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const blob = new Blob([generatedText], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `lorem-ipsum-${Date.now()}.txt`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      toast({
+        title: "File Downloaded",
+        description: "Lorem ipsum text has been saved to your device.",
+      });
+    } catch (error) {
+      toast({
+        title: "Download Failed",
+        description: "Unable to download the file.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const handleReset = () => {
     setGeneratedText('');
     setParagraphCount(3);
@@ -217,10 +251,16 @@ export default function LoremGenerator() {
               <CardHeader>
                 <div className="flex justify-between items-center">
                   <CardTitle>Generated Lorem Ipsum Text</CardTitle>
-                  <Button variant="outline" size="sm" onClick={copyToClipboard} data-testid="button-copy">
-                    <FaCopy className="mr-2" />
-                    Copy Text
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm" onClick={copyToClipboard} data-testid="button-copy">
+                      <FaCopy className="mr-2" />
+                      Copy Text
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={downloadFile} data-testid="button-download">
+                      <FaDownload className="mr-2" />
+                      Download File
+                    </Button>
+                  </div>
                 </div>
                 <CardDescription>
                   {paragraphCount} paragraph{paragraphCount !== 1 ? 's' : ''}, approximately {paragraphCount * wordsPerParagraph} words total
