@@ -442,18 +442,27 @@ export default function FindReplace() {
           {processedText && (
             <Card>
               <CardHeader>
-                <div className="flex justify-between items-center">
-                  <CardTitle>Result</CardTitle>
-                  <Button variant="outline" size="sm" onClick={copyToClipboard} data-testid="button-copy">
-                    <FaCopy className="mr-2" />
-                    Copy Result
-                  </Button>
-                </div>
+                <CardTitle>Result</CardTitle>
                 <CardDescription>
                   Text after find and replace operation
                 </CardDescription>
               </CardHeader>
               <CardContent>
+                <div className="flex gap-2 mb-4">
+                  <Button 
+                    variant="destructive" 
+                    size="sm" 
+                    onClick={downloadResult}
+                    data-testid="button-download-result"
+                  >
+                    <FaDownload className="mr-2" />
+                    Download Result
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={copyToClipboard} data-testid="button-copy">
+                    <FaCopy className="mr-2" />
+                    Copy Result
+                  </Button>
+                </div>
                 <Textarea
                   value={processedText}
                   onChange={(e) => setProcessedText(e.target.value)}
