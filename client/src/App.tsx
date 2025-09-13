@@ -23,6 +23,10 @@ const Disclaimer = lazy(() => import("@/pages/Disclaimer"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const Tools = lazy(() => import("@/pages/Tools"));
 const TextCaseConverterPage = lazy(() => import("@/pages/TextCaseConverter"));
+const LoremGenerator = lazy(() => import("@/pages/LoremGenerator"));
+const PasswordGenerator = lazy(() => import("@/pages/PasswordGenerator"));
+const FindReplace = lazy(() => import("@/pages/FindReplace"));
+const TextEncoder = lazy(() => import("@/pages/TextEncoder"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
 // Loading fallback component
@@ -45,6 +49,10 @@ function Router() {
             <Route path="/" component={Home} />
             <Route path="/text-case-convert" component={TextCaseConverterPage} />
             <Route path="/tools" component={Tools} />
+            <Route path="/lorem-generator" component={LoremGenerator} />
+            <Route path="/password-generator" component={PasswordGenerator} />
+            <Route path="/find-replace" component={FindReplace} />
+            <Route path="/text-encoder" component={TextEncoder} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
             <Route path="/blog/:slug" component={BlogPost} />
@@ -60,6 +68,10 @@ function Router() {
           <>
             <Route path="/" component={TextCaseConverterPage} />
             <Route path="/tools" component={Tools} />
+            <Route path="/lorem-generator" component={LoremGenerator} />
+            <Route path="/password-generator" component={PasswordGenerator} />
+            <Route path="/find-replace" component={FindReplace} />
+            <Route path="/text-encoder" component={TextEncoder} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
             <Route path="/blog/:slug" component={BlogPost} />
