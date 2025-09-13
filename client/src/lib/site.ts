@@ -24,11 +24,11 @@ export const isDevelopment = (): boolean => {
   return host.includes('localhost') || host.includes('127.0.0.1') || host.includes('replit') || host.includes('.dev');
 };
 
-// Check for development mode case testing via query parameter
+// Check for development mode case testing via URL path
 export const isDevelopmentCaseMode = (): boolean => {
   if (!isDevelopment()) return false;
   if (typeof window === 'undefined') return false;
-  return window.location.search.includes('tool=case') || window.location.pathname.startsWith('/text-case');
+  return window.location.pathname.startsWith('/text-case-convert');
 };
 
 export const isMainHost = (): boolean => {
@@ -50,19 +50,19 @@ export const isCaseHost = (): boolean => {
 };
 
 export const getOtherOrigin = (): string => {
-  // In development, use query parameters for navigation
+  // In development, use URL paths for navigation
   if (isDevelopment()) {
     const currentOrigin = getCurrentOrigin();
-    return isMainHost() ? `${currentOrigin}?tool=case` : currentOrigin;
+    return isMainHost() ? `${currentOrigin}/text-case-convert` : currentOrigin;
   }
   return isMainHost() ? CASE_ORIGIN : MAIN_ORIGIN;
 };
 
 export const getDomainUrl = (domain: 'main' | 'case'): string => {
-  // In development, use query parameters
+  // In development, use URL paths
   if (isDevelopment()) {
     const currentOrigin = getCurrentOrigin();
-    return domain === 'main' ? currentOrigin : `${currentOrigin}?tool=case`;
+    return domain === 'main' ? currentOrigin : `${currentOrigin}/text-case-convert`;
   }
   return domain === 'main' ? MAIN_ORIGIN : CASE_ORIGIN;
 };
@@ -77,9 +77,9 @@ export const getToolConfig = () => {
     isCaseDomain: !isMain,
     currentOrigin: currentOrigin,
     mainOrigin: isDevelopment() ? currentOrigin : MAIN_ORIGIN,
-    caseOrigin: isDevelopment() ? `${currentOrigin}?tool=case` : CASE_ORIGIN,
+    caseOrigin: isDevelopment() ? `${currentOrigin}/text-case-convert` : CASE_ORIGIN,
     wordCounterUrl: isDevelopment() ? `${currentOrigin}/` : `${MAIN_ORIGIN}/`,
-    textCaseUrl: isDevelopment() ? `${currentOrigin}?tool=case` : `${CASE_ORIGIN}/`,
+    textCaseUrl: isDevelopment() ? `${currentOrigin}/text-case-convert` : `${CASE_ORIGIN}/`,
   };
 };
 
