@@ -2,22 +2,25 @@ import { useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import MobileMenu from './MobileMenu';
 import { FaPenNib, FaBars } from "@/components/common/Icons";
-import { isMainHost, BRAND_CONFIG, getDomainUrl } from '@/lib/site';
+import { BRAND_CONFIG } from '@/lib/site';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [location] = useLocation();
 
-  const currentIsMainHost = isMainHost();
   
-  // Dynamic navigation based on current host
+  // Context-aware navigation - determine current tool context
+  const isOnTextCaseConverter = location.startsWith('/text-case-convert');
+  const currentToolHome = isOnTextCaseConverter ? '/text-case-convert' : '/';
+  
+  // Dynamic navigation based on current context
   const navigation = [
-    // Always show current tool as "Home"
-    { name: 'Home', href: '/', internal: true },
-    // Cross-domain link to the other tool
-    currentIsMainHost 
-      ? { name: 'Text Case Converter', href: getDomainUrl('case'), internal: false }
-      : { name: 'Word Counter', href: getDomainUrl('main'), internal: false },
+    // Context-aware Home - goes to current tool's home
+    { name: 'Home', href: currentToolHome, internal: true },
+    // Cross-tool navigation link
+    isOnTextCaseConverter 
+      ? { name: 'Word Counter', href: '/', internal: true }
+      : { name: 'Text Case Converter', href: '/text-case-convert', internal: true },
     { name: 'About', href: '/about', internal: true },
     { name: 'Contact', href: '/contact', internal: true },
     { name: 'Blog', href: '/blog', internal: true }
@@ -28,8 +31,8 @@ export default function Header() {
       <header className="sticky top-0 z-50 bg-card/98 backdrop-blur-lg border-b border-border shadow-sm">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <Link href="/" data-testid="link-home">
+            {/* Logo - Context-aware link */}
+            <Link href={currentToolHome} data-testid="link-home">
               <div className="flex items-center space-x-2">
                 <FaPenNib className="text-primary text-xl" aria-label="Word Counter Logo" />
                 <h1 className="text-xl font-bold text-foreground">Word Counter Plus</h1>
