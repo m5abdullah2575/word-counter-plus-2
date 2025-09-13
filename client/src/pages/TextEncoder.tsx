@@ -5,7 +5,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
-import { FaCode, FaCopy, FaRedo, FaExchangeAlt, FaLock, FaUnlock } from 'react-icons/fa';
+import { FaCode, FaCopy, FaRedo, FaExchangeAlt, FaLock, FaUnlock, FaUpload, FaDownload } from 'react-icons/fa';
+import { encodeBase64, decodeBase64 } from '@/lib/base64';
+import { toBytes, fromBytes } from '@/lib/utf8';
 
 type EncodingMethod = {
   id: string;
@@ -21,14 +23,8 @@ const ENCODING_METHODS: EncodingMethod[] = [
     id: 'base64',
     name: 'Base64',
     description: 'Standard Base64 encoding/decoding',
-    encode: (input: string) => btoa(unescape(encodeURIComponent(input))),
-    decode: (input: string) => {
-      try {
-        return decodeURIComponent(escape(atob(input)));
-      } catch {
-        throw new Error('Invalid Base64 input');
-      }
-    },
+    encode: (input: string) => encodeBase64(input),
+    decode: (input: string) => decodeBase64(input),
     canDecode: true
   },
   {
@@ -70,8 +66,8 @@ const ENCODING_METHODS: EncodingMethod[] = [
     name: 'Hexadecimal',
     description: 'Convert text to hexadecimal representation',
     encode: (input: string) => {
-      const encoder = new (globalThis as any).TextEncoder();
-      return Array.from(encoder.encode(input) as Uint8Array)
+      const bytes = toBytes(input);
+      return Array.from(bytes)
         .map(byte => byte.toString(16).padStart(2, '0'))
         .join(' ');
     },
@@ -79,8 +75,7 @@ const ENCODING_METHODS: EncodingMethod[] = [
       try {
         const hexBytes = input.replace(/\s+/g, '').match(/.{1,2}/g) || [];
         const bytes = hexBytes.map(hex => parseInt(hex, 16));
-        const decoder = new (globalThis as any).TextDecoder();
-        return decoder.decode(new Uint8Array(bytes));
+        return fromBytes(new Uint8Array(bytes));
       } catch {
         throw new Error('Invalid hexadecimal input');
       }
@@ -92,8 +87,8 @@ const ENCODING_METHODS: EncodingMethod[] = [
     name: 'Binary',
     description: 'Convert text to binary representation',
     encode: (input: string) => {
-      const encoder = new (globalThis as any).TextEncoder();
-      return Array.from(encoder.encode(input) as Uint8Array)
+      const bytes = toBytes(input);
+      return Array.from(bytes)
         .map(byte => byte.toString(2).padStart(8, '0'))
         .join(' ');
     },
@@ -101,8 +96,7 @@ const ENCODING_METHODS: EncodingMethod[] = [
       try {
         const binaryBytes = input.replace(/\s+/g, '').match(/.{1,8}/g) || [];
         const bytes = binaryBytes.map(binary => parseInt(binary, 2));
-        const decoder = new (globalThis as any).TextDecoder();
-        return decoder.decode(new Uint8Array(bytes));
+        return fromBytes(new Uint8Array(bytes));
       } catch {
         throw new Error('Invalid binary input');
       }
