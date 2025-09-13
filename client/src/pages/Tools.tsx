@@ -1,6 +1,23 @@
 import { Link } from 'wouter';
 import useSEO from '@/hooks/useSEO';
-import { FaPenFancy, FaTextHeight, FaPlus, FaSearch } from 'react-icons/fa';
+import { 
+  FaPenFancy, 
+  FaTextHeight, 
+  FaPlus, 
+  FaSearch, 
+  FaCompress,
+  FaQuoteLeft,
+  FaExchangeAlt,
+  FaSearchPlus,
+  FaCode,
+  FaKey,
+  FaFileCode,
+  FaChartBar,
+  FaRandom,
+  FaCog,
+  FaAlignLeft,
+  FaHashtag
+} from 'react-icons/fa';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { getToolConfig, isDevelopment } from '@/lib/site';
@@ -34,6 +51,86 @@ export default function Tools() {
       icon: FaTextHeight,
       href: toolConfig.textCaseUrl,
       isExternal: !isDevelopment() && !toolConfig.isMainDomain
+    },
+    {
+      id: 'text-summarizer',
+      title: 'Text Summarizer',
+      description: 'Automatically generate concise summaries from long text passages. Extract key points and main ideas to create shorter versions while preserving essential information.',
+      icon: FaCompress,
+      href: '/text-summarizer',
+      isExternal: false
+    },
+    {
+      id: 'lorem-generator',
+      title: 'Lorem Ipsum Generator',
+      description: 'Generate placeholder text for your designs and layouts. Create custom amounts of Lorem Ipsum text with options for paragraphs, sentences, and words.',
+      icon: FaQuoteLeft,
+      href: '/lorem-generator',
+      isExternal: false
+    },
+    {
+      id: 'text-diff',
+      title: 'Text Difference Checker',
+      description: 'Compare two text documents side by side and highlight the differences. Perfect for proofreading, version control, and identifying changes between drafts.',
+      icon: FaExchangeAlt,
+      href: '/text-diff',
+      isExternal: false
+    },
+    {
+      id: 'find-replace',
+      title: 'Find and Replace Tool',
+      description: 'Search and replace text patterns with advanced options. Support for regular expressions, case sensitivity, and whole word matching for precise text editing.',
+      icon: FaSearchPlus,
+      href: '/find-replace',
+      isExternal: false
+    },
+    {
+      id: 'text-encoder',
+      title: 'Text Encoder/Decoder',
+      description: 'Encode and decode text using various methods including Base64, URL encoding, HTML entities, and more. Essential for web development and data processing.',
+      icon: FaCode,
+      href: '/text-encoder',
+      isExternal: false
+    },
+    {
+      id: 'password-generator',
+      title: 'Password Generator',
+      description: 'Generate secure passwords with customizable length and character sets. Include uppercase, lowercase, numbers, and special characters for maximum security.',
+      icon: FaKey,
+      href: '/password-generator',
+      isExternal: false
+    },
+    {
+      id: 'markdown-converter',
+      title: 'Markdown to HTML Converter',
+      description: 'Convert Markdown text to HTML format with live preview. Perfect for bloggers, developers, and writers who use Markdown for content creation.',
+      icon: FaFileCode,
+      href: '/markdown-converter',
+      isExternal: false
+    },
+    {
+      id: 'character-frequency',
+      title: 'Character Frequency Analyzer',
+      description: 'Analyze character frequency and patterns in your text. Generate detailed statistics about letter usage, helpful for cryptography and linguistic analysis.',
+      icon: FaChartBar,
+      href: '/character-frequency',
+      isExternal: false
+    },
+    {
+      id: 'text-formatter',
+      title: 'Text Formatter',
+      description: 'Format and beautify text with various options including line spacing, indentation, and alignment. Clean up messy text and improve readability.',
+      icon: FaAlignLeft,
+      href: '/text-formatter',
+      isExternal: false
+    },
+    {
+      id: 'hash-generator',
+      title: 'Hash Generator',
+      description: 'Generate MD5, SHA1, SHA256, and other hash values from text input. Useful for data integrity verification and security applications.',
+      icon: FaHashtag,
+      href: '/hash-generator',
+      isExternal: false
     }
   ];
 
