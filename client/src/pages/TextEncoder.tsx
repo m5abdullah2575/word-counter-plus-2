@@ -349,10 +349,14 @@ export default function TextEncoder() {
                       position="popper"
                       align="start"
                       avoidCollisions={true}
-                      className="max-h-96 z-50"
+                      className="max-h-96 z-50 bg-background border border-border shadow-lg"
                     >
                       {ENCODING_METHODS.map((method) => (
-                        <SelectItem key={method.id} value={method.id}>
+                        <SelectItem 
+                          key={method.id} 
+                          value={method.id}
+                          className="cursor-pointer text-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                        >
                           {method.name}
                         </SelectItem>
                       ))}
