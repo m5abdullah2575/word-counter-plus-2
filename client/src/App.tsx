@@ -21,6 +21,7 @@ const Privacy = lazy(() => import("@/pages/Privacy"));
 const Terms = lazy(() => import("@/pages/Terms"));
 const Disclaimer = lazy(() => import("@/pages/Disclaimer"));
 const Contact = lazy(() => import("@/pages/Contact"));
+const Tools = lazy(() => import("@/pages/Tools"));
 const TextCaseConverterPage = lazy(() => import("@/pages/TextCaseConverter"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
@@ -43,6 +44,7 @@ function Router() {
           <>
             <Route path="/" component={Home} />
             <Route path="/text-case-convert" component={TextCaseConverterPage} />
+            <Route path="/tools" component={Tools} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
             <Route path="/blog/:slug" component={BlogPost} />
@@ -57,6 +59,7 @@ function Router() {
         {currentIsCaseHost && (
           <>
             <Route path="/" component={TextCaseConverterPage} />
+            <Route path="/tools" component={Tools} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
             <Route path="/blog/:slug" component={BlogPost} />

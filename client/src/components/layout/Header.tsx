@@ -17,10 +17,8 @@ export default function Header() {
   const navigation = [
     // Context-aware Home - goes to current tool's home
     { name: 'Home', href: currentToolHome, internal: true },
-    // Cross-tool navigation link
-    isOnTextCaseConverter 
-      ? { name: 'Word Counter', href: '/', internal: true }
-      : { name: 'Text Case Converter', href: '/text-case-convert', internal: true },
+    // Tools page for accessing all tools
+    { name: 'Tools', href: '/tools', internal: true },
     { name: 'About', href: '/about', internal: true },
     { name: 'Contact', href: '/contact', internal: true },
     { name: 'Blog', href: '/blog', internal: true }
