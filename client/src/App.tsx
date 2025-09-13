@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -9,7 +9,7 @@ import ScrollToTop from "@/components/layout/ScrollToTop";
 import Footer from "@/components/layout/Footer";
 import Home from "@/pages/Home";
 import { OptimizedLoader } from '@/components/ui/optimized-loader';
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { isMainHost, isCaseHost } from "@/lib/site";
 
 // Lazy load non-critical pages
@@ -74,11 +74,34 @@ function Router() {
   );
 }
 
+function BackwardCompatibilityHandler() {
+  const [location, setLocation] = useLocation();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('tool') === 'case') {
+        // Clean the URL and navigate using wouter
+        const newUrl = new URL(window.location.href);
+        newUrl.search = '';
+        window.history.replaceState({}, '', newUrl.toString());
+        
+        // Navigate using wouter to trigger SPA routing
+        setLocation('/text-case-convert');
+      }
+    }
+  }, [setLocation]);
+
+  return null;
+}
+
 function App() {
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <TooltipProvider>
+          <BackwardCompatibilityHandler />
           <div className="min-h-screen bg-background text-foreground">
             <Header />
             <ScrollToTop /> 

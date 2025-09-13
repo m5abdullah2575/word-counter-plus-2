@@ -33,38 +33,42 @@ export const isDevelopmentCaseMode = (): boolean => {
 
 export const isMainHost = (): boolean => {
   const host = getCurrentHost();
-  // In development, check for case mode override
+  // In development, always treat as main host since we use paths for routing
   if (isDevelopment()) {
-    return !isDevelopmentCaseMode();
+    return true;
   }
   return host === MAIN_HOST;
 };
 
 export const isCaseHost = (): boolean => {
   const host = getCurrentHost();
-  // In development, check for case mode override
+  // In development, never treat as case host since we use paths for routing
   if (isDevelopment()) {
-    return isDevelopmentCaseMode();
+    return false;
   }
   return host === CASE_HOST;
 };
 
 export const getOtherOrigin = (): string => {
-  // In development, use URL paths for navigation
+  // Use URL paths for navigation on main domain for both development and production
+  const currentOrigin = getCurrentOrigin();
   if (isDevelopment()) {
-    const currentOrigin = getCurrentOrigin();
-    return isMainHost() ? `${currentOrigin}/text-case-convert` : currentOrigin;
+    // In development, check current path to determine other origin
+    const currentPath = typeof window !== 'undefined' ? window.location.pathname : '/';
+    return currentPath.startsWith('/text-case-convert') ? currentOrigin : `${currentOrigin}/text-case-convert`;
   }
-  return isMainHost() ? CASE_ORIGIN : MAIN_ORIGIN;
+  // In production, always target main domain path for consistency
+  return isMainHost() ? `${MAIN_ORIGIN}/text-case-convert` : MAIN_ORIGIN;
 };
 
 export const getDomainUrl = (domain: 'main' | 'case'): string => {
-  // In development, use URL paths
+  // Use URL paths on main domain for both development and production
+  const currentOrigin = getCurrentOrigin();
   if (isDevelopment()) {
-    const currentOrigin = getCurrentOrigin();
     return domain === 'main' ? currentOrigin : `${currentOrigin}/text-case-convert`;
   }
-  return domain === 'main' ? MAIN_ORIGIN : CASE_ORIGIN;
+  // In production, use paths on the main domain
+  return domain === 'main' ? MAIN_ORIGIN : `${MAIN_ORIGIN}/text-case-convert`;
 };
 
 // Tool-specific configurations
@@ -77,9 +81,9 @@ export const getToolConfig = () => {
     isCaseDomain: !isMain,
     currentOrigin: currentOrigin,
     mainOrigin: isDevelopment() ? currentOrigin : MAIN_ORIGIN,
-    caseOrigin: isDevelopment() ? `${currentOrigin}/text-case-convert` : CASE_ORIGIN,
+    caseOrigin: isDevelopment() ? `${currentOrigin}/text-case-convert` : `${MAIN_ORIGIN}/text-case-convert`,
     wordCounterUrl: isDevelopment() ? `${currentOrigin}/` : `${MAIN_ORIGIN}/`,
-    textCaseUrl: isDevelopment() ? `${currentOrigin}/text-case-convert` : `${CASE_ORIGIN}/`,
+    textCaseUrl: isDevelopment() ? `${currentOrigin}/text-case-convert` : `${MAIN_ORIGIN}/text-case-convert`,
   };
 };
 
