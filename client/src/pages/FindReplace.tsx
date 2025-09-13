@@ -274,34 +274,10 @@ export default function FindReplace() {
           {/* Input Text */}
           <Card>
             <CardHeader>
-              <div className="flex justify-between items-center">
-                <div>
-                  <CardTitle>Input Text</CardTitle>
-                  <CardDescription>
-                    Enter or paste the text you want to search and modify, or upload a text file
-                  </CardDescription>
-                </div>
-                <div className="flex gap-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={() => document.getElementById('file-upload')?.click()}
-                    data-testid="button-upload"
-                  >
-                    <FaUpload className="mr-2" />
-                    Upload File
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={downloadResult}
-                    data-testid="button-download-result"
-                  >
-                    <FaDownload className="mr-2" />
-                    Download
-                  </Button>
-                </div>
-              </div>
+              <CardTitle>Input Text</CardTitle>
+              <CardDescription>
+                Enter or paste the text you want to search and modify, or upload a text file
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <input
@@ -312,6 +288,17 @@ export default function FindReplace() {
                 className="hidden"
                 data-testid="input-file-upload"
               />
+              <div className="mb-4">
+                <Button 
+                  variant="destructive" 
+                  size="sm" 
+                  onClick={() => document.getElementById('file-upload')?.click()}
+                  data-testid="button-upload"
+                >
+                  <FaUpload className="mr-2" />
+                  Upload File
+                </Button>
+              </div>
               <Textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
