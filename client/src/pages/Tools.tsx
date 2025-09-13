@@ -21,10 +21,23 @@ import {
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { getToolConfig, isDevelopment } from '@/lib/site';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 export default function Tools() {
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Ensure page starts at the top
+  useEffect(() => {
+    // Immediate scroll
+    window.scrollTo(0, 0);
+    
+    // Additional scroll after a short delay to handle async rendering
+    const timeoutId = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   useSEO({
     title: 'All Text Tools - Word Counter Plus',
