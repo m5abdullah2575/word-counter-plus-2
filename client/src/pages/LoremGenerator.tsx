@@ -256,7 +256,7 @@ export default function LoremGenerator() {
                       <FaCopy className="mr-2" />
                       Copy Text
                     </Button>
-                    <Button variant="outline" size="sm" onClick={downloadFile} data-testid="button-download">
+                    <Button variant="destructive" size="sm" onClick={downloadFile} data-testid="button-download">
                       <FaDownload className="mr-2" />
                       Download File
                     </Button>
