@@ -4,6 +4,7 @@ import StatsCard from './StatsCard';
 import KeywordTable from './KeywordTable';
 import ExportButtons from './ExportButtons';
 import { useToast } from '@/hooks/use-toast';
+import { parseFile, getFileInputAccept, type FileParseProgress } from '@/lib/fileImport';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { lazy, Suspense } from 'react';
 
@@ -135,102 +136,6 @@ export default function WordCounterTool() {
     });
   };
 
-  // SECURITY FIX: Safe file content extraction utilities
-  const extractHtmlText = (htmlContent: string): string => {
-    try {
-      // Use DOMParser to safely extract text from HTML
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(htmlContent, 'text/html');
-      
-      // Remove script and style elements completely
-      const scripts = doc.querySelectorAll('script, style, noscript');
-      scripts.forEach(element => element.remove());
-      
-      // Extract text content
-      const textContent = doc.body?.textContent || doc.documentElement?.textContent || '';
-      
-      // Clean up the extracted text
-      return textContent
-        .replace(/\s+/g, ' ')  // Normalize whitespace
-        .replace(/\n\s*\n/g, '\n\n')  // Preserve paragraph breaks
-        .trim();
-    } catch (error) {
-      console.warn('Failed to parse HTML content:', error);
-      // Fallback: strip basic HTML tags
-      return htmlContent.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
-    }
-  };
-
-  const extractRtfText = (rtfContent: string): string => {
-    try {
-      // Basic RTF control word removal
-      let text = rtfContent;
-      
-      // Remove RTF header and control words
-      text = text.replace(/\{\\rtf1[^\}]*\}/g, ''); // Remove RTF header
-      text = text.replace(/\\[a-zA-Z]+\d*\s?/g, ''); // Remove control words
-      text = text.replace(/\{[^\}]*\}/g, ''); // Remove control groups
-      text = text.replace(/\\[^a-zA-Z]/g, ''); // Remove escape sequences
-      
-      // Clean up the text
-      return text
-        .replace(/\s+/g, ' ')
-        .replace(/\n\s*\n/g, '\n\n')
-        .trim();
-    } catch (error) {
-      console.warn('Failed to parse RTF content:', error);
-      return rtfContent.replace(/\\[a-zA-Z]+\d*\s?/g, '').replace(/[{}]/g, '').trim();
-    }
-  };
-
-  const extractMarkdownText = (markdownContent: string): string => {
-    try {
-      let text = markdownContent;
-      
-      // Remove markdown syntax
-      text = text.replace(/^#{1,6}\s+/gm, ''); // Headers
-      text = text.replace(/\*\*([^*]+)\*\*/g, '$1'); // Bold
-      text = text.replace(/\*([^*]+)\*/g, '$1'); // Italic
-      text = text.replace(/`([^`]+)`/g, '$1'); // Inline code
-      text = text.replace(/```[\s\S]*?```/g, ''); // Code blocks
-      text = text.replace(/\[[^\]]*\]\([^\)]*\)/g, ''); // Links
-      text = text.replace(/!\[[^\]]*\]\([^\)]*\)/g, ''); // Images
-      text = text.replace(/^[-*+]\s+/gm, ''); // List items
-      text = text.replace(/^\d+\.\s+/gm, ''); // Numbered lists
-      text = text.replace(/^>\s+/gm, ''); // Blockquotes
-      text = text.replace(/\|[^\n]*\|/g, ''); // Tables
-      text = text.replace(/^[-=]+$/gm, ''); // Horizontal rules
-      
-      // Clean up whitespace
-      return text
-        .replace(/\s+/g, ' ')
-        .replace(/\n\s*\n/g, '\n\n')
-        .trim();
-    } catch (error) {
-      console.warn('Failed to parse Markdown content:', error);
-      return markdownContent.replace(/[#*`\[\]()>|-]/g, '').replace(/\s+/g, ' ').trim();
-    }
-  };
-
-
-  const processFileContent = (content: string, fileName: string, fileType: string): string => {
-    const extension = fileName.toLowerCase().split('.').pop();
-    
-    // Determine file format and process accordingly
-    if (fileType.includes('html') || extension === 'html' || extension === 'htm') {
-      return extractHtmlText(content);
-    } else if (fileType.includes('rtf') || extension === 'rtf') {
-      return extractRtfText(content);
-    } else if (fileType.includes('markdown') || extension === 'md' || extension === 'markdown') {
-      return extractMarkdownText(content);
-    } else {
-      // Plain text or CSV - just normalize line endings
-      return content
-        .replace(/\r\n/g, '\n')
-        .replace(/\r/g, '\n')
-        .trim();
-    }
-  };
 
   // Enhanced file upload functionality with PDF and Word support
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -240,139 +145,37 @@ export default function WordCounterTool() {
     // Reset the input value so the same file can be uploaded again if needed
     event.target.value = '';
 
-    // File type validation - support only text-based formats
-    const validTypes = [
-      'text/plain', 'text/markdown', 'text/html', 'application/rtf', 'text/csv'
-    ];
-    const validExtensions = [
-      '.txt', '.md', '.markdown', '.rtf', '.html', '.htm', '.csv'
-    ];
-    
-    const fileName = file.name.toLowerCase();
-    const isValidType = validTypes.includes(file.type) || 
-                       validExtensions.some(ext => fileName.endsWith(ext));
-
-    // Special handling for .doc files (not supported)
-    if (fileName.endsWith('.doc')) {
-      toast({
-        title: "Unsupported File Format",
-        description: "Legacy Word (.doc) files are not supported. Please convert to a text format (.txt, .rtf, .html) and try again.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!isValidType) {
-      toast({
-        title: "Invalid File Type",
-        description: "Please upload a text-based file: Text (.txt), Markdown (.md), HTML, RTF, or CSV.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Check file size (limit to 100MB)
-    const maxSize = 100 * 1024 * 1024; // 100MB
-    if (file.size > maxSize) {
-      toast({
-        title: "File Too Large",
-        description: "Please upload a file smaller than 100MB.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Show loading state with file size info
     setIsUploading(true);
     const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
-    toast({
-      title: "Processing File...",
-      description: `Processing "${file.name}" (${fileSizeMB}MB). This may take a moment for large files.`,
-    });
-
+    
     try {
-      // Handle text-based files only
-      const content = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target?.result as string);
-        reader.onerror = () => reject(new Error('Failed to read file'));
-        reader.readAsText(file, 'UTF-8');
-      });
+      // Use the centralized file parser - no progress callback to prevent toast spam
+      const result = await parseFile(file);
       
-      if (!content || content.trim().length === 0) {
-        throw new Error('File appears to be empty');
-      }
-      
-      const extractedText = processFileContent(content, file.name, file.type);
-      
-      if (!extractedText || extractedText.trim().length === 0) {
-        throw new Error('No text content found in the file');
-      }
-      
-      setText(extractedText);
+      setText(result.text);
       setIsHighlighted(false); // Reset highlighting
       
       // Store file information for display
       setUploadedFileInfo({
-        name: file.name,
-        size: file.size,
-        type: file.type || 'application/octet-stream'
+        name: result.fileName,
+        size: result.fileSize,
+        type: result.fileType
       });
       
       // Show success message with file details
-      const wordCount = extractedText.split(/\s+/).filter(word => word.length > 0).length;
+      const wordCount = result.text.split(/\s+/).filter(word => word.length > 0).length;
       toast({
         title: "File Processed Successfully!",
-        description: `"${file.name}" analyzed successfully. Found ${wordCount.toLocaleString()} words.`,
+        description: `"${result.fileName}" analyzed successfully. Found ${wordCount.toLocaleString()} words.`,
       });
       
     } catch (error: any) {
       console.error('File upload error:', error);
       
-      // Determine error type and show appropriate message
-      const errorMessage = error.message || 'Unknown error occurred';
-      let title = "Upload Error";
-      let description = "Failed to process the file. Please try again.";
-      
-      // Handle password-protected files specifically
-      if (errorMessage.includes('password-protected')) {
-        title = "Password-Protected File";
-        description = "This file is password-protected. Please remove the password protection and try uploading again.";
-      } 
-      // Handle corrupted/invalid structure
-      else if (errorMessage.includes('corrupted') || errorMessage.includes('invalid structure')) {
-        title = "File Structure Issue";
-        description = "The file appears to be corrupted or has an invalid structure. Please try a different file or re-export it.";
-      }
-      // Handle unsupported PDF format
-      else if (errorMessage.includes('format is not supported') || errorMessage.includes('unsupported features')) {
-        title = "Unsupported File Format";
-        description = "This file uses features that aren't supported. Try saving/exporting it in a standard format.";
-      }
-      // Handle image-based PDFs (no text)
-      else if (errorMessage.includes('no readable text') || errorMessage.includes('scan or image-based')) {
-        title = "Image-Based Document";
-        description = "This appears to be a scanned document or image-based PDF with no extractable text. Try using OCR software first.";
-      }
-      // Handle empty files
-      else if (errorMessage.includes('empty') || errorMessage.includes('No text content found')) {
-        title = "Empty File";
-        description = "The file appears to be empty or contains no readable text content.";
-      }
-      // Handle processing timeouts
-      else if (errorMessage.includes('timeout') || errorMessage.includes('network')) {
-        title = "Processing Timeout";
-        description = "The file is taking too long to process. Please try a smaller file or check your connection.";
-      }
-      // Generic fallback
-      else {
-        title = "Processing Error";
-        description = errorMessage.length > 100 ? "Unable to process this file. Please try a different file or format." : errorMessage;
-      }
-      
+      // Show error message using toast
       toast({
-        title,
-        description,
+        title: "Upload Error",
+        description: error.message || "Failed to process the file. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -571,7 +374,7 @@ export default function WordCounterTool() {
                       : 'bg-primary text-primary-foreground hover:bg-primary/80 cursor-pointer'
                   }`}
                          data-testid="button-upload-file"
-                         title="Upload text-based files: Text (.txt), Markdown (.md), HTML, RTF, CSV">
+                         title="Upload files: Text (.txt, .md, .html, .rtf, .csv), PDF (.pdf), or Word documents (.docx)">
                     {isUploading ? (
                       <>
                         <div className="inline-block w-4 h-4 mr-1 animate-spin rounded-full border-2 border-white border-t-transparent" aria-hidden="true" />
@@ -587,11 +390,11 @@ export default function WordCounterTool() {
                     )}
                     <input 
                       type="file" 
-                      accept=".txt,.md,.markdown,.rtf,.html,.htm,.csv,text/plain,text/markdown,text/html,application/rtf,text/csv" 
+                      accept={getFileInputAccept()} 
                       onChange={handleFileUpload}
                       disabled={isUploading}
                       className="sr-only"
-                      aria-label="Upload text-based files: Text (.txt), Markdown (.md), HTML, RTF, CSV"
+                      aria-label="Upload files: Text (.txt, .md, .html, .rtf, .csv), PDF (.pdf), or Word documents (.docx)"
                     />
                   </label>
 

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FaCheck, FaEraser, FaHighlighter, FaPaste, FaTrash, FaUpload, FaCopy, FaSync, FaSort, FaBook, FaClock, FaInfoCircle, FaCalendar } from "@/components/common/Icons";
+import { parseFile, getFileInputAccept, type FileParseProgress } from '@/lib/fileImport';
 
 // Case conversion functions - standalone and reusable
 export const textCaseConverters = {
@@ -197,189 +198,44 @@ export default function TextCaseConverter() {
     }
   };
 
-  // File processing utilities - exactly like word counter
-  const extractHtmlText = (htmlContent: string): string => {
-    try {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(htmlContent, 'text/html');
-      
-      const scripts = doc.querySelectorAll('script, style, noscript');
-      scripts.forEach(element => element.remove());
-      
-      const textContent = doc.body?.textContent || doc.documentElement?.textContent || '';
-      
-      return textContent
-        .replace(/\s+/g, ' ')
-        .replace(/\n\s*\n/g, '\n\n')
-        .trim();
-    } catch (error) {
-      console.warn('Failed to parse HTML content:', error);
-      return htmlContent.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
-    }
-  };
-
-  const extractRtfText = (rtfContent: string): string => {
-    try {
-      let text = rtfContent;
-      
-      text = text.replace(/\{\\rtf1[^\}]*\}/g, '');
-      text = text.replace(/\\[a-zA-Z]+\d*\s?/g, '');
-      text = text.replace(/\{[^\}]*\}/g, '');
-      text = text.replace(/\\[^a-zA-Z]/g, '');
-      
-      return text
-        .replace(/\s+/g, ' ')
-        .replace(/\n\s*\n/g, '\n\n')
-        .trim();
-    } catch (error) {
-      console.warn('Failed to parse RTF content:', error);
-      return rtfContent.replace(/\\[a-zA-Z]+\d*\s?/g, '').replace(/[{}]/g, '').trim();
-    }
-  };
-
-  const extractMarkdownText = (markdownContent: string): string => {
-    try {
-      let text = markdownContent;
-      
-      text = text.replace(/^#{1,6}\s+/gm, '');
-      text = text.replace(/\*\*([^*]+)\*\*/g, '$1');
-      text = text.replace(/\*([^*]+)\*/g, '$1');
-      text = text.replace(/`([^`]+)`/g, '$1');
-      text = text.replace(/```[\s\S]*?```/g, '');
-      text = text.replace(/\[[^\]]*\]\([^\)]*\)/g, '');
-      text = text.replace(/!\[[^\]]*\]\([^\)]*\)/g, '');
-      text = text.replace(/^[-*+]\s+/gm, '');
-      text = text.replace(/^\d+\.\s+/gm, '');
-      text = text.replace(/^>\s+/gm, '');
-      text = text.replace(/\|[^\n]*\|/g, '');
-      text = text.replace(/^[-=]+$/gm, '');
-      
-      return text
-        .replace(/\s+/g, ' ')
-        .replace(/\n\s*\n/g, '\n\n')
-        .trim();
-    } catch (error) {
-      console.warn('Failed to parse Markdown content:', error);
-      return markdownContent.replace(/[#*`\[\]()>|-]/g, '').replace(/\s+/g, ' ').trim();
-    }
-  };
-
-  const processFileContent = (content: string, fileName: string, fileType: string): string => {
-    const extension = fileName.toLowerCase().split('.').pop();
-    
-    if (fileType.includes('html') || extension === 'html' || extension === 'htm') {
-      return extractHtmlText(content);
-    } else if (fileType.includes('rtf') || extension === 'rtf') {
-      return extractRtfText(content);
-    } else if (fileType.includes('markdown') || extension === 'md' || extension === 'markdown') {
-      return extractMarkdownText(content);
-    } else {
-      return content
-        .replace(/\r\n/g, '\n')
-        .replace(/\r/g, '\n')
-        .trim();
-    }
-  };
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
+    // Reset the input value so the same file can be uploaded again if needed
     event.target.value = '';
-
-    const validTypes = [
-      'text/plain', 'text/markdown', 'text/html', 'application/rtf', 'text/csv'
-    ];
-    const validExtensions = [
-      '.txt', '.md', '.markdown', '.rtf', '.html', '.htm', '.csv'
-    ];
-    
-    const fileName = file.name.toLowerCase();
-    const isValidType = validTypes.includes(file.type) || 
-                       validExtensions.some(ext => fileName.endsWith(ext));
-
-    if (fileName.endsWith('.doc')) {
-      toast({
-        title: "Unsupported File Format",
-        description: "Legacy Word (.doc) files are not supported. Please convert to a text format (.txt, .rtf, .html) and try again.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!isValidType) {
-      toast({
-        title: "Invalid File Type",
-        description: "Please upload a text-based file: Text (.txt), Markdown (.md), HTML, RTF, or CSV.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const maxSize = 100 * 1024 * 1024;
-    if (file.size > maxSize) {
-      toast({
-        title: "File Too Large",
-        description: "Please upload a file smaller than 100MB.",
-        variant: "destructive",
-      });
-      return;
-    }
 
     setIsUploading(true);
     const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
-    toast({
-      title: "Processing File...",
-      description: `Processing "${file.name}" (${fileSizeMB}MB). This may take a moment for large files.`,
-    });
-
+    
     try {
-      const content = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target?.result as string);
-        reader.onerror = () => reject(new Error('Failed to read file'));
-        reader.readAsText(file, 'UTF-8');
-      });
+      // Use the centralized file parser - no progress callback to prevent toast spam
+      const result = await parseFile(file);
       
-      if (!content || content.trim().length === 0) {
-        throw new Error('File appears to be empty');
-      }
+      setText(result.text);
       
-      const extractedText = processFileContent(content, file.name, file.type);
-      
-      if (!extractedText || extractedText.trim().length === 0) {
-        throw new Error('No text content found in the file');
-      }
-      
-      setText(extractedText);
-      
+      // Store file information for display
       setUploadedFileInfo({
-        name: file.name,
-        size: file.size,
-        type: file.type || 'application/octet-stream'
+        name: result.fileName,
+        size: result.fileSize,
+        type: result.fileType
       });
       
-      const wordCount = extractedText.split(/\s+/).filter(word => word.length > 0).length;
+      // Show success message with file details
+      const wordCount = result.text.split(/\s+/).filter(word => word.length > 0).length;
       toast({
         title: "File Processed Successfully!",
-        description: `"${file.name}" processed successfully. Found ${wordCount.toLocaleString()} words.`,
+        description: `"${result.fileName}" processed successfully. Found ${wordCount.toLocaleString()} words.`,
       });
       
     } catch (error: any) {
       console.error('File upload error:', error);
       
-      const errorMessage = error.message || 'Unknown error occurred';
-      let title = "Upload Error";
-      let description = "Failed to process the file. Please try again.";
-      
-      if (errorMessage.includes('empty') || errorMessage.includes('No text content found')) {
-        title = "Empty File";
-        description = "The file appears to be empty or contains no readable text content.";
-      }
-      
+      // Show error message using toast
       toast({
-        title,
-        description,
+        title: "Upload Error",
+        description: error.message || "Failed to process the file. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -517,7 +373,7 @@ export default function TextCaseConverter() {
                       : 'bg-primary text-primary-foreground hover:bg-primary/80 cursor-pointer'
                   }`}
                          data-testid="button-upload-file"
-                         title="Upload text-based files: Text (.txt), Markdown (.md), HTML, RTF, CSV">
+                         title="Upload files: Text (.txt, .md, .html, .rtf, .csv), PDF (.pdf), or Word documents (.docx)">
                     {isUploading ? (
                       <>
                         <div className="inline-block w-4 h-4 mr-1 animate-spin rounded-full border-2 border-white border-t-transparent" aria-hidden="true" />
@@ -533,11 +389,11 @@ export default function TextCaseConverter() {
                     )}
                     <input 
                       type="file" 
-                      accept=".txt,.md,.markdown,.rtf,.html,.htm,.csv,text/plain,text/markdown,text/html,application/rtf,text/csv" 
+                      accept={getFileInputAccept()} 
                       onChange={handleFileUpload}
                       disabled={isUploading}
                       className="sr-only"
-                      aria-label="Upload text-based files: Text (.txt), Markdown (.md), HTML, RTF, CSV"
+                      aria-label="Upload files: Text (.txt, .md, .html, .rtf, .csv), PDF (.pdf), or Word documents (.docx)"
                     />
                   </label>
 
