@@ -342,9 +342,15 @@ export default function TextEncoder() {
                 <div>
                   <Select value={selectedMethod} onValueChange={setSelectedMethod}>
                     <SelectTrigger data-testid="select-method">
-                      <SelectValue />
+                      <SelectValue placeholder="Select encoding method" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent 
+                      side="bottom" 
+                      position="popper"
+                      align="start"
+                      avoidCollisions={true}
+                      className="max-h-96 z-50"
+                    >
                       {ENCODING_METHODS.map((method) => (
                         <SelectItem key={method.id} value={method.id}>
                           {method.name}
