@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
-import { FaSearchPlus, FaCopy, FaRedo, FaExchangeAlt, FaCogs } from 'react-icons/fa';
+import { FaSearchPlus, FaCopy, FaRedo, FaExchangeAlt, FaCogs, FaUpload, FaDownload } from 'react-icons/fa';
 
 export default function FindReplace() {
   const [text, setText] = useState('');
@@ -154,6 +154,102 @@ export default function FindReplace() {
     setOptions(prev => ({ ...prev, [option]: !prev[option] }));
   };
 
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Check file type - allow text/* MIME types OR specific extensions
+    const allowedExtensions = [/\.txt$/i, /\.md$/i, /\.csv$/i, /\.log$/i, /\.json$/i];
+    const isTextMime = file.type.startsWith('text/');
+    const hasAllowedExtension = allowedExtensions.some(regex => regex.test(file.name));
+    
+    if (!isTextMime && !hasAllowedExtension) {
+      toast({
+        title: "Invalid File Type",
+        description: "Please upload a text file (.txt, .md, .csv, .log, .json, etc.)",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check file size (limit to 10MB)
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    if (file.size > maxSize) {
+      toast({
+        title: "File Too Large",
+        description: "Please upload a file smaller than 10MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target?.result as string;
+      setText(content);
+      // Reset processed text and stats when new file is loaded
+      setProcessedText('');
+      setStats({ totalMatches: 0, replacements: 0 });
+      
+      toast({
+        title: "File Uploaded",
+        description: `Successfully loaded ${file.name} (${content.length} characters)`,
+      });
+    };
+
+    reader.onerror = () => {
+      toast({
+        title: "Upload Failed",
+        description: "Unable to read the file. Please try again.",
+        variant: "destructive",
+      });
+    };
+
+    reader.readAsText(file);
+    // Reset the input so the same file can be uploaded again
+    event.target.value = '';
+  };
+
+  const downloadResult = () => {
+    const textToDownload = processedText || text;
+    
+    if (!textToDownload.trim()) {
+      toast({
+        title: "No Content",
+        description: "Please enter some text or perform a replacement first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const blob = new Blob([textToDownload], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = processedText 
+        ? `find-replace-result-${Date.now()}.txt`
+        : `text-content-${Date.now()}.txt`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      toast({
+        title: "File Downloaded",
+        description: processedText 
+          ? "Processed text has been saved to your device."
+          : "Original text has been saved to your device.",
+      });
+    } catch (error) {
+      toast({
+        title: "Download Failed",
+        description: "Unable to download the file.",
+        variant: "destructive",
+      });
+    }
+  };
+
   // matches are computed via useMemo above
 
   return (
@@ -178,17 +274,49 @@ export default function FindReplace() {
           {/* Input Text */}
           <Card>
             <CardHeader>
-              <CardTitle>Input Text</CardTitle>
-              <CardDescription>
-                Enter or paste the text you want to search and modify
-              </CardDescription>
+              <div className="flex justify-between items-center">
+                <div>
+                  <CardTitle>Input Text</CardTitle>
+                  <CardDescription>
+                    Enter or paste the text you want to search and modify, or upload a text file
+                  </CardDescription>
+                </div>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => document.getElementById('file-upload')?.click()}
+                    data-testid="button-upload"
+                  >
+                    <FaUpload className="mr-2" />
+                    Upload File
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={downloadResult}
+                    data-testid="button-download-result"
+                  >
+                    <FaDownload className="mr-2" />
+                    Download
+                  </Button>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
+              <input
+                type="file"
+                id="file-upload"
+                accept=".txt,.md,.csv,text/*"
+                onChange={handleFileUpload}
+                className="hidden"
+                data-testid="input-file-upload"
+              />
               <Textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 className="min-h-[200px] resize-none"
-                placeholder="Enter your text here..."
+                placeholder="Enter your text here or click 'Upload File' to load from a file..."
                 data-testid="textarea-input"
               />
               <div className="mt-2 text-sm text-muted-foreground">
