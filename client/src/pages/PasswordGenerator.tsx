@@ -54,9 +54,18 @@ export default function PasswordGenerator() {
   };
 
   const getSecureRandomInt = (max: number): number => {
-    const array = new Uint32Array(1);
-    crypto.getRandomValues(array);
-    return array[0] % max;
+    // Use rejection sampling to avoid modulo bias
+    const MAX_UINT32 = 0xFFFFFFFF;
+    const limit = Math.floor(MAX_UINT32 / max) * max;
+    
+    let value;
+    do {
+      const array = new Uint32Array(1);
+      crypto.getRandomValues(array);
+      value = array[0];
+    } while (value >= limit);
+    
+    return value % max;
   };
 
   const generatePassword = useCallback(() => {

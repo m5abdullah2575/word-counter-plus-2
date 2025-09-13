@@ -24,6 +24,7 @@ export default function FindReplace() {
     totalMatches: 0,
     replacements: 0
   });
+  const [regexError, setRegexError] = useState<string>('');
   const { toast } = useToast();
 
   useSEO({
@@ -58,19 +59,18 @@ export default function FindReplace() {
 
       return text.match(searchPattern) || [];
     } catch (error) {
-      toast({
-        title: "Invalid Pattern",
-        description: "The search pattern is invalid. Please check your regex syntax.",
-        variant: "destructive",
-      });
+      setRegexError('Invalid regular expression pattern');
       return [];
     }
-  }, [text, findText, options, toast]);
+  }, [text, findText, options]);
 
-  // Update stats when matches change
+  // Update stats when matches change and clear regex error if matches are valid
   useEffect(() => {
     setStats(prev => ({ ...prev, totalMatches: matches.length }));
-  }, [matches]);
+    if (matches.length > 0 || (!findText || !text)) {
+      setRegexError('');
+    }
+  }, [matches, findText, text]);
 
   const performReplace = useCallback(() => {
     if (!text || !findText) {
@@ -218,7 +218,13 @@ export default function FindReplace() {
                     onChange={(e) => setFindText(e.target.value)}
                     placeholder="Enter text to find..."
                     data-testid="input-find"
+                    className={regexError ? "border-destructive" : ""}
                   />
+                  {regexError && (
+                    <p className="text-destructive text-sm mt-1" data-testid="text-regex-error">
+                      {regexError}
+                    </p>
+                  )}
                 </div>
                 
                 <div>
