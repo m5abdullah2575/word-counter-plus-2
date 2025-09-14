@@ -37,7 +37,6 @@ const LineCounter = lazy(() => import("@/pages/LineCounter"));
 const ReadingTimeCalculator = lazy(() => import("@/pages/ReadingTimeCalculator"));
 const HashGenerator = lazy(() => import("@/pages/HashGenerator"));
 const QRCodeGenerator = lazy(() => import("@/pages/QRCodeGenerator"));
-const URLShortener = lazy(() => import("@/pages/URLShortener"));
 const JSONFormatter = lazy(() => import("@/pages/JSONFormatter"));
 const WhitespaceRemover = lazy(() => import("@/pages/WhitespaceRemover"));
 const NotFound = lazy(() => import("@/pages/not-found"));
@@ -76,7 +75,7 @@ function Router() {
             <Route path="/reading-time-calculator" component={ReadingTimeCalculator} />
             <Route path="/hash-generator" component={HashGenerator} />
             <Route path="/qr-code-generator" component={QRCodeGenerator} />
-            <Route path="/url-shortener" component={URLShortener} />
+
             <Route path="/json-formatter" component={JSONFormatter} />
             <Route path="/whitespace-remover" component={WhitespaceRemover} />
             <Route path="/about" component={About} />
@@ -108,7 +107,7 @@ function Router() {
             <Route path="/reading-time-calculator" component={ReadingTimeCalculator} />
             <Route path="/hash-generator" component={HashGenerator} />
             <Route path="/qr-code-generator" component={QRCodeGenerator} />
-            <Route path="/url-shortener" component={URLShortener} />
+
             <Route path="/json-formatter" component={JSONFormatter} />
             <Route path="/whitespace-remover" component={WhitespaceRemover} />
             <Route path="/about" component={About} />
