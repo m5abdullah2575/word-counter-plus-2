@@ -27,6 +27,11 @@ const LoremGenerator = lazy(() => import("@/pages/LoremGenerator"));
 const PasswordGenerator = lazy(() => import("@/pages/PasswordGenerator"));
 const FindReplace = lazy(() => import("@/pages/FindReplace"));
 const TextEncoder = lazy(() => import("@/pages/TextEncoder"));
+const TextSummarizer = lazy(() => import("@/pages/TextSummarizer"));
+const WordFrequencyAnalyzer = lazy(() => import("@/pages/WordFrequencyAnalyzer"));
+const TextDiffChecker = lazy(() => import("@/pages/TextDiffChecker"));
+const DuplicateLineRemover = lazy(() => import("@/pages/DuplicateLineRemover"));
+const TextSortingTool = lazy(() => import("@/pages/TextSortingTool"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
 // Loading fallback component
@@ -53,6 +58,11 @@ function Router() {
             <Route path="/password-generator" component={PasswordGenerator} />
             <Route path="/find-replace" component={FindReplace} />
             <Route path="/text-encoder" component={TextEncoder} />
+            <Route path="/text-summarizer" component={TextSummarizer} />
+            <Route path="/word-frequency-analyzer" component={WordFrequencyAnalyzer} />
+            <Route path="/text-diff-checker" component={TextDiffChecker} />
+            <Route path="/duplicate-line-remover" component={DuplicateLineRemover} />
+            <Route path="/text-sorting-tool" component={TextSortingTool} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
             <Route path="/blog/:slug" component={BlogPost} />
@@ -72,6 +82,11 @@ function Router() {
             <Route path="/password-generator" component={PasswordGenerator} />
             <Route path="/find-replace" component={FindReplace} />
             <Route path="/text-encoder" component={TextEncoder} />
+            <Route path="/text-summarizer" component={TextSummarizer} />
+            <Route path="/word-frequency-analyzer" component={WordFrequencyAnalyzer} />
+            <Route path="/text-diff-checker" component={TextDiffChecker} />
+            <Route path="/duplicate-line-remover" component={DuplicateLineRemover} />
+            <Route path="/text-sorting-tool" component={TextSortingTool} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
             <Route path="/blog/:slug" component={BlogPost} />

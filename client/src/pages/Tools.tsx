@@ -16,7 +16,9 @@ import {
   FaRandom,
   FaCog,
   FaAlignLeft,
-  FaHashtag
+  FaHashtag,
+  FaFilter,
+  FaSort
 } from 'react-icons/fa';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -95,6 +97,46 @@ export default function Tools() {
       description: 'Encode and decode text using various methods including Base64, URL encoding, HTML entities, and more. Essential for web development and data processing.',
       icon: FaCode,
       href: '/text-encoder',
+      isExternal: false
+    },
+    {
+      id: 'text-summarizer',
+      title: 'Text Summarizer',
+      description: 'Extract key sentences and main points from long text. Perfect for summarizing articles, documents, and research papers using intelligent sentence scoring.',
+      icon: FaCompress,
+      href: '/text-summarizer',
+      isExternal: false
+    },
+    {
+      id: 'word-frequency-analyzer',
+      title: 'Word Frequency Analyzer',
+      description: 'Analyze word frequency and distribution in your text. Identify the most commonly used words, keyword density, and vocabulary richness statistics.',
+      icon: FaChartBar,
+      href: '/word-frequency-analyzer',
+      isExternal: false
+    },
+    {
+      id: 'text-diff-checker',
+      title: 'Text Diff Checker',
+      description: 'Compare two texts side by side and highlight differences. Find added, removed, and changed content between document versions with line-by-line comparison.',
+      icon: FaExchangeAlt,
+      href: '/text-diff-checker',
+      isExternal: false
+    },
+    {
+      id: 'duplicate-line-remover',
+      title: 'Duplicate Line Remover',
+      description: 'Remove duplicate lines from your text efficiently. Clean up lists, data files, and documents by eliminating redundant content with customizable options.',
+      icon: FaFilter,
+      href: '/duplicate-line-remover',
+      isExternal: false
+    },
+    {
+      id: 'text-sorting-tool',
+      title: 'Text Sorting Tool',
+      description: 'Sort text lines in various orders: alphabetical, by length, numerical, or random. Perfect for organizing lists, data files, and arranging content systematically.',
+      icon: FaSort,
+      href: '/text-sorting-tool',
       isExternal: false
     }
   ];
