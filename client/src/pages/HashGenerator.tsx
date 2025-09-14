@@ -225,7 +225,7 @@ ${text}
       const [md5, sha1, sha256, sha512] = await Promise.all(hashPromises);
 
       setHashes({
-        md5: 'MD5 for files requires additional library',
+        md5: 'MD5 file hashing not supported (use SHA-256 instead)',
         sha1,
         sha256,
         sha512
