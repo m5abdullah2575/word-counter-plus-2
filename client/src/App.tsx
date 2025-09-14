@@ -32,6 +32,14 @@ const WordFrequencyAnalyzer = lazy(() => import("@/pages/WordFrequencyAnalyzer")
 const TextDiffChecker = lazy(() => import("@/pages/TextDiffChecker"));
 const DuplicateLineRemover = lazy(() => import("@/pages/DuplicateLineRemover"));
 const TextSortingTool = lazy(() => import("@/pages/TextSortingTool"));
+const CharacterCounter = lazy(() => import("@/pages/CharacterCounter"));
+const LineCounter = lazy(() => import("@/pages/LineCounter"));
+const ReadingTimeCalculator = lazy(() => import("@/pages/ReadingTimeCalculator"));
+const HashGenerator = lazy(() => import("@/pages/HashGenerator"));
+const QRCodeGenerator = lazy(() => import("@/pages/QRCodeGenerator"));
+const URLShortener = lazy(() => import("@/pages/URLShortener"));
+const JSONFormatter = lazy(() => import("@/pages/JSONFormatter"));
+const WhitespaceRemover = lazy(() => import("@/pages/WhitespaceRemover"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
 // Loading fallback component
@@ -63,6 +71,14 @@ function Router() {
             <Route path="/text-diff-checker" component={TextDiffChecker} />
             <Route path="/duplicate-line-remover" component={DuplicateLineRemover} />
             <Route path="/text-sorting-tool" component={TextSortingTool} />
+            <Route path="/character-counter" component={CharacterCounter} />
+            <Route path="/line-counter" component={LineCounter} />
+            <Route path="/reading-time-calculator" component={ReadingTimeCalculator} />
+            <Route path="/hash-generator" component={HashGenerator} />
+            <Route path="/qr-code-generator" component={QRCodeGenerator} />
+            <Route path="/url-shortener" component={URLShortener} />
+            <Route path="/json-formatter" component={JSONFormatter} />
+            <Route path="/whitespace-remover" component={WhitespaceRemover} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
             <Route path="/blog/:slug" component={BlogPost} />
@@ -87,6 +103,14 @@ function Router() {
             <Route path="/text-diff-checker" component={TextDiffChecker} />
             <Route path="/duplicate-line-remover" component={DuplicateLineRemover} />
             <Route path="/text-sorting-tool" component={TextSortingTool} />
+            <Route path="/character-counter" component={CharacterCounter} />
+            <Route path="/line-counter" component={LineCounter} />
+            <Route path="/reading-time-calculator" component={ReadingTimeCalculator} />
+            <Route path="/hash-generator" component={HashGenerator} />
+            <Route path="/qr-code-generator" component={QRCodeGenerator} />
+            <Route path="/url-shortener" component={URLShortener} />
+            <Route path="/json-formatter" component={JSONFormatter} />
+            <Route path="/whitespace-remover" component={WhitespaceRemover} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
             <Route path="/blog/:slug" component={BlogPost} />

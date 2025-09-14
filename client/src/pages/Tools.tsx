@@ -18,7 +18,13 @@ import {
   FaAlignLeft,
   FaHashtag,
   FaFilter,
-  FaSort
+  FaSort,
+  FaListOl,
+  FaClock,
+  FaShieldAlt,
+  FaQrcode,
+  FaLink,
+  FaEraser
 } from 'react-icons/fa';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -60,12 +66,76 @@ export default function Tools() {
       isExternal: !isDevelopment() && !toolConfig.isMainDomain
     },
     {
+      id: 'character-counter',
+      title: 'Character Counter',
+      description: 'Count characters with and without spaces, words, sentences, paragraphs, and check social media character limits for Twitter, Facebook, Instagram, and more platforms.',
+      icon: FaHashtag,
+      href: '/character-counter',
+      isExternal: false
+    },
+    {
       id: 'text-case-converter',
       title: 'Text Case Converter',
       description: 'Convert text between different cases: uppercase, lowercase, title case, camel case, and more. Ideal for formatting text for different platforms and coding conventions.',
       icon: FaTextHeight,
       href: toolConfig.textCaseUrl,
       isExternal: !isDevelopment() && !toolConfig.isMainDomain
+    },
+    {
+      id: 'line-counter',
+      title: 'Line Counter',
+      description: 'Count total lines, non-empty lines, and analyze line statistics in your text. Perfect for code analysis, data files, and document processing with line manipulation tools.',
+      icon: FaListOl,
+      href: '/line-counter',
+      isExternal: false
+    },
+    {
+      id: 'reading-time-calculator',
+      title: 'Reading Time Calculator',
+      description: 'Calculate reading and speaking time for your content. Perfect for speeches, presentations, articles, and content planning with customizable reading speeds.',
+      icon: FaClock,
+      href: '/reading-time-calculator',
+      isExternal: false
+    },
+    {
+      id: 'hash-generator',
+      title: 'Hash Generator',
+      description: 'Generate secure hashes for text and files using MD5, SHA-1, SHA-256, and SHA-512 algorithms. Essential for data integrity verification and security applications.',
+      icon: FaShieldAlt,
+      href: '/hash-generator',
+      isExternal: false
+    },
+    {
+      id: 'qr-code-generator',
+      title: 'QR Code Generator',
+      description: 'Create custom QR codes for text, URLs, WiFi networks, phone numbers, and email addresses. Download high-quality QR codes for print and digital use.',
+      icon: FaQrcode,
+      href: '/qr-code-generator',
+      isExternal: false
+    },
+    {
+      id: 'url-shortener',
+      title: 'URL Shortener & Expander',
+      description: 'Shorten long URLs for social media sharing and expand shortened links to see their destinations. Track your shortened URLs with built-in history management.',
+      icon: FaLink,
+      href: '/url-shortener',
+      isExternal: false
+    },
+    {
+      id: 'json-formatter',
+      title: 'JSON Formatter & Validator',
+      description: 'Format, validate, and minify JSON data with syntax highlighting. Perfect for developers working with APIs, configuration files, and data processing.',
+      icon: FaFileCode,
+      href: '/json-formatter',
+      isExternal: false
+    },
+    {
+      id: 'whitespace-remover',
+      title: 'Whitespace Remover',
+      description: 'Clean up text by removing extra spaces, empty lines, tabs, and unwanted whitespace. Essential for data cleaning and text formatting tasks.',
+      icon: FaEraser,
+      href: '/whitespace-remover',
+      isExternal: false
     },
     {
       id: 'lorem-generator',
