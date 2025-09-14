@@ -201,9 +201,15 @@ export default function URLShortener() {
           <h1 className="text-4xl font-bold text-foreground mb-4">
             URL Shortener & Expander
           </h1>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-xl text-muted-foreground mb-4">
             Shorten long URLs and expand shortened links easily
           </p>
+          <div className="max-w-2xl mx-auto bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+            <p className="text-amber-800 dark:text-amber-200 font-medium text-sm">
+              ⚠️ Demo Tool: This is a demonstration URL shortener that generates mock short URLs for testing purposes. 
+              The shortened URLs are not publicly accessible and work only within this tool.
+            </p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

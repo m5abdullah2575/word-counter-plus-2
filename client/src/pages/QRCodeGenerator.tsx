@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
+import QRCode from 'qrcode';
 import { 
   FaCopy, 
   FaEraser, 
@@ -57,7 +58,7 @@ export default function QRCodeGenerator() {
     localStorage.setItem('qrCodeType', qrType);
   }, [qrType]);
 
-  // Simple QR Code generation (placeholder - in production use qrcode library)
+  // Real QR Code generation using qrcode library
   const generateQRCode = async () => {
     if (!text.trim()) {
       toast({
@@ -71,59 +72,30 @@ export default function QRCodeGenerator() {
     setIsGenerating(true);
     
     try {
-      // This is a placeholder implementation
-      // In production, you would use a library like 'qrcode' npm package
-      const canvas = canvasRef.current;
-      if (!canvas) return;
+      const options = {
+        errorCorrectionLevel: errorLevel as 'L' | 'M' | 'Q' | 'H',
+        type: 'image/png' as const,
+        quality: 0.92,
+        margin: 1,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF'
+        },
+        width: size
+      };
 
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
-
-      canvas.width = size;
-      canvas.height = size;
-
-      // Simple placeholder QR code (black and white pattern)
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, size, size);
-      
-      ctx.fillStyle = '#000000';
-      const cellSize = size / 25;
-      
-      // Create a simple pattern based on text hash
-      const hash = text.split('').reduce((a, b) => {
-        a = ((a << 5) - a) + b.charCodeAt(0);
-        return a & a;
-      }, 0);
-      
-      for (let x = 0; x < 25; x++) {
-        for (let y = 0; y < 25; y++) {
-          const shouldFill = ((x + y + hash) % 3) === 0;
-          if (shouldFill) {
-            ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
-          }
-        }
-      }
-
-      // Add corner squares (typical QR code pattern)
-      const cornerSize = cellSize * 7;
-      // Top-left corner
-      ctx.fillRect(0, 0, cornerSize, cornerSize);
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(cellSize, cellSize, cornerSize - 2 * cellSize, cornerSize - 2 * cellSize);
-      ctx.fillStyle = '#000000';
-      ctx.fillRect(cellSize * 2, cellSize * 2, cornerSize - 4 * cellSize, cornerSize - 4 * cellSize);
-
-      const dataUrl = canvas.toDataURL('image/png');
-      setQrCodeDataUrl(dataUrl);
+      const qrCodeDataUrl = await QRCode.toDataURL(text, options);
+      setQrCodeDataUrl(qrCodeDataUrl);
 
       toast({
         title: "QR Code Generated",
         description: "Your QR code has been generated successfully!",
       });
     } catch (error) {
+      console.error('QR Code generation error:', error);
       toast({
         title: "Generation Failed",
-        description: "Failed to generate QR code. Please try again.",
+        description: "Failed to generate QR code. Please check your content and try again.",
         variant: "destructive",
       });
     } finally {
