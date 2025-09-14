@@ -23,7 +23,6 @@ import {
   FaClock,
   FaShieldAlt,
   FaQrcode,
-  FaLink,
   FaEraser
 } from 'react-icons/fa';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -111,14 +110,6 @@ export default function Tools() {
       description: 'Create custom QR codes for text, URLs, WiFi networks, phone numbers, and email addresses. Download high-quality QR codes for print and digital use.',
       icon: FaQrcode,
       href: '/qr-code-generator',
-      isExternal: false
-    },
-    {
-      id: 'url-shortener',
-      title: 'URL Shortener & Expander',
-      description: 'Shorten long URLs for social media sharing and expand shortened links to see their destinations. Track your shortened URLs with built-in history management.',
-      icon: FaLink,
-      href: '/url-shortener',
       isExternal: false
     },
     {
