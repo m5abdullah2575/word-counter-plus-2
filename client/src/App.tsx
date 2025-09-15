@@ -27,7 +27,6 @@ const LoremGenerator = lazy(() => import("@/pages/LoremGenerator"));
 const PasswordGenerator = lazy(() => import("@/pages/PasswordGenerator"));
 const FindReplace = lazy(() => import("@/pages/FindReplace"));
 const TextEncoder = lazy(() => import("@/pages/TextEncoder"));
-const TextSummarizer = lazy(() => import("@/pages/TextSummarizer"));
 const WordFrequencyAnalyzer = lazy(() => import("@/pages/WordFrequencyAnalyzer"));
 const TextDiffChecker = lazy(() => import("@/pages/TextDiffChecker"));
 const DuplicateLineRemover = lazy(() => import("@/pages/DuplicateLineRemover"));
@@ -35,7 +34,6 @@ const TextSortingTool = lazy(() => import("@/pages/TextSortingTool"));
 const CharacterCounter = lazy(() => import("@/pages/CharacterCounter"));
 const LineCounter = lazy(() => import("@/pages/LineCounter"));
 const ReadingTimeCalculator = lazy(() => import("@/pages/ReadingTimeCalculator"));
-const HashGenerator = lazy(() => import("@/pages/HashGenerator"));
 const QRCodeGenerator = lazy(() => import("@/pages/QRCodeGenerator"));
 const JSONFormatter = lazy(() => import("@/pages/JSONFormatter"));
 const WhitespaceRemover = lazy(() => import("@/pages/WhitespaceRemover"));
@@ -65,7 +63,7 @@ function Router() {
             <Route path="/password-generator" component={PasswordGenerator} />
             <Route path="/find-replace" component={FindReplace} />
             <Route path="/text-encoder" component={TextEncoder} />
-            <Route path="/text-summarizer" component={TextSummarizer} />
+
             <Route path="/word-frequency-analyzer" component={WordFrequencyAnalyzer} />
             <Route path="/text-diff-checker" component={TextDiffChecker} />
             <Route path="/duplicate-line-remover" component={DuplicateLineRemover} />
@@ -73,7 +71,7 @@ function Router() {
             <Route path="/character-counter" component={CharacterCounter} />
             <Route path="/line-counter" component={LineCounter} />
             <Route path="/reading-time-calculator" component={ReadingTimeCalculator} />
-            <Route path="/hash-generator" component={HashGenerator} />
+
             <Route path="/qr-code-generator" component={QRCodeGenerator} />
 
             <Route path="/json-formatter" component={JSONFormatter} />
@@ -97,7 +95,7 @@ function Router() {
             <Route path="/password-generator" component={PasswordGenerator} />
             <Route path="/find-replace" component={FindReplace} />
             <Route path="/text-encoder" component={TextEncoder} />
-            <Route path="/text-summarizer" component={TextSummarizer} />
+
             <Route path="/word-frequency-analyzer" component={WordFrequencyAnalyzer} />
             <Route path="/text-diff-checker" component={TextDiffChecker} />
             <Route path="/duplicate-line-remover" component={DuplicateLineRemover} />
@@ -105,7 +103,7 @@ function Router() {
             <Route path="/character-counter" component={CharacterCounter} />
             <Route path="/line-counter" component={LineCounter} />
             <Route path="/reading-time-calculator" component={ReadingTimeCalculator} />
-            <Route path="/hash-generator" component={HashGenerator} />
+
             <Route path="/qr-code-generator" component={QRCodeGenerator} />
 
             <Route path="/json-formatter" component={JSONFormatter} />
