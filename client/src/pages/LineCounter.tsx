@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
 import { 
@@ -20,6 +21,7 @@ export default function LineCounter() {
   const [text, setText] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedFileInfo, setUploadedFileInfo] = useState<{name: string, size: number, type: string} | null>(null);
+  const [showNumberAlert, setShowNumberAlert] = useState(false);
   const { toast } = useToast();
 
   // SEO Configuration
@@ -28,6 +30,18 @@ export default function LineCounter() {
     description: 'Free online line counter tool. Count total lines, non-empty lines, and analyze line statistics in your text. Perfect for code, data files, and document analysis.',
     keywords: 'line counter, count lines, line count, text lines, code lines, file lines, data analysis, text statistics'
   });
+
+  // Helper function to detect if text has line numbers
+  const hasLineNumbers = (textToCheck: string) => {
+    if (!textToCheck.trim()) return false;
+    const lines = textToCheck.split('\n');
+    const nonEmptyLines = lines.filter(line => line.trim().length > 0);
+    if (nonEmptyLines.length === 0) return false;
+    
+    // Check if at least 70% of non-empty lines start with numbers
+    const numberedLines = nonEmptyLines.filter(line => /^\s*\d+[.)\-]\s+/.test(line));
+    return numberedLines.length >= Math.ceil(nonEmptyLines.length * 0.7);
+  };
 
   // Auto-save and restore text
   useEffect(() => {
@@ -126,12 +140,45 @@ export default function LineCounter() {
     });
   };
 
-  const numberLines = () => {
+  const handleNumberLines = () => {
+    if (hasLineNumbers(text)) {
+      setShowNumberAlert(true);
+      return;
+    }
+    
+    const lines = text.split('\n');
     const numberedText = lines.map((line, index) => `${index + 1}. ${line}`).join('\n');
     setText(numberedText);
     toast({
       title: "Lines Numbered",
       description: "Added line numbers to your text.",
+    });
+  };
+
+  const removeNumberLines = () => {
+    // Remove line numbers from text (supports various number formats)
+    const lines = text.split('\n');
+    const unNumberedText = lines.map(line => {
+      // Match various numbering patterns: "1. ", "1) ", "1 - ", etc.
+      return line.replace(/^\s*\d+[.)\-]\s+/, '');
+    }).join('\n');
+    setText(unNumberedText);
+    toast({
+      title: "Line Numbers Removed",
+      description: "Removed line numbers from your text.",
+    });
+  };
+
+  const handleReNumber = () => {
+    setText(prevText => {
+      const lines = prevText.split('\n');
+      const cleanedLines = lines.map(line => line.replace(/^\s*\d+[.)\-]\s+/, ''));
+      return cleanedLines.map((line, index) => `${index + 1}. ${line}`).join('\n');
+    });
+    setShowNumberAlert(false);
+    toast({
+      title: "Lines Re-numbered",
+      description: "Removed old numbers and added new line numbers.",
     });
   };
 
@@ -217,9 +264,9 @@ export default function LineCounter() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
           {/* Text Input Area */}
-          <div className="lg:col-span-2">
+          <div className="xl:col-span-2">
             <Card>
               <CardHeader>
                 <div className="flex justify-between items-center">
@@ -229,9 +276,9 @@ export default function LineCounter() {
                       Type, paste, or upload text to analyze line count
                     </CardDescription>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     {/* File Upload */}
-                    <label className={`px-3 py-2 rounded text-sm transition-colors ${
+                    <label className={`px-2 sm:px-3 py-2 rounded text-xs sm:text-sm transition-colors ${
                       isUploading 
                         ? 'bg-primary/50 text-primary-foreground cursor-wait' 
                         : 'bg-primary text-primary-foreground hover:bg-primary/80 cursor-pointer'
@@ -239,13 +286,15 @@ export default function LineCounter() {
                            data-testid="button-upload-file">
                       {isUploading ? (
                         <>
-                          <div className="inline-block w-4 h-4 mr-1 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                          Uploading...
+                          <div className="inline-block w-3 h-3 sm:w-4 sm:h-4 mr-1 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                          <span className="hidden sm:inline">Uploading...</span>
+                          <span className="sm:hidden">...</span>
                         </>
                       ) : (
                         <>
                           <FaUpload className="inline mr-1" />
-                          Upload
+                          <span className="hidden sm:inline">Upload</span>
+                          <span className="sm:hidden">📁</span>
                         </>
                       )}
                       <input 
@@ -257,12 +306,14 @@ export default function LineCounter() {
                       />
                     </label>
                     
-                    <Button variant="outline" size="sm" onClick={pasteText} data-testid="button-paste">
-                      Paste
+                    <Button variant="outline" size="sm" onClick={pasteText} data-testid="button-paste" className="text-xs sm:text-sm px-2 sm:px-3">
+                      <span className="hidden sm:inline">Paste</span>
+                      <span className="sm:hidden">📋</span>
                     </Button>
-                    <Button variant="outline" size="sm" onClick={clearText} data-testid="button-clear">
+                    <Button variant="outline" size="sm" onClick={clearText} data-testid="button-clear" className="text-xs sm:text-sm px-2 sm:px-3">
                       <FaEraser className="mr-1" />
-                      Clear
+                      <span className="hidden sm:inline">Clear</span>
+                      <span className="sm:hidden">×</span>
                     </Button>
                   </div>
                 </div>
@@ -277,17 +328,19 @@ export default function LineCounter() {
                 />
                 
                 <div className="flex flex-wrap justify-between mt-4 gap-2">
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm" onClick={copyToClipboard} data-testid="button-copy">
+                  <div className="flex flex-wrap gap-2">
+                    <Button variant="outline" size="sm" onClick={copyToClipboard} data-testid="button-copy" className="text-xs sm:text-sm px-2 sm:px-3">
                       <FaCopy className="mr-1" />
-                      Copy
+                      <span className="hidden sm:inline">Copy</span>
+                      <span className="sm:hidden">📄</span>
                     </Button>
-                    <Button variant="outline" size="sm" onClick={downloadText} data-testid="button-download">
+                    <Button variant="outline" size="sm" onClick={downloadText} data-testid="button-download" className="text-xs sm:text-sm px-2 sm:px-3">
                       <FaDownload className="mr-1" />
-                      Download
+                      <span className="hidden sm:inline">Download</span>
+                      <span className="sm:hidden">💾</span>
                     </Button>
                   </div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-xs sm:text-sm text-muted-foreground">
                     {stats.totalLines} lines
                   </div>
                 </div>
@@ -303,17 +356,33 @@ export default function LineCounter() {
                         onClick={removeEmptyLines}
                         disabled={stats.emptyLines === 0}
                         data-testid="button-remove-empty-lines"
+                        className="text-xs sm:text-sm px-2 sm:px-3"
                       >
                         <FaFilter className="mr-1" />
-                        Remove Empty Lines
+                        <span className="hidden sm:inline">Remove Empty Lines</span>
+                        <span className="sm:hidden">Remove Empty</span>
                       </Button>
-                      <Button variant="outline" size="sm" onClick={numberLines} data-testid="button-number-lines">
+                      <Button variant="outline" size="sm" onClick={handleNumberLines} data-testid="button-number-lines" className="text-xs sm:text-sm px-2 sm:px-3">
                         <FaHashtag className="mr-1" />
-                        Number Lines
+                        <span className="hidden sm:inline">Number Lines</span>
+                        <span className="sm:hidden">Add #</span>
                       </Button>
-                      <Button variant="outline" size="sm" onClick={sortLines} data-testid="button-sort-lines">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={removeNumberLines} 
+                        data-testid="button-remove-number-lines"
+                        className="text-xs sm:text-sm px-2 sm:px-3"
+                        disabled={!hasLineNumbers(text)}
+                      >
+                        <FaHashtag className="mr-1" style={{transform: 'scaleX(-1)'}} />
+                        <span className="hidden sm:inline">Remove Number Lines</span>
+                        <span className="sm:hidden">Remove #</span>
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={sortLines} data-testid="button-sort-lines" className="text-xs sm:text-sm px-2 sm:px-3">
                         <FaSort className="mr-1" />
-                        Sort Lines
+                        <span className="hidden sm:inline">Sort Lines</span>
+                        <span className="sm:hidden">Sort</span>
                       </Button>
                     </div>
                   </div>
@@ -407,33 +476,52 @@ export default function LineCounter() {
         </div>
 
         {/* Features Section */}
-        <div className="mt-12 bg-muted/50 rounded-lg p-6">
-          <h2 className="text-2xl font-bold text-center mb-6">Line Counter Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="mt-8 sm:mt-12 bg-muted/50 rounded-lg p-4 sm:p-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">Line Counter Features</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="text-center">
-              <FaListOl className="text-primary text-2xl mb-2 mx-auto" />
-              <h3 className="font-semibold mb-1">Real-time Counting</h3>
-              <p className="text-sm text-muted-foreground">
+              <FaListOl className="text-primary text-xl sm:text-2xl mb-2 mx-auto" />
+              <h3 className="font-semibold mb-1 text-sm sm:text-base">Real-time Counting</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 Count total lines, empty lines, and non-empty lines as you type
               </p>
             </div>
             <div className="text-center">
-              <FaFilter className="text-primary text-2xl mb-2 mx-auto" />
-              <h3 className="font-semibold mb-1">Line Processing</h3>
-              <p className="text-sm text-muted-foreground">
-                Remove empty lines, add line numbers, and sort lines alphabetically
+              <FaFilter className="text-primary text-xl sm:text-2xl mb-2 mx-auto" />
+              <h3 className="font-semibold mb-1 text-sm sm:text-base">Line Processing</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                Remove empty lines, add/remove line numbers, and sort lines alphabetically
               </p>
             </div>
             <div className="text-center">
-              <FaUpload className="text-primary text-2xl mb-2 mx-auto" />
-              <h3 className="font-semibold mb-1">File Support</h3>
-              <p className="text-sm text-muted-foreground">
+              <FaUpload className="text-primary text-xl sm:text-2xl mb-2 mx-auto" />
+              <h3 className="font-semibold mb-1 text-sm sm:text-base">File Support</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 Upload and analyze text files, code files, and data files
               </p>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Alert Dialog for duplicate numbering warning */}
+      <AlertDialog open={showNumberAlert} onOpenChange={setShowNumberAlert}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Lines Already Numbered</AlertDialogTitle>
+            <AlertDialogDescription>
+              Your text appears to already have line numbers. Adding numbers again would create duplicate numbering.
+              Would you like to remove the existing line numbers first?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleReNumber}>
+              Remove & Re-number
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </main>
   );
 }
