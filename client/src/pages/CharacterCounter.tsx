@@ -714,39 +714,39 @@ export default function CharacterCounter() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <Alert className={seoCheck.titleTag.optimal ? 'border-green-500' : 'border-orange-500'}>
-                      <div className="flex items-center">
+                      <div className="flex items-center gap-3">
                         {seoCheck.titleTag.optimal ? (
-                          <FaCheckCircle className="text-green-500 mr-2" />
+                          <FaCheckCircle className="text-green-500 shrink-0" />
                         ) : (
-                          <FaExclamationTriangle className="text-orange-500 mr-2" />
+                          <FaExclamationTriangle className="text-orange-500 shrink-0" />
                         )}
-                        <AlertDescription>
+                        <AlertDescription className="min-w-0 break-words">
                           <strong>Title Tag:</strong> {seoCheck.titleTag.message}
                         </AlertDescription>
                       </div>
                     </Alert>
                     
                     <Alert className={seoCheck.metaDescription.optimal ? 'border-green-500' : 'border-orange-500'}>
-                      <div className="flex items-center">
+                      <div className="flex items-center gap-3">
                         {seoCheck.metaDescription.optimal ? (
-                          <FaCheckCircle className="text-green-500 mr-2" />
+                          <FaCheckCircle className="text-green-500 shrink-0" />
                         ) : (
-                          <FaExclamationTriangle className="text-orange-500 mr-2" />
+                          <FaExclamationTriangle className="text-orange-500 shrink-0" />
                         )}
-                        <AlertDescription>
+                        <AlertDescription className="min-w-0 break-words">
                           <strong>Meta Description:</strong> {seoCheck.metaDescription.message}
                         </AlertDescription>
                       </div>
                     </Alert>
                     
                     <Alert className={seoCheck.keywordDensity.optimal ? 'border-green-500' : 'border-orange-500'}>
-                      <div className="flex items-center">
+                      <div className="flex items-center gap-3">
                         {seoCheck.keywordDensity.optimal ? (
-                          <FaCheckCircle className="text-green-500 mr-2" />
+                          <FaCheckCircle className="text-green-500 shrink-0" />
                         ) : (
-                          <FaInfoCircle className="text-orange-500 mr-2" />
+                          <FaInfoCircle className="text-orange-500 shrink-0" />
                         )}
-                        <AlertDescription>
+                        <AlertDescription className="min-w-0 break-words">
                           <strong>Keyword Density:</strong> {seoCheck.keywordDensity.message}
                         </AlertDescription>
                       </div>
@@ -768,19 +768,20 @@ export default function CharacterCounter() {
                     {keywordAnalysis.length > 0 ? (
                       <div className="space-y-3">
                         {keywordAnalysis.map((keyword, index) => (
-                          <div key={keyword.word} className="flex items-center justify-between">
-                            <div className="flex items-center space-x-2">
-                              <Badge variant={index < 3 ? 'default' : 'secondary'}>
+                          <div key={keyword.word} className="flex items-center justify-between gap-4">
+                            <div className="flex items-center space-x-2 min-w-0 flex-1">
+                              <Badge variant={index < 3 ? 'default' : 'secondary'} className="shrink-0">
                                 #{index + 1}
                               </Badge>
-                              <span className="font-medium">{keyword.word}</span>
+                              <span className="font-medium break-all overflow-hidden text-ellipsis">{keyword.word}</span>
                             </div>
-                            <div className="flex items-center space-x-2">
-                              <span className="text-sm text-muted-foreground">
+                            <div className="flex items-center space-x-2 shrink-0">
+                              <span className="text-sm text-muted-foreground whitespace-nowrap">
                                 {keyword.count} times
                               </span>
                               <Badge 
                                 variant={parseFloat(keyword.density) >= 1 && parseFloat(keyword.density) <= 3 ? 'default' : 'outline'}
+                                className="shrink-0"
                               >
                                 {keyword.density}%
                               </Badge>
