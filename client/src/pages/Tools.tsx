@@ -5,7 +5,6 @@ import {
   FaTextHeight, 
   FaPlus, 
   FaSearch, 
-  FaCompress,
   FaQuoteLeft,
   FaExchangeAlt,
   FaSearchPlus,
@@ -21,7 +20,6 @@ import {
   FaSort,
   FaListOl,
   FaClock,
-  FaShieldAlt,
   FaQrcode,
   FaEraser
 } from 'react-icons/fa';
@@ -97,14 +95,6 @@ export default function Tools() {
       isExternal: false
     },
     {
-      id: 'hash-generator',
-      title: 'Hash Generator',
-      description: 'Generate secure hashes for text and files using MD5, SHA-1, SHA-256, and SHA-512 algorithms. Essential for data integrity verification and security applications.',
-      icon: FaShieldAlt,
-      href: '/hash-generator',
-      isExternal: false
-    },
-    {
       id: 'qr-code-generator',
       title: 'QR Code Generator',
       description: 'Create custom QR codes for text, URLs, WiFi networks, phone numbers, and email addresses. Download high-quality QR codes for print and digital use.',
@@ -158,14 +148,6 @@ export default function Tools() {
       description: 'Encode and decode text using various methods including Base64, URL encoding, HTML entities, and more. Essential for web development and data processing.',
       icon: FaCode,
       href: '/text-encoder',
-      isExternal: false
-    },
-    {
-      id: 'text-summarizer',
-      title: 'Text Summarizer',
-      description: 'Extract key sentences and main points from long text. Perfect for summarizing articles, documents, and research papers using intelligent sentence scoring.',
-      icon: FaCompress,
-      href: '/text-summarizer',
       isExternal: false
     },
     {
