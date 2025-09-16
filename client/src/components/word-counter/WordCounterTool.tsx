@@ -24,6 +24,7 @@ const FeatureLoader = () => (
 
 import { BarChart3, Search, Share2, TrendingUp, Target, Sparkles } from 'lucide-react';
 import { FaCheck, FaEraser, FaHighlighter, FaPaste, FaTrash, FaUpload, FaCopy, FaSync, FaSort, FaBook, FaClock, FaInfoCircle, FaCalendar } from "@/components/common/Icons";
+import { Link } from 'wouter';
 
 // Using icons from the common Icons file that are already working
 // import AdSenseUnit from '@/components/ads/AdSenseUnit'; // Commented out - ads disabled
@@ -727,9 +728,10 @@ export default function WordCounterTool() {
             <h3 className="text-lg font-semibold text-foreground mb-4 border-b border-border pb-2">Related Tools</h3>
             <div className="grid grid-cols-1 gap-3">
               {/* Character Counter */}
-              <a href="/character-counter" 
-                 className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md" 
-                 data-testid="link-character-counter">
+              <Link href="/character-counter" 
+                    className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary" 
+                    data-testid="link-character-counter"
+                    aria-label="Go to Character Counter tool">
                 <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
                   <FaCopy className="text-blue-600 dark:text-blue-400 text-lg" />
                 </div>
@@ -737,12 +739,13 @@ export default function WordCounterTool() {
                   <h4 className="font-medium text-foreground group-hover:text-primary transition-colors">Character Counter</h4>
                   <p className="text-xs text-muted-foreground">Count characters & spaces</p>
                 </div>
-              </a>
+              </Link>
 
               {/* Text Case Converter */}
-              <a href="/text-case-convert" 
-                 className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md" 
-                 data-testid="link-text-case-converter">
+              <Link href="/text-case-convert" 
+                    className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary" 
+                    data-testid="link-text-case-converter"
+                    aria-label="Go to Text Case Converter tool">
                 <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
                   <FaSync className="text-green-600 dark:text-green-400 text-lg" />
                 </div>
@@ -750,12 +753,13 @@ export default function WordCounterTool() {
                   <h4 className="font-medium text-foreground group-hover:text-primary transition-colors">Case Converter</h4>
                   <p className="text-xs text-muted-foreground">Change text case format</p>
                 </div>
-              </a>
+              </Link>
 
               {/* Reading Time Calculator */}
-              <a href="/reading-time-calculator" 
-                 className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md" 
-                 data-testid="link-reading-time">
+              <Link href="/reading-time-calculator" 
+                    className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary" 
+                    data-testid="link-reading-time"
+                    aria-label="Go to Reading Time Calculator tool">
                 <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
                   <FaClock className="text-purple-600 dark:text-purple-400 text-lg" />
                 </div>
@@ -763,12 +767,13 @@ export default function WordCounterTool() {
                   <h4 className="font-medium text-foreground group-hover:text-primary transition-colors">Reading Time</h4>
                   <p className="text-xs text-muted-foreground">Calculate read duration</p>
                 </div>
-              </a>
+              </Link>
 
               {/* Line Counter */}
-              <a href="/line-counter" 
-                 className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md" 
-                 data-testid="link-line-counter">
+              <Link href="/line-counter" 
+                    className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary" 
+                    data-testid="link-line-counter"
+                    aria-label="Go to Line Counter tool">
                 <div className="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
                   <FaSort className="text-orange-600 dark:text-orange-400 text-lg" />
                 </div>
@@ -776,13 +781,15 @@ export default function WordCounterTool() {
                   <h4 className="font-medium text-foreground group-hover:text-primary transition-colors">Line Counter</h4>
                   <p className="text-xs text-muted-foreground">Count text lines</p>
                 </div>
-              </a>
+              </Link>
             </div>
             
             <div className="mt-4 pt-3 border-t border-border">
-              <a href="/tools" className="text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center justify-center py-2 hover:bg-primary/5 rounded" data-testid="link-more-tools">
+              <Link href="/tools" 
+                    className="text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center justify-center py-2 hover:bg-primary/5 rounded focus-visible:ring-2 focus-visible:ring-primary" 
+                    data-testid="link-more-tools">
                 More Text Tools →
-              </a>
+              </Link>
             </div>
           </div>
 
