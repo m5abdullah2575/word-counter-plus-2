@@ -722,44 +722,65 @@ export default function WordCounterTool() {
 
         {/* Sidebar */}
         <div className="lg:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
-          {/* Related Text Tools */}
+          {/* Related Tools */}
           <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
-            <h3 className="text-lg font-semibold text-foreground mb-4 border-b border-border pb-2">Text Tools</h3>
-            <div className="space-y-3">
-              <a href="/character-counter" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-character-counter">
-                Character Counter
+            <h3 className="text-lg font-semibold text-foreground mb-4 border-b border-border pb-2">Related Tools</h3>
+            <div className="grid grid-cols-1 gap-3">
+              {/* Character Counter */}
+              <a href="/character-counter" 
+                 className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md" 
+                 data-testid="link-character-counter">
+                <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
+                  <FaCopy className="text-blue-600 dark:text-blue-400 text-lg" />
+                </div>
+                <div>
+                  <h4 className="font-medium text-foreground group-hover:text-primary transition-colors">Character Counter</h4>
+                  <p className="text-xs text-muted-foreground">Count characters & spaces</p>
+                </div>
               </a>
-              <a href="/text-case-convert" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-text-case-converter">
-                Text Case Converter
+
+              {/* Text Case Converter */}
+              <a href="/text-case-convert" 
+                 className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md" 
+                 data-testid="link-text-case-converter">
+                <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
+                  <FaSync className="text-green-600 dark:text-green-400 text-lg" />
+                </div>
+                <div>
+                  <h4 className="font-medium text-foreground group-hover:text-primary transition-colors">Case Converter</h4>
+                  <p className="text-xs text-muted-foreground">Change text case format</p>
+                </div>
               </a>
-              <a href="/line-counter" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-line-counter">
-                Line Counter
+
+              {/* Reading Time Calculator */}
+              <a href="/reading-time-calculator" 
+                 className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md" 
+                 data-testid="link-reading-time">
+                <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
+                  <FaClock className="text-purple-600 dark:text-purple-400 text-lg" />
+                </div>
+                <div>
+                  <h4 className="font-medium text-foreground group-hover:text-primary transition-colors">Reading Time</h4>
+                  <p className="text-xs text-muted-foreground">Calculate read duration</p>
+                </div>
               </a>
-              <a href="/reading-time-calculator" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-reading-time">
-                Reading Time Calculator
-              </a>
-              <a href="/word-frequency-analyzer" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-word-frequency">
-                Word Frequency Analyzer
-              </a>
-              <a href="/find-replace" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-find-replace">
-                Find & Replace
-              </a>
-              <a href="/text-diff-checker" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-text-diff">
-                Text Diff Checker
-              </a>
-              <a href="/duplicate-line-remover" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-duplicate-remover">
-                Duplicate Line Remover
-              </a>
-              <a href="/text-sorting-tool" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-text-sorter">
-                Text Sorting Tool
-              </a>
-              <a href="/whitespace-remover" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-whitespace-remover">
-                Whitespace Remover
+
+              {/* Line Counter */}
+              <a href="/line-counter" 
+                 className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md" 
+                 data-testid="link-line-counter">
+                <div className="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
+                  <FaSort className="text-orange-600 dark:text-orange-400 text-lg" />
+                </div>
+                <div>
+                  <h4 className="font-medium text-foreground group-hover:text-primary transition-colors">Line Counter</h4>
+                  <p className="text-xs text-muted-foreground">Count text lines</p>
+                </div>
               </a>
             </div>
             
             <div className="mt-4 pt-3 border-t border-border">
-              <a href="/tools" className="text-sm font-medium text-primary hover:text-primary/80 transition-colors" data-testid="link-more-tools">
+              <a href="/tools" className="text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center justify-center py-2 hover:bg-primary/5 rounded" data-testid="link-more-tools">
                 More Text Tools →
               </a>
             </div>
