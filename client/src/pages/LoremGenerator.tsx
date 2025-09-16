@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
+import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 import { FaQuoteLeft, FaCopy, FaRedo, FaCog, FaDownload } from 'react-icons/fa';
 
 const LOREM_WORDS = [
@@ -159,24 +160,26 @@ export default function LoremGenerator() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="p-4 rounded-full bg-primary/10">
-              <FaQuoteLeft className="text-3xl text-primary" />
+    <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
+        {/* Main Tool Area */}
+        <div className="lg:col-span-3 space-y-4 sm:space-y-6">
+          {/* Tool Header */}
+          <div className="text-center mb-4 sm:mb-8">
+            <div className="flex justify-center mb-2 sm:mb-4">
+              <div className="p-3 sm:p-4 rounded-full bg-primary/10">
+                <FaQuoteLeft className="text-2xl sm:text-3xl text-primary" />
+              </div>
             </div>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">
+              Lorem Ipsum Generator
+            </h1>
+            <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
+              Generate placeholder text for your designs and layouts. Perfect for mockups, prototypes, and content planning.
+            </p>
           </div>
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            Lorem Ipsum Generator
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Generate placeholder text for your designs and layouts. Perfect for mockups, prototypes, and content planning.
-          </p>
-        </div>
 
-        <div className="grid gap-6">
+          <div className="grid gap-4 sm:gap-6">
           {/* Controls */}
           <Card>
             <CardHeader>
@@ -292,8 +295,14 @@ export default function LoremGenerator() {
               </CardContent>
             </Card>
           )}
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <div className="lg:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
+          <RelatedToolsSidebar currentTool="/lorem-generator" />
         </div>
       </div>
-    </div>
+    </main>
   );
 }
