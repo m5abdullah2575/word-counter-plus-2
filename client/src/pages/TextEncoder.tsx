@@ -5,6 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
+import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 import { FaCode, FaCopy, FaRedo, FaExchangeAlt, FaLock, FaUnlock, FaUpload, FaDownload } from 'react-icons/fa';
 import { encodeBase64, decodeBase64 } from '@/lib/base64';
 import { toBytes, fromBytes } from '@/lib/utf8';
@@ -308,24 +309,26 @@ export default function TextEncoder() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="p-4 rounded-full bg-primary/10">
-              <FaCode className="text-3xl text-primary" />
+    <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
+        {/* Main Tool Area */}
+        <div className="lg:col-span-3 space-y-4 sm:space-y-6">
+          {/* Tool Header */}
+          <div className="text-center mb-4 sm:mb-8">
+            <div className="flex justify-center mb-2 sm:mb-4">
+              <div className="p-3 sm:p-4 rounded-full bg-primary/10">
+                <FaCode className="text-2xl sm:text-3xl text-primary" />
+              </div>
             </div>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">
+              Text Encoder/Decoder
+            </h1>
+            <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
+              Encode and decode text using various methods including Base64, URL encoding, HTML entities, hexadecimal, and more.
+            </p>
           </div>
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            Text Encoder/Decoder
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Encode and decode text using various methods including Base64, URL encoding, HTML entities, hexadecimal, and more.
-          </p>
-        </div>
 
-        <div className="grid gap-6">
+          <div className="grid gap-4 sm:gap-6">
           {/* Method Selection */}
           <Card>
             <CardHeader>
@@ -509,8 +512,14 @@ export default function TextEncoder() {
               </div>
             </CardContent>
           </Card>
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <div className="lg:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
+          <RelatedToolsSidebar currentTool="/text-encoder" />
         </div>
       </div>
-    </div>
+    </main>
   );
 }

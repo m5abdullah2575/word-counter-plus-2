@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
+import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 import { FaSort, FaCopy, FaRedo, FaCog, FaSortAlphaDown, FaSortAlphaUp, FaSortNumericDown, FaRandom } from 'react-icons/fa';
 
 type SortType = 'alphabetical' | 'reverse-alphabetical' | 'length-ascending' | 'length-descending' | 'numerical' | 'reverse-numerical' | 'random' | 'reverse';
@@ -207,24 +208,26 @@ export default function TextSortingTool() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="p-4 rounded-full bg-primary/10">
-              <FaSort className="text-3xl text-primary" />
+    <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
+        {/* Main Tool Area */}
+        <div className="lg:col-span-3 space-y-4 sm:space-y-6">
+          {/* Tool Header */}
+          <div className="text-center mb-4 sm:mb-8">
+            <div className="flex justify-center mb-2 sm:mb-4">
+              <div className="p-3 sm:p-4 rounded-full bg-primary/10">
+                <FaSort className="text-2xl sm:text-3xl text-primary" />
+              </div>
             </div>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">
+              Text Sorting Tool
+            </h1>
+            <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
+              Sort your text lines in various orders: alphabetical, by length, numerical, or random. Perfect for organizing lists and data.
+            </p>
           </div>
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            Text Sorting Tool
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Sort your text lines in various orders: alphabetical, by length, numerical, or random. Perfect for organizing lists and data.
-          </p>
-        </div>
 
-        <div className="grid gap-6">
+          <div className="grid gap-4 sm:gap-6">
           {/* Input Section */}
           <Card>
             <CardHeader>
@@ -480,8 +483,14 @@ export default function TextSortingTool() {
               </ul>
             </CardContent>
           </Card>
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <div className="lg:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
+          <RelatedToolsSidebar currentTool="/text-sorting-tool" />
         </div>
       </div>
-    </div>
+    </main>
   );
 }
