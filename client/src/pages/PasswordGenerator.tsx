@@ -7,6 +7,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
+import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 import { FaKey, FaCopy, FaRedo, FaShieldAlt, FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const CHARACTER_SETS = {
@@ -165,24 +166,26 @@ export default function PasswordGenerator() {
   const passwordStrength = password ? getPasswordStrength(password) : { score: 0, level: 'None', color: 'bg-gray-300' };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="p-4 rounded-full bg-primary/10">
-              <FaKey className="text-3xl text-primary" />
+    <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
+        {/* Main Tool Area */}
+        <div className="lg:col-span-3 space-y-4 sm:space-y-6">
+          {/* Tool Header */}
+          <div className="text-center mb-4 sm:mb-8">
+            <div className="flex justify-center mb-2 sm:mb-4">
+              <div className="p-3 sm:p-4 rounded-full bg-primary/10">
+                <FaKey className="text-2xl sm:text-3xl text-primary" />
+              </div>
             </div>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">
+              Password Generator
+            </h1>
+            <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
+              Generate secure passwords with customizable options. Create strong, unique passwords to protect your accounts.
+            </p>
           </div>
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            Password Generator
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Generate secure passwords with customizable options. Create strong, unique passwords to protect your accounts.
-          </p>
-        </div>
 
-        <div className="grid gap-6">
+          <div className="grid gap-4 sm:gap-6">
           {/* Settings */}
           <Card>
             <CardHeader>
@@ -363,8 +366,14 @@ export default function PasswordGenerator() {
               </ul>
             </CardContent>
           </Card>
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <div className="lg:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
+          <RelatedToolsSidebar currentTool="/password-generator" />
         </div>
       </div>
-    </div>
+    </main>
   );
 }
