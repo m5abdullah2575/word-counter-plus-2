@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
 import QRCode from 'qrcode';
+import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 import { 
   FaCopy, 
   FaEraser, 
@@ -201,19 +202,21 @@ export default function QRCodeGenerator() {
   };
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            QR Code Generator
-          </h1>
-          <p className="text-xl text-muted-foreground">
-            Create custom QR codes for text, URLs, WiFi, phone numbers, and more
-          </p>
-        </div>
+    <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
+        {/* Main Tool Area */}
+        <div className="lg:col-span-3 space-y-4 sm:space-y-6">
+          {/* Tool Header */}
+          <div className="text-center mb-4 sm:mb-8">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">
+              QR Code Generator
+            </h1>
+            <p className="text-sm sm:text-base text-muted-foreground">
+              Create custom QR codes for text, URLs, WiFi, phone numbers, and more
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 lg:gap-6">
           {/* Input Area */}
           <div className="space-y-4">
             <Card>
@@ -388,34 +391,40 @@ export default function QRCodeGenerator() {
             {/* Canvas for QR generation (hidden) */}
             <canvas ref={canvasRef} style={{ display: 'none' }} />
           </div>
-        </div>
+          </div>
 
-        {/* Usage Examples */}
-        <div className="mt-12 bg-muted/50 rounded-lg p-6">
-          <h2 className="text-2xl font-bold text-center mb-6">QR Code Examples</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="text-center">
-              <FaLink className="text-primary text-2xl mb-2 mx-auto" />
-              <h3 className="font-semibold mb-1">Website URLs</h3>
-              <p className="text-sm text-muted-foreground">
-                Share links easily with QR codes for websites, social media, or landing pages
-              </p>
-            </div>
-            <div className="text-center">
-              <FaWifi className="text-primary text-2xl mb-2 mx-auto" />
-              <h3 className="font-semibold mb-1">WiFi Networks</h3>
-              <p className="text-sm text-muted-foreground">
-                Let guests connect to WiFi instantly by scanning a QR code
-              </p>
-            </div>
-            <div className="text-center">
-              <FaPhone className="text-primary text-2xl mb-2 mx-auto" />
-              <h3 className="font-semibold mb-1">Contact Information</h3>
-              <p className="text-sm text-muted-foreground">
-                Share phone numbers, emails, or complete contact cards
-              </p>
+          {/* Usage Examples */}
+          <div className="mt-12 bg-muted/50 rounded-lg p-6">
+            <h2 className="text-2xl font-bold text-center mb-6">QR Code Examples</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="text-center">
+                <FaLink className="text-primary text-2xl mb-2 mx-auto" />
+                <h3 className="font-semibold mb-1">Website URLs</h3>
+                <p className="text-sm text-muted-foreground">
+                  Share links easily with QR codes for websites, social media, or landing pages
+                </p>
+              </div>
+              <div className="text-center">
+                <FaWifi className="text-primary text-2xl mb-2 mx-auto" />
+                <h3 className="font-semibold mb-1">WiFi Networks</h3>
+                <p className="text-sm text-muted-foreground">
+                  Let guests connect to WiFi instantly by scanning a QR code
+                </p>
+              </div>
+              <div className="text-center">
+                <FaPhone className="text-primary text-2xl mb-2 mx-auto" />
+                <h3 className="font-semibold mb-1">Contact Information</h3>
+                <p className="text-sm text-muted-foreground">
+                  Share phone numbers, emails, or complete contact cards
+                </p>
+              </div>
             </div>
           </div>
+        </div>
+
+        {/* Sidebar */}
+        <div className="lg:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
+          <RelatedToolsSidebar currentTool="/qr-code-generator" />
         </div>
       </div>
     </main>
