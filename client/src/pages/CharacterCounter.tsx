@@ -835,55 +835,6 @@ export default function CharacterCounter() {
           </div>
         </div>
 
-        {/* Features Section */}
-        <div className="mt-12 bg-muted/50 rounded-lg p-6">
-          <h2 className="text-2xl font-bold text-center mb-6">Advanced Character Counter Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="text-center">
-              <FaHashtag className="text-primary text-2xl mb-2 mx-auto" />
-              <h3 className="font-semibold mb-1">Real-time Analysis</h3>
-              <p className="text-sm text-muted-foreground">
-                Advanced character counting with emoji detection and typing speed tracking
-              </p>
-            </div>
-            <div className="text-center">
-              <FaSearch className="text-primary text-2xl mb-2 mx-auto" />
-              <h3 className="font-semibold mb-1">SEO Optimization</h3>
-              <p className="text-sm text-muted-foreground">
-                Check title tags, meta descriptions, and keyword density for better ranking
-              </p>
-            </div>
-            <div className="text-center">
-              <FaTags className="text-primary text-2xl mb-2 mx-auto" />
-              <h3 className="font-semibold mb-1">Keyword Density</h3>
-              <p className="text-sm text-muted-foreground">
-                Analyze keyword frequency and density for content optimization
-              </p>
-            </div>
-            <div className="text-center">
-              <FaGlobe className="text-primary text-2xl mb-2 mx-auto" />
-              <h3 className="font-semibold mb-1">Language Detection</h3>
-              <p className="text-sm text-muted-foreground">
-                Automatic language detection with complexity scoring
-              </p>
-            </div>
-            <div className="text-center">
-              <FaSmile className="text-primary text-2xl mb-2 mx-auto" />
-              <h3 className="font-semibold mb-1">Character Breakdown</h3>
-              <p className="text-sm text-muted-foreground">
-                Count emojis, special characters, numbers, and case analysis
-              </p>
-            </div>
-            <div className="text-center">
-              <FaUpload className="text-primary text-2xl mb-2 mx-auto" />
-              <h3 className="font-semibold mb-1">File Support</h3>
-              <p className="text-sm text-muted-foreground">
-                Upload TXT, PDF, Word documents, and more file formats
-              </p>
-            </div>
-          </div>
-        </div>
-
         {/* Sidebar */}
         <div className="lg:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
           {/* Related Tools */}
@@ -1009,6 +960,55 @@ export default function CharacterCounter() {
                 Use emojis sparingly for professional content
               </li>
             </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Advanced Character Counter Features Section - Full Width at Bottom */}
+      <div className="mt-12 bg-muted/50 rounded-lg p-4 sm:p-6">
+        <h2 className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">Advanced Character Counter Features</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          <div className="text-center p-3">
+            <FaHashtag className="text-primary text-xl sm:text-2xl mb-2 mx-auto" />
+            <h3 className="font-semibold mb-1 text-sm sm:text-base">Real-time Analysis</h3>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              Advanced character counting with emoji detection and typing speed tracking
+            </p>
+          </div>
+          <div className="text-center p-3">
+            <FaSearch className="text-primary text-xl sm:text-2xl mb-2 mx-auto" />
+            <h3 className="font-semibold mb-1 text-sm sm:text-base">SEO Optimization</h3>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              Check title tags, meta descriptions, and keyword density for better ranking
+            </p>
+          </div>
+          <div className="text-center p-3">
+            <FaTags className="text-primary text-xl sm:text-2xl mb-2 mx-auto" />
+            <h3 className="font-semibold mb-1 text-sm sm:text-base">Keyword Density</h3>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              Analyze keyword frequency and density for content optimization
+            </p>
+          </div>
+          <div className="text-center p-3">
+            <FaGlobe className="text-primary text-xl sm:text-2xl mb-2 mx-auto" />
+            <h3 className="font-semibold mb-1 text-sm sm:text-base">Language Detection</h3>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              Automatic language detection with complexity scoring
+            </p>
+          </div>
+          <div className="text-center p-3">
+            <FaSmile className="text-primary text-xl sm:text-2xl mb-2 mx-auto" />
+            <h3 className="font-semibold mb-1 text-sm sm:text-base">Character Breakdown</h3>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              Count emojis, special characters, numbers, and case analysis
+            </p>
+          </div>
+          <div className="text-center p-3">
+            <FaUpload className="text-primary text-xl sm:text-2xl mb-2 mx-auto" />
+            <h3 className="font-semibold mb-1 text-sm sm:text-base">File Support</h3>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              Upload TXT, PDF, Word documents, and more file formats
+            </p>
           </div>
         </div>
       </div>
