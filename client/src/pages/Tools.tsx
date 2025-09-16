@@ -25,11 +25,50 @@ import {
 } from 'react-icons/fa';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { getToolConfig, isDevelopment } from '@/lib/site';
 import { useState, useMemo, useEffect } from 'react';
 
+// Tool categories for organization
+type ToolCategory = 'all' | 'text-analysis' | 'text-processing' | 'content-generation' | 'development';
+
+interface ToolCategoryInfo {
+  id: ToolCategory;
+  name: string;
+  description: string;
+}
+
+const categories: ToolCategoryInfo[] = [
+  {
+    id: 'all',
+    name: 'All Tools',
+    description: 'Browse our complete collection of text tools'
+  },
+  {
+    id: 'text-analysis',
+    name: 'Text Analysis',
+    description: 'Analyze and measure text properties'
+  },
+  {
+    id: 'text-processing',
+    name: 'Text Processing',
+    description: 'Transform and manipulate text'
+  },
+  {
+    id: 'content-generation',
+    name: 'Content Generation',
+    description: 'Generate new content and codes'
+  },
+  {
+    id: 'development',
+    name: 'Development Tools',
+    description: 'Tools for developers and coders'
+  }
+];
+
 export default function Tools() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<ToolCategory>('all');
 
   // Ensure page starts at the top
   useEffect(() => {
@@ -60,7 +99,8 @@ export default function Tools() {
       description: 'Advanced word counting tool with real-time text analysis, readability scores, and keyword density analysis. Perfect for writers, students, and content creators who need detailed text statistics.',
       icon: FaPenFancy,
       href: toolConfig.wordCounterUrl,
-      isExternal: !isDevelopment() && !toolConfig.isMainDomain
+      isExternal: !isDevelopment() && !toolConfig.isMainDomain,
+      category: 'text-analysis' as ToolCategory
     },
     {
       id: 'character-counter',
@@ -68,7 +108,8 @@ export default function Tools() {
       description: 'Count characters with and without spaces, words, sentences, paragraphs, and check social media character limits for Twitter, Facebook, Instagram, and more platforms.',
       icon: FaHashtag,
       href: '/character-counter',
-      isExternal: false
+      isExternal: false,
+      category: 'text-analysis' as ToolCategory
     },
     {
       id: 'text-case-converter',
@@ -76,7 +117,8 @@ export default function Tools() {
       description: 'Convert text between different cases: uppercase, lowercase, title case, camel case, and more. Ideal for formatting text for different platforms and coding conventions.',
       icon: FaTextHeight,
       href: toolConfig.textCaseUrl,
-      isExternal: !isDevelopment() && !toolConfig.isMainDomain
+      isExternal: !isDevelopment() && !toolConfig.isMainDomain,
+      category: 'text-processing' as ToolCategory
     },
     {
       id: 'line-counter',
@@ -84,7 +126,8 @@ export default function Tools() {
       description: 'Count total lines, non-empty lines, and analyze line statistics in your text. Perfect for code analysis, data files, and document processing with line manipulation tools.',
       icon: FaListOl,
       href: '/line-counter',
-      isExternal: false
+      isExternal: false,
+      category: 'text-analysis' as ToolCategory
     },
     {
       id: 'reading-time-calculator',
@@ -92,7 +135,8 @@ export default function Tools() {
       description: 'Calculate reading and speaking time for your content. Perfect for speeches, presentations, articles, and content planning with customizable reading speeds.',
       icon: FaClock,
       href: '/reading-time-calculator',
-      isExternal: false
+      isExternal: false,
+      category: 'text-analysis' as ToolCategory
     },
     {
       id: 'qr-code-generator',
@@ -100,7 +144,8 @@ export default function Tools() {
       description: 'Create custom QR codes for text, URLs, WiFi networks, phone numbers, and email addresses. Download high-quality QR codes for print and digital use.',
       icon: FaQrcode,
       href: '/qr-code-generator',
-      isExternal: false
+      isExternal: false,
+      category: 'content-generation' as ToolCategory
     },
     {
       id: 'json-formatter',
@@ -108,7 +153,8 @@ export default function Tools() {
       description: 'Format, validate, and minify JSON data with syntax highlighting. Perfect for developers working with APIs, configuration files, and data processing.',
       icon: FaFileCode,
       href: '/json-formatter',
-      isExternal: false
+      isExternal: false,
+      category: 'development' as ToolCategory
     },
     {
       id: 'whitespace-remover',
@@ -116,7 +162,8 @@ export default function Tools() {
       description: 'Clean up text by removing extra spaces, empty lines, tabs, and unwanted whitespace. Essential for data cleaning and text formatting tasks.',
       icon: FaEraser,
       href: '/whitespace-remover',
-      isExternal: false
+      isExternal: false,
+      category: 'text-processing' as ToolCategory
     },
     {
       id: 'lorem-generator',
@@ -124,7 +171,8 @@ export default function Tools() {
       description: 'Generate placeholder text for your designs and layouts. Create custom amounts of Lorem Ipsum text with options for paragraphs, sentences, and words.',
       icon: FaQuoteLeft,
       href: '/lorem-generator',
-      isExternal: false
+      isExternal: false,
+      category: 'content-generation' as ToolCategory
     },
     {
       id: 'password-generator',
@@ -132,7 +180,8 @@ export default function Tools() {
       description: 'Generate secure passwords with customizable length and character sets. Include uppercase, lowercase, numbers, and special characters for maximum security.',
       icon: FaKey,
       href: '/password-generator',
-      isExternal: false
+      isExternal: false,
+      category: 'content-generation' as ToolCategory
     },
     {
       id: 'find-replace',
@@ -140,7 +189,8 @@ export default function Tools() {
       description: 'Search and replace text patterns with advanced options. Support for regular expressions, case sensitivity, and whole word matching for precise text editing.',
       icon: FaSearchPlus,
       href: '/find-replace',
-      isExternal: false
+      isExternal: false,
+      category: 'text-processing' as ToolCategory
     },
     {
       id: 'text-encoder',
@@ -148,7 +198,8 @@ export default function Tools() {
       description: 'Encode and decode text using various methods including Base64, URL encoding, HTML entities, and more. Essential for web development and data processing.',
       icon: FaCode,
       href: '/text-encoder',
-      isExternal: false
+      isExternal: false,
+      category: 'text-processing' as ToolCategory
     },
     {
       id: 'word-frequency-analyzer',
@@ -156,7 +207,8 @@ export default function Tools() {
       description: 'Analyze word frequency and distribution in your text. Identify the most commonly used words, keyword density, and vocabulary richness statistics.',
       icon: FaChartBar,
       href: '/word-frequency-analyzer',
-      isExternal: false
+      isExternal: false,
+      category: 'text-analysis' as ToolCategory
     },
     {
       id: 'text-diff-checker',
@@ -164,7 +216,8 @@ export default function Tools() {
       description: 'Compare two texts side by side and highlight differences. Find added, removed, and changed content between document versions with line-by-line comparison.',
       icon: FaExchangeAlt,
       href: '/text-diff-checker',
-      isExternal: false
+      isExternal: false,
+      category: 'text-processing' as ToolCategory
     },
     {
       id: 'duplicate-line-remover',
@@ -172,7 +225,8 @@ export default function Tools() {
       description: 'Remove duplicate lines from your text efficiently. Clean up lists, data files, and documents by eliminating redundant content with customizable options.',
       icon: FaFilter,
       href: '/duplicate-line-remover',
-      isExternal: false
+      isExternal: false,
+      category: 'text-processing' as ToolCategory
     },
     {
       id: 'text-sorting-tool',
@@ -180,22 +234,31 @@ export default function Tools() {
       description: 'Sort text lines in various orders: alphabetical, by length, numerical, or random. Perfect for organizing lists, data files, and arranging content systematically.',
       icon: FaSort,
       href: '/text-sorting-tool',
-      isExternal: false
+      isExternal: false,
+      category: 'text-processing' as ToolCategory
     }
   ];
 
-  // Filter tools based on search query
+  // Filter tools based on search query and category
   const filteredTools = useMemo(() => {
-    if (!searchQuery.trim()) {
-      return allTools;
+    let filtered = allTools;
+    
+    // Filter by category
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(tool => tool.category === selectedCategory);
     }
     
-    const query = searchQuery.toLowerCase();
-    return allTools.filter(tool => 
-      tool.title.toLowerCase().includes(query) ||
-      tool.description.toLowerCase().includes(query)
-    );
-  }, [searchQuery]);
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(tool => 
+        tool.title.toLowerCase().includes(query) ||
+        tool.description.toLowerCase().includes(query)
+      );
+    }
+    
+    return filtered;
+  }, [searchQuery, selectedCategory]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -209,6 +272,30 @@ export default function Tools() {
             Powerful tools to analyze, process, and transform your text. Perfect for writers, 
             content creators, students, and professionals who work with text daily.
           </p>
+        </div>
+
+        {/* Category Filter */}
+        <div className="mb-8">
+          <div className="flex flex-wrap justify-center gap-2 mb-6">
+            {categories.map((category) => (
+              <Button
+                key={category.id}
+                variant={selectedCategory === category.id ? "default" : "outline"}
+                onClick={() => setSelectedCategory(category.id)}
+                className="h-10 px-4 text-sm font-medium transition-all duration-200 hover:scale-105"
+                data-testid={`button-category-${category.id}`}
+              >
+                {category.name}
+              </Button>
+            ))}
+          </div>
+          
+          {/* Category Description */}
+          <div className="text-center mb-6">
+            <p className="text-muted-foreground">
+              {categories.find(cat => cat.id === selectedCategory)?.description}
+            </p>
+          </div>
           
           {/* Search Bar */}
           <div className="relative max-w-md mx-auto">
