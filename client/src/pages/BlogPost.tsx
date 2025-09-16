@@ -2,6 +2,7 @@ import { useRoute } from 'wouter';
 import { blogPosts, type BlogPost, getRelatedPosts } from '@/data/blogData';
 import useSEO from '@/hooks/useSEO';
 import { Link } from 'wouter';
+import { getRelatedTool } from '@/lib/tool-blog-mapping';
 import {
   FaArrowLeft,
   FaBook,
@@ -12,7 +13,8 @@ import {
   FaReddit,
   FaEnvelope,
   FaLink,
-  FaLinkedin
+  FaLinkedin,
+  FaCog
 } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6'; // ✅ X (Twitter) icon
 import { useState } from 'react';
@@ -313,29 +315,77 @@ export default function BlogPost() {
         })()}
 
         {/* CTA Section */}
-        <div className="mt-12 bg-gradient-to-r from-primary/5 to-accent/5 rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-foreground mb-4 text-center">
-            Want to Analyze Your Own Writing?
-          </h2>
-          <p className="text-muted-foreground mb-6 text-center max-w-2xl mx-auto">
-            Use Word Counter Plus to check your content's readability, keyword density, and overall
-            quality. Get instant feedback to improve your writing.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/">
-              <span className="inline-flex items-center bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:bg-primary/80 transition-colors font-semibold">
-                <FaCalendar className="mr-2" aria-label="Calendar Icon" />
-                Try Word Counter Plus
-              </span>
-            </Link>
-            <Link href={returnUrl}>
-              <span className="inline-flex items-center border border-border px-6 py-3 rounded-lg hover:bg-muted/50 transition-colors font-semibold">
-                <FaBook className="mr-2" aria-label="Book Icon" />
-                Read More Articles
-              </span>
-            </Link>
-          </div>
-        </div>
+        {(() => {
+          const relatedTool = getRelatedTool(post.title, post.content, post.tags);
+          
+          return (
+            <div className="mt-12 bg-gradient-to-r from-primary/5 to-accent/5 rounded-lg p-8">
+              {relatedTool ? (
+                <>
+                  <h2 className="text-2xl font-bold text-foreground mb-4 text-center">
+                    Ready to Put This Into Practice?
+                  </h2>
+                  <p className="text-muted-foreground mb-6 text-center max-w-2xl mx-auto">
+                    Use our {relatedTool.title} to apply what you've learned from this article. 
+                    Get instant results and improve your content quality.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    {relatedTool.isExternal ? (
+                      <a 
+                        href={relatedTool.href}
+                        className="inline-flex items-center bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:bg-primary/80 transition-colors font-semibold"
+                        data-testid={`button-use-tool-${relatedTool.id}`}
+                      >
+                        <FaCog className="mr-2" aria-label="Tool Icon" />
+                        Use {relatedTool.title}
+                      </a>
+                    ) : (
+                      <Link href={relatedTool.href}>
+                        <span 
+                          className="inline-flex items-center bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:bg-primary/80 transition-colors font-semibold"
+                          data-testid={`button-use-tool-${relatedTool.id}`}
+                        >
+                          <FaCog className="mr-2" aria-label="Tool Icon" />
+                          Use {relatedTool.title}
+                        </span>
+                      </Link>
+                    )}
+                    <Link href="/tools">
+                      <span className="inline-flex items-center border border-border px-6 py-3 rounded-lg hover:bg-muted/50 transition-colors font-semibold">
+                        <FaCalendar className="mr-2" aria-label="Calendar Icon" />
+                        All Tools
+                      </span>
+                    </Link>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h2 className="text-2xl font-bold text-foreground mb-4 text-center">
+                    Want to Analyze Your Own Writing?
+                  </h2>
+                  <p className="text-muted-foreground mb-6 text-center max-w-2xl mx-auto">
+                    Use Word Counter Plus to check your content's readability, keyword density, and overall
+                    quality. Get instant feedback to improve your writing.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Link href="/">
+                      <span className="inline-flex items-center bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:bg-primary/80 transition-colors font-semibold">
+                        <FaCalendar className="mr-2" aria-label="Calendar Icon" />
+                        Try Word Counter Plus
+                      </span>
+                    </Link>
+                    <Link href={returnUrl}>
+                      <span className="inline-flex items-center border border-border px-6 py-3 rounded-lg hover:bg-muted/50 transition-colors font-semibold">
+                        <FaBook className="mr-2" aria-label="Book Icon" />
+                        Read More Articles
+                      </span>
+                    </Link>
+                  </div>
+                </>
+              )}
+            </div>
+          );
+        })()}
 
         {/* Navigation */}
         <nav className="mt-12 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">

@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
 import { FaChartBar, FaCopy, FaRedo, FaCog, FaSort } from 'react-icons/fa';
+import RelatedBlogPosts from '@/components/common/RelatedBlogPosts';
 
 interface WordFrequency {
   word: string;
@@ -324,6 +325,9 @@ export default function WordFrequencyAnalyzer() {
             </Card>
           )}
         </div>
+
+        {/* Related Blog Posts */}
+        <RelatedBlogPosts toolId="word-frequency-analyzer" />
       </div>
     </div>
   );

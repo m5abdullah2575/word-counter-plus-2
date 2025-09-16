@@ -390,18 +390,21 @@ export default function Tools() {
             <p className="text-muted-foreground mb-4">
               Try searching with different keywords or browse all our tools.
             </p>
-            <button
-              onClick={() => setSearchQuery('')}
-              className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+            <Button
+              onClick={() => {
+                setSearchQuery('');
+                setSelectedCategory('all');
+              }}
+              className="px-4 py-2"
               data-testid="button-clear-search"
             >
-              Clear Search
-            </button>
+              Clear Filters
+            </Button>
           </div>
         )}
 
-        {/* CTA Section - only show when no search query */}
-        {!searchQuery.trim() && (
+        {/* CTA Section - only show when no search query and all category is selected */}
+        {!searchQuery.trim() && selectedCategory === 'all' && (
           <div className="text-center bg-muted/50 rounded-lg p-8">
             <h2 className="text-2xl font-bold text-foreground mb-4">
               Need a Specific Tool?
