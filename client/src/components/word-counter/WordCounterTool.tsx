@@ -722,77 +722,126 @@ export default function WordCounterTool() {
 
         {/* Sidebar */}
         <div className="xl:col-span-1 space-y-4 sm:space-y-6">
-          {/* Strategic Sidebar Ad - Rectangle format */}
-          {/* 
-          <div className="no-print">
-            <AdSenseUnit 
-              adSlot="2345678901"
-              adFormat="rectangle"
-              style={{ minHeight: '250px' }}
-              className="w-full"
-              adTest={true}
-            />
+          {/* Related Text Tools */}
+          <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
+            <h3 className="text-lg font-semibold text-foreground mb-4 border-b border-border pb-2">Text Tools</h3>
+            <div className="space-y-3">
+              <a href="/character-counter" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-character-counter">
+                Character Counter
+              </a>
+              <a href="/text-case-convert" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-text-case-converter">
+                Text Case Converter
+              </a>
+              <a href="/line-counter" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-line-counter">
+                Line Counter
+              </a>
+              <a href="/reading-time-calculator" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-reading-time">
+                Reading Time Calculator
+              </a>
+              <a href="/word-frequency-analyzer" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-word-frequency">
+                Word Frequency Analyzer
+              </a>
+              <a href="/find-replace" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-find-replace">
+                Find & Replace
+              </a>
+              <a href="/text-diff-checker" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-text-diff">
+                Text Diff Checker
+              </a>
+              <a href="/duplicate-line-remover" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-duplicate-remover">
+                Duplicate Line Remover
+              </a>
+              <a href="/text-sorting-tool" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-text-sorter">
+                Text Sorting Tool
+              </a>
+              <a href="/whitespace-remover" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-whitespace-remover">
+                Whitespace Remover
+              </a>
+            </div>
+            
+            <div className="mt-4 pt-3 border-t border-border">
+              <a href="/tools" className="text-sm font-medium text-primary hover:text-primary/80 transition-colors" data-testid="link-more-tools">
+                More Text Tools →
+              </a>
+            </div>
           </div>
-          */}
+
+          {/* Other Tools Category */}
+          <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
+            <h3 className="text-lg font-semibold text-foreground mb-4 border-b border-border pb-2">Other Tools</h3>
+            <div className="space-y-3">
+              <a href="/lorem-generator" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-lorem-generator">
+                Lorem Ipsum Generator
+              </a>
+              <a href="/password-generator" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-password-generator">
+                Password Generator
+              </a>
+              <a href="/text-encoder" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-text-encoder">
+                Text Encoder/Decoder
+              </a>
+              <a href="/qr-code-generator" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-qr-generator">
+                QR Code Generator
+              </a>
+              <a href="/json-formatter" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-json-formatter">
+                JSON Formatter
+              </a>
+            </div>
+          </div>
+
+          {/* Advertisement Placeholder */}
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 border border-dashed border-gray-300 dark:border-gray-600">
+            <div className="text-center text-sm text-muted-foreground">
+              <div className="bg-gray-200 dark:bg-gray-700 rounded h-48 flex items-center justify-center mb-2">
+                <span className="text-gray-500 dark:text-gray-400">Advertisement Space</span>
+              </div>
+              <p className="text-xs">Promote your business here</p>
+            </div>
+          </div>
 
           {/* Quick Tips */}
-          <div className="bg-card rounded-lg p-3 sm:p-6 shadow-sm border border-border">
-            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">💡 Quick Tips</h3>
-            <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-muted-foreground">
+          <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
+            <h3 className="text-lg font-semibold text-foreground mb-4 border-b border-border pb-2">💡 Writing Tips</h3>
+            <ul className="space-y-3 text-sm text-muted-foreground">
               <li className="flex items-start">
-                <FaCheck className="text-primary mr-2 mt-0.5 flex-shrink-0" aria-label="Check Icon" />
+                <FaCheck className="text-green-600 mr-2 mt-0.5 flex-shrink-0" aria-label="Check Icon" />
                 Keep sentences under 20 words for better readability
               </li>
               <li className="flex items-start">
-                <FaCheck className="text-primary mr-2 mt-0.5 flex-shrink-0" aria-label="Check Icon" />
+                <FaCheck className="text-green-600 mr-2 mt-0.5 flex-shrink-0" aria-label="Check Icon" />
                 Aim for 1-2% keyword density for SEO
               </li>
               <li className="flex items-start">
-                <FaCheck className="text-primary mr-2 mt-0.5 flex-shrink-0" aria-label="Check Icon" />
+                <FaCheck className="text-green-600 mr-2 mt-0.5 flex-shrink-0" aria-label="Check Icon" />
                 Use active voice for clearer writing
               </li>
               <li className="flex items-start">
-                <FaCheck className="text-primary mr-2 mt-0.5 flex-shrink-0" aria-label="Check Icon" />
+                <FaCheck className="text-green-600 mr-2 mt-0.5 flex-shrink-0" aria-label="Check Icon" />
                 Break up long paragraphs for better flow
               </li>
             </ul>
           </div>
 
-          {/* Word Target Goals */}
-          <div className="bg-card rounded-lg p-3 sm:p-6 shadow-sm border border-border">
-            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">📊 Word Count Goals</h3>
-            <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
-              <div className="flex justify-between items-center p-2 bg-muted rounded">
+          {/* Word Count Goals */}
+          <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
+            <h3 className="text-lg font-semibold text-foreground mb-4 border-b border-border pb-2">📊 Word Count Guidelines</h3>
+            <div className="space-y-3 text-sm">
+              <div className="flex justify-between items-center p-3 bg-muted rounded">
                 <span>Blog Post</span>
-                <span className="font-semibold">1,500-2,500</span>
+                <span className="font-semibold text-primary">1,500-2,500</span>
               </div>
-              <div className="flex justify-between items-center p-2 bg-muted rounded">
+              <div className="flex justify-between items-center p-3 bg-muted rounded">
                 <span>Social Media</span>
-                <span className="font-semibold">100-280</span>
+                <span className="font-semibold text-primary">100-280</span>
               </div>
-              <div className="flex justify-between items-center p-2 bg-muted rounded">
+              <div className="flex justify-between items-center p-3 bg-muted rounded">
                 <span>Email Subject</span>
-                <span className="font-semibold">6-10</span>
+                <span className="font-semibold text-primary">6-10</span>
               </div>
-              <div className="flex justify-between items-center p-2 bg-muted rounded">
+              <div className="flex justify-between items-center p-3 bg-muted rounded">
                 <span>Meta Description</span>
-                <span className="font-semibold">120-160</span>
+                <span className="font-semibold text-primary">120-160</span>
               </div>
             </div>
           </div>
-
-          {/* Strategic Sidebar Ad 2 - Skyscraper format */}
-          {/* 
-          <div className="no-print">
-            <AdSenseUnit 
-              adSlot="3456789012"
-              adFormat="vertical"
-              style={{ minHeight: '600px' }}
-              className="w-full"
-              adTest={true}
-            />
-          </div>
-          */}
         </div>
       </div>
     </main>
