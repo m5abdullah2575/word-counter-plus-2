@@ -3,6 +3,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FaCheck, FaEraser, FaHighlighter, FaPaste, FaTrash, FaUpload, FaCopy, FaSync, FaSort, FaBook, FaClock, FaInfoCircle, FaCalendar } from "@/components/common/Icons";
 import { parseFile, getFileInputAccept, type FileParseProgress } from '@/lib/fileImport';
+import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 
 // Case conversion functions - standalone and reusable
 export const textCaseConverters = {
@@ -606,7 +607,7 @@ export default function TextCaseConverter() {
         </div>
 
         {/* Sidebar */}
-        <div className="xl:col-span-1 space-y-4">
+        <div className="xl:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
           {/* Quick Stats */}
           {text.trim() && (
             <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
@@ -658,6 +659,9 @@ export default function TextCaseConverter() {
               </li>
             </ul>
           </div>
+
+          {/* Related Tools Sidebar */}
+          <RelatedToolsSidebar currentTool="/text-case-convert" />
         </div>
       </div>
     </main>
