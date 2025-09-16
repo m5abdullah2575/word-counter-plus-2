@@ -29,9 +29,11 @@ import {
   FaChartLine,
   FaExclamationTriangle,
   FaCheckCircle,
-  FaInfoCircle
+  FaInfoCircle,
+  FaPenFancy
 } from 'react-icons/fa';
 import { parseFile, getFileInputAccept } from '@/lib/fileImport';
+import { Link } from 'wouter';
 
 export default function CharacterCounter() {
   const [text, setText] = useState('');
@@ -359,143 +361,169 @@ export default function CharacterCounter() {
   };
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            Character Counter
-          </h1>
-          <p className="text-xl text-muted-foreground">
-            Count characters, words, sentences, and analyze your text in real-time
-          </p>
-        </div>
+    <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
+        {/* Main Tool Area */}
+        <div className="lg:col-span-3 space-y-4 sm:space-y-6">
+          {/* Tool Header */}
+          <div className="text-center mb-4 sm:mb-8">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">
+              Character Counter
+            </h1>
+            <p className="text-sm sm:text-base text-muted-foreground">
+              Count characters, words, sentences, and analyze your text in real-time
+            </p>
+          </div>
 
-        {/* File Information Display */}
-        {uploadedFileInfo && (
-          <div className="bg-green-50 dark:bg-green-950 rounded-lg p-4 border border-green-200 dark:border-green-800 mb-6">
-            <h3 className="text-sm font-semibold text-green-800 dark:text-green-200 mb-2 flex items-center">
-              <FaUpload className="mr-2" />
-              File Analysis Complete
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-              <div>
-                <span className="text-green-600 dark:text-green-400 font-medium">File:</span>
-                <p className="text-green-800 dark:text-green-200 break-all" data-testid="text-uploaded-filename">{uploadedFileInfo.name}</p>
-              </div>
-              <div>
-                <span className="text-green-600 dark:text-green-400 font-medium">Size:</span>
-                <p className="text-green-800 dark:text-green-200" data-testid="text-uploaded-filesize">
-                  {Math.round(uploadedFileInfo.size / 1024)}KB
-                </p>
-              </div>
-              <div>
-                <span className="text-green-600 dark:text-green-400 font-medium">Type:</span>
-                <p className="text-green-800 dark:text-green-200" data-testid="text-uploaded-filetype">{uploadedFileInfo.type}</p>
+          {/* File Information Display */}
+          {uploadedFileInfo && (
+            <div className="bg-green-50 dark:bg-green-950 rounded-lg p-4 border border-green-200 dark:border-green-800 mb-4">
+              <h3 className="text-sm font-semibold text-green-800 dark:text-green-200 mb-2 flex items-center">
+                <FaUpload className="mr-2" />
+                File Analysis Complete
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+                <div>
+                  <span className="text-green-600 dark:text-green-400 font-medium">File:</span>
+                  <p className="text-green-800 dark:text-green-200 break-all" data-testid="text-uploaded-filename">{uploadedFileInfo.name}</p>
+                </div>
+                <div>
+                  <span className="text-green-600 dark:text-green-400 font-medium">Size:</span>
+                  <p className="text-green-800 dark:text-green-200" data-testid="text-uploaded-filesize">
+                    {Math.round(uploadedFileInfo.size / 1024)}KB
+                  </p>
+                </div>
+                <div>
+                  <span className="text-green-600 dark:text-green-400 font-medium">Type:</span>
+                  <p className="text-green-800 dark:text-green-200" data-testid="text-uploaded-filetype">{uploadedFileInfo.type}</p>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Text Input Area */}
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <div className="flex justify-between items-center">
-                  <div>
-                    <CardTitle>Enter Your Text</CardTitle>
-                    <CardDescription>
-                      Type, paste, or upload text to analyze character count
-                    </CardDescription>
-                  </div>
-                  <div className="flex gap-2">
-                    {/* File Upload */}
-                    <label className={`px-3 py-2 rounded text-sm transition-colors ${
-                      isUploading 
-                        ? 'bg-primary/50 text-primary-foreground cursor-wait' 
-                        : 'bg-primary text-primary-foreground hover:bg-primary/80 cursor-pointer'
-                    }`}
-                           data-testid="button-upload-file">
-                      {isUploading ? (
-                        <>
-                          <div className="inline-block w-4 h-4 mr-1 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                          Uploading...
-                        </>
-                      ) : (
-                        <>
-                          <FaUpload className="inline mr-1" />
-                          Upload
-                        </>
-                      )}
-                      <input 
-                        type="file" 
-                        accept={getFileInputAccept()} 
-                        onChange={handleFileUpload}
-                        disabled={isUploading}
-                        className="sr-only"
-                      />
-                    </label>
-                    
-                    <Button variant="outline" size="sm" onClick={pasteText} data-testid="button-paste">
-                      Paste
-                    </Button>
-                    <Button variant="outline" size="sm" onClick={clearText} data-testid="button-clear">
-                      <FaEraser className="mr-1" />
-                      Clear
-                    </Button>
-                  </div>
+          <div className="bg-card rounded-lg p-3 sm:p-6 shadow-sm border border-border">
+            <div className="mb-4">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
+                <label htmlFor="textInput" className="text-base sm:text-lg font-semibold text-foreground">Enter Your Text</label>
+                <div className="flex gap-2 w-full sm:w-auto">
+                  {/* File Upload */}
+                  <label className={`flex-1 sm:flex-none px-3 py-1.5 rounded text-sm transition-colors text-center ${
+                    isUploading 
+                      ? 'bg-primary/50 text-primary-foreground cursor-wait' 
+                      : 'bg-primary text-primary-foreground hover:bg-primary/80 cursor-pointer'
+                  }`}
+                         data-testid="button-upload-file"
+                         title="Upload files: Text (.txt, .md, .html, .rtf, .csv), PDF (.pdf), or Word documents (.docx)">
+                    {isUploading ? (
+                      <>
+                        <div className="inline-block w-4 h-4 mr-1 animate-spin rounded-full border-2 border-white border-t-transparent" aria-hidden="true" />
+                        <span className="hidden sm:inline">Uploading...</span>
+                        <span className="sm:hidden">Uploading...</span>
+                      </>
+                    ) : (
+                      <>
+                        <FaUpload className="inline mr-1" aria-hidden="true" />
+                        <span className="hidden sm:inline">Upload</span>
+                        <span className="sm:hidden">Upload File</span>
+                      </>
+                    )}
+                    <input 
+                      type="file" 
+                      accept={getFileInputAccept()} 
+                      onChange={handleFileUpload}
+                      disabled={isUploading}
+                      className="sr-only"
+                      aria-label="Upload files: Text (.txt, .md, .html, .rtf, .csv), PDF (.pdf), or Word documents (.docx)"
+                    />
+                  </label>
+
+                  {/* Paste Button */}
+                  <button 
+                    onClick={pasteText}
+                    className="flex-1 sm:flex-none px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 transition-colors"
+                    data-testid="button-paste-text"
+                    aria-label="Paste text from clipboard"
+                  >
+                    Paste
+                  </button>
+
+                  {/* Clear Button */}
+                  <button 
+                    onClick={clearText}
+                    className="flex-1 sm:flex-none px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 transition-colors"
+                    data-testid="button-clear-text"
+                    aria-label="Clear all text"
+                  >
+                    <FaEraser className="inline mr-1" aria-hidden="true" />
+                    Clear
+                  </button>
                 </div>
-              </CardHeader>
-              <CardContent>
-                <Textarea
-                  value={text}
-                  onChange={(e) => {
-                    const newText = e.target.value;
-                    setText(newText);
-                    
-                    // Track typing speed with improved logic
-                    const now = Date.now();
-                    const lastKeyTime = lastKeyTimeRef.current;
-                    
-                    if (!typingStartTime && newText.length > 0) {
-                      setTypingStartTime(now);
-                      setKeystrokeCount(1);
-                    } else if (newText.length > 0) {
-                      // Only count if typing within reasonable time
-                      if (now - lastKeyTime < 1000) {
-                        setKeystrokeCount(prev => prev + 1);
-                      } else {
-                        // Reset if more than 1 second gap
-                        setTypingStartTime(now);
-                        setKeystrokeCount(1);
-                      }
-                    }
-                    
-                    lastKeyTimeRef.current = now;
-                  }}
-                  placeholder="Start typing or paste your text here for advanced character analysis with SEO insights, keyword density, emoji counting, and more..."
-                  className="min-h-[300px] resize-none"
-                  data-testid="textarea-character-input"
-                />
+              </div>
+            </div>
+            
+            {/* Hidden label for screen readers */}
+            <textarea 
+              id="textInput"
+              aria-describedby="textHelp"
+              value={text}
+              onChange={(e) => {
+                const newText = e.target.value;
+                setText(newText);
                 
-                <div className="flex justify-between mt-4">
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm" onClick={copyToClipboard} data-testid="button-copy">
-                      <FaCopy className="mr-1" />
-                      Copy
-                    </Button>
-                    <Button variant="outline" size="sm" onClick={downloadText} data-testid="button-download">
-                      <FaDownload className="mr-1" />
-                      Download
-                    </Button>
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {stats.charactersWithSpaces} characters • {stats.words} words • {stats.detectedLanguage}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                // Track typing speed with improved logic
+                const now = Date.now();
+                const lastKeyTime = lastKeyTimeRef.current;
+                
+                if (!typingStartTime && newText.length > 0) {
+                  setTypingStartTime(now);
+                  setKeystrokeCount(1);
+                } else if (newText.length > 0) {
+                  // Only count if typing within reasonable time
+                  if (now - lastKeyTime < 1000) {
+                    setKeystrokeCount(prev => prev + 1);
+                  } else {
+                    // Reset if more than 1 second gap
+                    setTypingStartTime(now);
+                    setKeystrokeCount(1);
+                  }
+                }
+                
+                lastKeyTimeRef.current = now;
+              }}
+              className="w-full h-48 sm:h-64 p-3 sm:p-4 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none transition-all text-sm sm:text-base" 
+              placeholder="Start typing or paste your text here for advanced character analysis with SEO insights, keyword density, emoji counting, and more..."
+              data-testid="textarea-character-input"
+            />
+
+            {/* Helper text (screen readers کے لیے) */}
+            <p id="textHelp" className="sr-only">
+              Paste or type your text here. The tool will count characters, words, sentences, and show analysis in real-time.
+            </p>
+            
+            <div className="flex justify-between mt-4">
+              <div className="flex gap-2">
+                <button 
+                  onClick={copyToClipboard}
+                  className="px-2 sm:px-3 py-1.5 bg-green-600 text-white rounded text-xs sm:text-sm hover:bg-green-700 transition-colors"
+                  data-testid="button-copy-text"
+                >
+                  <FaCopy className="inline mr-1" />
+                  Copy
+                </button>
+                <button 
+                  onClick={downloadText}
+                  className="px-2 sm:px-3 py-1.5 bg-blue-600 text-white rounded text-xs sm:text-sm hover:bg-blue-700 transition-colors"
+                  data-testid="button-download-text"
+                >
+                  <FaDownload className="inline mr-1" />
+                  Download
+                </button>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                {stats.charactersWithSpaces} characters • {stats.words} words • {stats.detectedLanguage}
+              </div>
+            </div>
           </div>
 
           {/* Advanced Statistics Panel */}
@@ -853,6 +881,134 @@ export default function CharacterCounter() {
                 Upload TXT, PDF, Word documents, and more file formats
               </p>
             </div>
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <div className="lg:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
+          {/* Related Tools */}
+          <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
+            <h3 className="text-lg font-semibold text-foreground mb-4 border-b border-border pb-2">Related Tools</h3>
+            <div className="grid grid-cols-1 gap-3">
+              {/* Word Counter */}
+              <Link href="/" 
+                    className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary" 
+                    data-testid="link-word-counter"
+                    aria-label="Go to Word Counter tool">
+                <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
+                  <FaPenFancy className="text-blue-600 dark:text-blue-400 text-lg" />
+                </div>
+                <div>
+                  <h4 className="font-medium text-foreground group-hover:text-primary transition-colors">Word Counter</h4>
+                  <p className="text-xs text-muted-foreground">Count words & analyze text</p>
+                </div>
+              </Link>
+
+              {/* Text Case Converter */}
+              <Link href="/text-case-convert" 
+                    className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary" 
+                    data-testid="link-text-case-converter"
+                    aria-label="Go to Text Case Converter tool">
+                <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
+                  <FaFont className="text-green-600 dark:text-green-400 text-lg" />
+                </div>
+                <div>
+                  <h4 className="font-medium text-foreground group-hover:text-primary transition-colors">Case Converter</h4>
+                  <p className="text-xs text-muted-foreground">Change text case format</p>
+                </div>
+              </Link>
+
+              {/* Reading Time Calculator */}
+              <Link href="/reading-time-calculator" 
+                    className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary" 
+                    data-testid="link-reading-time"
+                    aria-label="Go to Reading Time Calculator tool">
+                <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
+                  <FaClock className="text-purple-600 dark:text-purple-400 text-lg" />
+                </div>
+                <div>
+                  <h4 className="font-medium text-foreground group-hover:text-primary transition-colors">Reading Time</h4>
+                  <p className="text-xs text-muted-foreground">Calculate read duration</p>
+                </div>
+              </Link>
+
+              {/* Line Counter */}
+              <Link href="/line-counter" 
+                    className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary" 
+                    data-testid="link-line-counter"
+                    aria-label="Go to Line Counter tool">
+                <div className="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
+                  <FaListOl className="text-orange-600 dark:text-orange-400 text-lg" />
+                </div>
+                <div>
+                  <h4 className="font-medium text-foreground group-hover:text-primary transition-colors">Line Counter</h4>
+                  <p className="text-xs text-muted-foreground">Count text lines</p>
+                </div>
+              </Link>
+            </div>
+            
+            <div className="mt-4 pt-3 border-t border-border">
+              <Link href="/tools" 
+                    className="text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center justify-center py-2 hover:bg-primary/5 rounded focus-visible:ring-2 focus-visible:ring-primary" 
+                    data-testid="link-more-tools">
+                More Text Tools →
+              </Link>
+            </div>
+          </div>
+
+          {/* Other Tools Category */}
+          <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
+            <h3 className="text-lg font-semibold text-foreground mb-4 border-b border-border pb-2">Other Tools</h3>
+            <div className="space-y-3">
+              <a href="/lorem-generator" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-lorem-generator">
+                Lorem Ipsum Generator
+              </a>
+              <a href="/password-generator" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-password-generator">
+                Password Generator
+              </a>
+              <a href="/text-encoder" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-text-encoder">
+                Text Encoder/Decoder
+              </a>
+              <a href="/qr-code-generator" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-qr-generator">
+                QR Code Generator
+              </a>
+              <a href="/json-formatter" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-json-formatter">
+                JSON Formatter
+              </a>
+            </div>
+          </div>
+
+          {/* Advertisement Placeholder */}
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 border border-dashed border-gray-300 dark:border-gray-600">
+            <div className="text-center text-sm text-muted-foreground">
+              <div className="bg-gray-200 dark:bg-gray-700 rounded h-48 flex items-center justify-center mb-2">
+                <span className="text-gray-500 dark:text-gray-400">Advertisement Space</span>
+              </div>
+              <p className="text-xs">Promote your business here</p>
+            </div>
+          </div>
+
+          {/* Quick Tips */}
+          <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
+            <h3 className="text-lg font-semibold text-foreground mb-4 border-b border-border pb-2">💡 Writing Tips</h3>
+            <ul className="space-y-3 text-sm text-muted-foreground">
+              <li className="flex items-start">
+                <FaCheckCircle className="text-green-600 mr-2 mt-0.5 flex-shrink-0" aria-label="Check Icon" />
+                Keep sentences under 20 words for better readability
+              </li>
+              <li className="flex items-start">
+                <FaCheckCircle className="text-green-600 mr-2 mt-0.5 flex-shrink-0" aria-label="Check Icon" />
+                Use social media character limits: Twitter 280, Instagram 2200
+              </li>
+              <li className="flex items-start">
+                <FaCheckCircle className="text-green-600 mr-2 mt-0.5 flex-shrink-0" aria-label="Check Icon" />
+                Meta descriptions should be 120-160 characters
+              </li>
+              <li className="flex items-start">
+                <FaCheckCircle className="text-green-600 mr-2 mt-0.5 flex-shrink-0" aria-label="Check Icon" />
+                Use emojis sparingly for professional content
+              </li>
+            </ul>
           </div>
         </div>
       </div>
