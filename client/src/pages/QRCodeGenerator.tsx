@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
+import { apiRequest } from '@/lib/queryClient';
 import QRCode from 'qrcode';
 import ModernToolsSidebar from '@/components/common/ModernToolsSidebar';
 import { 
@@ -69,12 +70,38 @@ export default function QRCodeGenerator() {
     localStorage.setItem('qrCodeType', qrType);
   }, [qrType]);
 
+  // QR capacity validation
+  const validateQRCapacity = (content: string, errorLevel: string): boolean => {
+    // Rough capacity estimates for different error correction levels
+    const capacities: Record<string, number> = {
+      'L': 2953, // Low: ~7% error correction
+      'M': 2331, // Medium: ~15% error correction  
+      'Q': 1663, // Quartile: ~25% error correction
+      'H': 1273  // High: ~30% error correction
+    };
+
+    const maxCapacity = capacities[errorLevel] || capacities['M'];
+    const contentBytes = new TextEncoder().encode(content).length;
+    
+    return contentBytes <= maxCapacity;
+  };
+
   // QR Code generation with logo support
   const generateQRCode = async () => {
     if (!text.trim()) {
       toast({
         title: "No Content",
         description: "Please enter text to generate QR code.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate QR capacity before generation
+    if (!validateQRCapacity(text, errorLevel)) {
+      toast({
+        title: "Content Too Large",
+        description: `Content is too large for QR code with ${errorLevel} error correction. Try reducing content length, using lower error correction (L), or uploading as a file instead.`,
         variant: "destructive",
       });
       return;
@@ -131,47 +158,104 @@ export default function QRCodeGenerator() {
     }
   };
 
-  // Add logo to QR code
+  // Add logo to QR code using proper OffscreenCanvas with fallback
   const addLogoToQRCode = async (qrDataUrl: string, logoDataUrl: string): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      // Create an offscreen canvas for logo embedding
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      
-      if (!ctx) {
-        reject(new Error('Canvas context not available'));
-        return;
-      }
-      
-      canvas.width = size;
-      canvas.height = size;
-      
-      const qrImg = new Image();
-      qrImg.onload = () => {
-        ctx.drawImage(qrImg, 0, 0, size, size);
+    return new Promise(async (resolve, reject) => {
+      try {
+        // Try to use OffscreenCanvas first (modern approach)
+        let canvas: OffscreenCanvas | HTMLCanvasElement;
+        let ctx: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D | null;
         
-        const logoImg = new Image();
-        logoImg.onload = () => {
-          try {
-            const logoSize = size * 0.2; // 20% of QR code size
-            const logoX = (size - logoSize) / 2;
-            const logoY = (size - logoSize) / 2;
-            
-            // Add white background for logo
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fillRect(logoX - 5, logoY - 5, logoSize + 10, logoSize + 10);
-            
-            ctx.drawImage(logoImg, logoX, logoY, logoSize, logoSize);
+        if (typeof OffscreenCanvas !== 'undefined') {
+          canvas = new OffscreenCanvas(size, size);
+          ctx = canvas.getContext('2d');
+        } else {
+          // Fallback to DOM canvas for older browsers
+          canvas = document.createElement('canvas');
+          canvas.width = size;
+          canvas.height = size;
+          ctx = canvas.getContext('2d');
+        }
+        
+        if (!ctx) {
+          reject(new Error('Canvas context not available'));
+          return;
+        }
+
+        // Load images using createImageBitmap for OffscreenCanvas compatibility
+        try {
+          const qrResponse = await fetch(qrDataUrl);
+          const qrBlob = await qrResponse.blob();
+          const qrBitmap = await createImageBitmap(qrBlob);
+          
+          const logoResponse = await fetch(logoDataUrl);
+          const logoBlob = await logoResponse.blob();
+          const logoBitmap = await createImageBitmap(logoBlob);
+          
+          // Draw QR code
+          ctx.drawImage(qrBitmap, 0, 0, size, size);
+          
+          // Draw logo with background
+          const logoSize = size * 0.2; // 20% of QR code size
+          const logoX = (size - logoSize) / 2;
+          const logoY = (size - logoSize) / 2;
+          
+          // Add white background for logo
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(logoX - 5, logoY - 5, logoSize + 10, logoSize + 10);
+          
+          ctx.drawImage(logoBitmap, logoX, logoY, logoSize, logoSize);
+          
+          // Convert to blob and then to data URL
+          if (canvas instanceof OffscreenCanvas) {
+            const blob = await canvas.convertToBlob({ type: 'image/png' });
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = () => reject(new Error('Failed to convert blob to data URL'));
+            reader.readAsDataURL(blob);
+          } else {
             resolve(canvas.toDataURL('image/png'));
-          } catch (error) {
-            reject(error);
           }
-        };
-        logoImg.onerror = () => reject(new Error('Failed to load logo image'));
-        logoImg.src = logoDataUrl;
-      };
-      qrImg.onerror = () => reject(new Error('Failed to load QR code image'));
-      qrImg.src = qrDataUrl;
+          
+          // Clean up bitmaps
+          qrBitmap.close();
+          logoBitmap.close();
+          
+        } catch (fetchError) {
+          // Fallback to Image objects if fetch/createImageBitmap fails
+          const qrImg = new Image();
+          qrImg.onload = () => {
+            ctx!.drawImage(qrImg, 0, 0, size, size);
+            
+            const logoImg = new Image();
+            logoImg.onload = () => {
+              const logoSize = size * 0.2;
+              const logoX = (size - logoSize) / 2;
+              const logoY = (size - logoSize) / 2;
+              
+              ctx!.fillStyle = '#FFFFFF';
+              ctx!.fillRect(logoX - 5, logoY - 5, logoSize + 10, logoSize + 10);
+              ctx!.drawImage(logoImg, logoX, logoY, logoSize, logoSize);
+              
+              if (canvas instanceof OffscreenCanvas) {
+                canvas.convertToBlob({ type: 'image/png' }).then(blob => {
+                  const reader = new FileReader();
+                  reader.onload = () => resolve(reader.result as string);
+                  reader.readAsDataURL(blob);
+                });
+              } else {
+                resolve((canvas as HTMLCanvasElement).toDataURL('image/png'));
+              }
+            };
+            logoImg.onerror = () => reject(new Error('Failed to load logo image'));
+            logoImg.src = logoDataUrl;
+          };
+          qrImg.onerror = () => reject(new Error('Failed to load QR code image'));
+          qrImg.src = qrDataUrl;
+        }
+      } catch (error) {
+        reject(error);
+      }
     });
   };
 
@@ -288,16 +372,42 @@ export default function QRCodeGenerator() {
     }
 
     try {
-      const fileContent = await readFileAsText(file);
-      setText(fileContent);
+      // Upload file to backend
+      const dataUrl = await readFileAsDataURL(file);
+      const base64Data = dataUrl.split(',')[1]; // Remove data:mime;base64, prefix
+
+      const uploadData = {
+        filename: `file_${Date.now()}`,
+        originalName: file.name,
+        mimeType: file.type,
+        size: file.size,
+        data: base64Data
+      };
+
+      const response = await apiRequest('/api/uploads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(uploadData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const result = await response.json();
+      const fullUrl = `${window.location.origin}${result.url}`;
+      setText(fullUrl);
+
       toast({
         title: "File Uploaded",
-        description: `Content from ${file.name} loaded successfully.`,
+        description: `File ${file.name} uploaded successfully. QR code will link to the file.`,
       });
     } catch (error) {
       toast({
         title: "Upload Failed",
-        description: "Failed to read file content.",
+        description: "Failed to upload file to server.",
         variant: "destructive",
       });
     }
@@ -327,16 +437,42 @@ export default function QRCodeGenerator() {
     }
 
     try {
+      // Upload photo to backend
       const dataUrl = await readFileAsDataURL(file);
-      setText(dataUrl);
+      const base64Data = dataUrl.split(',')[1]; // Remove data:mime;base64, prefix
+
+      const uploadData = {
+        filename: `photo_${Date.now()}`,
+        originalName: file.name,
+        mimeType: file.type,
+        size: file.size,
+        data: base64Data
+      };
+
+      const response = await apiRequest('/api/uploads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(uploadData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const result = await response.json();
+      const fullUrl = `${window.location.origin}${result.url}`;
+      setText(fullUrl);
+
       toast({
         title: "Photo Uploaded",
-        description: "Photo converted to QR code content successfully.",
+        description: `Photo ${file.name} uploaded successfully. QR code will link to the photo.`,
       });
     } catch (error) {
       toast({
         title: "Upload Failed",
-        description: "Failed to process the photo.",
+        description: "Failed to upload photo to server.",
         variant: "destructive",
       });
     }
