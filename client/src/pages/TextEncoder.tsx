@@ -5,7 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
-import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
+import ModernToolsSidebar from '@/components/common/ModernToolsSidebar';
 import { FaCode, FaCopy, FaRedo, FaExchangeAlt, FaLock, FaUnlock, FaUpload, FaDownload } from 'react-icons/fa';
 import { encodeBase64, decodeBase64 } from '@/lib/base64';
 import { toBytes, fromBytes } from '@/lib/utf8';
@@ -512,7 +512,7 @@ export default function TextEncoder() {
 
         {/* Sidebar */}
         <div className="lg:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
-          <RelatedToolsSidebar currentTool="/text-encoder" />
+          <ModernToolsSidebar currentTool="/text-encoder" />
         </div>
       </div>
     </main>

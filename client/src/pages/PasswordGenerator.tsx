@@ -7,7 +7,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
-import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
+import ModernToolsSidebar from '@/components/common/ModernToolsSidebar';
 import { FaKey, FaCopy, FaRedo, FaShieldAlt, FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const CHARACTER_SETS = {
@@ -366,7 +366,7 @@ export default function PasswordGenerator() {
 
         {/* Sidebar */}
         <div className="lg:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
-          <RelatedToolsSidebar currentTool="/password-generator" />
+          <ModernToolsSidebar currentTool="/password-generator" />
         </div>
       </div>
     </main>

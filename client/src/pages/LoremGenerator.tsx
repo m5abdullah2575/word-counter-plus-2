@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
-import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
+import ModernToolsSidebar from '@/components/common/ModernToolsSidebar';
 import { FaQuoteLeft, FaCopy, FaRedo, FaCog, FaDownload } from 'react-icons/fa';
 
 const LOREM_WORDS = [
@@ -295,7 +295,7 @@ export default function LoremGenerator() {
 
         {/* Sidebar */}
         <div className="lg:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
-          <RelatedToolsSidebar currentTool="/lorem-generator" />
+          <ModernToolsSidebar currentTool="/lorem-generator" />
         </div>
       </div>
     </main>

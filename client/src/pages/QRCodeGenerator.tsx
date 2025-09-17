@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
 import QRCode from 'qrcode';
-import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
+import ModernToolsSidebar from '@/components/common/ModernToolsSidebar';
 import { 
   FaCopy, 
   FaEraser, 
@@ -424,7 +424,7 @@ export default function QRCodeGenerator() {
 
         {/* Sidebar */}
         <div className="lg:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
-          <RelatedToolsSidebar currentTool="/qr-code-generator" />
+          <ModernToolsSidebar currentTool="/qr-code-generator" />
         </div>
       </div>
     </main>

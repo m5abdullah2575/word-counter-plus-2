@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
-import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
+import ModernToolsSidebar from '@/components/common/ModernToolsSidebar';
 import { FaFilter, FaCopy, FaRedo, FaCog, FaTrash } from 'react-icons/fa';
 
 export default function DuplicateLineRemover() {
@@ -392,7 +392,7 @@ export default function DuplicateLineRemover() {
 
         {/* Sidebar */}
         <div className="lg:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
-          <RelatedToolsSidebar currentTool="/duplicate-line-remover" />
+          <ModernToolsSidebar currentTool="/duplicate-line-remover" />
         </div>
       </div>
     </main>

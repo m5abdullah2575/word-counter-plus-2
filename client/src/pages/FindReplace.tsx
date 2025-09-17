@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
-import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
+import ModernToolsSidebar from '@/components/common/ModernToolsSidebar';
 import { FaSearchPlus, FaCopy, FaRedo, FaExchangeAlt, FaCogs, FaUpload, FaDownload } from 'react-icons/fa';
 
 export default function FindReplace() {
@@ -515,7 +515,7 @@ export default function FindReplace() {
 
         {/* Sidebar */}
         <div className="lg:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
-          <RelatedToolsSidebar currentTool="/find-replace" />
+          <ModernToolsSidebar currentTool="/find-replace" />
         </div>
       </div>
     </main>

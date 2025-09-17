@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
-import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
+import ModernToolsSidebar from '@/components/common/ModernToolsSidebar';
 import { FaSort, FaCopy, FaRedo, FaCog, FaSortAlphaDown, FaSortAlphaUp, FaSortNumericDown, FaRandom } from 'react-icons/fa';
 
 type SortType = 'alphabetical' | 'reverse-alphabetical' | 'length-ascending' | 'length-descending' | 'numerical' | 'reverse-numerical' | 'random' | 'reverse';
@@ -483,7 +483,7 @@ export default function TextSortingTool() {
 
         {/* Sidebar */}
         <div className="lg:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
-          <RelatedToolsSidebar currentTool="/text-sorting-tool" />
+          <ModernToolsSidebar currentTool="/text-sorting-tool" />
         </div>
       </div>
     </main>
