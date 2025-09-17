@@ -70,8 +70,8 @@ app.use("/api", (req, res, next) => {
     serveStatic(app);
   }
 
-  // Fixed port for Replit environment
-  const DEFAULT_PORT = parseInt(process.env.PORT || "5005", 10);
+  // Fixed port for Replit environment - must use 5000 for frontend
+  const DEFAULT_PORT = parseInt(process.env.PORT || "5000", 10);
 
   const startServer = (port: number) => {
     const listener = server.listen(
