@@ -16,6 +16,7 @@ import {
   FaHashtag
 } from 'react-icons/fa';
 import { parseFile, getFileInputAccept } from '@/lib/fileImport';
+import ModernToolsSidebar from '@/components/common/ModernToolsSidebar';
 
 export default function LineCounter() {
   const [text, setText] = useState('');
@@ -264,9 +265,9 @@ export default function LineCounter() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Text Input Area */}
-          <div className="xl:col-span-2">
+          <div className="lg:col-span-3">
             <Card>
               <CardHeader>
                 <div className="flex justify-between items-center">

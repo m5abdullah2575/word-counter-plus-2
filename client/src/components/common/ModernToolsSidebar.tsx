@@ -120,6 +120,39 @@ const ALL_TOOLS = [
     icon: FaTrash,
     category: "Text Transform",
     testId: "link-duplicate-remover"
+  },
+  {
+    href: "/json-formatter",
+    name: "JSON Formatter",
+    description: "Format and validate JSON",
+    icon: FaCode,
+    category: "Text Transform",
+    popular: true,
+    testId: "link-json-formatter"
+  },
+  {
+    href: "/whitespace-remover",
+    name: "Whitespace Remover", 
+    description: "Clean extra spaces & lines",
+    icon: FaTrash,
+    category: "Text Transform",
+    testId: "link-whitespace-remover"
+  },
+  {
+    href: "/word-frequency-analyzer",
+    name: "Word Frequency",
+    description: "Analyze word frequency",
+    icon: FaSort,
+    category: "Text Analysis", 
+    testId: "link-word-frequency"
+  },
+  {
+    href: "/text-diff-checker",
+    name: "Text Diff Checker",
+    description: "Compare text differences", 
+    icon: FaSearch,
+    category: "Text Analysis",
+    testId: "link-text-diff"
   }
 ];
 

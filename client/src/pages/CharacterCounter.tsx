@@ -34,6 +34,7 @@ import {
 } from 'react-icons/fa';
 import { parseFile, getFileInputAccept } from '@/lib/fileImport';
 import { Link } from 'wouter';
+import ModernToolsSidebar from '@/components/common/ModernToolsSidebar';
 
 export default function CharacterCounter() {
   const [text, setText] = useState('');
@@ -837,95 +838,7 @@ export default function CharacterCounter() {
 
         {/* Sidebar */}
         <div className="lg:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
-          {/* Advertisement Placeholder */}
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 border border-dashed border-gray-300 dark:border-gray-600">
-            <div className="text-center text-sm text-muted-foreground">
-              <div className="bg-gray-200 dark:bg-gray-700 rounded h-48 flex items-center justify-center mb-2">
-                <span className="text-gray-500 dark:text-gray-400">Advertisement Space</span>
-              </div>
-              <p className="text-xs">Promote your business here</p>
-            </div>
-          </div>
-          
-          {/* Related Tools */}
-          <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
-            <h3 className="text-lg font-semibold text-foreground mb-4 border-b border-border pb-2">Related Tools</h3>
-            <div className="grid grid-cols-1 gap-3">
-              {/* Word Counter */}
-              <Link href="/" 
-                    className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary" 
-                    data-testid="link-word-counter"
-                    aria-label="Go to Word Counter tool">
-                <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
-                  <FaPenFancy className="text-blue-600 dark:text-blue-400 text-lg" />
-                </div>
-                <div>
-                  <h4 className="font-medium text-foreground group-hover:text-primary transition-colors">Word Counter</h4>
-                  <p className="text-xs text-muted-foreground">Count words & analyze text</p>
-                </div>
-              </Link>
-
-              {/* Text Case Converter */}
-              <Link href="/text-case-convert" 
-                    className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary" 
-                    data-testid="link-text-case-converter"
-                    aria-label="Go to Text Case Converter tool">
-                <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
-                  <FaFont className="text-green-600 dark:text-green-400 text-lg" />
-                </div>
-                <div>
-                  <h4 className="font-medium text-foreground group-hover:text-primary transition-colors">Case Converter</h4>
-                  <p className="text-xs text-muted-foreground">Change text case format</p>
-                </div>
-              </Link>
-
-              {/* Reading Time Calculator */}
-              <Link href="/reading-time-calculator" 
-                    className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary" 
-                    data-testid="link-reading-time"
-                    aria-label="Go to Reading Time Calculator tool">
-                <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
-                  <FaClock className="text-purple-600 dark:text-purple-400 text-lg" />
-                </div>
-                <div>
-                  <h4 className="font-medium text-foreground group-hover:text-primary transition-colors">Reading Time</h4>
-                  <p className="text-xs text-muted-foreground">Calculate read duration</p>
-                </div>
-              </Link>
-
-              {/* Line Counter */}
-              <Link href="/line-counter" 
-                    className="group flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary" 
-                    data-testid="link-line-counter"
-                    aria-label="Go to Line Counter tool">
-                <div className="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
-                  <FaListOl className="text-orange-600 dark:text-orange-400 text-lg" />
-                </div>
-                <div>
-                  <h4 className="font-medium text-foreground group-hover:text-primary transition-colors">Line Counter</h4>
-                  <p className="text-xs text-muted-foreground">Count text lines</p>
-                </div>
-              </Link>
-            </div>
-            
-            <div className="mt-4 pt-3 border-t border-border">
-              <Link href="/tools" 
-                    className="text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center justify-center py-2 hover:bg-primary/5 rounded focus-visible:ring-2 focus-visible:ring-primary" 
-                    data-testid="link-more-tools">
-                More Text Tools →
-              </Link>
-            </div>
-          </div>
-
-          {/* Advertisement Placeholder */}
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 border border-dashed border-gray-300 dark:border-gray-600">
-            <div className="text-center text-sm text-muted-foreground">
-              <div className="bg-gray-200 dark:bg-gray-700 rounded h-48 flex items-center justify-center mb-2">
-                <span className="text-gray-500 dark:text-gray-400">Advertisement Space</span>
-              </div>
-              <p className="text-xs">Promote your business here</p>
-            </div>
-          </div>
+          <ModernToolsSidebar currentTool="/character-counter" />
         </div>
       </div>
 

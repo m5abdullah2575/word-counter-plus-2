@@ -19,6 +19,7 @@ import {
   FaInfoCircle
 } from 'react-icons/fa';
 import { parseFile, getFileInputAccept } from '@/lib/fileImport';
+import ModernToolsSidebar from '@/components/common/ModernToolsSidebar';
 
 export default function JSONFormatter() {
   const [jsonInput, setJsonInput] = useState('');
@@ -486,6 +487,13 @@ export default function JSONFormatter() {
                 )}
               </CardContent>
             </Card>
+          </div>
+        </div>
+
+        {/* Sidebar and Related Tools */}
+        <div className="mt-8">
+          <div className="max-w-sm mx-auto lg:max-w-none lg:mx-0">
+            <ModernToolsSidebar currentTool="/json-formatter" />
           </div>
         </div>
 

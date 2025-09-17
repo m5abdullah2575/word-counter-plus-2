@@ -7,6 +7,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import useSEO from '@/hooks/useSEO';
 import { FaExchangeAlt, FaCopy, FaRedo, FaCog, FaCheck } from 'react-icons/fa';
+import ModernToolsSidebar from '@/components/common/ModernToolsSidebar';
 
 interface DiffResult {
   type: 'added' | 'removed' | 'unchanged';
@@ -368,6 +369,13 @@ export default function TextDiffChecker() {
               </CardContent>
             </Card>
           )}
+        </div>
+        
+        {/* Sidebar and Related Tools */}
+        <div className="mt-8">
+          <div className="max-w-sm mx-auto lg:max-w-none lg:mx-0">
+            <ModernToolsSidebar currentTool="/text-diff-checker" />
+          </div>
         </div>
       </div>
     </div>

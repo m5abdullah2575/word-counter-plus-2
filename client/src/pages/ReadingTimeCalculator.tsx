@@ -21,6 +21,7 @@ import {
   FaBaby
 } from 'react-icons/fa';
 import { parseFile, getFileInputAccept } from '@/lib/fileImport';
+import ModernToolsSidebar from '@/components/common/ModernToolsSidebar';
 
 export default function ReadingTimeCalculator() {
   const [text, setText] = useState('');
@@ -519,6 +520,13 @@ ${text}
                 </div>
               </CardContent>
             </Card>
+          </div>
+        </div>
+
+        {/* Sidebar and Related Tools */}
+        <div className="mt-8">
+          <div className="max-w-sm mx-auto lg:max-w-none lg:mx-0">
+            <ModernToolsSidebar currentTool="/reading-time-calculator" />
           </div>
         </div>
 

@@ -3,6 +3,7 @@ import { useTextAnalysisOptimized as useTextAnalysis } from '@/hooks/useTextAnal
 import StatsCard from './StatsCard';
 import KeywordTable from './KeywordTable';
 import ExportButtons from './ExportButtons';
+import ModernToolsSidebar from '@/components/common/ModernToolsSidebar';
 import { useToast } from '@/hooks/use-toast';
 import { parseFile, getFileInputAccept, type FileParseProgress } from '@/lib/fileImport';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';

@@ -324,6 +324,13 @@ export default function WordFrequencyAnalyzer() {
             </Card>
           )}
         </div>
+        
+        {/* Sidebar and Related Tools */}
+        <div className="mt-8">
+          <div className="max-w-sm mx-auto lg:max-w-none lg:mx-0">
+            <ModernToolsSidebar currentTool="/word-frequency-analyzer" />
+          </div>
+        </div>
       </div>
     </div>
   );
