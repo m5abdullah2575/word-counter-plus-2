@@ -315,11 +315,6 @@ export default function TextEncoder() {
         <div className="lg:col-span-3 space-y-4 sm:space-y-6">
           {/* Tool Header */}
           <div className="text-center mb-4 sm:mb-8">
-            <div className="flex justify-center mb-2 sm:mb-4">
-              <div className="p-3 sm:p-4 rounded-full bg-primary/10">
-                <FaCode className="text-2xl sm:text-3xl text-primary" />
-              </div>
-            </div>
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">
               Text Encoder/Decoder
             </h1>

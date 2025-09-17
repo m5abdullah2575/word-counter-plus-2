@@ -166,13 +166,13 @@ export default function QRCodeGenerator() {
       name: 'Plain Text',
       icon: FaQrcode,
       placeholder: 'Enter any text...',
-      example: 'Hello World!'
+      example: 'Word Counter Plus - The ultimate text analysis tool!'
     },
     url: {
       name: 'Website URL',
       icon: FaLink,
       placeholder: 'https://example.com',
-      example: 'https://www.google.com'
+      example: 'https://wordcounterplusapp.com'
     },
     wifi: {
       name: 'WiFi Network',
@@ -184,13 +184,13 @@ export default function QRCodeGenerator() {
       name: 'Phone Number',
       icon: FaPhone,
       placeholder: 'tel:+1234567890',
-      example: 'tel:+1234567890'
+      example: 'tel:+923194124382'
     },
     email: {
       name: 'Email',
       icon: FaEnvelope,
       placeholder: 'mailto:example@email.com',
-      example: 'mailto:john@example.com'
+      example: 'mailto:wordcounterplusapp@gmail.com'
     }
   };
 
@@ -234,7 +234,7 @@ export default function QRCodeGenerator() {
                     <SelectTrigger data-testid="select-qr-type">
                       <SelectValue placeholder="Select QR code type" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="z-50 bg-card text-foreground border rounded-md shadow-md">
                       {Object.entries(qrTypes).map(([key, type]) => {
                         const IconComponent = type.icon;
                         return (
@@ -315,7 +315,7 @@ export default function QRCodeGenerator() {
                       <SelectTrigger data-testid="select-size">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="z-50 bg-card text-foreground border rounded-md shadow-md">
                         <SelectItem value="128">128x128</SelectItem>
                         <SelectItem value="256">256x256</SelectItem>
                         <SelectItem value="512">512x512</SelectItem>
@@ -329,7 +329,7 @@ export default function QRCodeGenerator() {
                       <SelectTrigger data-testid="select-error-level">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="z-50 bg-card text-foreground border rounded-md shadow-md">
                         <SelectItem value="L">Low (7%)</SelectItem>
                         <SelectItem value="M">Medium (15%)</SelectItem>
                         <SelectItem value="Q">Quartile (25%)</SelectItem>

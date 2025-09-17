@@ -837,6 +837,16 @@ export default function CharacterCounter() {
 
         {/* Sidebar */}
         <div className="lg:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
+          {/* Advertisement Placeholder */}
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 border border-dashed border-gray-300 dark:border-gray-600">
+            <div className="text-center text-sm text-muted-foreground">
+              <div className="bg-gray-200 dark:bg-gray-700 rounded h-48 flex items-center justify-center mb-2">
+                <span className="text-gray-500 dark:text-gray-400">Advertisement Space</span>
+              </div>
+              <p className="text-xs">Promote your business here</p>
+            </div>
+          </div>
+          
           {/* Related Tools */}
           <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
             <h3 className="text-lg font-semibold text-foreground mb-4 border-b border-border pb-2">Related Tools</h3>
@@ -907,28 +917,6 @@ export default function CharacterCounter() {
             </div>
           </div>
 
-          {/* Other Tools Category */}
-          <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
-            <h3 className="text-lg font-semibold text-foreground mb-4 border-b border-border pb-2">Other Tools</h3>
-            <div className="space-y-3">
-              <a href="/lorem-generator" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-lorem-generator">
-                Lorem Ipsum Generator
-              </a>
-              <a href="/password-generator" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-password-generator">
-                Password Generator
-              </a>
-              <a href="/text-encoder" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-text-encoder">
-                Text Encoder/Decoder
-              </a>
-              <a href="/qr-code-generator" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-qr-generator">
-                QR Code Generator
-              </a>
-              <a href="/json-formatter" className="block text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors" data-testid="link-json-formatter">
-                JSON Formatter
-              </a>
-            </div>
-          </div>
-
           {/* Advertisement Placeholder */}
           <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 border border-dashed border-gray-300 dark:border-gray-600">
             <div className="text-center text-sm text-muted-foreground">
@@ -937,29 +925,6 @@ export default function CharacterCounter() {
               </div>
               <p className="text-xs">Promote your business here</p>
             </div>
-          </div>
-
-          {/* Quick Tips */}
-          <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
-            <h3 className="text-lg font-semibold text-foreground mb-4 border-b border-border pb-2">💡 Writing Tips</h3>
-            <ul className="space-y-3 text-sm text-muted-foreground">
-              <li className="flex items-start">
-                <FaCheckCircle className="text-green-600 mr-2 mt-0.5 flex-shrink-0" aria-label="Check Icon" />
-                Keep sentences under 20 words for better readability
-              </li>
-              <li className="flex items-start">
-                <FaCheckCircle className="text-green-600 mr-2 mt-0.5 flex-shrink-0" aria-label="Check Icon" />
-                Use social media character limits: Twitter 280, Instagram 2200
-              </li>
-              <li className="flex items-start">
-                <FaCheckCircle className="text-green-600 mr-2 mt-0.5 flex-shrink-0" aria-label="Check Icon" />
-                Meta descriptions should be 120-160 characters
-              </li>
-              <li className="flex items-start">
-                <FaCheckCircle className="text-green-600 mr-2 mt-0.5 flex-shrink-0" aria-label="Check Icon" />
-                Use emojis sparingly for professional content
-              </li>
-            </ul>
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/hooks/useTheme";
 import Header from "@/components/layout/Header";
-import ScrollToTop from "@/components/layout/ScrollToTop";
+import ScrollRestoration from "@/components/layout/ScrollToTop";
 import Footer from "@/components/layout/Footer";
 import Home from "@/pages/Home";
 import { OptimizedLoader } from '@/components/ui/optimized-loader';
@@ -155,7 +155,7 @@ function App() {
           <BackwardCompatibilityHandler />
           <div className="min-h-screen bg-background text-foreground">
             <Header />
-            <ScrollToTop /> 
+            <ScrollRestoration /> 
             <Router />
             <Footer />
           </div>

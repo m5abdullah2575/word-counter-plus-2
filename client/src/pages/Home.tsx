@@ -40,7 +40,7 @@ export default function Home() {
       </main>
 
       {/* SEO Content Section */}
-      <section className="container mx-auto px-4 py-12">
+      <section className="container mx-auto px-8 py-40">
         <div className="bg-card rounded-lg p-8 shadow-sm border border-border">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* About Section */}
@@ -126,10 +126,21 @@ export default function Home() {
                   </span>
                 </Link>
               </div>
+              
             </div>
           </div>
         </div>
       </section>
+
+      {/* Advertisement Placeholder */}
+      <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 border border-dashed border-gray-300 dark:border-gray-600">
+        <div className="text-center text-sm text-muted-foreground">
+          <div className="bg-gray-200 dark:bg-gray-700 rounded h-48 flex items-center justify-center mb-2">
+            <span className="text-gray-500 dark:text-gray-400">Advertisement Space</span>
+          </div>
+          <p className="text-xs">Promote your business here</p>
+        </div>
+      </div>
       
       {/* Use Cases Section */}
       <section className="container mx-auto px-4 pb-12">
@@ -162,58 +173,6 @@ export default function Home() {
               <p className="text-sm text-muted-foreground">
                 Analyze keyword density, optimize content length, and improve search engine rankings.
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Text Tools Section */}
-      <section className="container mx-auto px-4 pb-12">
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50 rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-foreground text-center mb-8">Professional Text Tools</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white dark:bg-card rounded-lg p-6 shadow-sm border border-border">
-              <h3 className="font-semibold mb-3 text-lg">Word Counter & Text Analyzer</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Comprehensive text analysis with word count, character count, readability scores, and keyword density analysis.
-              </p>
-              <ul className="text-sm text-muted-foreground space-y-1 mb-4">
-                <li>• Real-time word and character counting</li>
-                <li>• Readability score calculation</li>
-                <li>• Keyword density analysis</li>
-                <li>• Export to PDF, CSV, TXT</li>
-              </ul>
-              <Link href="/" className="text-primary hover:text-primary/80 font-medium text-sm">
-                Use Word Counter Tool →
-              </Link>
-            </div>
-            
-            <div className="bg-white dark:bg-card rounded-lg p-6 shadow-sm border border-border">
-              <h3 className="font-semibold mb-3 text-lg">Text Case Converter</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Convert text between 12 different case formats including programming cases, basic text cases, and creative formatting.
-              </p>
-              <ul className="text-sm text-muted-foreground space-y-1 mb-4">
-                <li>• camelCase, PascalCase, snake_case</li>
-                <li>• UPPERCASE, lowercase, Title Case</li>
-                <li>• File upload support (TXT, HTML, RTF)</li>
-                <li>• Copy and download converted text</li>
-              </ul>
-              <a href={getDomainUrl('case')} className="text-primary hover:text-primary/80 font-medium text-sm">
-                Use Case Converter Tool →
-              </a>
-            </div>
-          </div>
-          
-          <div className="text-center mt-8">
-            <p className="text-sm text-muted-foreground mb-4">
-              All our <strong>text tools</strong> are completely free and work in your browser. Perfect for writers, developers, students, and content creators.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 text-xs text-muted-foreground">
-              <span>✓ No registration required</span>
-              <span>✓ Works offline</span>
-              <span>✓ Privacy-focused</span>
-              <span>✓ Mobile-friendly</span>
             </div>
           </div>
         </div>

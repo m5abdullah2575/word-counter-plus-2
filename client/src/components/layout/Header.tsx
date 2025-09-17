@@ -9,10 +9,7 @@ export default function Header() {
   const [location] = useLocation();
 
   
-  // Context-aware navigation - determine current tool context
-  const isOnTextCaseConverter = location.startsWith('/text-case-convert');
-  const currentToolHome = isOnTextCaseConverter ? '/text-case-convert' : '/';
-  
+  const currentToolHome = '/';
   // Dynamic navigation based on current context
   const navigation = [
     // Context-aware Home - goes to current tool's home
