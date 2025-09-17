@@ -22,6 +22,7 @@ import {
 // Add new tools here - they'll automatically appear in all sidebars
 
 const ALL_TOOLS = [
+  // ===== TEXT ANALYSIS TOOLS =====
   {
     href: "/",
     name: "Word Counter",
@@ -40,13 +41,12 @@ const ALL_TOOLS = [
     testId: "link-character-counter"
   },
   {
-    href: "/text-case-convert",
-    name: "Case Converter", 
-    description: "Transform text case formats",
-    icon: FaSync,
-    category: "Text Transform",
-    popular: true,
-    testId: "link-text-case-converter"
+    href: "/line-counter", 
+    name: "Line Counter",
+    description: "Count text lines",
+    icon: FaAlignLeft,
+    category: "Text Analysis",
+    testId: "link-line-counter"
   },
   {
     href: "/reading-time-calculator",
@@ -57,13 +57,83 @@ const ALL_TOOLS = [
     testId: "link-reading-time"
   },
   {
-    href: "/line-counter", 
-    name: "Line Counter",
-    description: "Count text lines",
-    icon: FaAlignLeft,
-    category: "Text Analysis",
-    testId: "link-line-counter"
+    href: "/word-frequency-analyzer",
+    name: "Word Frequency",
+    description: "Analyze word frequency",
+    icon: FaSort,
+    category: "Text Analysis", 
+    testId: "link-word-frequency"
   },
+  {
+    href: "/text-diff-checker",
+    name: "Text Diff Checker",
+    description: "Compare text differences", 
+    icon: FaSearch,
+    category: "Text Analysis",
+    testId: "link-text-diff"
+  },
+  
+  // ===== TEXT TRANSFORM TOOLS =====
+  {
+    href: "/text-case-convert",
+    name: "Case Converter", 
+    description: "Transform text case formats",
+    icon: FaSync,
+    category: "Text Transform",
+    popular: true,
+    testId: "link-text-case-converter"
+  },
+  {
+    href: "/find-replace",
+    name: "Find & Replace",
+    description: "Search and replace text",
+    icon: FaSearch,
+    category: "Text Transform",
+    testId: "link-find-replace"
+  },
+  {
+    href: "/text-sorting-tool",
+    name: "Text Sorter",
+    description: "Sort lines alphabetically",
+    icon: FaSort,
+    category: "Text Transform",
+    testId: "link-text-sorter"
+  },
+  {
+    href: "/duplicate-line-remover",
+    name: "Duplicate Remover",
+    description: "Remove duplicate lines",
+    icon: FaTrash,
+    category: "Text Transform",
+    testId: "link-duplicate-remover"
+  },
+  {
+    href: "/whitespace-remover",
+    name: "Whitespace Remover", 
+    description: "Clean extra spaces & lines",
+    icon: FaTrash,
+    category: "Text Transform",
+    testId: "link-whitespace-remover"
+  },
+  {
+    href: "/text-encoder",
+    name: "Text Encoder",
+    description: "Encode/decode text formats",
+    icon: FaCode,
+    category: "Text Transform", 
+    testId: "link-text-encoder"
+  },
+  {
+    href: "/json-formatter",
+    name: "JSON Formatter",
+    description: "Format and validate JSON",
+    icon: FaCode,
+    category: "Text Transform",
+    popular: true,
+    testId: "link-json-formatter"
+  },
+  
+  // ===== GENERATORS =====
   {
     href: "/password-generator",
     name: "Password Generator",
@@ -88,71 +158,6 @@ const ALL_TOOLS = [
     icon: FaFileAlt,
     category: "Generators",
     testId: "link-lorem-generator"
-  },
-  {
-    href: "/find-replace",
-    name: "Find & Replace",
-    description: "Search and replace text",
-    icon: FaSearch,
-    category: "Text Transform",
-    testId: "link-find-replace"
-  },
-  {
-    href: "/text-encoder",
-    name: "Text Encoder",
-    description: "Encode/decode text formats",
-    icon: FaCode,
-    category: "Text Transform", 
-    testId: "link-text-encoder"
-  },
-  {
-    href: "/text-sorting-tool",
-    name: "Text Sorter",
-    description: "Sort lines alphabetically",
-    icon: FaSort,
-    category: "Text Transform",
-    testId: "link-text-sorter"
-  },
-  {
-    href: "/duplicate-line-remover",
-    name: "Duplicate Remover",
-    description: "Remove duplicate lines",
-    icon: FaTrash,
-    category: "Text Transform",
-    testId: "link-duplicate-remover"
-  },
-  {
-    href: "/json-formatter",
-    name: "JSON Formatter",
-    description: "Format and validate JSON",
-    icon: FaCode,
-    category: "Text Transform",
-    popular: true,
-    testId: "link-json-formatter"
-  },
-  {
-    href: "/whitespace-remover",
-    name: "Whitespace Remover", 
-    description: "Clean extra spaces & lines",
-    icon: FaTrash,
-    category: "Text Transform",
-    testId: "link-whitespace-remover"
-  },
-  {
-    href: "/word-frequency-analyzer",
-    name: "Word Frequency",
-    description: "Analyze word frequency",
-    icon: FaSort,
-    category: "Text Analysis", 
-    testId: "link-word-frequency"
-  },
-  {
-    href: "/text-diff-checker",
-    name: "Text Diff Checker",
-    description: "Compare text differences", 
-    icon: FaSearch,
-    category: "Text Analysis",
-    testId: "link-text-diff"
   }
 ];
 
