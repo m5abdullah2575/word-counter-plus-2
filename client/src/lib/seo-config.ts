@@ -150,20 +150,20 @@ export const getTextCaseSEO = (): SEOConfig => {
   const origin = getCurrentOrigin();
   
   return {
-    title: "Text Case Converter 2025 - Free Online Upper, Lower, Camel Case Converter | Word Counter Plus",
-    description: "Professional text case converter with instant conversion to uppercase, lowercase, title case, camel case, snake case, kebab case, and more. Perfect for developers, programmers, and content creators. Real-time conversion, copy-paste functionality, mobile-optimized, and completely free. No registration required.",
-    keywords: "text case converter, case converter, convert text case, uppercase converter, lowercase converter, title case converter, camel case converter, snake case converter, kebab case converter, pascal case converter, sentence case converter, alternating case converter, inverse case converter, text transformation, text manipulation, string converter, text formatter, case changer, text case tool, online case converter, free case converter, text converter online, case conversion tool, programming text tools, developer tools, coding tools, text processing, string processing, text utility, case utility, format text, text formatting tool, convert uppercase, convert lowercase, convert title case, convert camel case, convert snake case, convert kebab case, text editor, string editor, text modifier, case modifier, programming helper, coding helper, development tools, web development, software development, text editor online, string manipulation, character case, letter case, text style, writing tools, content tools, formatting tools, developer utilities, programmer tools, code formatting, variable naming, function naming, file naming, url formatting, css class naming, javascript naming, python naming, java naming, c++ naming, php naming, ruby naming, go naming, rust naming, swift naming, kotlin naming, typescript naming, react naming, vue naming, angular naming, html formatting, xml formatting, json formatting, yaml formatting, configuration file formatting, environment variable formatting, database naming, table naming, column naming, api naming, endpoint naming, method naming, property naming, constant naming, enum naming, interface naming, class naming, namespace naming, module naming, package naming, library naming, framework naming, plugin naming, extension naming, component naming, service naming, controller naming, model naming, view naming, template naming, stylesheet naming, script naming, image naming, asset naming, resource naming, documentation formatting, readme formatting, markdown formatting, comment formatting, annotation formatting, label formatting, tag formatting, slug formatting, seo friendly urls, permalink formatting, breadcrumb formatting, navigation formatting, menu formatting, link formatting, anchor formatting, title formatting, heading formatting, subtitle formatting, caption formatting, description formatting, summary formatting, abstract formatting, excerpt formatting, teaser formatting",
-    canonical: `${origin}/`,
+    title: "Text Case Converter - Upper, Lower, Camel Case | Word Counter Plus",
+    description: "Free online text case converter. Instantly convert text to uppercase, lowercase, title case, camel case, snake case, and more. Perfect for developers and content creators.",
+    keywords: "text case converter, uppercase, lowercase, camel case, snake case, title case",
+    canonical: `${origin}/text-case-converter`,
     ogImage: `${origin}/og-image.png`,
     structuredData: {
       "@context": "https://schema.org",
       "@type": ["WebApplication", "SoftwareApplication"],
       "name": "Text Case Converter - Convert to Upper, Lower, Title, Camel Case Online",
       "alternateName": ["Case Converter", "Text Case Tool", "Case Changer", "Text Transformer", "String Converter"],
-      "url": `${origin}`,
+      "url": `${origin}/text-case-converter`,
       "logo": `${origin}/word-counter-plus-logo.png`,
       "description": "Free online text case converter tool. Convert text to uppercase, lowercase, title case, camel case, snake case, kebab case, and more. Perfect for developers, writers, and content creators.",
-      "keywords": "text case converter, case converter, convert text case, uppercase converter, lowercase converter, title case converter, camel case converter, snake case converter, kebab case converter, text transformation, text manipulation, string converter, developer tools, programming tools",
+      "keywords": "text case converter, uppercase, lowercase, camel case, snake case",
       "applicationCategory": ["Productivity", "Developer Tools", "Text Processing", "Utilities"],
       "operatingSystem": ["Web Browser", "Windows", "macOS", "Linux", "iOS", "Android"],
       "browserRequirements": "Requires JavaScript. Works with Chrome, Firefox, Safari, Edge.",
@@ -173,20 +173,6 @@ export const getTextCaseSEO = (): SEOConfig => {
       "inLanguage": "en-US",
       "isAccessibleForFree": true,
       "isFamilyFriendly": true,
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "ratingCount": "890",
-        "bestRating": "5",
-        "worstRating": "1"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock",
-        "validFrom": "2024-01-01"
-      },
       "creator": {
         "@type": "Organization",
         "name": "Word Counter Plus",
@@ -271,7 +257,7 @@ export const getTextCaseSEO = (): SEOConfig => {
       }
     },
     breadcrumbs: [
-      { name: "Text Case Converter", url: `${origin}/` }
+      { name: "Text Case Converter", url: `${origin}/text-case-converter` }
     ]
   };
 };
