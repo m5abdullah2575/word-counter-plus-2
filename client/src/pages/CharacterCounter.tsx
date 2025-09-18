@@ -48,9 +48,9 @@ export default function CharacterCounter() {
 
   // SEO Configuration
   useSEO({
-    title: 'Character Counter - Advanced Text Analysis with SEO Checker | Word Counter Plus',
-    description: 'Free advanced character counter with keyword density analysis, SEO optimization checker, emoji counter, language detection, and typing speed tracker. Perfect for content creators, SEO professionals, and writers.',
-    keywords: 'character counter, character count, keyword density, SEO checker, text analysis, emoji counter, language detection, typing speed, content optimization, social media character limit, twitter character count, facebook character limit, meta description checker'
+    title: 'Character Counter 2025 - Advanced Text Analysis & SEO Content Optimizer | Word Counter Plus',
+    description: 'Professional character counter with real-time analysis, SEO optimization, keyword density tracking, readability scoring, and social media limit checking. Includes emoji detection, language analysis, typing speed metrics, and export features. Trusted by content creators, marketers, and writers worldwide. Mobile-optimized and completely free.',
+    keywords: 'character counter 2025, character count tool, free character counter, online character counter, text analysis tool, SEO content optimizer, keyword density analyzer, social media character limit, twitter character counter, facebook character limit, instagram caption counter, linkedin post counter, tiktok character limit, youtube description counter, meta description checker, title tag analyzer, email subject line counter, content optimization tool, readability score checker, emoji counter detector, language detection tool, typing speed calculator, text complexity analyzer, content grade level checker, writing productivity tool, content creator tool, digital marketing analyzer, copywriting optimizer, blog content analyzer, academic writing tool, student essay counter, business writing tool, professional communication analyzer'
   });
 
   // Auto-save and restore text
@@ -149,7 +149,7 @@ export default function CharacterCounter() {
       detectedLanguage: detectLanguage(),
       complexityScore: calculateComplexity()
     };
-  }, [text])
+  }, [text]);
 
   // Social media character limits
   const socialLimits = {
@@ -351,6 +351,24 @@ export default function CharacterCounter() {
     }
   };
 
+  // Keystroke tracking
+  const handleTextChange = (value: string) => {
+    const now = Date.now();
+    
+    // Initialize typing start time
+    if (!typingStartTime) {
+      setTypingStartTime(now);
+    }
+    
+    // Track keystrokes with debouncing
+    if (now - lastKeyTimeRef.current > 100) { // 100ms debounce
+      setKeystrokeCount(prev => prev + 1);
+      lastKeyTimeRef.current = now;
+    }
+    
+    setText(value);
+  };
+
   // Character limit helper function
   const getCharacterLimitStatus = (limit: number) => {
     const remaining = limit - stats.charactersWithSpaces;
@@ -445,480 +463,428 @@ export default function CharacterCounter() {
                     onClick={pasteText}
                     className="flex-1 sm:flex-none px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 transition-colors"
                     data-testid="button-paste-text"
-                    aria-label="Paste text from clipboard"
+                    title="Paste text from clipboard"
                   >
-                    Paste
-                  </button>
-
-                  {/* Clear Button */}
-                  <button 
-                    onClick={clearText}
-                    className="flex-1 sm:flex-none px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 transition-colors"
-                    data-testid="button-clear-text"
-                    aria-label="Clear all text"
-                  >
-                    <FaEraser className="inline mr-1" aria-hidden="true" />
-                    Clear
+                    <FaCopy className="inline mr-1" aria-hidden="true" />
+                    <span className="hidden sm:inline">Paste</span>
+                    <span className="sm:hidden">Paste</span>
                   </button>
                 </div>
               </div>
+              
+              <Textarea
+                id="textInput"
+                placeholder="Type or paste your text here to start counting characters, words, and analyzing your content..."
+                value={text}
+                onChange={(e) => handleTextChange(e.target.value)}
+                className="w-full h-48 sm:h-64 p-3 sm:p-4 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none transition-all text-sm sm:text-base" 
+                data-testid="textarea-text-input"
+              />
             </div>
-            
-            {/* Hidden label for screen readers */}
-            <textarea 
-              id="textInput"
-              aria-describedby="textHelp"
-              value={text}
-              onChange={(e) => {
-                const newText = e.target.value;
-                setText(newText);
-                
-                // Track typing speed with improved logic
-                const now = Date.now();
-                const lastKeyTime = lastKeyTimeRef.current;
-                
-                if (!typingStartTime && newText.length > 0) {
-                  setTypingStartTime(now);
-                  setKeystrokeCount(1);
-                } else if (newText.length > 0) {
-                  // Only count if typing within reasonable time
-                  if (now - lastKeyTime < 1000) {
-                    setKeystrokeCount(prev => prev + 1);
-                  } else {
-                    // Reset if more than 1 second gap
-                    setTypingStartTime(now);
-                    setKeystrokeCount(1);
-                  }
-                }
-                
-                lastKeyTimeRef.current = now;
-              }}
-              className="w-full h-48 sm:h-64 p-3 sm:p-4 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none transition-all text-sm sm:text-base" 
-              placeholder="Start typing or paste your text here for advanced character analysis with SEO insights, keyword density, emoji counting, and more..."
-              data-testid="textarea-character-input"
-            />
-
-            {/* Helper text (screen readers کے لیے) */}
-            <p id="textHelp" className="sr-only">
-              Paste or type your text here. The tool will count characters, words, sentences, and show analysis in real-time.
-            </p>
             
             <div className="flex justify-between mt-4">
               <div className="flex gap-2">
                 <button 
                   onClick={copyToClipboard}
-                  className="px-2 sm:px-3 py-1.5 bg-green-600 text-white rounded text-xs sm:text-sm hover:bg-green-700 transition-colors"
+                  disabled={!text}
+                  className="px-3 py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   data-testid="button-copy-text"
+                  title="Copy text to clipboard"
                 >
-                  <FaCopy className="inline mr-1" />
-                  Copy
+                  <FaCopy className="inline mr-1" aria-hidden="true" />
+                  <span className="hidden sm:inline">Copy</span>
+                  <span className="sm:hidden">Copy</span>
                 </button>
+                
                 <button 
                   onClick={downloadText}
-                  className="px-2 sm:px-3 py-1.5 bg-blue-600 text-white rounded text-xs sm:text-sm hover:bg-blue-700 transition-colors"
+                  disabled={!text}
+                  className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   data-testid="button-download-text"
+                  title="Download text as TXT file"
                 >
-                  <FaDownload className="inline mr-1" />
-                  Download
+                  <FaDownload className="inline mr-1" aria-hidden="true" />
+                  <span className="hidden sm:inline">Download</span>
+                  <span className="sm:hidden">Download</span>
                 </button>
               </div>
-              <div className="text-sm text-muted-foreground">
-                {stats.charactersWithSpaces} characters • {stats.words} words • {stats.detectedLanguage}
-              </div>
+              
+              <button 
+                onClick={clearText}
+                disabled={!text}
+                className="px-3 py-1.5 bg-destructive text-destructive-foreground rounded text-sm hover:bg-destructive/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                data-testid="button-clear-text"
+                title="Clear all text"
+              >
+                <FaEraser className="inline mr-1" aria-hidden="true" />
+                <span className="hidden sm:inline">Clear</span>
+                <span className="sm:hidden">Clear</span>
+              </button>
             </div>
           </div>
 
-          {/* Advanced Statistics Panel */}
-          <div className="space-y-4">
-            <Tabs defaultValue="basic" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="basic">Basic</TabsTrigger>
-                <TabsTrigger value="advanced">Advanced</TabsTrigger>
-                <TabsTrigger value="seo">SEO</TabsTrigger>
-                <TabsTrigger value="keywords">Keywords</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="basic" className="space-y-4">
-                {/* Character Statistics */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <FaHashtag className="mr-2 text-primary" />
-                      Character Count
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">With spaces:</span>
-                      <span className="font-bold text-2xl text-primary" data-testid="text-chars-with-spaces">
-                        {stats.charactersWithSpaces}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Without spaces:</span>
-                      <span className="font-bold text-xl" data-testid="text-chars-without-spaces">
-                        {stats.charactersWithoutSpaces}
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
+          {/* Main Stats Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+            <Card className="bg-card border border-border">
+              <CardContent className="p-3 sm:p-6">
+                <div className="flex items-center space-x-2">
+                  <FaFont className="text-primary" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm font-medium text-muted-foreground truncate">Characters</p>
+                    <p className="text-lg sm:text-2xl font-bold text-foreground" data-testid="text-character-count">{stats.charactersWithSpaces}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-                {/* Text Statistics */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <FaFileAlt className="mr-2 text-primary" />
-                      Text Statistics
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground flex items-center">
-                        <FaFont className="mr-1" /> Words:
-                      </span>
-                      <span className="font-semibold" data-testid="text-word-count">{stats.words}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground flex items-center">
-                        <FaListOl className="mr-1" /> Sentences:
-                      </span>
-                      <span className="font-semibold" data-testid="text-sentence-count">{stats.sentences}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground flex items-center">
-                        <FaParagraph className="mr-1" /> Paragraphs:
-                      </span>
-                      <span className="font-semibold" data-testid="text-paragraph-count">{stats.paragraphs}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Lines:</span>
-                      <span className="font-semibold" data-testid="text-line-count">{stats.lines}</span>
-                    </div>
-                    {stats.averageWordsPerSentence > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Avg words/sentence:</span>
-                        <span className="font-semibold">{stats.averageWordsPerSentence}</span>
-                      </div>
-                    )}
-                    {stats.averageCharsPerWord > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Avg chars/word:</span>
-                        <span className="font-semibold">{stats.averageCharsPerWord}</span>
-                      </div>
-                    )}
-                    {stats.readingTime > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground flex items-center">
-                          <FaClock className="mr-1" /> Reading time:
-                        </span>
-                        <span className="font-semibold">{stats.readingTime} min</span>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+            <Card className="bg-card border border-border">
+              <CardContent className="p-3 sm:p-6">
+                <div className="flex items-center space-x-2">
+                  <FaHashtag className="text-primary" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm font-medium text-muted-foreground truncate">Words</p>
+                    <p className="text-lg sm:text-2xl font-bold text-foreground" data-testid="text-word-count">{stats.words}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-                {/* Social Media Limits */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <FaEye className="mr-2 text-primary" />
-                      Social Media Limits
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    {Object.entries(socialLimits).map(([platform, limit]) => {
-                      const status = getCharacterLimitStatus(limit);
-                      const remaining = limit - stats.charactersWithSpaces;
-                      const percentage = Math.min((stats.charactersWithSpaces / limit) * 100, 100);
-                      
-                      return (
-                        <div key={platform} className="space-y-1">
-                          <div className="flex justify-between text-sm">
-                            <span className="capitalize font-medium">{platform}:</span>
-                            <span className={remaining < 0 ? 'text-red-600' : 'text-green-600'}>
-                              {remaining < 0 ? `${Math.abs(remaining)} over` : `${remaining} left`}
-                            </span>
-                          </div>
-                          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div 
-                              className={`h-2 rounded-full transition-all ${status.color}`}
-                              style={{ width: `${Math.min(percentage, 100)}%` }}
-                            />
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </CardContent>
-                </Card>
-              </TabsContent>
-              
-              <TabsContent value="advanced" className="space-y-4">
-                {/* Character Breakdown */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <FaSmile className="mr-2 text-primary" />
-                      Character Breakdown
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground flex items-center">
-                        <FaSmile className="mr-1" /> Emojis:
-                      </span>
-                      <span className="font-semibold" data-testid="text-emoji-count">{stats.emojis}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Special characters:</span>
-                      <span className="font-semibold">{stats.specialChars}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Numbers:</span>
-                      <span className="font-semibold">{stats.numbers}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Uppercase letters:</span>
-                      <span className="font-semibold">{stats.upperCaseLetters}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Lowercase letters:</span>
-                      <span className="font-semibold">{stats.lowerCaseLetters}</span>
-                    </div>
-                  </CardContent>
-                </Card>
+            <Card className="bg-card border border-border">
+              <CardContent className="p-3 sm:p-6">
+                <div className="flex items-center space-x-2">
+                  <FaListOl className="text-primary" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm font-medium text-muted-foreground truncate">Sentences</p>
+                    <p className="text-lg sm:text-2xl font-bold text-foreground" data-testid="text-sentence-count">{stats.sentences}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-                {/* Language & Complexity */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <FaGlobe className="mr-2 text-primary" />
-                      Text Analysis
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground flex items-center">
-                        <FaGlobe className="mr-1" /> Detected language:
-                      </span>
-                      <span className="font-semibold">{stats.detectedLanguage}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Complexity score:</span>
-                      <span className="font-semibold">{stats.complexityScore}/100</span>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex justify-between text-sm">
-                        <span>Text Complexity</span>
-                        <span>{stats.complexityScore}%</span>
-                      </div>
-                      <Progress value={stats.complexityScore} className="h-2" />
-                    </div>
-                    {stats.speakingTime > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground flex items-center">
-                          <FaClock className="mr-1" /> Speaking time:
-                        </span>
-                        <span className="font-semibold">{stats.speakingTime} min</span>
-                      </div>
-                    )}
-                    {typingSpeed > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground flex items-center">
-                          <FaKeyboard className="mr-1" /> Typing speed:
-                        </span>
-                        <span className="font-semibold">{typingSpeed} CPM</span>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </TabsContent>
-              
-              <TabsContent value="seo" className="space-y-4">
-                {/* SEO Optimization Checker */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <FaSearch className="mr-2 text-primary" />
-                      SEO Optimization
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="max-h-96 overflow-y-auto overscroll-contain scroll-smooth">
-                      <div className="space-y-4 pr-2">
-                        <Alert className={seoCheck.titleTag.optimal ? 'border-green-500' : 'border-orange-500'}>
-                          <div className="flex items-center gap-3">
-                            {seoCheck.titleTag.optimal ? (
-                              <FaCheckCircle className="text-green-500 shrink-0" />
-                            ) : (
-                              <FaExclamationTriangle className="text-orange-500 shrink-0" />
-                            )}
-                            <AlertDescription className="min-w-0 break-words">
-                              <strong>Title Tag:</strong> {seoCheck.titleTag.message}
-                            </AlertDescription>
-                          </div>
-                        </Alert>
-                        
-                        <Alert className={seoCheck.metaDescription.optimal ? 'border-green-500' : 'border-orange-500'}>
-                          <div className="flex items-center gap-3">
-                            {seoCheck.metaDescription.optimal ? (
-                              <FaCheckCircle className="text-green-500 shrink-0" />
-                            ) : (
-                              <FaExclamationTriangle className="text-orange-500 shrink-0" />
-                            )}
-                            <AlertDescription className="min-w-0 break-words">
-                              <strong>Meta Description:</strong> {seoCheck.metaDescription.message}
-                            </AlertDescription>
-                          </div>
-                        </Alert>
-                        
-                        <Alert className={seoCheck.keywordDensity.optimal ? 'border-green-500' : 'border-orange-500'}>
-                          <div className="flex items-center gap-3">
-                            {seoCheck.keywordDensity.optimal ? (
-                              <FaCheckCircle className="text-green-500 shrink-0" />
-                            ) : (
-                              <FaInfoCircle className="text-orange-500 shrink-0" />
-                            )}
-                            <AlertDescription className="min-w-0 break-words">
-                              <strong>Keyword Density:</strong> {seoCheck.keywordDensity.message}
-                            </AlertDescription>
-                          </div>
-                        </Alert>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-              
-              <TabsContent value="keywords" className="space-y-4">
-                {/* Keyword Density Analysis */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <FaTags className="mr-2 text-primary" />
-                      Keyword Density
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {keywordAnalysis.length > 0 ? (
-                      <div className="max-h-80 overflow-y-auto overscroll-contain scroll-smooth">
-                        <div className="space-y-3 pr-2">
-                          {keywordAnalysis.map((keyword, index) => (
-                            <div key={keyword.word} className="flex items-center justify-between gap-4">
-                              <div className="flex items-center space-x-2 min-w-0 flex-1">
-                                <Badge variant={index < 3 ? 'default' : 'secondary'} className="shrink-0">
-                                  #{index + 1}
-                                </Badge>
-                                <span className="font-medium break-all overflow-hidden text-ellipsis">{keyword.word}</span>
-                              </div>
-                              <div className="flex items-center space-x-2 shrink-0">
-                                <span className="text-sm text-muted-foreground whitespace-nowrap">
-                                  {keyword.count} times
-                                </span>
-                                <Badge 
-                                  variant={parseFloat(keyword.density) >= 1 && parseFloat(keyword.density) <= 3 ? 'default' : 'outline'}
-                                  className="shrink-0"
-                                >
-                                  {keyword.density}%
-                                </Badge>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ) : (
-                      <p className="text-muted-foreground text-center py-4">
-                        Enter text to see keyword density analysis
-                      </p>
-                    )}
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            </Tabs>
+            <Card className="bg-card border border-border">
+              <CardContent className="p-3 sm:p-6">
+                <div className="flex items-center space-x-2">
+                  <FaParagraph className="text-primary" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm font-medium text-muted-foreground truncate">Paragraphs</p>
+                    <p className="text-lg sm:text-2xl font-bold text-foreground" data-testid="text-paragraph-count">{stats.paragraphs}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
-          {/* Compact Related Tools Section */}
-          {text.trim() && (
-            <div className="bg-card rounded-lg p-3 sm:p-4 shadow-sm border border-border">
-              <h3 className="text-base font-semibold text-foreground mb-3">Try Other Tools</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <Link 
-                  href="/" 
-                  className="flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group" 
-                  data-testid="link-word-counter"
-                >
-                  <div className="w-8 h-8 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
-                    <FaCopy className="text-red-600 dark:text-red-400 text-sm" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-foreground group-hover:text-primary transition-colors text-sm">Word Counter</h4>
-                    <p className="text-xs text-muted-foreground">Count words & analyze text</p>
-                  </div>
-                </Link>
-                <Link 
-                  href="/text-case-convert" 
-                  className="flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group" 
-                  data-testid="link-text-case-converter"
-                >
-                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
-                    <FaSync className="text-green-600 dark:text-green-400 text-sm" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-foreground group-hover:text-primary transition-colors text-sm">Case Converter</h4>
-                    <p className="text-xs text-muted-foreground">Change text case format</p>
-                  </div>
-                </Link>
+          {/* Detailed Analysis Tabs */}
+          <Tabs defaultValue="detailed" className="w-full">
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="detailed" className="text-xs sm:text-sm">
+                <FaEye className="mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Detailed Stats</span>
+                <span className="sm:hidden">Stats</span>
+              </TabsTrigger>
+              <TabsTrigger value="social" className="text-xs sm:text-sm">
+                <FaGlobe className="mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Social Media</span>
+                <span className="sm:hidden">Social</span>
+              </TabsTrigger>
+              <TabsTrigger value="keywords" className="text-xs sm:text-sm">
+                <FaTags className="mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Keywords</span>
+                <span className="sm:hidden">Keywords</span>
+              </TabsTrigger>
+              <TabsTrigger value="seo" className="text-xs sm:text-sm">
+                <FaSearch className="mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">SEO Analysis</span>
+                <span className="sm:hidden">SEO</span>
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="detailed" className="space-y-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                <Card className="bg-card border border-border">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="space-y-2">
+                      <p className="text-xs sm:text-sm font-medium text-muted-foreground">Characters (no spaces)</p>
+                      <p className="text-lg sm:text-xl font-bold text-foreground" data-testid="text-character-no-spaces-count">{stats.charactersWithoutSpaces}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card className="bg-card border border-border">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="space-y-2">
+                      <p className="text-xs sm:text-sm font-medium text-muted-foreground">Lines</p>
+                      <p className="text-lg sm:text-xl font-bold text-foreground" data-testid="text-line-count">{stats.lines}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card border border-border">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="space-y-2">
+                      <p className="text-xs sm:text-sm font-medium text-muted-foreground">Emojis</p>
+                      <p className="text-lg sm:text-xl font-bold text-foreground" data-testid="text-emoji-count">{stats.emojis}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card border border-border">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="space-y-2">
+                      <p className="text-xs sm:text-sm font-medium text-muted-foreground">Special Characters</p>
+                      <p className="text-lg sm:text-xl font-bold text-foreground" data-testid="text-special-char-count">{stats.specialChars}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card border border-border">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="space-y-2">
+                      <p className="text-xs sm:text-sm font-medium text-muted-foreground">Numbers</p>
+                      <p className="text-lg sm:text-xl font-bold text-foreground" data-testid="text-number-count">{stats.numbers}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card border border-border">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="space-y-2">
+                      <p className="text-xs sm:text-sm font-medium text-muted-foreground">Uppercase Letters</p>
+                      <p className="text-lg sm:text-xl font-bold text-foreground" data-testid="text-uppercase-count">{stats.upperCaseLetters}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card border border-border">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="space-y-2">
+                      <p className="text-xs sm:text-sm font-medium text-muted-foreground">Lowercase Letters</p>
+                      <p className="text-lg sm:text-xl font-bold text-foreground" data-testid="text-lowercase-count">{stats.lowerCaseLetters}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card border border-border">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="space-y-2">
+                      <p className="text-xs sm:text-sm font-medium text-muted-foreground">Detected Language</p>
+                      <p className="text-lg sm:text-xl font-bold text-foreground" data-testid="text-detected-language">{stats.detectedLanguage}</p>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
-            </div>
-          )}
-        </div>
-      </div>
 
-      {/* Advanced Character Counter Features Section - Full Width at Bottom */}
-      <div className="mt-12 bg-muted/50 rounded-lg p-4 sm:p-6">
-        <h2 className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">Advanced Character Counter Features</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-          <div className="text-center p-3">
-            <FaHashtag className="text-primary text-xl sm:text-2xl mb-2 mx-auto" />
-            <h3 className="font-semibold mb-1 text-sm sm:text-base">Real-time Analysis</h3>
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              Advanced character counting with emoji detection and typing speed tracking
-            </p>
-          </div>
-          <div className="text-center p-3">
-            <FaSearch className="text-primary text-xl sm:text-2xl mb-2 mx-auto" />
-            <h3 className="font-semibold mb-1 text-sm sm:text-base">SEO Optimization</h3>
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              Check title tags, meta descriptions, and keyword density for better ranking
-            </p>
-          </div>
-          <div className="text-center p-3">
-            <FaTags className="text-primary text-xl sm:text-2xl mb-2 mx-auto" />
-            <h3 className="font-semibold mb-1 text-sm sm:text-base">Keyword Density</h3>
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              Analyze keyword frequency and density for content optimization
-            </p>
-          </div>
-          <div className="text-center p-3">
-            <FaGlobe className="text-primary text-xl sm:text-2xl mb-2 mx-auto" />
-            <h3 className="font-semibold mb-1 text-sm sm:text-base">Language Detection</h3>
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              Automatic language detection with complexity scoring
-            </p>
-          </div>
-          <div className="text-center p-3">
-            <FaSmile className="text-primary text-xl sm:text-2xl mb-2 mx-auto" />
-            <h3 className="font-semibold mb-1 text-sm sm:text-base">Character Breakdown</h3>
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              Count emojis, special characters, numbers, and case analysis
-            </p>
-          </div>
-          <div className="text-center p-3">
-            <FaUpload className="text-primary text-xl sm:text-2xl mb-2 mx-auto" />
-            <h3 className="font-semibold mb-1 text-sm sm:text-base">File Support</h3>
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              Upload TXT, PDF, Word documents, and more file formats
-            </p>
-          </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <Card className="bg-card border border-border">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="flex items-center space-x-2">
+                      <FaClock className="text-primary" />
+                      <div>
+                        <p className="text-xs sm:text-sm font-medium text-muted-foreground">Reading Time</p>
+                        <p className="text-lg sm:text-xl font-bold text-foreground" data-testid="text-reading-time">{stats.readingTime} min</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card border border-border">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="flex items-center space-x-2">
+                      <FaClock className="text-primary" />
+                      <div>
+                        <p className="text-xs sm:text-sm font-medium text-muted-foreground">Speaking Time</p>
+                        <p className="text-lg sm:text-xl font-bold text-foreground" data-testid="text-speaking-time">{stats.speakingTime} min</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card border border-border">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="flex items-center space-x-2">
+                      <FaKeyboard className="text-primary" />
+                      <div>
+                        <p className="text-xs sm:text-sm font-medium text-muted-foreground">Typing Speed</p>
+                        <p className="text-lg sm:text-xl font-bold text-foreground" data-testid="text-typing-speed">{typingSpeed} WPM</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card border border-border">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="flex items-center space-x-2">
+                      <FaChartLine className="text-primary" />
+                      <div>
+                        <p className="text-xs sm:text-sm font-medium text-muted-foreground">Complexity Score</p>
+                        <p className="text-lg sm:text-xl font-bold text-foreground" data-testid="text-complexity-score">{stats.complexityScore}/100</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <Card className="bg-card border border-border">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="space-y-2">
+                      <p className="text-xs sm:text-sm font-medium text-muted-foreground">Average Words per Sentence</p>
+                      <p className="text-lg sm:text-xl font-bold text-foreground" data-testid="text-avg-words-per-sentence">{stats.averageWordsPerSentence}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card border border-border">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="space-y-2">
+                      <p className="text-xs sm:text-sm font-medium text-muted-foreground">Average Characters per Word</p>
+                      <p className="text-lg sm:text-xl font-bold text-foreground" data-testid="text-avg-chars-per-word">{stats.averageCharsPerWord}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="social" className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
+                {Object.entries(socialLimits).map(([platform, limit]) => {
+                  const status = getCharacterLimitStatus(limit);
+                  const remaining = limit - stats.charactersWithSpaces;
+                  const percentage = Math.min((stats.charactersWithSpaces / limit) * 100, 100);
+                  
+                  return (
+                    <Card key={platform} className="bg-card border border-border">
+                      <CardContent className="p-3 sm:p-4">
+                        <div className="flex justify-between items-center mb-2">
+                          <h3 className="text-sm sm:text-base font-semibold text-foreground capitalize">{platform}</h3>
+                          <Badge variant={percentage >= 100 ? "destructive" : percentage >= 90 ? "secondary" : "default"} className="text-xs">
+                            {status.status}
+                          </Badge>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-xs sm:text-sm text-muted-foreground">
+                            <span data-testid={`text-${platform}-used`}>{stats.charactersWithSpaces}/{limit} characters</span>
+                            <span data-testid={`text-${platform}-remaining`}>{remaining >= 0 ? `${remaining} remaining` : `${Math.abs(remaining)} over`}</span>
+                          </div>
+                          <Progress value={percentage} className="h-2" />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="keywords" className="space-y-4">
+              {keywordAnalysis.length > 0 ? (
+                <Card className="bg-card border border-border">
+                  <CardHeader className="pb-3 sm:pb-4">
+                    <CardTitle className="text-base sm:text-lg flex items-center">
+                      <FaTags className="mr-2" />
+                      Top Keywords
+                    </CardTitle>
+                    <CardDescription className="text-xs sm:text-sm">
+                      Most frequently used words (excluding common stop words)
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="p-3 sm:p-6 pt-0">
+                    <div className="space-y-2 sm:space-y-3">
+                      {keywordAnalysis.map((keyword, index) => (
+                        <div key={keyword.word} className="flex justify-between items-center py-2 border-b border-border last:border-b-0">
+                          <div className="flex items-center space-x-2 flex-1 min-w-0">
+                            <span className="text-xs sm:text-sm font-medium text-muted-foreground w-6 flex-shrink-0">#{index + 1}</span>
+                            <span className="text-sm sm:text-base text-foreground font-medium truncate" data-testid={`text-keyword-${index}`}>{keyword.word}</span>
+                          </div>
+                          <div className="flex items-center space-x-3 flex-shrink-0">
+                            <span className="text-xs sm:text-sm text-muted-foreground" data-testid={`text-keyword-count-${index}`}>{keyword.count} times</span>
+                            <Badge variant="secondary" className="text-xs" data-testid={`text-keyword-density-${index}`}>{keyword.density}%</Badge>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              ) : (
+                <Alert>
+                  <FaInfoCircle className="h-4 w-4" />
+                  <AlertDescription>
+                    Start typing to see keyword analysis and density metrics.
+                  </AlertDescription>
+                </Alert>
+              )}
+            </TabsContent>
+
+            <TabsContent value="seo" className="space-y-4">
+              <div className="grid gap-3 sm:gap-4">
+                <Card className="bg-card border border-border">
+                  <CardHeader className="pb-3 sm:pb-4">
+                    <CardTitle className="text-base sm:text-lg flex items-center">
+                      <FaBullseye className="mr-2" />
+                      SEO Content Analysis
+                    </CardTitle>
+                    <CardDescription className="text-xs sm:text-sm">
+                      Optimize your content for search engines
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="p-3 sm:p-6 pt-0">
+                    <div className="space-y-4">
+                      {/* Title Tag Analysis */}
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-sm font-semibold text-foreground">Title Tag (First Line)</h4>
+                          {seoCheck.titleTag.optimal ? (
+                            <FaCheckCircle className="text-green-500 h-4 w-4" />
+                          ) : (
+                            <FaExclamationTriangle className="text-yellow-500 h-4 w-4" />
+                          )}
+                        </div>
+                        <p className="text-xs sm:text-sm text-muted-foreground" data-testid="text-seo-title-message">{seoCheck.titleTag.message}</p>
+                        {seoCheck.titleTag.content && (
+                          <div className="p-2 bg-muted rounded text-xs sm:text-sm text-muted-foreground italic" data-testid="text-seo-title-content">
+                            "{seoCheck.titleTag.content}"
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Meta Description Analysis */}
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-sm font-semibold text-foreground">Meta Description (First 160 chars)</h4>
+                          {seoCheck.metaDescription.optimal ? (
+                            <FaCheckCircle className="text-green-500 h-4 w-4" />
+                          ) : (
+                            <FaExclamationTriangle className="text-yellow-500 h-4 w-4" />
+                          )}
+                        </div>
+                        <p className="text-xs sm:text-sm text-muted-foreground" data-testid="text-seo-meta-message">{seoCheck.metaDescription.message}</p>
+                        {seoCheck.metaDescription.content && (
+                          <div className="p-2 bg-muted rounded text-xs sm:text-sm text-muted-foreground italic" data-testid="text-seo-meta-content">
+                            "{seoCheck.metaDescription.content}"
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Keyword Density Analysis */}
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-sm font-semibold text-foreground">Primary Keyword Density</h4>
+                          {seoCheck.keywordDensity.optimal ? (
+                            <FaCheckCircle className="text-green-500 h-4 w-4" />
+                          ) : (
+                            <FaExclamationTriangle className="text-yellow-500 h-4 w-4" />
+                          )}
+                        </div>
+                        <p className="text-xs sm:text-sm text-muted-foreground" data-testid="text-seo-keyword-message">{seoCheck.keywordDensity.message}</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+          </Tabs>
+
+          {/* Related Tools Sidebar */}
+          <ModernToolsSidebar currentTool="character-counter" />
         </div>
       </div>
     </main>
