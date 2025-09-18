@@ -132,15 +132,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Advertisement Placeholder */}
-      <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 border border-dashed border-gray-300 dark:border-gray-600">
-        <div className="text-center text-sm text-muted-foreground">
-          <div className="bg-gray-200 dark:bg-gray-700 rounded h-48 flex items-center justify-center mb-2">
-            <span className="text-gray-500 dark:text-gray-400">Advertisement Space</span>
-          </div>
-          <p className="text-xs">Promote your business here</p>
-        </div>
-      </div>
       
       {/* Use Cases Section */}
       <section className="container mx-auto px-4 pb-12">
