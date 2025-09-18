@@ -310,23 +310,10 @@ export default function WordCounterTool() {
   };
 
   return (
-    <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
-      {/* Strategic Top Banner Ad - Non-intrusive placement */}
-      {/* 
-      <div className="mb-6 no-print">
-        <AdSenseUnit 
-          adSlot="1234567890"
-          adFormat="horizontal"
-          style={{ minHeight: '90px' }}
-          className="w-full"
-          adTest={true}
-        />
-      </div>
-      */}
-
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
-        {/* Main Tool Area */}
-        <div className="lg:col-span-3 space-y-4 sm:space-y-6">
+    <main className="min-h-screen bg-background">
+      {/* Centered Container with Max Width */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+        <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
           {/* Tool Header */}
           <div className="text-center mb-4 sm:mb-8">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">
@@ -716,15 +703,45 @@ export default function WordCounterTool() {
           )}
 
           {/* Export & Share Options */}
-          <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
-            <h3 className="text-lg font-semibold text-foreground mb-4">Export & Share</h3>
+          <div className="bg-card rounded-lg p-3 sm:p-6 shadow-sm border border-border">
+            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4">Export & Share</h3>
             <ExportButtons text={text} stats={stats} readability={readability} keywords={keywords} />
           </div>
-        </div>
 
-        {/* Sidebar */}
-        <div className="lg:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
-          <ModernToolsSidebar currentTool="/" />
+          {/* Compact Related Tools Section */}
+          {text.trim() && (
+            <div className="bg-card rounded-lg p-3 sm:p-4 shadow-sm border border-border">
+              <h3 className="text-base font-semibold text-foreground mb-3">Try Other Tools</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <Link 
+                  href="/character-counter" 
+                  className="flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group" 
+                  data-testid="link-character-counter"
+                >
+                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
+                    <FaCopy className="text-blue-600 dark:text-blue-400 text-sm" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-foreground group-hover:text-primary transition-colors text-sm">Character Counter</h4>
+                    <p className="text-xs text-muted-foreground">Count characters & spaces</p>
+                  </div>
+                </Link>
+                <Link 
+                  href="/text-case-convert" 
+                  className="flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group" 
+                  data-testid="link-text-case-converter"
+                >
+                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
+                    <FaSync className="text-green-600 dark:text-green-400 text-sm" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-foreground group-hover:text-primary transition-colors text-sm">Case Converter</h4>
+                    <p className="text-xs text-muted-foreground">Change text case format</p>
+                  </div>
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </main>

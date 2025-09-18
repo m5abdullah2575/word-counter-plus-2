@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FaCheck, FaEraser, FaHighlighter, FaPaste, FaTrash, FaUpload, FaCopy, FaSync, FaSort, FaBook, FaClock, FaInfoCircle, FaCalendar } from "@/components/common/Icons";
 import { parseFile, getFileInputAccept, type FileParseProgress } from '@/lib/fileImport';
 import ModernToolsSidebar from '@/components/common/ModernToolsSidebar';
+import { Link } from 'wouter';
 
 // Case conversion functions - standalone and reusable
 export const textCaseConverters = {
@@ -321,10 +322,10 @@ export default function TextCaseConverter() {
   const otherOptions = caseOptions.filter(opt => opt.category === 'other');
 
   return (
-    <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
-      <div className="grid grid-cols-1 xl:grid-cols-4 gap-4 lg:gap-6">
-        {/* Main Tool Area */}
-        <div className="xl:col-span-3 space-y-4 sm:space-y-6">
+    <main className="min-h-screen bg-background">
+      {/* Centered Container with Max Width */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+        <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
           {/* Tool Header */}
           <div className="text-center mb-4 sm:mb-8">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">
@@ -604,64 +605,66 @@ export default function TextCaseConverter() {
               </div>
             </div>
           )}
-        </div>
 
-        {/* Sidebar */}
-        <div className="xl:col-span-1 space-y-4 sm:space-y-6 lg:sticky lg:top-4 lg:h-fit">
-          {/* Quick Stats */}
+          {/* Quick Stats - Moved to Main Content */}
           {text.trim() && (
-            <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
-              <h3 className="font-semibold text-foreground mb-3">Text Statistics</h3>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Characters:</span>
-                  <span className="font-medium" data-testid="stat-characters">{text.length.toLocaleString()}</span>
+            <div className="bg-card rounded-lg p-3 sm:p-4 shadow-sm border border-border">
+              <h3 className="text-base font-semibold text-foreground mb-3">Text Statistics</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
+                <div className="text-center">
+                  <span className="block text-muted-foreground">Characters</span>
+                  <span className="font-medium text-lg" data-testid="stat-characters">{text.length.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Words:</span>
-                  <span className="font-medium" data-testid="stat-words">{text.trim().split(/\s+/).filter(word => word.length > 0).length.toLocaleString()}</span>
+                <div className="text-center">
+                  <span className="block text-muted-foreground">Words</span>
+                  <span className="font-medium text-lg" data-testid="stat-words">{text.trim().split(/\s+/).filter(word => word.length > 0).length.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Lines:</span>
-                  <span className="font-medium" data-testid="stat-lines">{text.split('\n').length.toLocaleString()}</span>
+                <div className="text-center">
+                  <span className="block text-muted-foreground">Lines</span>
+                  <span className="font-medium text-lg" data-testid="stat-lines">{text.split('\n').length.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Sentences:</span>
-                  <span className="font-medium" data-testid="stat-sentences">{text.split(/[.!?]+/).filter(s => s.trim().length > 0).length.toLocaleString()}</span>
+                <div className="text-center">
+                  <span className="block text-muted-foreground">Sentences</span>
+                  <span className="font-medium text-lg" data-testid="stat-sentences">{text.split(/[.!?]+/).filter(s => s.trim().length > 0).length.toLocaleString()}</span>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Features */}
-          <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
-            <h3 className="font-semibold text-foreground mb-3">Features</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-center">
-                <FaCheck className="text-primary mr-2 flex-shrink-0" />
-                12 case conversion types
-              </li>
-              <li className="flex items-center">
-                <FaCheck className="text-primary mr-2 flex-shrink-0" />
-                File upload support
-              </li>
-              <li className="flex items-center">
-                <FaCheck className="text-primary mr-2 flex-shrink-0" />
-                Copy & download results
-              </li>
-              <li className="flex items-center">
-                <FaCheck className="text-primary mr-2 flex-shrink-0" />
-                Real-time conversion
-              </li>
-              <li className="flex items-center">
-                <FaCheck className="text-primary mr-2 flex-shrink-0" />
-                Auto-save your work
-              </li>
-            </ul>
-          </div>
-
-          {/* Related Tools Sidebar */}
-          <ModernToolsSidebar currentTool="/text-case-convert" />
+          {/* Compact Related Tools Section */}
+          {text.trim() && (
+            <div className="bg-card rounded-lg p-3 sm:p-4 shadow-sm border border-border">
+              <h3 className="text-base font-semibold text-foreground mb-3">Try Other Tools</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <Link 
+                  href="/" 
+                  className="flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group" 
+                  data-testid="link-word-counter"
+                >
+                  <div className="w-8 h-8 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
+                    <FaCopy className="text-red-600 dark:text-red-400 text-sm" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-foreground group-hover:text-primary transition-colors text-sm">Word Counter</h4>
+                    <p className="text-xs text-muted-foreground">Count words & analyze text</p>
+                  </div>
+                </Link>
+                <Link 
+                  href="/character-counter" 
+                  className="flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group" 
+                  data-testid="link-character-counter"
+                >
+                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
+                    <FaCopy className="text-blue-600 dark:text-blue-400 text-sm" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-foreground group-hover:text-primary transition-colors text-sm">Character Counter</h4>
+                    <p className="text-xs text-muted-foreground">Count characters & spaces</p>
+                  </div>
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </main>
