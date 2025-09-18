@@ -2,7 +2,6 @@ import { Link } from 'wouter';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { SidebarAd } from './AdvertisementManager';
 import { 
   FaCopy, 
   FaSync, 
@@ -40,38 +39,6 @@ const ALL_TOOLS = [
     category: "Text Analysis", 
     testId: "link-character-counter"
   },
-  {
-    href: "/line-counter", 
-    name: "Line Counter",
-    description: "Count text lines",
-    icon: FaAlignLeft,
-    category: "Text Analysis",
-    testId: "link-line-counter"
-  },
-  {
-    href: "/reading-time-calculator",
-    name: "Reading Time",
-    description: "Calculate reading duration",
-    icon: FaClock,
-    category: "Text Analysis",
-    testId: "link-reading-time"
-  },
-  {
-    href: "/word-frequency-analyzer",
-    name: "Word Frequency",
-    description: "Analyze word frequency",
-    icon: FaSort,
-    category: "Text Analysis", 
-    testId: "link-word-frequency"
-  },
-  {
-    href: "/text-diff-checker",
-    name: "Text Diff Checker",
-    description: "Compare text differences", 
-    icon: FaSearch,
-    category: "Text Analysis",
-    testId: "link-text-diff"
-  },
   
   // ===== TEXT TRANSFORM TOOLS =====
   {
@@ -82,82 +49,6 @@ const ALL_TOOLS = [
     category: "Text Transform",
     popular: true,
     testId: "link-text-case-converter"
-  },
-  {
-    href: "/find-replace",
-    name: "Find & Replace",
-    description: "Search and replace text",
-    icon: FaSearch,
-    category: "Text Transform",
-    testId: "link-find-replace"
-  },
-  {
-    href: "/text-sorting-tool",
-    name: "Text Sorter",
-    description: "Sort lines alphabetically",
-    icon: FaSort,
-    category: "Text Transform",
-    testId: "link-text-sorter"
-  },
-  {
-    href: "/duplicate-line-remover",
-    name: "Duplicate Remover",
-    description: "Remove duplicate lines",
-    icon: FaTrash,
-    category: "Text Transform",
-    testId: "link-duplicate-remover"
-  },
-  {
-    href: "/whitespace-remover",
-    name: "Whitespace Remover", 
-    description: "Clean extra spaces & lines",
-    icon: FaTrash,
-    category: "Text Transform",
-    testId: "link-whitespace-remover"
-  },
-  {
-    href: "/text-encoder",
-    name: "Text Encoder",
-    description: "Encode/decode text formats",
-    icon: FaCode,
-    category: "Text Transform", 
-    testId: "link-text-encoder"
-  },
-  {
-    href: "/json-formatter",
-    name: "JSON Formatter",
-    description: "Format and validate JSON",
-    icon: FaCode,
-    category: "Text Transform",
-    popular: true,
-    testId: "link-json-formatter"
-  },
-  
-  // ===== GENERATORS =====
-  {
-    href: "/password-generator",
-    name: "Password Generator",
-    description: "Generate secure passwords", 
-    icon: FaKey,
-    category: "Security",
-    popular: true,
-    testId: "link-password-generator"
-  },
-  {
-    href: "/qr-code-generator",
-    name: "QR Code Generator",
-    description: "Create QR codes instantly",
-    icon: FaQrcode,
-    category: "Generators",
-    testId: "link-qr-generator"
-  },
-  {
-    href: "/lorem-generator",
-    name: "Lorem Generator", 
-    description: "Generate placeholder text",
-    icon: FaFileAlt,
-    category: "Generators",
-    testId: "link-lorem-generator"
   }
 ];
 
@@ -184,9 +75,6 @@ export default function ModernToolsSidebar({
 
   return (
     <div className="space-y-6">
-      {/* Advertisement Section */}
-      <SidebarAd />
-      
       {/* Related Tools Section */}
       <Card className="overflow-hidden">
         <CardHeader className="pb-3">
@@ -245,9 +133,6 @@ export default function ModernToolsSidebar({
           </Link>
         </CardContent>
       </Card>
-
-      {/* Bottom Advertisement Section */}
-      <SidebarAd />
     </div>
   );
 }

@@ -34,24 +34,6 @@ export default function RelatedToolsSidebar({ currentTool }: RelatedToolsSidebar
       iconColor: "text-green-600 dark:text-green-400",
       bgColor: "bg-green-100 dark:bg-green-900/30",
       testId: "link-text-case-converter"
-    },
-    {
-      href: "/reading-time-calculator",
-      name: "Reading Time",
-      description: "Calculate read duration",
-      icon: FaClock,
-      iconColor: "text-purple-600 dark:text-purple-400",
-      bgColor: "bg-purple-100 dark:bg-purple-900/30",
-      testId: "link-reading-time"
-    },
-    {
-      href: "/line-counter",
-      name: "Line Counter",
-      description: "Count text lines",
-      icon: FaSort,
-      iconColor: "text-orange-600 dark:text-orange-400",
-      bgColor: "bg-orange-100 dark:bg-orange-900/30",
-      testId: "link-line-counter"
     }
   ];
 
@@ -60,16 +42,6 @@ export default function RelatedToolsSidebar({ currentTool }: RelatedToolsSidebar
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      {/* Advertisement Placeholder */}
-      <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 border border-dashed border-gray-300 dark:border-gray-600">
-        <div className="text-center text-sm text-muted-foreground">
-          <div className="bg-gray-200 dark:bg-gray-700 rounded h-48 flex items-center justify-center mb-2">
-            <span className="text-gray-500 dark:text-gray-400">Advertisement Space</span>
-          </div>
-          <p className="text-xs">Promote your business here</p>
-        </div>
-      </div>
-      
       {/* Related Tools */}
       <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
         <h3 className="text-lg font-semibold text-foreground mb-4 border-b border-border pb-2">Related Tools</h3>
@@ -106,17 +78,6 @@ export default function RelatedToolsSidebar({ currentTool }: RelatedToolsSidebar
           </Link>
         </div>
       </div>
-
-      {/* Advertisement Placeholder */}
-      <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 border border-dashed border-gray-300 dark:border-gray-600">
-        <div className="text-center text-sm text-muted-foreground">
-          <div className="bg-gray-200 dark:bg-gray-700 rounded h-48 flex items-center justify-center mb-2">
-            <span className="text-gray-500 dark:text-gray-400">Advertisement Space</span>
-          </div>
-          <p className="text-xs">Promote your business here</p>
-        </div>
-      </div>
-
     </div>
   );
 }

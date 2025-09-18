@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 // Edit these settings to control ads across the entire website
 
 const ADS_CONFIG = {
-  enabled: true, // Set to false to hide all ads across the entire website
-  showPlaceholder: true, // Show placeholder in development/when ads are disabled
+  enabled: false, // Set to false to hide all ads across the entire website
+  showPlaceholder: false, // Show placeholder in development/when ads are disabled
   slots: {
     sidebar: {
       enabled: true,
