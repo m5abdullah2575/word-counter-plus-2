@@ -20,6 +20,7 @@ const FAQ = lazy(() => import("@/pages/FAQ"));
 const Privacy = lazy(() => import("@/pages/Privacy"));
 const Terms = lazy(() => import("@/pages/Terms"));
 const Disclaimer = lazy(() => import("@/pages/Disclaimer"));
+const Cookies = lazy(() => import("@/pages/Cookies"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const Tools = lazy(() => import("@/pages/Tools"));
 const TextCaseConverterPage = lazy(() => import("@/pages/TextCaseConverter"));
@@ -55,6 +56,7 @@ function Router() {
             <Route path="/privacy" component={Privacy} />
             <Route path="/terms" component={Terms} />
             <Route path="/disclaimer" component={Disclaimer} />
+            <Route path="/cookies" component={Cookies} />
           </>
         )}
         
@@ -72,6 +74,7 @@ function Router() {
             <Route path="/privacy" component={Privacy} />
             <Route path="/terms" component={Terms} />
             <Route path="/disclaimer" component={Disclaimer} />
+            <Route path="/cookies" component={Cookies} />
           </>
         )}
         

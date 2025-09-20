@@ -3,7 +3,6 @@ import { useTextAnalysisOptimized as useTextAnalysis } from '@/hooks/useTextAnal
 import StatsCard from './StatsCard';
 import KeywordTable from './KeywordTable';
 import ExportButtons from './ExportButtons';
-import ModernToolsSidebar from '@/components/common/ModernToolsSidebar';
 import { useToast } from '@/hooks/use-toast';
 import { parseFile, getFileInputAccept, type FileParseProgress } from '@/lib/fileImport';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -708,40 +707,6 @@ export default function WordCounterTool() {
             <ExportButtons text={text} stats={stats} readability={readability} keywords={keywords} />
           </div>
 
-          {/* Compact Related Tools Section */}
-          {text.trim() && (
-            <div className="bg-card rounded-lg p-3 sm:p-4 shadow-sm border border-border">
-              <h3 className="text-base font-semibold text-foreground mb-3">Try Other Tools</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <Link 
-                  href="/character-counter" 
-                  className="flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group" 
-                  data-testid="link-character-counter"
-                >
-                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
-                    <FaCopy className="text-blue-600 dark:text-blue-400 text-sm" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-foreground group-hover:text-primary transition-colors text-sm">Character Counter</h4>
-                    <p className="text-xs text-muted-foreground">Count characters & spaces</p>
-                  </div>
-                </Link>
-                <Link 
-                  href="/text-case-convert" 
-                  className="flex items-center p-3 bg-muted/50 rounded-lg border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 group" 
-                  data-testid="link-text-case-converter"
-                >
-                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
-                    <FaSync className="text-green-600 dark:text-green-400 text-sm" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-foreground group-hover:text-primary transition-colors text-sm">Case Converter</h4>
-                    <p className="text-xs text-muted-foreground">Change text case format</p>
-                  </div>
-                </Link>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </main>

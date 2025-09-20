@@ -35,7 +35,6 @@ import {
 } from 'react-icons/fa';
 import { parseFile, getFileInputAccept } from '@/lib/fileImport';
 import { Link } from 'wouter';
-import ModernToolsSidebar from '@/components/common/ModernToolsSidebar';
 
 export default function CharacterCounter() {
   const [text, setText] = useState('');
@@ -883,8 +882,6 @@ export default function CharacterCounter() {
             </TabsContent>
           </Tabs>
 
-          {/* Related Tools Sidebar */}
-          <ModernToolsSidebar currentTool="character-counter" />
         </div>
       </div>
     </main>

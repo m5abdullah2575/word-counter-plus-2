@@ -3,7 +3,6 @@ import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FaCheck, FaEraser, FaHighlighter, FaPaste, FaTrash, FaUpload, FaCopy, FaSync, FaSort, FaBook, FaClock, FaInfoCircle, FaCalendar } from "@/components/common/Icons";
 import { parseFile, getFileInputAccept, type FileParseProgress } from '@/lib/fileImport';
-import ModernToolsSidebar from '@/components/common/ModernToolsSidebar';
 import { Link } from 'wouter';
 
 // Case conversion functions - standalone and reusable
