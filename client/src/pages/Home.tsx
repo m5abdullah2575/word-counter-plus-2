@@ -3,7 +3,7 @@ import { lazy, Suspense } from 'react';
 const WordCounterTool = lazy(() => import('@/components/word-counter/WordCounterTool'));
 import { Link } from 'wouter';
 import { FaArrowRight, FaBolt, FaChartLine, FaCheckCircle, FaDownload, FaGraduationCap, FaPenFancy } from 'react-icons/fa';
-import { getCurrentOrigin, getDomainUrl } from '@/lib/site';
+import { getCurrentOrigin } from '@/lib/site';
 import { getWordCounterSEO } from '@/lib/seo-config';
 
 export default function Home() {
@@ -83,7 +83,7 @@ export default function Home() {
                 <li className="flex items-start">
                   <FaCheckCircle className="text-primary mr-3 mt-1" aria-label="Check Circle Icon" />
                   <div>
-                    <strong>Text Case Converter:</strong> <a href={getDomainUrl('case')} className="text-primary hover:text-primary/80 underline">Convert text between 12 different case formats</a> including camelCase, snake_case, and more
+                    <strong>Text Case Converter:</strong> Convert text between 12 different case formats including camelCase, snake_case, and more
                   </div>
                 </li>
                 <li className="flex items-start">
