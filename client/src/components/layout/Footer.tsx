@@ -19,7 +19,7 @@ import {
 export default function Footer() {
 
   return (
-    <footer className="bg-slate-900 dark:bg-slate-950 border-t-2 border-primary/20 mt-16">
+    <footer className="bg-white dark:bg-white border-t-2 border-primary/20 mt-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -30,18 +30,18 @@ export default function Footer() {
                 <FaPenNib className="text-white text-xl" aria-label="Word Counter Logo" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-slate-900">
                   Word Counter Plus
                 </h3>
                 <div className="flex items-center space-x-1">
                   {[...Array(5)].map((_, i) => (
                     <FaStar key={i} className="text-yellow-400 text-xs" />
                   ))}
-                  <span className="text-xs text-gray-400 ml-1">(4.9)</span>
+                  <span className="text-xs text-gray-600 ml-1">(4.9)</span>
                 </div>
               </div>
             </div>
-            <p className="text-gray-300 text-sm mb-4 leading-relaxed">
+            <p className="text-gray-700 dark:text-gray-700 text-sm mb-4 leading-relaxed">
               The most comprehensive word counting and text analysis tool trusted by writers worldwide.
             </p>
             
@@ -60,33 +60,33 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold text-white mb-4 flex items-center">
+            <h4 className="font-semibold text-slate-900 dark:text-slate-900 mb-4 flex items-center">
               <FaBookOpen className="w-4 h-4 mr-2 text-primary" />
               Quick Links
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/" className="text-gray-300 hover:text-white transition-colors duration-200">
+                <Link href="/" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/tools" className="text-gray-300 hover:text-white transition-colors duration-200">
+                <Link href="/tools" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
                   Tools
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-gray-300 hover:text-white transition-colors duration-200">
+                <Link href="/about" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="text-gray-300 hover:text-white transition-colors duration-200">
+                <Link href="/blog" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
                   Blog & Tips
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-gray-300 hover:text-white transition-colors duration-200">
+                <Link href="/contact" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
                   Contact
                 </Link>
               </li>
@@ -95,33 +95,33 @@ export default function Footer() {
 
           {/* Legal & Support */}
           <div>
-            <h4 className="font-semibold text-white mb-4 flex items-center">
+            <h4 className="font-semibold text-slate-900 dark:text-slate-900 mb-4 flex items-center">
               <FaCode className="w-4 h-4 mr-2 text-primary" />
               Legal & Support
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/faq" className="text-gray-300 hover:text-white transition-colors duration-200">
+                <Link href="/faq" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
                   FAQ & Help
                 </Link>
               </li>
               <li>
-                <Link href="/privacy" className="text-gray-300 hover:text-white transition-colors duration-200">
+                <Link href="/privacy" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="text-gray-300 hover:text-white transition-colors duration-200">
+                <Link href="/terms" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
                   Terms of Service
                 </Link>
               </li>
               <li>
-                <Link href="/cookies" className="text-gray-300 hover:text-white transition-colors duration-200">
+                <Link href="/cookies" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
                   Cookie Policy
                 </Link>
               </li>
               <li>
-                <Link href="/disclaimer" className="text-gray-300 hover:text-white transition-colors duration-200">
+                <Link href="/disclaimer" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
                   Disclaimer
                 </Link>
               </li>
@@ -132,13 +132,13 @@ export default function Footer() {
 
         
         {/* Social Media & Bottom Bar */}
-        <div className="mt-8 pt-6 border-t border-gray-700">
+        <div className="mt-8 pt-6 border-t border-gray-300">
           <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-            <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4 text-sm text-gray-300">
+            <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4 text-sm text-gray-700">
               <p>
                 © {new Date().getFullYear()} Word Counter Plus. All rights reserved.
               </p>
-              <div className="hidden sm:block w-1 h-1 bg-gray-500 rounded-full"></div>
+              <div className="hidden sm:block w-1 h-1 bg-gray-400 rounded-full"></div>
               <p className="flex items-center">
                 Made with <FaHeart className="text-red-500 mx-1" /> for writers worldwide
               </p>
@@ -146,7 +146,7 @@ export default function Footer() {
             
             {/* Social Media Icons */}
             <div className="flex items-center space-x-4">
-              <p className="text-sm text-gray-400 mr-2">Follow Us:</p>
+              <p className="text-sm text-gray-600 mr-2">Follow Us:</p>
               <a
                 href="https://facebook.com/wordcounterplus"
                 target="_blank"
