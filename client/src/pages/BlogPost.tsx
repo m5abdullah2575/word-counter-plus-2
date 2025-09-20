@@ -3,6 +3,7 @@ import { blogPosts, type BlogPost, getRelatedPosts } from '@/data/blogData';
 import useSEO from '@/hooks/useSEO';
 import { Link } from 'wouter';
 import { getRelatedTool } from '@/lib/tool-blog-mapping';
+import OptimizedImage from '@/components/ui/optimized-image';
 import {
   FaArrowLeft,
   FaBook,
@@ -56,18 +57,6 @@ export default function BlogPost() {
     );
   }
 
-  useSEO({
-    title: `${post.title} | Word Counter Plus Blog`,
-    description: post.excerpt,
-    keywords: `${post.tags.join(', ')}, writing tips, content creation, word counter, text analysis`,
-    canonical: `https://wordcounterplusapp.com/blog/${post.slug}`,
-    ogType: 'article',
-    ogImage: post.image || '/og-image.png',
-    twitterCard: 'summary_large_image',
-    author: 'Word Counter Plus Team',
-    siteName: 'Word Counter Plus'
-  });
-
   const jsonLdSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -97,12 +86,25 @@ export default function BlogPost() {
     },
     keywords: post.tags.join(', '),
     wordCount: post.content.split(' ').length,
-    timeRequired: post.readTime,
+    timeRequired: post.readTime.replace(/(\d+)\s*min\s*read/, 'PT$1M'),
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': `https://wordcounterplusapp.com/blog/${post.slug}`
     }
   };
+
+  useSEO({
+    title: `${post.title} | Word Counter Plus Blog`,
+    description: post.excerpt,
+    keywords: `${post.tags.join(', ')}, writing tips, content creation, word counter, text analysis`,
+    canonical: `https://wordcounterplusapp.com/blog/${post.slug}`,
+    ogType: 'article',
+    ogImage: post.image || '/og-image.png',
+    twitterCard: 'summary_large_image',
+    author: 'Word Counter Plus Team',
+    siteName: 'Word Counter Plus',
+    structuredData: jsonLdSchema
+  });
 
   // Convert markdown-style content to HTML-like JSX
   const renderContent = (content: string) => {
@@ -245,7 +247,7 @@ export default function BlogPost() {
         {/* Featured Image */}
         {post.image && (
           <div className="mb-8">
-            <img
+            <OptimizedImage
               src={post.image}
               alt={post.title}
               loading="lazy"
@@ -276,7 +278,7 @@ export default function BlogPost() {
                   <article key={relatedPost.id} className="bg-card rounded-lg p-4 border border-border hover:shadow-md transition-shadow">
                     {relatedPost.image && (
                       <div className="aspect-video mb-3">
-                        <img
+                        <OptimizedImage
                           src={relatedPost.image}
                           alt={relatedPost.title}
                           className="w-full h-full object-cover rounded"
@@ -425,20 +427,24 @@ export default function BlogPost() {
             {/* Post Preview */}
             <div className="mb-6 p-3 bg-muted/50 rounded-lg border border-border">
               {post.image && (
-                <img
+                <OptimizedImage
                   src={post.image}
                   alt={post.title}
                   className="w-full h-20 object-cover rounded mb-2"
+                  loading="lazy"
                 />
               )}
               <h3 className="font-semibold text-foreground text-sm mb-1">{post.title}</h3>
               <p className="text-xs text-muted-foreground line-clamp-2">{post.excerpt}</p>
               <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
                 <div className="flex items-center gap-2">
-                  <img 
+                  <OptimizedImage 
                     src="/word-counter-plus-logo.png" 
                     alt="Word Counter Plus" 
                     className="w-4 h-4 rounded-sm"
+                    loading="lazy"
+                    width={16}
+                    height={16}
                   />
                   <span className="bg-primary/10 text-primary px-2 py-1 rounded font-medium">
                     Word Counter Plus

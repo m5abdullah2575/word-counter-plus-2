@@ -6,6 +6,7 @@ import { blogPosts, BlogPost } from '@/data/blogData';
 import { useState, useMemo, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import AdSenseUnit from '@/components/ads/AdSenseUnit';
+import OptimizedImage from '@/components/ui/optimized-image';
 
 export type { BlogPost };
 
@@ -60,14 +61,6 @@ export default function Blog() {
     };
   }, [currentPage]);
 
-  useSEO({
-    title: "Blog - Writing Tips & Text Analysis Guides | Word Counter Plus",
-    description: "Discover expert writing tips, text analysis guides, and content creation strategies. Learn how to improve your writing with our comprehensive blog articles and tutorials.",
-    keywords: "writing tips, text analysis, content creation, SEO writing, blog posts, writing guides, readability tips, keyword optimization, content strategy, writing tutorials",
-    canonical: "https://wordcounterplusapp.com/blog",
-    ogType: 'article',
-  });
-
   const jsonLdSchema = {
     "@context": "https://schema.org",
     "@type": "Blog",
@@ -93,17 +86,20 @@ export default function Blog() {
     }))
   };
 
+  useSEO({
+    title: "Blog - Writing Tips & Text Analysis Guides | Word Counter Plus",
+    description: "Discover expert writing tips, text analysis guides, and content creation strategies. Learn how to improve your writing with our comprehensive blog articles and tutorials.",
+    keywords: "writing tips, text analysis, content creation, SEO writing, blog posts, writing guides, readability tips, keyword optimization, content strategy, writing tutorials",
+    canonical: "https://wordcounterplusapp.com/blog",
+    ogType: 'article',
+    structuredData: jsonLdSchema
+  });
+
   return (
     <main className="container mx-auto px-4 py-8">
-      {/* Strategic Content Ad - Above the fold but non-intrusive */}
+      {/* Strategic Content Ad - Currently disabled */}
       <div className="max-w-4xl mx-auto mb-8 no-print">
-        <AdSenseUnit 
-          adSlot="4567890123"
-          adFormat="horizontal"
-          style={{ minHeight: '90px' }}
-          className="w-full"
-          adTest={true}
-        />
+        <AdSenseUnit />
       </div>
 
       <div className="max-w-6xl mx-auto">
@@ -136,7 +132,7 @@ export default function Blog() {
               {/* Featured Image */}
               {post.image && (
                 <div className="aspect-video">
-                  <img
+                  <OptimizedImage
                     src={post.image}
                     alt={post.title}
                     className="w-full h-full object-cover"
