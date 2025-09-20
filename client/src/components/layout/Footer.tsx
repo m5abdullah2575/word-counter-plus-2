@@ -22,7 +22,7 @@ export default function Footer() {
     <footer className="bg-white dark:bg-white border-t-2 border-primary/20 mt-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div>
             <div className="flex items-center space-x-3 mb-4">
@@ -42,7 +42,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-gray-700 dark:text-gray-700 text-sm mb-4 leading-relaxed">
-              The most comprehensive word counting and text analysis tool trusted by writers worldwide.
+              The most comprehensive word counting and text analysis tool trusted by writers, students, and content creators worldwide.
             </p>
             
             {/* Features Highlight */}
@@ -53,26 +53,51 @@ export default function Footer() {
               </span>
               <span className="inline-flex items-center px-2.5 py-1 bg-green-500/20 text-green-400 text-xs font-medium rounded-full">
                 <FaUsers className="w-3 h-3 mr-1" />
-                100k+ Users
+                2M+ Users
               </span>
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Text Analysis Tools */}
           <div>
             <h4 className="font-semibold text-slate-900 dark:text-slate-900 mb-4 flex items-center">
-              <FaBookOpen className="w-4 h-4 mr-2 text-primary" />
-              Quick Links
+              <FaCode className="w-4 h-4 mr-2 text-primary" />
+              Text Analysis Tools
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
-                  Home
+                  Word Counter
+                </Link>
+              </li>
+              <li>
+                <Link href="/character-counter" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
+                  Character Counter
+                </Link>
+              </li>
+              <li>
+                <Link href="/text-case-convert" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
+                  Text Case Converter
                 </Link>
               </li>
               <li>
                 <Link href="/tools" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
-                  Tools
+                  All Tools
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Resources & Learning */}
+          <div>
+            <h4 className="font-semibold text-slate-900 dark:text-slate-900 mb-4 flex items-center">
+              <FaBookOpen className="w-4 h-4 mr-2 text-primary" />
+              Resources & Learning
+            </h4>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link href="/blog" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
+                  Writing Tips Blog
                 </Link>
               </li>
               <li>
@@ -81,30 +106,25 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
-                  Blog & Tips
+                <Link href="/faq" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
+                  FAQ & Help
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
-                  Contact
+                  Contact Support
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Legal & Support */}
+          {/* Legal & Company */}
           <div>
             <h4 className="font-semibold text-slate-900 dark:text-slate-900 mb-4 flex items-center">
-              <FaCode className="w-4 h-4 mr-2 text-primary" />
-              Legal & Support
+              <FaMapMarkerAlt className="w-4 h-4 mr-2 text-primary" />
+              Legal & Company
             </h4>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/faq" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
-                  FAQ & Help
-                </Link>
-              </li>
               <li>
                 <Link href="/privacy" className="text-gray-700 hover:text-slate-900 transition-colors duration-200">
                   Privacy Policy

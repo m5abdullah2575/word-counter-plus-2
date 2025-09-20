@@ -45,11 +45,46 @@ export default function CharacterCounter() {
   const lastKeyTimeRef = useRef<number>(0);
   const { toast } = useToast();
 
+  // Structured data for Character Counter tool
+  const characterCounterSchema = {
+    "@context": "https://schema.org",
+    "@type": ["WebApplication", "SoftwareApplication"],
+    "name": "Character Counter - Advanced Text Analysis Tool",
+    "alternateName": ["Character Counter", "Character Count Tool", "Text Character Counter"],
+    "url": "https://wordcounterplusapp.com/character-counter",
+    "description": "Professional character counter with real-time analysis, SEO optimization, and advanced text metrics. Count characters with/without spaces, analyze emoji, detect language, and optimize content for social media platforms.",
+    "applicationCategory": ["Productivity", "Text Analysis", "Writing", "SEO"],
+    "operatingSystem": "Web Browser",
+    "isAccessibleForFree": true,
+    "isFamilyFriendly": true,
+    "creator": {
+      "@type": "Organization", 
+      "name": "Word Counter Plus"
+    },
+    "featureList": [
+      "Character counting with/without spaces",
+      "Emoji detection and counting",
+      "Language detection",
+      "Social media character limits",
+      "Typing speed analysis",
+      "Text complexity scoring",
+      "Export functionality",
+      "Real-time analysis"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  };
+
   // SEO Configuration
   useSEO({
     title: 'Character Counter 2025 - Advanced Text Analysis & SEO Content Optimizer | Word Counter Plus',
     description: 'Professional character counter with real-time analysis, SEO optimization, keyword density tracking, readability scoring, and social media limit checking. Includes emoji detection, language analysis, typing speed metrics, and export features. Trusted by content creators, marketers, and writers worldwide. Mobile-optimized and completely free.',
-    keywords: 'character counter 2025, character count tool, free character counter, online character counter, text analysis tool, SEO content optimizer, keyword density analyzer, social media character limit, twitter character counter, facebook character limit, instagram caption counter, linkedin post counter, tiktok character limit, youtube description counter, meta description checker, title tag analyzer, email subject line counter, content optimization tool, readability score checker, emoji counter detector, language detection tool, typing speed calculator, text complexity analyzer, content grade level checker, writing productivity tool, content creator tool, digital marketing analyzer, copywriting optimizer, blog content analyzer, academic writing tool, student essay counter, business writing tool, professional communication analyzer'
+    keywords: 'character counter 2025, character count tool, free character counter, online character counter, text analysis tool, SEO content optimizer, keyword density analyzer, social media character limit, twitter character counter, facebook character limit, instagram caption counter, linkedin post counter, tiktok character limit, youtube description counter, meta description checker, title tag analyzer, email subject line counter, content optimization tool, readability score checker, emoji counter detector, language detection tool, typing speed calculator, text complexity analyzer, content grade level checker, writing productivity tool, content creator tool, digital marketing analyzer, copywriting optimizer, blog content analyzer, academic writing tool, student essay counter, business writing tool, professional communication analyzer',
+    canonical: 'https://wordcounterplusapp.com/character-counter',
+    structuredData: characterCounterSchema
   });
 
   // Auto-save and restore text
