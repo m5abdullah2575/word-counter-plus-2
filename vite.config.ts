@@ -5,6 +5,8 @@ import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
 import cssnano from "cssnano";
+import viteImagemin from "vite-plugin-imagemin";
+import webp from "imagemin-webp";
 
 // Small helper to resolve paths
 const r = (...segments: string[]) => path.resolve(process.cwd(), ...segments);
@@ -16,6 +18,23 @@ export default defineConfig({
     ...(process.env.NODE_ENV !== "production" && process.env.REPL_ID !== undefined
       ? [
           (await import("@replit/vite-plugin-cartographer")).cartographer(),
+        ]
+      : []),
+    // Image optimization - only in production
+    ...(process.env.NODE_ENV === "production"
+      ? [
+          viteImagemin({
+            gifsicle: { optimizationLevel: 7, interlaced: false },
+            optipng: { optimizationLevel: 7 },
+            mozjpeg: { quality: 85, progressive: true },
+            pngquant: { quality: [0.65, 0.8], speed: 4 },
+            svgo: {
+              plugins: [
+                { name: "removeViewBox", active: false },
+                { name: "removeEmptyAttrs", active: false },
+              ],
+            },
+          }),
         ]
       : []),
   ],

@@ -83,12 +83,6 @@ export default function Tools() {
     return () => clearTimeout(timeoutId);
   }, []);
 
-  useSEO({
-    title: 'All Text Tools - Word Counter Plus',
-    description: 'Explore our comprehensive collection of text analysis and processing tools. From word counting to text case conversion and more.',
-    keywords: 'text tools, word counter, text case converter, text analysis, writing tools'
-  });
-
   // Get host-aware URLs for tools
   const toolConfig = getToolConfig();
 
@@ -121,6 +115,63 @@ export default function Tools() {
       category: 'text-processing' as ToolCategory
     }
   ];
+
+  // Enhanced structured data for Tools collection
+  const toolsCollectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Text Analysis Tools Collection - Word Counter Plus",
+    "description": "Comprehensive collection of professional text analysis, word counting, and text processing tools for writers, content creators, and developers.",
+    "url": "https://wordcounterplusapp.com/tools",
+    "mainEntity": {
+      "@type": "ItemList",
+      "numberOfItems": allTools.length,
+      "itemListElement": allTools.map((tool, index) => ({
+        "@type": "SoftwareApplication",
+        "position": index + 1,
+        "name": tool.title,
+        "description": tool.description,
+        "url": tool.isExternal ? tool.href : `https://wordcounterplusapp.com${tool.href}`,
+        "applicationCategory": "Productivity",
+        "operatingSystem": "Web Browser",
+        "isAccessibleForFree": true,
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }))
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://wordcounterplusapp.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Tools",
+          "item": "https://wordcounterplusapp.com/tools"
+        }
+      ]
+    }
+  };
+
+  useSEO({
+    title: 'All Text Tools - Word Counter Plus',
+    description: 'Explore our comprehensive collection of text analysis and processing tools. From word counting to text case conversion and more.',
+    keywords: 'text tools, word counter, text case converter, text analysis, writing tools',
+    canonical: 'https://wordcounterplusapp.com/tools',
+    structuredData: toolsCollectionSchema,
+    breadcrumbs: [
+      { name: "Home", url: "https://wordcounterplusapp.com" },
+      { name: "Tools", url: "https://wordcounterplusapp.com/tools" }
+    ]
+  });
 
   // Filter tools based on search query and category
   const filteredTools = useMemo(() => {
