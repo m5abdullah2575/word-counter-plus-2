@@ -80,22 +80,20 @@ export const useSEO = ({
     updateMetaTag('og:image:height', '630', true);
     updateMetaTag('og:image:alt', title, true);
     updateMetaTag('og:site_name', siteName || ogSiteName, true);
-    
-    if (canonical) {
-      updateMetaTag('og:url', canonical, true);
-    }
+    updateMetaTag('og:url', canonical || `${currentOrigin}${window.location.pathname}`, true);
     
     if (author) {
       updateMetaTag('article:author', author, true);
     }
 
-    // Twitter
-    updateMetaTag('twitter:card', twitterCard, true);
-    updateMetaTag('twitter:title', title, true);
-    updateMetaTag('twitter:description', description, true);
-    updateMetaTag('twitter:image', ogImage.startsWith('http') ? ogImage : `${currentOrigin}${ogImage}`, true);
-    updateMetaTag('twitter:site', '@wordcounterplusapp', true);
-    updateMetaTag('twitter:creator', '@wordcounterplusapp', true);
+    // Twitter Cards (use name attribute, not property)
+    updateMetaTag('twitter:card', twitterCard);
+    updateMetaTag('twitter:title', title);
+    updateMetaTag('twitter:description', description);
+    updateMetaTag('twitter:image', ogImage.startsWith('http') ? ogImage : `${currentOrigin}${ogImage}`);
+    updateMetaTag('twitter:image:alt', title);
+    updateMetaTag('twitter:site', '@wordcounterplusapp');
+    updateMetaTag('twitter:creator', '@wordcounterplusapp');
 
     // Canonical URL - default to current origin + path if not provided
     const finalCanonical = canonical || `${currentOrigin}${window.location.pathname}`;
