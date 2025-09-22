@@ -2,7 +2,7 @@ import { Link } from 'wouter';
 import useSEO from '@/hooks/useSEO';
 import { Card, CardDescription, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { getAvailableTools, getComingSoonTools } from '@/data/toolsConfig';
+import { getToolsData } from '@/data/toolsConfig';
 import { useEffect } from 'react';
 
 export default function Tools() {
@@ -11,11 +11,11 @@ export default function Tools() {
     window.scrollTo(0, 0);
   }, []);
 
-  // Get tools data from configuration
-  const availableTools = getAvailableTools();
-  const comingSoonTools = getComingSoonTools();
+  // Get tools data from configuration - merge all tools together
+  const allTools = getToolsData();
 
-  // Enhanced structured data for Tools collection
+  // Enhanced structured data for Tools collection (only available tools)
+  const availableTools = allTools.filter(tool => !tool.isComingSoon);
   const toolsCollectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -87,63 +87,82 @@ export default function Tools() {
             </p>
           </div>
 
-          {/* Available Tools Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {availableTools.map((tool) => {
+          {/* All Tools Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {allTools.map((tool) => {
               const IconComponent = tool.icon;
+              const isComingSoon = tool.isComingSoon;
+              
               const cardContent = (
-                <Card className="h-full group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer bg-card dark:bg-card border border-border dark:border-border hover:border-primary/30 rounded-xl overflow-hidden">
-                  <CardHeader className="text-center p-6 relative">
-                    {/* Category Badge */}
-                    <div className="absolute top-4 right-4">
-                      <Badge variant="secondary" className="text-xs">
-                        {tool.category}
+                <Card className={`h-full group transition-all duration-300 bg-card border border-border rounded-lg overflow-hidden ${
+                  isComingSoon 
+                    ? 'opacity-75 cursor-default' 
+                    : 'hover:shadow-lg hover:-translate-y-1 cursor-pointer hover:border-primary/30'
+                }`}>
+                  <CardHeader className="text-center p-6">
+                    {/* Status Badge */}
+                    <div className="flex justify-between items-start mb-4">
+                      <Badge variant={isComingSoon ? "outline" : "secondary"} className="text-xs">
+                        {isComingSoon ? "Coming Soon" : tool.category}
                       </Badge>
                     </div>
                     
                     {/* Icon */}
                     <div className="flex justify-center mb-4">
-                      <div className="p-4 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 group-hover:from-primary/20 group-hover:to-primary/10 transition-all duration-300">
-                        <IconComponent className="text-3xl text-primary group-hover:scale-110 transition-transform duration-300" />
+                      <div className={`p-3 rounded-lg ${
+                        isComingSoon 
+                          ? 'bg-muted' 
+                          : 'bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300'
+                      }`}>
+                        <IconComponent className={`text-2xl ${
+                          isComingSoon 
+                            ? 'text-muted-foreground' 
+                            : 'text-primary group-hover:scale-105 transition-transform duration-300'
+                        }`} />
                       </div>
                     </div>
                     
                     {/* Title */}
-                    <CardTitle className="text-lg font-bold text-foreground dark:text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
+                    <CardTitle className={`text-xl font-bold mb-3 ${
+                      isComingSoon 
+                        ? 'text-muted-foreground' 
+                        : 'text-foreground group-hover:text-primary transition-colors duration-300'
+                    }`}>
                       {tool.title}
                     </CardTitle>
                     
                     {/* Description */}
-                    <CardDescription className="text-muted-foreground dark:text-muted-foreground leading-relaxed text-sm line-clamp-3">
+                    <CardDescription className={`leading-relaxed ${
+                      isComingSoon 
+                        ? 'text-muted-foreground/80' 
+                        : 'text-muted-foreground'
+                    }`}>
                       {tool.description}
                     </CardDescription>
                   </CardHeader>
                   
-                  <CardContent className="px-6 pb-6">
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-1 mb-4">
-                      {tool.tags.slice(0, 3).map((tag) => (
-                        <Badge key={tag} variant="outline" className="text-xs py-1 px-2 rounded-full">
-                          {tag}
-                        </Badge>
-                      ))}
-                      {tool.tags.length > 3 && (
-                        <Badge variant="outline" className="text-xs py-1 px-2 rounded-full">
-                          +{tool.tags.length - 3}
-                        </Badge>
-                      )}
-                    </div>
-                    
-                    {/* Action Indicator */}
-                    <div className="flex items-center text-primary text-sm font-medium group-hover:translate-x-1 transition-transform duration-300">
-                      Try it now 
-                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </div>
-                  </CardContent>
+                  {!isComingSoon && (
+                    <CardContent className="px-6 pb-6">
+                      {/* Action Indicator */}
+                      <div className="flex items-center justify-center text-primary text-sm font-medium group-hover:translate-x-1 transition-transform duration-300">
+                        Try it now 
+                        <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    </CardContent>
+                  )}
                 </Card>
               );
+
+              // Only make clickable if not coming soon
+              if (isComingSoon) {
+                return (
+                  <div key={tool.id} data-testid={`tool-${tool.id}`}>
+                    {cardContent}
+                  </div>
+                );
+              }
 
               // Use external link for cross-domain navigation, internal Link for same-domain
               if (tool.isExternal) {
@@ -167,54 +186,6 @@ export default function Tools() {
             })}
           </div>
 
-          {/* Coming Soon Tools */}
-          {comingSoonTools.length > 0 && (
-            <div className="mt-16">
-              <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-foreground mb-2">
-                  Coming Soon
-                </h2>
-                <p className="text-muted-foreground">
-                  Exciting new tools we're working on for you
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {comingSoonTools.map((tool) => {
-                  const IconComponent = tool.icon;
-                  return (
-                    <Card key={tool.id} className="h-full opacity-75 bg-card dark:bg-card border border-border dark:border-border rounded-xl overflow-hidden">
-                      <CardHeader className="text-center p-6 relative">
-                        {/* Coming Soon Badge */}
-                        <div className="absolute top-4 right-4">
-                          <Badge variant="secondary" className="text-xs">
-                            Coming Soon
-                          </Badge>
-                        </div>
-                        
-                        {/* Icon */}
-                        <div className="flex justify-center mb-4">
-                          <div className="p-4 rounded-2xl bg-muted dark:bg-muted">
-                            <IconComponent className="text-3xl text-muted-foreground dark:text-muted-foreground" />
-                          </div>
-                        </div>
-                        
-                        {/* Title */}
-                        <CardTitle className="text-lg font-bold text-muted-foreground dark:text-muted-foreground mb-3">
-                          {tool.title}
-                        </CardTitle>
-                        
-                        {/* Description */}
-                        <CardDescription className="text-muted-foreground/80 dark:text-muted-foreground/80 leading-relaxed text-sm">
-                          {tool.description}
-                        </CardDescription>
-                      </CardHeader>
-                    </Card>
-                  );
-                })}
-              </div>
-            </div>
-          )}
 
           {/* CTA Section */}
           <div className="mt-16 text-center bg-muted/30 rounded-xl p-8 border border-border/50">
