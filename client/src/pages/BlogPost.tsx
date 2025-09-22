@@ -4,7 +4,6 @@ import useSEO from '@/hooks/useSEO';
 import { Link } from 'wouter';
 import { getRelatedTool } from '@/lib/tool-blog-mapping';
 import OptimizedImage from '@/components/ui/optimized-image';
-import RelatedContent, { BLOG_RELATED_CONTENT } from '@/components/common/RelatedContent';
 import {
   FaArrowLeft,
   FaBook,
@@ -258,15 +257,6 @@ export default function BlogPost() {
           </div>
         </article>
 
-        {/* Related Tools and Content */}
-        {BLOG_RELATED_CONTENT[post.slug] && (
-          <RelatedContent
-            title="Recommended Tools & Articles"
-            items={BLOG_RELATED_CONTENT[post.slug]}
-            maxItems={4}
-            className="mt-12"
-          />
-        )}
 
         {/* Related Posts */}
         {(() => {
