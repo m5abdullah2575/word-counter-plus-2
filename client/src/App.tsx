@@ -46,6 +46,7 @@ function Router() {
           <>
             <Route path="/" component={Home} />
             <Route path="/text-case-convert" component={TextCaseConverterPage} />
+            <Route path="/text-case-converter" component={TextCaseConverterPage} />
             <Route path="/tools" component={Tools} />
             <Route path="/character-counter" component={CharacterCounter} />
             <Route path="/about" component={About} />
@@ -66,6 +67,7 @@ function Router() {
             <Route path="/tools" component={Tools} />
             <Route path="/character-counter" component={CharacterCounter} />
             <Route path="/text-case-convert" component={TextCaseConverterPage} />
+            <Route path="/text-case-converter" component={TextCaseConverterPage} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
             <Route path="/blog/:slug" component={BlogPost} />
