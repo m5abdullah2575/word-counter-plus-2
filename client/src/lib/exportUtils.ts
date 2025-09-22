@@ -209,17 +209,3 @@ Reading Time: ${readability.readingTime} minutes`;
   }
 }
 
-export function shareOnSocial(platform: string, stats: TextStats, readability: ReadabilityStats): void {
-  const text = `I just analyzed my text with WordCount Pro! ${stats.wordCount} words, ${readability.score} readability score.`;
-  const url = window.location.href;
-
-  const shareUrls = {
-    twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
-    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
-    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`
-  };
-
-  if (shareUrls[platform as keyof typeof shareUrls]) {
-    window.open(shareUrls[platform as keyof typeof shareUrls], '_blank', 'width=600,height=400');
-  }
-}

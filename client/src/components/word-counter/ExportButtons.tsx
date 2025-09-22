@@ -1,14 +1,11 @@
 import { TextStats, ReadabilityStats, KeywordAnalysis } from '@/lib/textAnalysis';
-import { exportPDF, exportCSV, exportTXT, copyResultsToClipboard, shareOnSocial } from '@/lib/exportUtils';
+import { exportPDF, exportCSV, exportTXT, copyResultsToClipboard } from '@/lib/exportUtils';
 import { useToast } from '@/hooks/use-toast';
 import { 
   FaFilePdf, 
   FaFileCsv, 
   FaFileAlt, 
-  FaCopy, 
-  FaTwitter, 
-  FaLinkedin, 
-  FaFacebook 
+  FaCopy 
 } from 'react-icons/fa';
 
 interface ExportButtonsProps {
@@ -67,22 +64,16 @@ export default function ExportButtons({ text, stats, readability, keywords }: Ex
     }
   };
 
-  const handleShare = (platform: string) => {
-    shareOnSocial(platform, stats, readability);
-  };
 
   const buttons = [
     { id: 'pdf', Icon: FaFilePdf, label: 'PDF', color: 'text-red-500', action: () => handleExport('pdf') },
     { id: 'csv', Icon: FaFileCsv, label: 'CSV', color: 'text-green-500', action: () => handleExport('csv') },
     { id: 'txt', Icon: FaFileAlt, label: 'TXT', color: 'text-blue-500', action: () => handleExport('txt') },
     { id: 'copy', Icon: FaCopy, label: 'Copy', color: 'text-purple-500', action: handleCopy },
-    { id: 'twitter', Icon: FaTwitter, label: 'Twitter', color: 'text-blue-400', action: () => handleShare('twitter') },
-    { id: 'linkedin', Icon: FaLinkedin, label: 'LinkedIn', color: 'text-blue-600', action: () => handleShare('linkedin') },
-    { id: 'facebook', Icon: FaFacebook, label: 'Facebook', color: 'text-blue-500', action: () => handleShare('facebook') },
   ];
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
       {buttons.map((button) => {
         const IconComponent = button.Icon;
         return (
