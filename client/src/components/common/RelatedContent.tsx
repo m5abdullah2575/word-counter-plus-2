@@ -95,20 +95,6 @@ export const TOOL_RELATED_CONTENT: Record<string, RelatedItem[]> = {
       href: '/blog/seo-content-writing-ultimate-guide',
       type: 'blog',
       category: 'SEO'
-    },
-    {
-      title: 'Character Counter',
-      description: 'Count characters with and without spaces, check social media limits.',
-      href: '/character-counter',
-      type: 'tool',
-      category: 'Text Analysis'
-    },
-    {
-      title: 'Text Case Converter',
-      description: 'Convert text between different cases for better formatting.',
-      href: '/text-case-converter',
-      type: 'tool',
-      category: 'Text Processing'
     }
   ],
   'character-counter': [

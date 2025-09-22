@@ -6,8 +6,7 @@ import {
   FaXTwitter,
 } from "react-icons/fa6";
 import { 
-  FaPenNib,
-  FaHeart
+  FaPenNib
 } from "react-icons/fa";
 
 export default function Footer() {
@@ -114,20 +113,17 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row justify-between items-center pt-8 border-t border-border space-y-4 sm:space-y-0">
           <div className="flex items-center text-sm text-muted-foreground">
             <span data-testid="text-copyright">© {new Date().getFullYear()} Word Counter Plus. All rights reserved.</span>
-            <span className="hidden sm:inline mx-3">•</span>
-            <span className="flex items-center">
-              Made with <FaHeart className="text-red-500 mx-1" /> for writers
-            </span>
           </div>
           
           {/* Social Media */}
           <div className="flex items-center space-x-3">
+            <span className="text-sm text-muted-foreground mr-2">Follow us on</span>
             <a
               href="https://facebook.com/wordcounterplus"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-700 hover:scale-110 transition-all duration-200"
               data-testid="link-facebook"
             >
               <FaFacebook className="w-4 h-4" />
@@ -137,7 +133,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Twitter"
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-black text-white hover:bg-gray-800 transition-colors"
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-black text-white hover:bg-gray-800 hover:scale-110 transition-all duration-200"
               data-testid="link-twitter"
             >
               <FaXTwitter className="w-4 h-4" />
@@ -147,7 +143,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white hover:opacity-90 transition-opacity"
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white hover:opacity-90 hover:scale-110 transition-all duration-200"
               data-testid="link-instagram"
             >
               <FaInstagram className="w-4 h-4" />
@@ -157,7 +153,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-700 text-white hover:bg-blue-800 transition-colors"
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-700 text-white hover:bg-blue-800 hover:scale-110 transition-all duration-200"
               data-testid="link-linkedin"
             >
               <FaLinkedin className="w-4 h-4" />
