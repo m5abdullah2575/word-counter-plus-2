@@ -1,12 +1,8 @@
 import { Link } from 'wouter';
 import useSEO from '@/hooks/useSEO';
-import { 
-  FaPenFancy, 
-  FaTextHeight, 
-  FaHashtag
-} from 'react-icons/fa';
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { getToolConfig, isDevelopment } from '@/lib/site';
+import { Card, CardDescription, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { getAvailableTools, getComingSoonTools } from '@/data/toolsConfig';
 import { useEffect } from 'react';
 
 export default function Tools() {
@@ -15,35 +11,9 @@ export default function Tools() {
     window.scrollTo(0, 0);
   }, []);
 
-  // Get host-aware URLs for tools
-  const toolConfig = getToolConfig();
-
-  const tools = [
-    {
-      id: 'word-counter',
-      title: 'Word Counter',
-      description: 'Advanced word counting tool with real-time text analysis, readability scores, and keyword density analysis. Perfect for writers, students, and content creators.',
-      icon: FaPenFancy,
-      href: toolConfig.wordCounterUrl,
-      isExternal: !isDevelopment() && !toolConfig.isMainDomain
-    },
-    {
-      id: 'character-counter',
-      title: 'Character Counter',
-      description: 'Count characters with and without spaces, words, sentences, paragraphs, and check social media character limits for all major platforms.',
-      icon: FaHashtag,
-      href: '/character-counter',
-      isExternal: false
-    },
-    {
-      id: 'text-case-converter',
-      title: 'Text Case Converter',
-      description: 'Convert text between different cases: uppercase, lowercase, title case, camel case, and more. Ideal for formatting text for different platforms.',
-      icon: FaTextHeight,
-      href: toolConfig.textCaseUrl,
-      isExternal: !isDevelopment() && !toolConfig.isMainDomain
-    }
-  ];
+  // Get tools data from configuration
+  const availableTools = getAvailableTools();
+  const comingSoonTools = getComingSoonTools();
 
   // Enhanced structured data for Tools collection
   const toolsCollectionSchema = {
@@ -54,8 +24,8 @@ export default function Tools() {
     "url": "https://wordcounterplusapp.com/tools",
     "mainEntity": {
       "@type": "ItemList",
-      "numberOfItems": tools.length,
-      "itemListElement": tools.map((tool, index) => ({
+      "numberOfItems": availableTools.length,
+      "itemListElement": availableTools.map((tool, index) => ({
         "@type": "SoftwareApplication",
         "position": index + 1,
         "name": tool.title,
@@ -117,25 +87,61 @@ export default function Tools() {
             </p>
           </div>
 
-          {/* Tools Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {tools.map((tool) => {
+          {/* Available Tools Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {availableTools.map((tool) => {
               const IconComponent = tool.icon;
               const cardContent = (
-                <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer bg-card border-border">
-                  <CardHeader className="text-center p-8">
-                    <div className="flex justify-center mb-6">
-                      <div className="p-4 rounded-xl bg-primary/10">
-                        <IconComponent className="text-4xl text-primary" />
+                <Card className="h-full group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer bg-card dark:bg-card border border-border dark:border-border hover:border-primary/30 rounded-xl overflow-hidden">
+                  <CardHeader className="text-center p-6 relative">
+                    {/* Category Badge */}
+                    <div className="absolute top-4 right-4">
+                      <Badge variant="secondary" className="text-xs">
+                        {tool.category}
+                      </Badge>
+                    </div>
+                    
+                    {/* Icon */}
+                    <div className="flex justify-center mb-4">
+                      <div className="p-4 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 group-hover:from-primary/20 group-hover:to-primary/10 transition-all duration-300">
+                        <IconComponent className="text-3xl text-primary group-hover:scale-110 transition-transform duration-300" />
                       </div>
                     </div>
-                    <CardTitle className="text-xl font-bold text-foreground mb-3">
+                    
+                    {/* Title */}
+                    <CardTitle className="text-lg font-bold text-foreground dark:text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
                       {tool.title}
                     </CardTitle>
-                    <CardDescription className="text-muted-foreground leading-relaxed">
+                    
+                    {/* Description */}
+                    <CardDescription className="text-muted-foreground dark:text-muted-foreground leading-relaxed text-sm line-clamp-3">
                       {tool.description}
                     </CardDescription>
                   </CardHeader>
+                  
+                  <CardContent className="px-6 pb-6">
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-1 mb-4">
+                      {tool.tags.slice(0, 3).map((tag) => (
+                        <Badge key={tag} variant="outline" className="text-xs py-1 px-2 rounded-full">
+                          {tag}
+                        </Badge>
+                      ))}
+                      {tool.tags.length > 3 && (
+                        <Badge variant="outline" className="text-xs py-1 px-2 rounded-full">
+                          +{tool.tags.length - 3}
+                        </Badge>
+                      )}
+                    </div>
+                    
+                    {/* Action Indicator */}
+                    <div className="flex items-center text-primary text-sm font-medium group-hover:translate-x-1 transition-transform duration-300">
+                      Try it now 
+                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </CardContent>
                 </Card>
               );
 
@@ -160,6 +166,55 @@ export default function Tools() {
               }
             })}
           </div>
+
+          {/* Coming Soon Tools */}
+          {comingSoonTools.length > 0 && (
+            <div className="mt-16">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold text-foreground mb-2">
+                  Coming Soon
+                </h2>
+                <p className="text-muted-foreground">
+                  Exciting new tools we're working on for you
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {comingSoonTools.map((tool) => {
+                  const IconComponent = tool.icon;
+                  return (
+                    <Card key={tool.id} className="h-full opacity-75 bg-card dark:bg-card border border-border dark:border-border rounded-xl overflow-hidden">
+                      <CardHeader className="text-center p-6 relative">
+                        {/* Coming Soon Badge */}
+                        <div className="absolute top-4 right-4">
+                          <Badge variant="secondary" className="text-xs">
+                            Coming Soon
+                          </Badge>
+                        </div>
+                        
+                        {/* Icon */}
+                        <div className="flex justify-center mb-4">
+                          <div className="p-4 rounded-2xl bg-muted dark:bg-muted">
+                            <IconComponent className="text-3xl text-muted-foreground dark:text-muted-foreground" />
+                          </div>
+                        </div>
+                        
+                        {/* Title */}
+                        <CardTitle className="text-lg font-bold text-muted-foreground dark:text-muted-foreground mb-3">
+                          {tool.title}
+                        </CardTitle>
+                        
+                        {/* Description */}
+                        <CardDescription className="text-muted-foreground/80 dark:text-muted-foreground/80 leading-relaxed text-sm">
+                          {tool.description}
+                        </CardDescription>
+                      </CardHeader>
+                    </Card>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {/* CTA Section */}
           <div className="mt-16 text-center bg-muted/30 rounded-xl p-8 border border-border/50">
