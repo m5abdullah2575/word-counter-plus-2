@@ -454,9 +454,9 @@ export default function TextCaseConverter() {
                 </TabsList>
                 
                 <TabsContent value="basic" className="mt-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
                     {basicOptions.map((option) => (
-                      <div key={option.key} className="border border-border rounded-lg p-4">
+                      <div key={option.key} className="border border-border rounded-lg p-3 sm:p-4">
                         <div className="mb-3">
                           <h3 className="font-semibold text-foreground mb-1">{option.name}</h3>
                           <p className="text-xs text-muted-foreground">{option.description}</p>
@@ -464,10 +464,10 @@ export default function TextCaseConverter() {
                         <ScrollableResult 
                           convertedText={textCaseConverters[option.key](text)}
                         />
-                        <div className="flex gap-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
                           <button
                             onClick={() => copyToClipboard(textCaseConverters[option.key](text), option.name)}
-                            className="flex-1 px-3 py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 transition-colors flex items-center justify-center"
+                            className="flex-1 px-3 py-2 sm:py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 transition-colors flex items-center justify-center"
                             data-testid={`button-copy-${option.key}`}
                           >
                             <FaCopy className="mr-1" />
@@ -475,11 +475,11 @@ export default function TextCaseConverter() {
                           </button>
                           <button
                             onClick={() => downloadText(textCaseConverters[option.key](text), option.name)}
-                            className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 transition-colors"
+                            className="w-full sm:w-auto px-3 py-2 sm:py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 transition-colors flex items-center justify-center sm:justify-start"
                             data-testid={`button-download-${option.key}`}
                             title="Download as text file"
                           >
-                            📥
+                            📥 <span className="ml-1 sm:hidden">Download</span>
                           </button>
                         </div>
                       </div>
@@ -488,9 +488,9 @@ export default function TextCaseConverter() {
                 </TabsContent>
                 
                 <TabsContent value="programming" className="mt-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
                     {programmingOptions.map((option) => (
-                      <div key={option.key} className="border border-border rounded-lg p-4">
+                      <div key={option.key} className="border border-border rounded-lg p-3 sm:p-4">
                         <div className="mb-3">
                           <h3 className="font-semibold text-foreground mb-1">{option.name}</h3>
                           <p className="text-xs text-muted-foreground">{option.description}</p>
@@ -498,10 +498,10 @@ export default function TextCaseConverter() {
                         <ScrollableResult 
                           convertedText={textCaseConverters[option.key](text)}
                         />
-                        <div className="flex gap-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
                           <button
                             onClick={() => copyToClipboard(textCaseConverters[option.key](text), option.name)}
-                            className="flex-1 px-3 py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 transition-colors flex items-center justify-center"
+                            className="flex-1 px-3 py-2 sm:py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 transition-colors flex items-center justify-center"
                             data-testid={`button-copy-${option.key}`}
                           >
                             <FaCopy className="mr-1" />
@@ -509,11 +509,11 @@ export default function TextCaseConverter() {
                           </button>
                           <button
                             onClick={() => downloadText(textCaseConverters[option.key](text), option.name)}
-                            className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 transition-colors"
+                            className="w-full sm:w-auto px-3 py-2 sm:py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 transition-colors flex items-center justify-center sm:justify-start"
                             data-testid={`button-download-${option.key}`}
                             title="Download as text file"
                           >
-                            📥
+                            📥 <span className="ml-1 sm:hidden">Download</span>
                           </button>
                         </div>
                       </div>
@@ -522,9 +522,9 @@ export default function TextCaseConverter() {
                 </TabsContent>
                 
                 <TabsContent value="other" className="mt-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
                     {otherOptions.map((option) => (
-                      <div key={option.key} className="border border-border rounded-lg p-4">
+                      <div key={option.key} className="border border-border rounded-lg p-3 sm:p-4">
                         <div className="mb-3">
                           <h3 className="font-semibold text-foreground mb-1">{option.name}</h3>
                           <p className="text-xs text-muted-foreground">{option.description}</p>
@@ -532,10 +532,10 @@ export default function TextCaseConverter() {
                         <ScrollableResult 
                           convertedText={textCaseConverters[option.key](text)}
                         />
-                        <div className="flex gap-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
                           <button
                             onClick={() => copyToClipboard(textCaseConverters[option.key](text), option.name)}
-                            className="flex-1 px-3 py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 transition-colors flex items-center justify-center"
+                            className="flex-1 px-3 py-2 sm:py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 transition-colors flex items-center justify-center"
                             data-testid={`button-copy-${option.key}`}
                           >
                             <FaCopy className="mr-1" />
@@ -543,11 +543,11 @@ export default function TextCaseConverter() {
                           </button>
                           <button
                             onClick={() => downloadText(textCaseConverters[option.key](text), option.name)}
-                            className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 transition-colors"
+                            className="w-full sm:w-auto px-3 py-2 sm:py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 transition-colors flex items-center justify-center sm:justify-start"
                             data-testid={`button-download-${option.key}`}
                             title="Download as text file"
                           >
-                            📥
+                            📥 <span className="ml-1 sm:hidden">Download</span>
                           </button>
                         </div>
                       </div>
