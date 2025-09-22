@@ -2,11 +2,7 @@ import {
   FaPenFancy, 
   FaTextHeight, 
   FaHashtag,
-  FaSpellCheck,
-  FaAlignLeft,
-  FaPalette,
-  FaLanguage,
-  FaFileAlt
+  FaPlus
 } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 
@@ -59,60 +55,16 @@ export const getToolsData = (): Tool[] => {
       tags: ['case conversion', 'formatting', 'uppercase', 'lowercase'],
       featured: true
     },
-    // Future tools (coming soon)
+    // Future tools (coming soon) - only one placeholder
     {
-      id: 'grammar-checker',
-      title: 'Grammar Checker',
-      description: 'Advanced grammar and spell checking tool to help you write error-free content with intelligent suggestions and corrections.',
-      icon: FaSpellCheck,
-      href: '/grammar-checker',
+      id: 'more-tools-coming-soon',
+      title: 'More Tools Coming Soon',
+      description: 'We\'re constantly adding new text processing and analysis tools to help improve your workflow.',
+      icon: FaPlus,
+      href: '#',
       isExternal: false,
-      category: 'Analysis',
-      tags: ['grammar', 'spelling', 'correction', 'proofreading'],
-      isComingSoon: true
-    },
-    {
-      id: 'text-summarizer',
-      title: 'Text Summarizer',
-      description: 'Automatically generate concise summaries of long texts while preserving key information and main ideas.',
-      icon: FaAlignLeft,
-      href: '/text-summarizer',
-      isExternal: false,
-      category: 'Analysis',
-      tags: ['summarize', 'ai', 'content', 'extract'],
-      isComingSoon: true
-    },
-    {
-      id: 'text-formatter',
-      title: 'Text Formatter',
-      description: 'Format and beautify your text with various styling options, indentation, and structure improvements.',
-      icon: FaPalette,
-      href: '/text-formatter',
-      isExternal: false,
-      category: 'Formatting',
-      tags: ['format', 'beautify', 'structure', 'styling'],
-      isComingSoon: true
-    },
-    {
-      id: 'language-detector',
-      title: 'Language Detector',
-      description: 'Automatically detect the language of any text with high accuracy across multiple languages and scripts.',
-      icon: FaLanguage,
-      href: '/language-detector',
-      isExternal: false,
-      category: 'Analysis',
-      tags: ['language', 'detection', 'multilingual', 'identify'],
-      isComingSoon: true
-    },
-    {
-      id: 'text-extractor',
-      title: 'Text Extractor',
-      description: 'Extract text from images, PDFs, and other documents with OCR technology for easy editing and analysis.',
-      icon: FaFileAlt,
-      href: '/text-extractor',
-      isExternal: false,
-      category: 'Conversion',
-      tags: ['ocr', 'extract', 'pdf', 'image', 'conversion'],
+      category: 'Coming Soon',
+      tags: ['coming', 'soon', 'new', 'tools'],
       isComingSoon: true
     }
   ];

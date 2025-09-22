@@ -1,7 +1,6 @@
 import { Link } from 'wouter';
 import useSEO from '@/hooks/useSEO';
 import { Card, CardDescription, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { getToolsData } from '@/data/toolsConfig';
 import { useEffect } from 'react';
 
@@ -88,27 +87,20 @@ export default function Tools() {
           </div>
 
           {/* All Tools Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
             {allTools.map((tool) => {
               const IconComponent = tool.icon;
               const isComingSoon = tool.isComingSoon;
               
               const cardContent = (
-                <Card className={`h-full group transition-all duration-300 bg-card border border-border rounded-lg overflow-hidden ${
+                <Card className={`aspect-square group transition-all duration-300 bg-card border border-border rounded-lg overflow-hidden ${
                   isComingSoon 
                     ? 'opacity-75 cursor-default' 
                     : 'hover:shadow-lg hover:-translate-y-1 cursor-pointer hover:border-primary/30'
                 }`}>
-                  <CardHeader className="text-center p-6">
-                    {/* Status Badge */}
-                    <div className="flex justify-between items-start mb-4">
-                      <Badge variant={isComingSoon ? "outline" : "secondary"} className="text-xs">
-                        {isComingSoon ? "Coming Soon" : tool.category}
-                      </Badge>
-                    </div>
-                    
+                  <CardHeader className="text-center p-4 h-full flex flex-col justify-center">
                     {/* Icon */}
-                    <div className="flex justify-center mb-4">
+                    <div className="flex justify-center mb-3">
                       <div className={`p-3 rounded-lg ${
                         isComingSoon 
                           ? 'bg-muted' 
@@ -123,7 +115,7 @@ export default function Tools() {
                     </div>
                     
                     {/* Title */}
-                    <CardTitle className={`text-xl font-bold mb-3 ${
+                    <CardTitle className={`text-sm font-bold mb-2 leading-tight ${
                       isComingSoon 
                         ? 'text-muted-foreground' 
                         : 'text-foreground group-hover:text-primary transition-colors duration-300'
@@ -132,7 +124,7 @@ export default function Tools() {
                     </CardTitle>
                     
                     {/* Description */}
-                    <CardDescription className={`leading-relaxed ${
+                    <CardDescription className={`text-xs leading-tight line-clamp-3 ${
                       isComingSoon 
                         ? 'text-muted-foreground/80' 
                         : 'text-muted-foreground'
@@ -140,18 +132,6 @@ export default function Tools() {
                       {tool.description}
                     </CardDescription>
                   </CardHeader>
-                  
-                  {!isComingSoon && (
-                    <CardContent className="px-6 pb-6">
-                      {/* Action Indicator */}
-                      <div className="flex items-center justify-center text-primary text-sm font-medium group-hover:translate-x-1 transition-transform duration-300">
-                        Try it now 
-                        <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </div>
-                    </CardContent>
-                  )}
                 </Card>
               );
 
@@ -188,16 +168,16 @@ export default function Tools() {
 
 
           {/* CTA Section */}
-          <div className="mt-16 text-center bg-muted/30 rounded-xl p-8 border border-border/50">
+          <div className="mt-16 text-center">
             <h2 className="text-2xl font-bold text-foreground mb-4">
-              Need Help with Your Writing?
+              Need a Specific Tool?
             </h2>
             <p className="text-muted-foreground mb-6">
-              Explore our blog for writing tips, grammar guides, and best practices to improve your content.
+              Can't find what you're looking for? Let us know what text processing tool would help your workflow.
             </p>
-            <Link href="/blog" data-testid="link-blog-cta">
+            <Link href="/contact" data-testid="link-request-tool-cta">
               <div className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium">
-                Read Writing Tips
+                Request a Tool
               </div>
             </Link>
           </div>
