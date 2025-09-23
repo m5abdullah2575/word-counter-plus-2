@@ -116,7 +116,7 @@ export default function Footer() {
           </div>
           
           {/* Social Media */}
-          <div className="flex items-center space-x-3">
+          {/* <div className="flex items-center space-x-3">
             <span className="text-sm text-muted-foreground mr-2">Follow us on</span>
             <a
               href="https://facebook.com/wordcounterplus"
@@ -158,7 +158,7 @@ export default function Footer() {
             >
               <FaLinkedin className="w-4 h-4" />
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>

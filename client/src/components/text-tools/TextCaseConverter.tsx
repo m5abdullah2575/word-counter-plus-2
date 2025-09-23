@@ -454,7 +454,7 @@ export default function TextCaseConverter() {
                 </TabsList>
                 
                 <TabsContent value="basic" className="mt-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-3 sm:gap-4">
                     {basicOptions.map((option) => (
                       <div key={option.key} className="border border-border rounded-lg p-3 sm:p-4">
                         <div className="mb-3">
@@ -488,7 +488,7 @@ export default function TextCaseConverter() {
                 </TabsContent>
                 
                 <TabsContent value="programming" className="mt-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-3 sm:gap-4">
                     {programmingOptions.map((option) => (
                       <div key={option.key} className="border border-border rounded-lg p-3 sm:p-4">
                         <div className="mb-3">
@@ -522,7 +522,7 @@ export default function TextCaseConverter() {
                 </TabsContent>
                 
                 <TabsContent value="other" className="mt-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-3 sm:gap-4">
                     {otherOptions.map((option) => (
                       <div key={option.key} className="border border-border rounded-lg p-3 sm:p-4">
                         <div className="mb-3">
