@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "vite build && node generate-sitemap.js",
+  "buildCommand": "npm run build",
   "outputDirectory": "dist/public",
   "functions": {
     "api/index.ts": {
