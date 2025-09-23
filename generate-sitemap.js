@@ -13,30 +13,79 @@ const DIST_PUBLIC_PATH = join(__dirname, 'dist', 'public');
 
 // Function to get static pages from src/pages directory
 function getStaticPages() {
-  // Use allowlist of actual routes instead of scanning files
-  // This prevents including components like BlogPost.tsx that aren't standalone pages
+  // Use allowlist of actual routes based on the App.tsx routing configuration
   const staticRoutes = [
-    { page: 'Home', url: '/', priority: 1.0 },
-    { page: 'About', url: '/about', priority: 0.8 },
-    { page: 'Blog', url: '/blog', priority: 0.8 },
-    { page: 'Contact', url: '/contact', priority: 0.8 },
-    { page: 'FAQ', url: '/faq', priority: 0.8 },
-    { page: 'Privacy', url: '/privacy', priority: 0.8 },
-    { page: 'Terms', url: '/terms', priority: 0.8 },
-    { page: 'Disclaimer', url: '/disclaimer', priority: 0.8 }
+    { page: 'Home', url: '/', priority: 1.0, changefreq: 'weekly' },
+    { page: 'Tools', url: '/tools', priority: 0.9, changefreq: 'weekly' },
+    { page: 'Character Counter', url: '/character-counter', priority: 0.9, changefreq: 'weekly' },
+    { page: 'Text Case Converter', url: '/text-case-convert', priority: 0.9, changefreq: 'weekly' },
+    { page: 'About', url: '/about', priority: 0.8, changefreq: 'monthly' },
+    { page: 'Blog', url: '/blog', priority: 0.8, changefreq: 'weekly' },
+    { page: 'Contact', url: '/contact', priority: 0.7, changefreq: 'monthly' },
+    { page: 'FAQ', url: '/faq', priority: 0.7, changefreq: 'monthly' },
+    { page: 'Privacy', url: '/privacy', priority: 0.5, changefreq: 'yearly' },
+    { page: 'Terms', url: '/terms', priority: 0.5, changefreq: 'yearly' },
+    { page: 'Disclaimer', url: '/disclaimer', priority: 0.5, changefreq: 'yearly' },
+    { page: 'Cookies', url: '/cookies', priority: 0.5, changefreq: 'yearly' }
   ];
 
   return staticRoutes.map(route => ({
     url: route.url,
-    changefreq: 'weekly',
+    changefreq: route.changefreq,
     priority: route.priority
   }));
 }
 
 // Function to get blog posts from built module
 async function getBlogPosts() {
+  // Try using tsx to run the TypeScript file directly
   try {
-    // Try to import from built module first
+    const { execSync } = await import('child_process');
+    const path = await import('path');
+    
+    console.log('Attempting to load blog data using tsx...');
+    
+    // Create a temporary script to load and output the blog data
+    const tempScript = `
+      const { blogPosts } = await import('./client/src/data/blogData.ts');
+      console.log(JSON.stringify(blogPosts.map(post => ({
+        slug: post.slug,
+        publishDate: post.publishDate
+      }))));
+    `;
+    
+    const fs = await import('fs');
+    fs.writeFileSync('temp-blog-loader.mjs', tempScript);
+    
+    try {
+      const result = execSync('npx tsx temp-blog-loader.mjs', { 
+        encoding: 'utf8',
+        timeout: 30000
+      });
+      
+      const blogData = JSON.parse(result.trim());
+      console.log(`Found ${blogData.length} blog posts using tsx`);
+      
+      // Clean up temp file
+      fs.unlinkSync('temp-blog-loader.mjs');
+      
+      return blogData.map(post => ({
+        url: `/blog/${post.slug}`,
+        changefreq: 'monthly',
+        priority: 0.6,
+        lastmod: post.publishDate ? new Date(post.publishDate).toISOString() : new Date('2025-01-01').toISOString()
+      }));
+    } catch (tsxError) {
+      console.log('tsx loading failed:', tsxError.message);
+      // Clean up temp file if it exists
+      try { fs.unlinkSync('temp-blog-loader.mjs'); } catch {}
+    }
+  } catch (error) {
+    console.warn('Could not use tsx to load blog data:', error.message);
+  }
+  
+  try {
+    // Fallback: Try to import from built module
     const fs = await import('fs');
     const path = await import('path');
     const { pathToFileURL } = await import('url');
@@ -53,7 +102,6 @@ async function getBlogPosts() {
         console.log(`Loading blog data from built module: ${blogDataFile}`);
         
         const module = await import(fileUrl.href);
-        console.log('Available exports:', Object.keys(module));
         
         // Try different export patterns, including minified names
         let blogPosts = module.blogPosts || module.default?.blogPosts || module.default;
@@ -69,73 +117,68 @@ async function getBlogPosts() {
           }
         }
         
-        if (!blogPosts || !Array.isArray(blogPosts)) {
-          // Log sample of each export to help debug
-          for (const [key, value] of Object.entries(module)) {
-            console.log(`Export '${key}':`, Array.isArray(value) ? `Array[${value.length}]` : typeof value);
-            if (Array.isArray(value) && value.length > 0) {
-              console.log(`  Sample item:`, Object.keys(value[0] || {}));
-            }
-          }
-          throw new Error(`No valid blogPosts array found`);
+        if (blogPosts && Array.isArray(blogPosts)) {
+          console.log(`Found ${blogPosts.length} blog posts in built module`);
+          
+          return blogPosts.map(post => ({
+            url: `/blog/${post.slug}`,
+            changefreq: 'monthly',
+            priority: 0.6,
+            lastmod: post.publishDate ? new Date(post.publishDate).toISOString() : new Date('2025-01-01').toISOString()
+          }));
         }
-        
-        console.log(`Found ${blogPosts.length} blog posts in built module`);
-        
-        return blogPosts.map(post => ({
-          url: `/blog/${post.slug}`,
-          changefreq: 'monthly',
-          priority: 0.6,
-          lastmod: post.publishDate ? new Date(post.publishDate).toISOString() : new Date('2025-01-01').toISOString()
-        }));
       }
     }
   } catch (error) {
     console.warn('Could not load blog data from built module:', error.message);
   }
   
+  // Final fallback: read all blog files and extract blog post data
   try {
-    // Fallback: Try to import the blog data from source
-    const { blogPosts } = await import('./client/src/data/blogData.js');
+    console.warn('Falling back to regex parsing...');
     
-    return blogPosts.map(post => ({
-      url: `/blog/${post.slug}`,
-      changefreq: 'monthly',
-      priority: 0.6,
-      lastmod: post.publishDate ? new Date(post.publishDate).toISOString() : new Date('2025-01-01').toISOString()
-    }));
-  } catch (error) {
-    console.warn('Could not load blog data from source, trying regex parsing...');
+    const fs = await import('fs');
+    const path = await import('path');
     
-    // Final fallback: read the file as text and extract blog post data
-    try {
-      const fs = await import('fs');
-      const path = await import('path');
+    const allBlogs = [];
+    
+    // Read main blog data file
+    const mainBlogPath = path.join(__dirname, 'client', 'src', 'data', 'blogData.ts');
+    const mainContent = fs.readFileSync(mainBlogPath, 'utf8');
+    
+    // Read character counter blogs
+    const charBlogPath = path.join(__dirname, 'client', 'src', 'data', 'blogs', 'character-counter-blogs.ts');
+    const charContent = fs.existsSync(charBlogPath) ? fs.readFileSync(charBlogPath, 'utf8') : '';
+    
+    // Read text case converter blogs  
+    const caseBlogPath = path.join(__dirname, 'client', 'src', 'data', 'blogs', 'text-case-converter-blogs.ts');
+    const caseContent = fs.existsSync(caseBlogPath) ? fs.readFileSync(caseBlogPath, 'utf8') : '';
+    
+    // Combine all content
+    const combinedContent = mainContent + charContent + caseContent;
+    
+    // Extract slug information using regex
+    const slugMatches = combinedContent.match(/slug:\s*["']([^"']+)["']/g);
+    const publishDateMatches = combinedContent.match(/publishDate:\s*["']([^"']+)["']/g);
+    
+    if (slugMatches) {
+      const slugs = slugMatches.map(match => match.match(/["']([^"']+)["']/)[1]);
+      const dates = publishDateMatches ? publishDateMatches.map(match => match.match(/["']([^"']+)["']/)[1]) : [];
       
-      const blogDataPath = path.join(__dirname, 'client', 'src', 'data', 'blogData.ts');
-      const content = fs.readFileSync(blogDataPath, 'utf8');
+      console.log(`Extracted ${slugs.length} blog slugs from all blog files`);
       
-      // Extract slug information using regex
-      const slugMatches = content.match(/slug:\s*["']([^"']+)["']/g);
-      const publishDateMatches = content.match(/publishDate:\s*["']([^"']+)["']/g);
-      
-      if (slugMatches && publishDateMatches) {
-        const slugs = slugMatches.map(match => match.match(/["']([^"']+)["']/)[1]);
-        const dates = publishDateMatches.map(match => match.match(/["']([^"']+)["']/)[1]);
-        
-        return slugs.map((slug, index) => ({
-          url: `/blog/${slug}`,
-          changefreq: 'monthly',
-          priority: 0.6,
-          lastmod: new Date(dates[index] || '2025-01-01').toISOString()
-        }));
-      }
-    } catch (parseError) {
-      console.warn('Could not parse blog data:', parseError.message);
+      return slugs.map((slug, index) => ({
+        url: `/blog/${slug}`,
+        changefreq: 'monthly',
+        priority: 0.6,
+        lastmod: new Date(dates[index] || '2025-01-01').toISOString()
+      }));
     }
-    
-    return [];
+  } catch (parseError) {
+    console.warn('Could not parse blog data:', parseError.message);
   }
+  
+  return [];
 }
 
 // Function to generate robots.txt
@@ -143,10 +186,14 @@ function generateRobotsTxt() {
   const robotsContent = `User-agent: *
 Allow: /
 
-# Disallow admin, API, and draft areas
-Disallow: /admin
-Disallow: /api
-Disallow: /drafts
+# Disallow admin, API, and internal areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /drafts/
+Disallow: /*.pdf$
+
+# Set crawl delay for general bots
+Crawl-delay: 1
 
 # Sitemap location
 Sitemap: ${SITE_URL}/sitemap.xml

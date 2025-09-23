@@ -1,23 +1,14 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
-Sitemap: https://wordcounterplusapp.com 
+# Disallow admin, API, and internal areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /drafts/
+Disallow: /*.pdf$
 
-# Allow all search engines to crawl the site
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Slurp
-Allow: /
-
-# Disallow private areas (if any)
-# Disallow: /admin/
-# Disallow: /private/
-
-# Crawl-delay for slower bots
-User-agent: *
+# Set crawl delay for general bots
 Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://wordcounterplusapp.com/sitemap.xml
