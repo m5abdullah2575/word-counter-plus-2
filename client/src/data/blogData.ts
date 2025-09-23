@@ -2934,7 +2934,8 @@ export const blogPosts = [
 ];
 
 // Development check to ensure we have the expected number of articles
-if (import.meta.env.DEV) {
+// Check if we're in a Vite environment before accessing import.meta.env
+if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.DEV) {
   console.log(`Total blog posts: ${blogPosts.length}`);
   if (blogPosts.length < 59) {
     console.warn(`Expected at least 59 blog posts, but found ${blogPosts.length}`);
