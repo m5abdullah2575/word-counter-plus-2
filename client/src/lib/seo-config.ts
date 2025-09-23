@@ -334,7 +334,6 @@ Crawl-delay: 1
 
 # Block access to admin or sensitive areas (if any)
 Disallow: /admin/
-Disallow: /api/internal/
 Disallow: /.well-known/
 Disallow: /tmp/
 Disallow: /logs/

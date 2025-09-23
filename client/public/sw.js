@@ -97,7 +97,6 @@ function isStaticAsset(url) {
 
 function isDynamicContent(url) {
   return (
-    url.pathname.startsWith('/api/') ||
     url.pathname.startsWith('/blog/') ||
     url.origin === location.origin
   );

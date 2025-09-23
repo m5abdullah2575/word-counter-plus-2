@@ -1,9 +1,8 @@
 User-agent: *
 Allow: /
 
-# Disallow admin, API, and internal areas
+# Disallow admin and internal areas
 Disallow: /admin/
-Disallow: /api/
 Disallow: /drafts/
 Disallow: /*.pdf$
 
