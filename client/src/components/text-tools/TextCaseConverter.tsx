@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FaCheck, FaEraser, FaHighlighter, FaPaste, FaTrash, FaUpload, FaCopy, FaSync, FaSort, FaBook, FaClock, FaInfoCircle, FaCalendar } from "@/components/common/Icons";
-import { parseFile, getFileInputAccept, type FileParseProgress } from '@/lib/fileImport';
+import { FaCheck, FaEraser, FaHighlighter, FaPaste, FaTrash, FaCopy, FaSync, FaSort, FaBook, FaClock, FaInfoCircle, FaCalendar } from "@/components/common/Icons";
 import { Link } from 'wouter';
 
 // Case conversion functions - standalone and reusable
@@ -161,8 +160,6 @@ const caseOptions = [
 
 export default function TextCaseConverter() {
   const [text, setText] = useState('');
-  const [uploadedFileInfo, setUploadedFileInfo] = useState<{name: string, size: number, type: string} | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
 
   // Auto-save and restore text
@@ -179,7 +176,6 @@ export default function TextCaseConverter() {
 
   const clearText = () => {
     setText('');
-    setUploadedFileInfo(null);
   };
 
   const pasteText = async () => {
@@ -200,49 +196,6 @@ export default function TextCaseConverter() {
   };
 
 
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    // Reset the input value so the same file can be uploaded again if needed
-    event.target.value = '';
-
-    setIsUploading(true);
-    const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
-    
-    try {
-      // Use the centralized file parser - no progress callback to prevent toast spam
-      const result = await parseFile(file);
-      
-      setText(result.text);
-      
-      // Store file information for display
-      setUploadedFileInfo({
-        name: result.fileName,
-        size: result.fileSize,
-        type: result.fileType
-      });
-      
-      // Show success message with file details
-      const wordCount = result.text.split(/\s+/).filter(word => word.length > 0).length;
-      toast({
-        title: "File Processed Successfully!",
-        description: `"${result.fileName}" processed successfully. Found ${wordCount.toLocaleString()} words.`,
-      });
-      
-    } catch (error: any) {
-      console.error('File upload error:', error);
-      
-      // Show error message using toast
-      toast({
-        title: "Upload Error",
-        description: error.message || "Failed to process the file. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsUploading(false);
-    }
-  };
 
   const copyToClipboard = async (text: string, caseName: string) => {
     try {
@@ -331,35 +284,10 @@ export default function TextCaseConverter() {
               Text Case Converter Plus
             </h1>
             <p className="text-sm sm:text-base text-muted-foreground">
-              Convert text between different case formats with file upload support
+              Convert text between different case formats
             </p>
           </div>
 
-          {/* File Information Display */}
-          {uploadedFileInfo && (
-            <div className="bg-green-50 dark:bg-green-950 rounded-lg p-4 border border-green-200 dark:border-green-800 mb-4">
-              <h3 className="text-sm font-semibold text-green-800 dark:text-green-200 mb-2 flex items-center">
-                <FaUpload className="mr-2" />
-                File Processing Complete
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                <div>
-                  <span className="text-green-600 dark:text-green-400 font-medium">File:</span>
-                  <p className="text-green-800 dark:text-green-200 break-all" data-testid="text-uploaded-filename">{uploadedFileInfo.name}</p>
-                </div>
-                <div>
-                  <span className="text-green-600 dark:text-green-400 font-medium">Size:</span>
-                  <p className="text-green-800 dark:text-green-200" data-testid="text-uploaded-filesize">
-                    {Math.round(uploadedFileInfo.size / 1024)}KB ({uploadedFileInfo.size} bytes)
-                  </p>
-                </div>
-                <div>
-                  <span className="text-green-600 dark:text-green-400 font-medium">Type:</span>
-                  <p className="text-green-800 dark:text-green-200" data-testid="text-uploaded-filetype">{uploadedFileInfo.type}</p>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Text Input Area */}
           <div className="bg-card rounded-lg p-3 sm:p-6 shadow-sm border border-border">
@@ -367,37 +295,6 @@ export default function TextCaseConverter() {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
                 <label htmlFor="textInput" className="text-base sm:text-lg font-semibold text-foreground">Enter Your Text</label>
                 <div className="flex gap-2 w-full sm:w-auto">
-                  {/* File Upload */}
-                  <label className={`flex-1 sm:flex-none px-3 py-1.5 rounded text-sm transition-colors text-center ${
-                    isUploading 
-                      ? 'bg-primary/50 text-primary-foreground cursor-wait' 
-                      : 'bg-primary text-primary-foreground hover:bg-primary/80 cursor-pointer'
-                  }`}
-                         data-testid="button-upload-file"
-                         title="Upload files: Text (.txt, .md, .html, .rtf, .csv), PDF (.pdf), or Word documents (.docx)">
-                    {isUploading ? (
-                      <>
-                        <div className="inline-block w-4 h-4 mr-1 animate-spin rounded-full border-2 border-white border-t-transparent" aria-hidden="true" />
-                        <span className="hidden sm:inline">Uploading...</span>
-                        <span className="sm:hidden">Uploading...</span>
-                      </>
-                    ) : (
-                      <>
-                        <FaUpload className="inline mr-1" aria-hidden="true" />
-                        <span className="hidden sm:inline">Upload</span>
-                        <span className="sm:hidden">Upload File</span>
-                      </>
-                    )}
-                    <input 
-                      type="file" 
-                      accept={getFileInputAccept()} 
-                      onChange={handleFileUpload}
-                      disabled={isUploading}
-                      className="sr-only"
-                      aria-label="Upload files: Text (.txt, .md, .html, .rtf, .csv), PDF (.pdf), or Word documents (.docx)"
-                    />
-                  </label>
-
                   {/* Clear Button */}
                   <button 
                     onClick={clearText}
@@ -415,7 +312,7 @@ export default function TextCaseConverter() {
               <textarea
                 id="textInput"
                 className="w-full min-h-[200px] sm:min-h-[250px] p-3 border border-border rounded-lg resize-y bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-sm sm:text-base"
-                placeholder="Enter your text here to convert between different cases... You can also upload files (TXT, HTML, RTF, Markdown, CSV) using the upload button above."
+                placeholder="Enter your text here to convert between different cases..."
                 aria-describedby="textHelp"
                 value={text}
                 onChange={(e) => setText(e.target.value)}

@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type Upload, type InsertUpload, users, uploads } from "@shared/schema";
+import { type User, type InsertUser, users } from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
 
@@ -10,9 +10,6 @@ export interface IStorage {
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   
-  // Upload methods
-  createUpload(upload: InsertUpload): Promise<Upload>;
-  getUpload(id: string): Promise<Upload | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -34,18 +31,6 @@ export class DatabaseStorage implements IStorage {
     return user;
   }
 
-  async createUpload(insertUpload: InsertUpload): Promise<Upload> {
-    const [upload] = await db
-      .insert(uploads)
-      .values(insertUpload)
-      .returning();
-    return upload;
-  }
-
-  async getUpload(id: string): Promise<Upload | undefined> {
-    const [upload] = await db.select().from(uploads).where(eq(uploads.id, id));
-    return upload || undefined;
-  }
 }
 
 export const storage = new DatabaseStorage();

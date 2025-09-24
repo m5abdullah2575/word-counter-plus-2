@@ -11,7 +11,7 @@ import useSEO from '@/hooks/useSEO';
 import { 
   FaCopy, 
   FaEraser, 
-  FaUpload, 
+ 
   FaDownload,
   FaFileAlt,
   FaHashtag,
@@ -33,13 +33,10 @@ import {
   FaPenFancy,
   FaSync
 } from 'react-icons/fa';
-import { parseFile, getFileInputAccept } from '@/lib/fileImport';
 import { Link } from 'wouter';
 
 export default function CharacterCounter() {
   const [text, setText] = useState('');
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadedFileInfo, setUploadedFileInfo] = useState<{name: string, size: number, type: string} | null>(null);
   const [typingStartTime, setTypingStartTime] = useState<number | null>(null);
   const [keystrokeCount, setKeystrokeCount] = useState(0);
   const lastKeyTimeRef = useRef<number>(0);
@@ -296,7 +293,6 @@ export default function CharacterCounter() {
 
   const clearText = () => {
     setText('');
-    setUploadedFileInfo(null);
     setTypingStartTime(null);
     setKeystrokeCount(0);
   };
@@ -351,39 +347,6 @@ export default function CharacterCounter() {
     });
   };
 
-  // File upload functionality
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    event.target.value = '';
-    setIsUploading(true);
-    
-    try {
-      const result = await parseFile(file);
-      setText(result.text);
-      
-      setUploadedFileInfo({
-        name: result.fileName,
-        size: result.fileSize,
-        type: result.fileType
-      });
-      
-      toast({
-        title: "File Processed Successfully!",
-        description: `"${result.fileName}" analyzed successfully.`,
-      });
-      
-    } catch (error: any) {
-      toast({
-        title: "Upload Error",
-        description: error.message || "Failed to process the file. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsUploading(false);
-    }
-  };
 
   // Keystroke tracking
   const handleTextChange = (value: string) => {
@@ -430,30 +393,6 @@ export default function CharacterCounter() {
           </div>
 
           {/* File Information Display */}
-          {uploadedFileInfo && (
-            <div className="bg-green-50 dark:bg-green-950 rounded-lg p-4 border border-green-200 dark:border-green-800 mb-4">
-              <h3 className="text-sm font-semibold text-green-800 dark:text-green-200 mb-2 flex items-center">
-                <FaUpload className="mr-2" />
-                File Analysis Complete
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                <div>
-                  <span className="text-green-600 dark:text-green-400 font-medium">File:</span>
-                  <p className="text-green-800 dark:text-green-200 break-all" data-testid="text-uploaded-filename">{uploadedFileInfo.name}</p>
-                </div>
-                <div>
-                  <span className="text-green-600 dark:text-green-400 font-medium">Size:</span>
-                  <p className="text-green-800 dark:text-green-200" data-testid="text-uploaded-filesize">
-                    {Math.round(uploadedFileInfo.size / 1024)}KB
-                  </p>
-                </div>
-                <div>
-                  <span className="text-green-600 dark:text-green-400 font-medium">Type:</span>
-                  <p className="text-green-800 dark:text-green-200" data-testid="text-uploaded-filetype">{uploadedFileInfo.type}</p>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Text Input Area */}
           <div className="bg-card rounded-lg p-3 sm:p-6 shadow-sm border border-border">
@@ -461,36 +400,6 @@ export default function CharacterCounter() {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
                 <label htmlFor="textInput" className="text-base sm:text-lg font-semibold text-foreground">Enter Your Text</label>
                 <div className="flex gap-2 w-full sm:w-auto">
-                  {/* File Upload */}
-                  <label className={`flex-1 sm:flex-none px-3 py-1.5 rounded text-sm transition-colors text-center ${
-                    isUploading 
-                      ? 'bg-primary/50 text-primary-foreground cursor-wait' 
-                      : 'bg-primary text-primary-foreground hover:bg-primary/80 cursor-pointer'
-                  }`}
-                         data-testid="button-upload-file"
-                         title="Upload files: Text (.txt, .md, .html, .rtf, .csv), PDF (.pdf), or Word documents (.docx)">
-                    {isUploading ? (
-                      <>
-                        <div className="inline-block w-4 h-4 mr-1 animate-spin rounded-full border-2 border-white border-t-transparent" aria-hidden="true" />
-                        <span className="hidden sm:inline">Uploading...</span>
-                        <span className="sm:hidden">Uploading...</span>
-                      </>
-                    ) : (
-                      <>
-                        <FaUpload className="inline mr-1" aria-hidden="true" />
-                        <span className="hidden sm:inline">Upload</span>
-                        <span className="sm:hidden">Upload File</span>
-                      </>
-                    )}
-                    <input 
-                      type="file" 
-                      accept={getFileInputAccept()} 
-                      onChange={handleFileUpload}
-                      disabled={isUploading}
-                      className="sr-only"
-                      aria-label="Upload files: Text (.txt, .md, .html, .rtf, .csv), PDF (.pdf), or Word documents (.docx)"
-                    />
-                  </label>
 
                   {/* Paste Button */}
                   <button 
