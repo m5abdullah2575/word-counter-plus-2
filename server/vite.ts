@@ -20,8 +20,9 @@ function escapeHtml(unsafe: string): string {
 async function injectBlogPostMeta(template: string, slug: string): Promise<string> {
   try {
     log(`Attempting to inject meta tags for blog post slug: ${slug}`);
-    // Import blog data from shared location (server-safe)
-    const { blogPosts } = await import("../shared/blogData.ts");
+    // Import blog data from client location (server-safe)
+    const { allBlogPosts } = await import("../client/src/data/blogData.ts");
+    const blogPosts = allBlogPosts;
     log(`Successfully imported blog data, found ${blogPosts.length} posts`);
     const post = blogPosts.find((p: any) => p.slug === slug);
     
