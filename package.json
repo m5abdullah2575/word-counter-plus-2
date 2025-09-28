@@ -5,9 +5,11 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development npx tsx server/index.ts",
-    "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
+    "build": "vite build",
+    "vercel-build": "vite build",
     "postbuild": "node generate-sitemap.js",
     "start": "NODE_ENV=production node dist/index.js",
+    "preview": "vite preview",
     "check": "tsc"
   },
   "dependencies": {
