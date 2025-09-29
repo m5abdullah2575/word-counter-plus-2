@@ -100,9 +100,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     return arrayOfFiles;
   }
 
-  // GitHub upload route
+  // GitHub upload route with authentication
   app.post('/api/upload-to-github', async (req, res) => {
     try {
+      // Authentication check - require special header for security
+      const authHeader = req.headers['x-replit-upload-auth'];
+      const expectedAuth = process.env.REPL_IDENTITY || process.env.WEB_REPL_RENEWAL;
+      
+      if (!authHeader || !expectedAuth || authHeader !== expectedAuth) {
+        return res.status(401).json({ 
+          success: false, 
+          message: 'Unauthorized: Invalid authentication token' 
+        });
+      }
+
       const octokit = await getUncachableGitHubClient();
       
       // Get the authenticated user's information
