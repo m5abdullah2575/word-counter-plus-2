@@ -21,7 +21,7 @@ export const getCurrentOrigin = (): string => {
 // Development mode detection
 export const isDevelopment = (): boolean => {
   const host = getCurrentHost();
-  return host.includes('localhost') || host.includes('127.0.0.1') || host.includes('replit') || host.includes('.dev');
+  return host.includes('localhost') || host.includes('127.0.0.1') || host.includes('replit') || host.includes('.dev') || host.includes('vercel.app') || host.includes('netlify.app');
 };
 
 // Check for development mode case testing via URL path
