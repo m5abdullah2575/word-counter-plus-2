@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FaCheck, FaEraser, FaHighlighter, FaPaste, FaTrash, FaCopy, FaSync, FaSort, FaBook, FaClock, FaInfoCircle, FaCalendar } from "@/components/common/Icons";
+import { FaCheck, FaEraser, FaHighlighter, FaPaste, FaTrash, FaCopy, FaSync, FaSort, FaBook, FaClock, FaInfoCircle, FaCalendar, FaUpload } from "@/components/common/Icons";
 import { Link } from 'wouter';
+import useFileUpload from '@/hooks/useFileUpload';
 
 // Case conversion functions - standalone and reusable
 export const textCaseConverters = {
@@ -162,6 +163,15 @@ export default function TextCaseConverter() {
   const [text, setText] = useState('');
   const { toast } = useToast();
 
+  // File upload functionality
+  const { isLoading: isUploading, triggerFileUpload, FileInput } = useFileUpload({
+    onSuccess: (content, filename) => {
+      setText(content);
+    },
+    maxSizeInMB: 10,
+    acceptedTypes: ['.txt', 'text/plain']
+  });
+
   // Auto-save and restore text
   useEffect(() => {
     const savedText = localStorage.getItem('textCaseConverter_text');
@@ -295,6 +305,18 @@ export default function TextCaseConverter() {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
                 <label htmlFor="textInput" className="text-base sm:text-lg font-semibold text-foreground">Enter Your Text</label>
                 <div className="flex gap-2 w-full sm:w-auto">
+                  {/* Upload Button */}
+                  <button 
+                    onClick={triggerFileUpload}
+                    disabled={isUploading}
+                    className="flex-1 sm:flex-none px-3 py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    data-testid="button-upload-text"
+                    title="Upload text file"
+                  >
+                    <FaUpload className="inline mr-1" aria-hidden="true" />
+                    <span className="hidden sm:inline">{isUploading ? 'Uploading...' : 'Upload'}</span>
+                    <span className="sm:hidden">{isUploading ? 'Up...' : 'Upload'}</span>
+                  </button>
                   {/* Clear Button */}
                   <button 
                     onClick={clearText}
@@ -607,6 +629,8 @@ export default function TextCaseConverter() {
           </div>
         </div>
       </div>
+      {/* Hidden file input */}
+      <FileInput />
     </main>
   );
 }

@@ -31,9 +31,11 @@ import {
   FaCheckCircle,
   FaInfoCircle,
   FaPenFancy,
-  FaSync
+  FaSync,
+  FaUpload
 } from 'react-icons/fa';
 import { Link } from 'wouter';
+import useFileUpload from '@/hooks/useFileUpload';
 
 export default function CharacterCounter() {
   const [text, setText] = useState('');
@@ -41,6 +43,17 @@ export default function CharacterCounter() {
   const [keystrokeCount, setKeystrokeCount] = useState(0);
   const lastKeyTimeRef = useRef<number>(0);
   const { toast } = useToast();
+
+  // File upload functionality
+  const { isLoading: isUploading, triggerFileUpload, FileInput } = useFileUpload({
+    onSuccess: (content, filename) => {
+      setText(content);
+      setTypingStartTime(null); // Reset typing timer for uploaded content
+      setKeystrokeCount(0);
+    },
+    maxSizeInMB: 10,
+    acceptedTypes: ['.txt', 'text/plain']
+  });
 
   // Structured data for Character Counter tool
   const characterCounterSchema = {
@@ -400,7 +413,18 @@ export default function CharacterCounter() {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
                 <label htmlFor="textInput" className="text-base sm:text-lg font-semibold text-foreground">Enter Your Text</label>
                 <div className="flex gap-2 w-full sm:w-auto">
-
+                  {/* Upload Button */}
+                  <button 
+                    onClick={triggerFileUpload}
+                    disabled={isUploading}
+                    className="flex-1 sm:flex-none px-3 py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    data-testid="button-upload-text"
+                    title="Upload text file"
+                  >
+                    <FaUpload className="inline mr-1" aria-hidden="true" />
+                    <span className="hidden sm:inline">{isUploading ? 'Uploading...' : 'Upload'}</span>
+                    <span className="sm:hidden">{isUploading ? 'Up...' : 'Upload'}</span>
+                  </button>
                   {/* Paste Button */}
                   <button 
                     onClick={pasteText}
@@ -929,6 +953,8 @@ export default function CharacterCounter() {
 
         </div>
       </div>
+      {/* Hidden file input */}
+      <FileInput />
     </main>
   );
 }

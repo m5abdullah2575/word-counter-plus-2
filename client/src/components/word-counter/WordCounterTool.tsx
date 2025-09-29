@@ -22,8 +22,9 @@ const FeatureLoader = () => (
 );
 
 import { BarChart3, Search, Share2, TrendingUp, Target, Sparkles } from 'lucide-react';
-import { FaCheck, FaEraser, FaHighlighter, FaPaste, FaTrash, FaCopy, FaSync, FaSort, FaBook, FaClock, FaInfoCircle, FaCalendar } from "@/components/common/Icons";
+import { FaCheck, FaEraser, FaHighlighter, FaPaste, FaTrash, FaCopy, FaSync, FaSort, FaBook, FaClock, FaInfoCircle, FaCalendar, FaUpload } from "@/components/common/Icons";
 import { Link } from 'wouter';
+import useFileUpload from '@/hooks/useFileUpload';
 
 // Using icons from the common Icons file that are already working
 // import AdSenseUnit from '@/components/ads/AdSenseUnit'; // Commented out - ads disabled
@@ -34,6 +35,16 @@ export default function WordCounterTool() {
   const [isHighlighted, setIsHighlighted] = useState(false);
   const { stats, readability, keywords } = useTextAnalysis(text);
   const { toast } = useToast();
+
+  // File upload functionality
+  const { isLoading: isUploading, triggerFileUpload, FileInput } = useFileUpload({
+    onSuccess: (content, filename) => {
+      setText(content);
+      setIsHighlighted(false);
+    },
+    maxSizeInMB: 10,
+    acceptedTypes: ['.txt', 'text/plain']
+  });
 
   // Auto-save and restore text
   useEffect(() => {
@@ -281,6 +292,17 @@ export default function WordCounterTool() {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
                 <label htmlFor="textInput" className="text-base sm:text-lg font-semibold text-foreground">Enter Your Text</label>
                 <div className="flex gap-2 w-full sm:w-auto">
+                  {/* Upload Button */}
+                  <button 
+                    onClick={triggerFileUpload}
+                    disabled={isUploading}
+                    className="flex-1 sm:flex-none px-3 py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    data-testid="button-upload-text"
+                    aria-label="Upload text file"
+                  >
+                    <FaUpload className="inline mr-1" aria-hidden="true" />
+                    {isUploading ? 'Uploading...' : 'Upload'}
+                  </button>
                   {/* Clear Button */}
                   <button 
                     onClick={clearText}
@@ -604,6 +626,8 @@ export default function WordCounterTool() {
 
         </div>
       </div>
+      {/* Hidden file input */}
+      <FileInput />
     </main>
   );
 }
