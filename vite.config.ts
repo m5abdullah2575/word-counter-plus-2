@@ -13,7 +13,9 @@ const r = (...segments: string[]) => path.resolve(process.cwd(), ...segments);
 
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      jsxRuntime: 'automatic',
+    }),
     runtimeErrorOverlay(),
     ...(process.env.NODE_ENV !== "production" && process.env.REPL_ID !== undefined
       ? [
@@ -44,6 +46,8 @@ export default defineConfig({
       "@": r("client", "src"),
       "@shared": r("shared"),
       "@assets": r("attached_assets"),
+      "react": path.resolve("./node_modules/react"),
+      "react-dom": path.resolve("./node_modules/react-dom"),
     },
   },
 
