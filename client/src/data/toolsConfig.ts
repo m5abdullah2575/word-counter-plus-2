@@ -2,6 +2,7 @@ import {
   FaPenFancy, 
   FaTextHeight, 
   FaHashtag,
+  FaChartBar,
   FaPlus
 } from 'react-icons/fa';
 import { IconType } from 'react-icons';
@@ -53,6 +54,17 @@ export const getToolsData = (): Tool[] => {
       isExternal: false,
       category: 'Formatting',
       tags: ['case conversion', 'formatting', 'uppercase', 'lowercase'],
+      featured: true
+    },
+    {
+      id: 'word-frequency-counter',
+      title: 'Word Frequency Counter',
+      description: 'Count how many times each unique word appears in your text. Sort results by word or frequency and download as CSV for analysis.',
+      icon: FaChartBar,
+      href: '/word-frequency-counter',
+      isExternal: false,
+      category: 'Analysis',
+      tags: ['word frequency', 'word count', 'occurrence', 'analysis', 'statistics'],
       featured: true
     },
     // Future tools (coming soon) - only one placeholder
