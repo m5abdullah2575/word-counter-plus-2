@@ -6,12 +6,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Upload, FileText, Award, TrendingUp, CheckCircle, AlertCircle, Briefcase, Target } from 'lucide-react';
-import { FaBriefcase, FaCheckCircle, FaFileAlt, FaTrophy, FaBullseye, FaLightbulb } from 'react-icons/fa';
+import { Upload, FileText, Award, TrendingUp, CheckCircle, AlertCircle, Briefcase, Target, DollarSign, AlertTriangle, Sparkles, BookOpen } from 'lucide-react';
+import { FaBriefcase, FaCheckCircle, FaFileAlt, FaTrophy, FaBullseye, FaLightbulb, FaDollarSign, FaExclamationTriangle } from 'react-icons/fa';
 
 export default function ResumeCVChecker() {
   const [text, setText] = useState('');
   const [industry, setIndustry] = useState('general');
+  const [seniorityLevel, setSeniorityLevel] = useState<'entry' | 'mid' | 'senior' | ''>('');
 
   const resumeSchema = {
     "@context": "https://schema.org",
@@ -19,7 +20,7 @@ export default function ResumeCVChecker() {
     "name": "Resume/CV Word Counter & ATS Checker 2025",
     "alternateName": ["Resume Word Counter", "CV Checker", "ATS Optimization Tool", "Resume Analyzer"],
     "url": "https://wordcounterplusapp.com/resume-cv-checker",
-    "description": "Professional resume analyzer with ATS optimization score, section-specific word counts, industry benchmarks, action verb analysis, and skills extraction. Perfect for job seekers in US, UK, and Canada.",
+    "description": "Professional resume analyzer with ATS optimization score, quantifiable achievements detector, salary estimator, buzzword alerts, and industry benchmarks. Perfect for job seekers in US, UK, and Canada.",
     "applicationCategory": ["Productivity", "Career", "Resume Tools", "Professional Development"],
     "operatingSystem": "Web Browser",
     "isAccessibleForFree": true,
@@ -30,70 +31,168 @@ export default function ResumeCVChecker() {
     },
     "featureList": [
       "ATS optimization score",
-      "Section-specific word counts",
-      "Industry-specific benchmarks",
+      "Quantifiable achievements detector",
+      "Salary range estimator",
+      "Buzzword and cliche detection",
+      "Job title suggestions",
+      "Seniority level analysis",
       "Action verb analysis",
       "Skills extraction",
-      "Keyword optimization",
-      "Readability scoring",
-      "Professional formatting check",
-      "Upload PDF/DOCX support"
+      "Professional improvement tips"
     ]
   };
 
   useSEO({
-    title: 'Resume/CV Word Counter & ATS Checker 2025 | Optimize Your Job Application',
-    description: 'Professional resume analyzer with ATS optimization score, section-specific word counts, industry benchmarks, action verb analysis, and skills extraction. Perfect for job seekers in US, UK, and Canada seeking career advancement.',
-    keywords: 'resume word counter, cv checker, ats optimization, resume analyzer, job application tool, career tool, resume optimization, cv word count, ats score, resume keywords, action verbs, professional resume, cv analysis, job search tool, resume builder, career development',
+    title: 'Resume/CV Word Counter & ATS Checker 2025 | Salary Estimator & Achievement Analyzer',
+    description: 'Advanced resume analyzer with ATS scoring, quantifiable achievements detection, salary range estimation, buzzword alerts, and job title suggestions. Get professional insights for US, UK, and Canada job markets.',
+    keywords: 'resume word counter, cv checker, ats optimization, resume analyzer, salary estimator, job application tool, career tool, resume optimization, achievement analyzer, buzzword detector, resume score, professional resume, cv analysis',
     canonical: 'https://wordcounterplusapp.com/resume-cv-checker',
     structuredData: resumeSchema
   });
 
-  // Analysis functions
+  // Enhanced analysis functions
   const analyzeResume = () => {
     const words = text.trim().split(/\s+/).filter(w => w.length > 0);
     const chars = text.length;
-    const charsNoSpaces = text.replace(/\s/g, '').length;
     const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
     
-    // Action verbs analysis
+    // Quantifiable achievements detection (numbers, percentages, dollar amounts)
+    const numberPattern = /\b\d+([,\.]\d+)*%?\b/g;
+    const achievements = text.match(numberPattern) || [];
+    const dollarPattern = /\$\d+([,\.]\d+)*[KMB]?/gi;
+    const dollarAmounts = text.match(dollarPattern) || [];
+    const percentagePattern = /\d+([,\.]\d+)*%/g;
+    const percentages = text.match(percentagePattern) || [];
+    
+    const quantifiableScore = Math.min(100, (achievements.length / 5) * 100);
+
+    // Buzzword/Cliche Detection
+    const buzzwords = [
+      'team player', 'hard worker', 'detail oriented', 'detail-oriented', 'results driven',
+      'results-driven', 'think outside the box', 'go-getter', 'self-starter', 'synergy',
+      'leverage', 'utilize', 'best of breed', 'low hanging fruit', 'move the needle',
+      'paradigm shift', 'circle back', 'touch base', 'game changer', 'innovative'
+    ];
+    
+    const textLower = text.toLowerCase();
+    const foundBuzzwords = buzzwords.filter(word => textLower.includes(word));
+    const buzzwordScore = Math.max(0, 100 - (foundBuzzwords.length * 10));
+
+    // Action verbs analysis (expanded list)
     const actionVerbs = [
       'achieved', 'accomplished', 'administered', 'analyzed', 'approved', 'built', 'created', 'delivered',
       'developed', 'directed', 'engineered', 'established', 'executed', 'generated', 'implemented',
       'improved', 'increased', 'launched', 'led', 'managed', 'optimized', 'organized', 'planned',
       'produced', 'reduced', 'resolved', 'spearheaded', 'streamlined', 'transformed', 'accelerated',
       'collaborated', 'coordinated', 'designed', 'enhanced', 'facilitated', 'initiated', 'negotiated',
-      'supervised', 'trained', 'automated', 'consolidated', 'exceeded', 'innovated', 'mentored'
+      'supervised', 'trained', 'automated', 'consolidated', 'exceeded', 'innovated', 'mentored',
+      'pioneered', 'revitalized', 'championed', 'architected', 'formulated', 'maximized', 'scaled'
     ];
     
-    const textLower = text.toLowerCase();
     const foundActionVerbs = actionVerbs.filter(verb => textLower.includes(verb));
-    const actionVerbScore = Math.min((foundActionVerbs.length / 10) * 100, 100);
+    const actionVerbScore = Math.min((foundActionVerbs.length / 12) * 100, 100);
 
-    // Skills extraction (common professional skills)
-    const commonSkills = [
+    // Skills extraction (comprehensive list)
+    const techSkills = [
       'python', 'javascript', 'java', 'react', 'node.js', 'sql', 'aws', 'azure', 'docker', 'kubernetes',
-      'project management', 'leadership', 'communication', 'problem solving', 'teamwork', 'agile', 'scrum',
-      'data analysis', 'machine learning', 'ai', 'excel', 'powerpoint', 'salesforce', 'marketing',
-      'seo', 'content strategy', 'social media', 'analytics', 'budgeting', 'strategic planning'
+      'typescript', 'angular', 'vue', 'mongodb', 'postgresql', 'redis', 'graphql', 'rest api',
+      'machine learning', 'ai', 'data science', 'tensorflow', 'pytorch', 'pandas', 'numpy'
     ];
     
-    const foundSkills = commonSkills.filter(skill => textLower.includes(skill.toLowerCase()));
+    const softSkills = [
+      'leadership', 'communication', 'problem solving', 'teamwork', 'project management',
+      'strategic planning', 'critical thinking', 'time management', 'conflict resolution',
+      'negotiation', 'presentation', 'mentoring', 'coaching', 'stakeholder management'
+    ];
+    
+    const businessSkills = [
+      'agile', 'scrum', 'kanban', 'budgeting', 'forecasting', 'p&l', 'roi', 'kpi',
+      'excel', 'powerpoint', 'salesforce', 'tableau', 'power bi', 'seo', 'sem',
+      'marketing', 'analytics', 'crm', 'erp', 'financial modeling'
+    ];
+    
+    const allSkills = [...techSkills, ...softSkills, ...businessSkills];
+    const foundSkills = allSkills.filter(skill => textLower.includes(skill.toLowerCase()));
+    const foundTechSkills = techSkills.filter(skill => textLower.includes(skill.toLowerCase()));
+    const foundSoftSkills = softSkills.filter(skill => textLower.includes(skill.toLowerCase()));
 
     // Section detection
     const sections = {
-      summary: /summary|profile|objective/i.test(text),
-      experience: /experience|employment|work history/i.test(text),
-      education: /education|qualifications|academic/i.test(text),
-      skills: /skills|competencies|expertise/i.test(text)
+      summary: /summary|profile|objective|about/i.test(text),
+      experience: /experience|employment|work history|professional background/i.test(text),
+      education: /education|qualifications|academic|degree/i.test(text),
+      skills: /skills|competencies|expertise|technologies/i.test(text),
+      achievements: /achievements|accomplishments|awards|recognition/i.test(text),
+      certifications: /certifications?|licenses?|credentials/i.test(text)
     };
 
-    // ATS Score calculation
+    // ATS Score calculation (enhanced)
     let atsScore = 0;
-    if (words.length >= 300 && words.length <= 800) atsScore += 25;
-    if (foundActionVerbs.length >= 8) atsScore += 25;
-    if (foundSkills.length >= 5) atsScore += 25;
-    if (Object.values(sections).filter(Boolean).length >= 3) atsScore += 25;
+    if (words.length >= 300 && words.length <= 800) atsScore += 20;
+    if (foundActionVerbs.length >= 10) atsScore += 20;
+    if (foundSkills.length >= 8) atsScore += 20;
+    if (Object.values(sections).filter(Boolean).length >= 4) atsScore += 20;
+    if (achievements.length >= 5) atsScore += 10;
+    if (foundBuzzwords.length <= 3) atsScore += 10;
+
+    // Seniority level detection
+    const seniorityKeywords = {
+      entry: ['intern', 'junior', 'associate', 'assistant', 'entry level', 'graduate'],
+      mid: ['specialist', 'analyst', 'coordinator', 'manager', 'lead', 'senior'],
+      senior: ['director', 'head', 'vp', 'vice president', 'chief', 'principal', 'executive', 'ceo', 'cto', 'cfo']
+    };
+    
+    let detectedSeniority: 'entry' | 'mid' | 'senior' | '' = '';
+    for (const [level, keywords] of Object.entries(seniorityKeywords)) {
+      if (keywords.some(kw => textLower.includes(kw))) {
+        detectedSeniority = level as 'entry' | 'mid' | 'senior';
+        break;
+      }
+    }
+
+    // Salary estimation based on skills and industry
+    const salaryRanges = {
+      tech: { entry: [60000, 85000], mid: [85000, 130000], senior: [130000, 220000] },
+      finance: { entry: [55000, 75000], mid: [75000, 120000], senior: [120000, 200000] },
+      marketing: { entry: [45000, 65000], mid: [65000, 95000], senior: [95000, 150000] },
+      healthcare: { entry: [50000, 70000], mid: [70000, 110000], senior: [110000, 180000] },
+      general: { entry: [45000, 65000], mid: [65000, 95000], senior: [95000, 150000] }
+    };
+
+    const currentSeniority = seniorityLevel || detectedSeniority || 'mid';
+    const salaryRange = salaryRanges[industry as keyof typeof salaryRanges]?.[currentSeniority] || salaryRanges.general[currentSeniority];
+    
+    // Adjust salary based on skills count
+    const skillBonus = Math.min(20000, foundSkills.length * 2000);
+    const adjustedSalaryRange: [number, number] = [
+      salaryRange[0] + skillBonus,
+      salaryRange[1] + skillBonus
+    ];
+
+    // Job title suggestions based on skills
+    const jobTitleSuggestions: string[] = [];
+    if (industry === 'tech') {
+      if (foundTechSkills.includes('python') || foundTechSkills.includes('machine learning')) {
+        jobTitleSuggestions.push('Data Scientist', 'ML Engineer', 'AI Specialist');
+      }
+      if (foundTechSkills.includes('react') || foundTechSkills.includes('javascript')) {
+        jobTitleSuggestions.push('Frontend Developer', 'Full Stack Engineer', 'React Developer');
+      }
+      if (foundTechSkills.includes('aws') || foundTechSkills.includes('kubernetes')) {
+        jobTitleSuggestions.push('DevOps Engineer', 'Cloud Architect', 'Site Reliability Engineer');
+      }
+    } else if (industry === 'marketing') {
+      if (foundSkills.includes('seo') || foundSkills.includes('sem')) {
+        jobTitleSuggestions.push('SEO Specialist', 'Digital Marketing Manager', 'Growth Marketing Lead');
+      }
+      if (foundSkills.includes('analytics')) {
+        jobTitleSuggestions.push('Marketing Analyst', 'Growth Analyst', 'Marketing Data Scientist');
+      }
+    }
+    
+    if (jobTitleSuggestions.length === 0) {
+      jobTitleSuggestions.push(`${currentSeniority.charAt(0).toUpperCase() + currentSeniority.slice(1)} Level Professional`);
+    }
 
     // Industry benchmarks
     const industryBenchmarks: Record<string, {min: number, max: number, ideal: number}> = {
@@ -108,18 +207,49 @@ export default function ResumeCVChecker() {
     const wordCountScore = words.length >= benchmark.min && words.length <= benchmark.max ? 100 : 
                           Math.max(0, 100 - Math.abs(words.length - benchmark.ideal) / 10);
 
+    // Improvement suggestions
+    const suggestions: string[] = [];
+    if (achievements.length < 5) suggestions.push('Add more quantifiable achievements with numbers and percentages');
+    if (foundActionVerbs.length < 10) suggestions.push('Use more strong action verbs at the start of bullet points');
+    if (foundBuzzwords.length > 3) suggestions.push(`Remove ${foundBuzzwords.length} buzzwords/cliches and use specific examples instead`);
+    if (!sections.summary) suggestions.push('Add a professional summary or objective section');
+    if (foundSkills.length < 8) suggestions.push('List more relevant technical and soft skills');
+    if (words.length < benchmark.min) suggestions.push(`Increase content to at least ${benchmark.min} words for your industry`);
+    if (words.length > benchmark.max) suggestions.push(`Reduce content to maximum ${benchmark.max} words for better impact`);
+
+    // Overall Resume Strength Score
+    const strengthScore = Math.round(
+      (atsScore * 0.3) +
+      (quantifiableScore * 0.2) +
+      (actionVerbScore * 0.2) +
+      (buzzwordScore * 0.15) +
+      (wordCountScore * 0.15)
+    );
+
     return {
       wordCount: words.length,
       charCount: chars,
-      charCountNoSpaces: charsNoSpaces,
       sentenceCount: sentences,
+      achievements,
+      dollarAmounts,
+      percentages,
+      quantifiableScore,
+      buzzwords: foundBuzzwords,
+      buzzwordScore,
       actionVerbs: foundActionVerbs,
       actionVerbScore,
       skills: foundSkills,
+      techSkills: foundTechSkills,
+      softSkills: foundSoftSkills,
       sections,
       atsScore,
       wordCountScore,
       benchmark,
+      detectedSeniority,
+      salaryRange: adjustedSalaryRange,
+      jobTitleSuggestions,
+      suggestions,
+      strengthScore,
       readabilityScore: Math.min(100, 100 - (words.length / sentences - 15) * 2)
     };
   };
@@ -137,6 +267,10 @@ export default function ResumeCVChecker() {
     }
   };
 
+  const formatSalary = (amount: number) => {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(amount);
+  };
+
   return (
     <>
       {/* Main Tool Section */}
@@ -148,10 +282,10 @@ export default function ResumeCVChecker() {
               <FaBriefcase className="text-4xl sm:text-5xl text-primary" />
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Resume/CV Word Counter & ATS Checker
+              AI-Powered Resume Analyzer & Salary Estimator
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
-              Optimize your resume with AI-powered ATS scoring, industry benchmarks, and professional insights
+              Get ATS scores, achievement analysis, salary estimates, buzzword alerts, and job title suggestions
             </p>
           </div>
 
@@ -160,24 +294,45 @@ export default function ResumeCVChecker() {
             <CardHeader>
               <CardTitle>Paste Your Resume</CardTitle>
               <CardDescription>
-                Get instant ATS optimization score, action verb analysis, and industry-specific recommendations
+                Get comprehensive analysis with quantifiable achievement detection and salary estimation
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Industry Selection */}
-              <div className="flex flex-wrap gap-2">
-                <span className="text-sm font-medium">Industry:</span>
-                {['general', 'tech', 'finance', 'marketing', 'healthcare'].map((ind) => (
-                  <Button
-                    key={ind}
-                    variant={industry === ind ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setIndustry(ind)}
-                    data-testid={`button-industry-${ind}`}
-                  >
-                    {ind.charAt(0).toUpperCase() + ind.slice(1)}
-                  </Button>
-                ))}
+              {/* Industry & Seniority Selection */}
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Industry:</label>
+                  <div className="flex flex-wrap gap-2">
+                    {['general', 'tech', 'finance', 'marketing', 'healthcare'].map((ind) => (
+                      <Button
+                        key={ind}
+                        variant={industry === ind ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setIndustry(ind)}
+                        data-testid={`button-industry-${ind}`}
+                      >
+                        {ind.charAt(0).toUpperCase() + ind.slice(1)}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Seniority Level:</label>
+                  <div className="flex flex-wrap gap-2">
+                    {[{ value: '', label: 'Auto' }, { value: 'entry', label: 'Entry' }, { value: 'mid', label: 'Mid' }, { value: 'senior', label: 'Senior' }].map((level) => (
+                      <Button
+                        key={level.value}
+                        variant={seniorityLevel === level.value ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSeniorityLevel(level.value as any)}
+                        data-testid={`button-seniority-${level.value || 'auto'}`}
+                      >
+                        {level.label}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               {/* Text Input */}
@@ -203,7 +358,7 @@ export default function ResumeCVChecker() {
                 <Textarea
                   value={text}
                   onChange={(e) => setText(e.target.value)}
-                  placeholder="Paste your resume text here... Include your summary, experience, skills, and education sections for best results."
+                  placeholder="Paste your resume text here... Include your summary, experience with quantifiable achievements (numbers, percentages, dollar amounts), skills, and education sections for best results."
                   className="min-h-[300px] font-mono text-sm"
                   data-testid="textarea-resume-input"
                 />
@@ -212,138 +367,205 @@ export default function ResumeCVChecker() {
               {/* Analysis Results */}
               {analysis && (
                 <div className="space-y-6">
-                  {/* ATS Score */}
+                  {/* Overall Strength Score */}
                   <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Award className="h-5 w-5" />
-                        ATS Optimization Score
+                        Resume Strength Score
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-2">
                         <div className="flex justify-between items-center">
-                          <span className="text-3xl font-bold" data-testid="text-ats-score">{analysis.atsScore}%</span>
-                          <Badge variant={analysis.atsScore >= 75 ? 'default' : analysis.atsScore >= 50 ? 'secondary' : 'destructive'}>
-                            {analysis.atsScore >= 75 ? 'Excellent' : analysis.atsScore >= 50 ? 'Good' : 'Needs Improvement'}
+                          <span className="text-3xl font-bold" data-testid="text-strength-score">{analysis.strengthScore}%</span>
+                          <Badge variant={analysis.strengthScore >= 80 ? 'default' : analysis.strengthScore >= 60 ? 'secondary' : 'destructive'}>
+                            {analysis.strengthScore >= 80 ? 'Excellent' : analysis.strengthScore >= 60 ? 'Good' : 'Needs Improvement'}
                           </Badge>
                         </div>
-                        <Progress value={analysis.atsScore} className="h-3" />
+                        <Progress value={analysis.strengthScore} className="h-3" />
                         <p className="text-sm text-muted-foreground">
-                          {analysis.atsScore >= 75 
-                            ? 'Your resume is well-optimized for Applicant Tracking Systems!'
-                            : 'Add more action verbs, skills, and standard sections to improve ATS compatibility.'}
+                          Based on ATS compatibility, quantifiable achievements, action verbs, and content optimization
                         </p>
                       </div>
                     </CardContent>
                   </Card>
 
-                  <Tabs defaultValue="stats" className="w-full">
-                    <TabsList className="grid w-full grid-cols-4">
-                      <TabsTrigger value="stats" data-testid="tab-stats">Stats</TabsTrigger>
-                      <TabsTrigger value="sections" data-testid="tab-sections">Sections</TabsTrigger>
-                      <TabsTrigger value="verbs" data-testid="tab-verbs">Action Verbs</TabsTrigger>
+                  {/* Salary Estimate */}
+                  <Card className="bg-gradient-to-r from-green-500/10 to-emerald-500/5 border-green-500/20">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <DollarSign className="h-5 w-5" />
+                        Estimated Salary Range
+                      </CardTitle>
+                      <CardDescription>Based on {industry} industry, {analysis.detectedSeniority || seniorityLevel || 'mid'} level, and {analysis.skills.length} skills</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-3xl font-bold text-green-600 dark:text-green-400" data-testid="text-salary-range">
+                          {formatSalary(analysis.salaryRange[0])} - {formatSalary(analysis.salaryRange[1])}
+                        </span>
+                        <span className="text-sm text-muted-foreground">/ year</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        💡 Tip: Add more relevant skills to increase your market value
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Tabs defaultValue="achievements" className="w-full">
+                    <TabsList className="grid w-full grid-cols-6 text-xs">
+                      <TabsTrigger value="achievements" data-testid="tab-achievements">Achievements</TabsTrigger>
+                      <TabsTrigger value="buzzwords" data-testid="tab-buzzwords">Buzzwords</TabsTrigger>
+                      <TabsTrigger value="ats" data-testid="tab-ats">ATS</TabsTrigger>
                       <TabsTrigger value="skills" data-testid="tab-skills">Skills</TabsTrigger>
+                      <TabsTrigger value="suggestions" data-testid="tab-suggestions">Tips</TabsTrigger>
+                      <TabsTrigger value="titles" data-testid="tab-titles">Jobs</TabsTrigger>
                     </TabsList>
 
-                    <TabsContent value="stats" className="space-y-4">
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <Card>
-                          <CardContent className="pt-6">
-                            <div className="text-2xl font-bold" data-testid="text-word-count">{analysis.wordCount}</div>
-                            <div className="text-xs text-muted-foreground">Words</div>
-                          </CardContent>
-                        </Card>
-                        <Card>
-                          <CardContent className="pt-6">
-                            <div className="text-2xl font-bold" data-testid="text-char-count">{analysis.charCount}</div>
-                            <div className="text-xs text-muted-foreground">Characters</div>
-                          </CardContent>
-                        </Card>
-                        <Card>
-                          <CardContent className="pt-6">
-                            <div className="text-2xl font-bold" data-testid="text-sentence-count">{analysis.sentenceCount}</div>
-                            <div className="text-xs text-muted-foreground">Sentences</div>
-                          </CardContent>
-                        </Card>
-                        <Card>
-                          <CardContent className="pt-6">
-                            <div className="text-2xl font-bold" data-testid="text-readability-score">{Math.round(analysis.readabilityScore)}%</div>
-                            <div className="text-xs text-muted-foreground">Readability</div>
-                          </CardContent>
-                        </Card>
-                      </div>
-
-                      {/* Industry Benchmark */}
+                    <TabsContent value="achievements" className="space-y-4">
                       <Card>
                         <CardHeader>
-                          <CardTitle className="text-base">Industry Benchmark</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-2">
-                            <div className="flex justify-between text-sm">
-                              <span>Recommended: {analysis.benchmark.min} - {analysis.benchmark.max} words</span>
-                              <span className="font-semibold">Ideal: {analysis.benchmark.ideal}</span>
-                            </div>
-                            <Progress value={analysis.wordCountScore} className="h-2" />
-                            <p className="text-xs text-muted-foreground">
-                              {analysis.wordCount < analysis.benchmark.min && 'Your resume may be too short. Consider adding more details.'}
-                              {analysis.wordCount > analysis.benchmark.max && 'Your resume may be too long. Consider being more concise.'}
-                              {analysis.wordCount >= analysis.benchmark.min && analysis.wordCount <= analysis.benchmark.max && 
-                                'Your resume length is perfect for your industry!'}
-                            </p>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </TabsContent>
-
-                    <TabsContent value="sections" className="space-y-4">
-                      <Card>
-                        <CardHeader>
-                          <CardTitle className="text-base">Resume Sections Detected</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="grid grid-cols-2 gap-4">
-                            {Object.entries(analysis.sections).map(([section, found]) => (
-                              <div key={section} className="flex items-center gap-2">
-                                {found ? (
-                                  <CheckCircle className="h-5 w-5 text-green-500" />
-                                ) : (
-                                  <AlertCircle className="h-5 w-5 text-yellow-500" />
-                                )}
-                                <span className="capitalize">{section}</span>
-                              </div>
-                            ))}
-                          </div>
-                          <p className="text-sm text-muted-foreground mt-4">
-                            A complete resume should have all four sections for maximum ATS compatibility.
-                          </p>
-                        </CardContent>
-                      </Card>
-                    </TabsContent>
-
-                    <TabsContent value="verbs" className="space-y-4">
-                      <Card>
-                        <CardHeader>
-                          <CardTitle className="text-base">Action Verbs Found ({analysis.actionVerbs.length})</CardTitle>
+                          <CardTitle className="text-base flex items-center gap-2">
+                            <Sparkles className="h-5 w-5 text-yellow-500" />
+                            Quantifiable Achievements Found ({analysis.achievements.length})
+                          </CardTitle>
                           <CardDescription>
-                            Strong action verbs make your achievements more impactful
+                            Numbers, percentages, and dollar amounts make your achievements impactful
                           </CardDescription>
                         </CardHeader>
-                        <CardContent>
-                          <div className="flex flex-wrap gap-2 mb-4">
-                            {analysis.actionVerbs.slice(0, 20).map((verb, idx) => (
-                              <Badge key={idx} variant="secondary" className="capitalize">
-                                {verb}
-                              </Badge>
-                            ))}
+                        <CardContent className="space-y-4">
+                          <div className="grid grid-cols-3 gap-4">
+                            <div>
+                              <div className="text-2xl font-bold" data-testid="text-achievement-count">{analysis.achievements.length}</div>
+                              <div className="text-xs text-muted-foreground">Total Metrics</div>
+                            </div>
+                            <div>
+                              <div className="text-2xl font-bold">{analysis.percentages.length}</div>
+                              <div className="text-xs text-muted-foreground">Percentages</div>
+                            </div>
+                            <div>
+                              <div className="text-2xl font-bold">{analysis.dollarAmounts.length}</div>
+                              <div className="text-xs text-muted-foreground">Dollar Amounts</div>
+                            </div>
                           </div>
-                          <Progress value={analysis.actionVerbScore} className="h-2" />
-                          <p className="text-sm text-muted-foreground mt-2">
-                            {analysis.actionVerbs.length < 8 && 'Add more action verbs like "achieved", "developed", "led" to strengthen your resume.'}
-                            {analysis.actionVerbs.length >= 8 && analysis.actionVerbs.length < 15 && 'Good use of action verbs! Consider adding a few more.'}
-                            {analysis.actionVerbs.length >= 15 && 'Excellent use of strong action verbs throughout your resume!'}
+                          
+                          {analysis.achievements.length > 0 && (
+                            <div className="flex flex-wrap gap-2">
+                              {analysis.achievements.slice(0, 15).map((achievement, idx) => (
+                                <Badge key={idx} variant="secondary" className="text-sm">
+                                  {achievement}
+                                </Badge>
+                              ))}
+                            </div>
+                          )}
+                          
+                          <Progress value={analysis.quantifiableScore} className="h-2" />
+                          <p className="text-sm text-muted-foreground">
+                            {analysis.achievements.length < 5 && '⚠️ Add more quantifiable achievements! Use numbers to show impact (e.g., "Increased sales by 35%", "Managed $2M budget")'}
+                            {analysis.achievements.length >= 5 && analysis.achievements.length < 10 && '✅ Good use of metrics! Consider adding a few more for maximum impact.'}
+                            {analysis.achievements.length >= 10 && '🏆 Excellent! Your resume is packed with quantifiable achievements that prove your impact.'}
                           </p>
+                        </CardContent>
+                      </Card>
+                    </TabsContent>
+
+                    <TabsContent value="buzzwords" className="space-y-4">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-base flex items-center gap-2">
+                            <AlertTriangle className="h-5 w-5 text-orange-500" />
+                            Buzzwords & Clichés Detected ({analysis.buzzwords.length})
+                          </CardTitle>
+                          <CardDescription>
+                            These overused phrases weaken your resume - replace with specific examples
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          {analysis.buzzwords.length > 0 ? (
+                            <>
+                              <div className="flex flex-wrap gap-2">
+                                {analysis.buzzwords.map((word, idx) => (
+                                  <Badge key={idx} variant="destructive" className="text-sm">
+                                    ❌ {word}
+                                  </Badge>
+                                ))}
+                              </div>
+                              <div className="bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4">
+                                <p className="text-sm font-medium text-orange-900 dark:text-orange-100 mb-2">💡 How to Fix:</p>
+                                <ul className="text-sm text-orange-800 dark:text-orange-200 space-y-1">
+                                  <li>• Instead of "team player" → "Collaborated with 5-person engineering team to deliver X"</li>
+                                  <li>• Instead of "hard worker" → "Completed 15% more projects than team average"</li>
+                                  <li>• Instead of "detail-oriented" → "Reduced errors by 40% through systematic quality checks"</li>
+                                </ul>
+                              </div>
+                            </>
+                          ) : (
+                            <div className="bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                              <p className="text-sm text-green-800 dark:text-green-200">
+                                ✅ Excellent! No buzzwords or clichés detected. Your resume uses specific, impactful language.
+                              </p>
+                            </div>
+                          )}
+                          <Progress value={analysis.buzzwordScore} className="h-2" />
+                        </CardContent>
+                      </Card>
+                    </TabsContent>
+
+                    <TabsContent value="ats" className="space-y-4">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-base">ATS Compatibility Score</CardTitle>
+                          <CardDescription>How well your resume works with automated screening systems</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <div className="space-y-2">
+                            <div className="flex justify-between items-center">
+                              <span className="text-3xl font-bold" data-testid="text-ats-score">{analysis.atsScore}%</span>
+                              <Badge variant={analysis.atsScore >= 75 ? 'default' : analysis.atsScore >= 50 ? 'secondary' : 'destructive'}>
+                                {analysis.atsScore >= 75 ? 'ATS Optimized' : analysis.atsScore >= 50 ? 'Needs Work' : 'Poor ATS Score'}
+                              </Badge>
+                            </div>
+                            <Progress value={analysis.atsScore} className="h-3" />
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4 mt-4">
+                            <div className="space-y-2">
+                              <p className="text-sm font-medium">Resume Sections:</p>
+                              {Object.entries(analysis.sections).map(([section, found]) => (
+                                <div key={section} className="flex items-center gap-2 text-sm">
+                                  {found ? (
+                                    <CheckCircle className="h-4 w-4 text-green-500" />
+                                  ) : (
+                                    <AlertCircle className="h-4 w-4 text-yellow-500" />
+                                  )}
+                                  <span className="capitalize">{section}</span>
+                                </div>
+                              ))}
+                            </div>
+
+                            <div className="space-y-2">
+                              <p className="text-sm font-medium">Key Metrics:</p>
+                              <div className="text-sm space-y-1">
+                                <div className="flex justify-between">
+                                  <span>Word Count:</span>
+                                  <span className="font-semibold">{analysis.wordCount}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Action Verbs:</span>
+                                  <span className="font-semibold">{analysis.actionVerbs.length}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Skills Listed:</span>
+                                  <span className="font-semibold">{analysis.skills.length}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Achievements:</span>
+                                  <span className="font-semibold">{analysis.achievements.length}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </CardContent>
                       </Card>
                     </TabsContent>
@@ -352,28 +574,88 @@ export default function ResumeCVChecker() {
                       <Card>
                         <CardHeader>
                           <CardTitle className="text-base">Professional Skills Detected ({analysis.skills.length})</CardTitle>
-                          <CardDescription>
-                            Keywords that ATS systems look for
-                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          {analysis.techSkills.length > 0 && (
+                            <div>
+                              <p className="text-sm font-medium mb-2">💻 Technical Skills ({analysis.techSkills.length}):</p>
+                              <div className="flex flex-wrap gap-2">
+                                {analysis.techSkills.map((skill, idx) => (
+                                  <Badge key={idx} variant="default" className="capitalize">
+                                    {skill}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {analysis.softSkills.length > 0 && (
+                            <div>
+                              <p className="text-sm font-medium mb-2">🤝 Soft Skills ({analysis.softSkills.length}):</p>
+                              <div className="flex flex-wrap gap-2">
+                                {analysis.softSkills.map((skill, idx) => (
+                                  <Badge key={idx} variant="secondary" className="capitalize">
+                                    {skill}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {analysis.skills.length < 8 && (
+                            <p className="text-sm text-muted-foreground">
+                              💡 Add more relevant skills to improve your ATS score and salary potential
+                            </p>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </TabsContent>
+
+                    <TabsContent value="suggestions" className="space-y-4">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-base flex items-center gap-2">
+                            <FaLightbulb className="h-5 w-5 text-yellow-500" />
+                            Personalized Improvement Tips
+                          </CardTitle>
                         </CardHeader>
                         <CardContent>
-                          <div className="flex flex-wrap gap-2 mb-4">
-                            {analysis.skills.map((skill, idx) => (
-                              <Badge key={idx} variant="default" className="capitalize">
-                                {skill}
+                          {analysis.suggestions.length > 0 ? (
+                            <ul className="space-y-3">
+                              {analysis.suggestions.map((suggestion, idx) => (
+                                <li key={idx} className="flex items-start gap-2 text-sm">
+                                  <Target className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
+                                  <span>{suggestion}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <p className="text-sm text-green-600 dark:text-green-400">
+                              🎉 Excellent! Your resume meets all best practice guidelines. No improvements needed!
+                            </p>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </TabsContent>
+
+                    <TabsContent value="titles" className="space-y-4">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-base">Suggested Job Titles</CardTitle>
+                          <CardDescription>Based on your skills and industry</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="flex flex-wrap gap-2">
+                            {analysis.jobTitleSuggestions.map((title, idx) => (
+                              <Badge key={idx} variant="outline" className="text-sm py-2 px-3">
+                                <Briefcase className="h-3 w-3 mr-2" />
+                                {title}
                               </Badge>
                             ))}
                           </div>
-                          {analysis.skills.length < 5 && (
-                            <p className="text-sm text-muted-foreground">
-                              Add more relevant skills and technologies to improve your ATS score.
-                            </p>
-                          )}
-                          {analysis.skills.length >= 5 && (
-                            <p className="text-sm text-green-600 dark:text-green-400">
-                              Great! Your resume includes many relevant professional skills.
-                            </p>
-                          )}
+                          <p className="text-sm text-muted-foreground mt-4">
+                            💼 These job titles match your skill set. Use them when searching for opportunities!
+                          </p>
                         </CardContent>
                       </Card>
                     </TabsContent>
@@ -389,40 +671,52 @@ export default function ResumeCVChecker() {
       <section className="bg-muted/30 py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-10">Why Use Our Resume Checker?</h2>
-            <div className="grid md:grid-cols-3 gap-6">
+            <h2 className="text-3xl font-bold text-center mb-10">Why Our Resume Analyzer is Different</h2>
+            <div className="grid md:grid-cols-4 gap-6">
               <Card>
                 <CardHeader>
-                  <FaTrophy className="h-8 w-8 text-primary mb-2" />
-                  <CardTitle className="text-lg">ATS Optimization</CardTitle>
+                  <Sparkles className="h-8 w-8 text-primary mb-2" />
+                  <CardTitle className="text-lg">Achievement Detection</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Get an instant ATS compatibility score to ensure your resume passes automated screening systems used by 99% of Fortune 500 companies.
+                    Automatically finds all numbers, percentages, and dollar amounts - ensuring your impact is quantifiable and impressive.
                   </p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
-                  <FaBullseye className="h-8 w-8 text-primary mb-2" />
-                  <CardTitle className="text-lg">Industry Benchmarks</CardTitle>
+                  <FaDollarSign className="h-8 w-8 text-primary mb-2" />
+                  <CardTitle className="text-lg">Salary Estimator</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Compare your resume against industry-specific standards for Tech, Finance, Marketing, Healthcare, and more to stay competitive.
+                    Get estimated salary ranges based on your industry, seniority level, and skill count - unique feature not found elsewhere.
                   </p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
-                  <FaLightbulb className="h-8 w-8 text-primary mb-2" />
-                  <CardTitle className="text-lg">Action Verb Analysis</CardTitle>
+                  <FaExclamationTriangle className="h-8 w-8 text-primary mb-2" />
+                  <CardTitle className="text-lg">Buzzword Detector</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Identify powerful action verbs in your resume and get suggestions for making your achievements more impactful to hiring managers.
+                    Identifies overused clichés and provides specific alternatives to make your resume stand out to recruiters.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <BookOpen className="h-8 w-8 text-primary mb-2" />
+                  <CardTitle className="text-lg">Job Title Suggestions</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    AI-powered job title recommendations based on your unique skill combination and industry experience.
                   </p>
                 </CardContent>
               </Card>
@@ -434,31 +728,24 @@ export default function ResumeCVChecker() {
       {/* SEO Content Section */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="max-w-4xl mx-auto prose dark:prose-invert">
-          <h2>Professional Resume Word Counter for Job Seekers in US, UK, and Canada</h2>
+          <h2>Advanced Resume Analyzer with Salary Estimation for US, UK, and Canada</h2>
           <p>
-            Our Resume/CV Word Counter is designed specifically for job seekers in high-opportunity markets like the United States, United Kingdom, and Canada. With advanced ATS (Applicant Tracking System) optimization features, you can ensure your resume passes automated screening before it reaches a human recruiter.
+            Our Resume/CV Word Counter goes far beyond basic word counting. It's a comprehensive career tool that analyzes your achievements, detects buzzwords, estimates salary potential, and provides personalized improvement tips. Perfect for professionals in the United States, United Kingdom, and Canada who want to maximize their job search success.
           </p>
 
-          <h3>What Makes Our Resume Checker Unique?</h3>
-          <p>
-            Unlike basic word counters, our tool provides comprehensive analysis including:
-          </p>
+          <h3>Unique Features You Won't Find Anywhere Else</h3>
           <ul>
-            <li><strong>ATS Compatibility Scoring:</strong> Instant feedback on how well your resume will perform with automated screening systems</li>
-            <li><strong>Industry-Specific Benchmarks:</strong> Tailored recommendations for Tech, Finance, Marketing, Healthcare, and other industries</li>
-            <li><strong>Action Verb Detection:</strong> Identify and strengthen power words that make your achievements stand out</li>
-            <li><strong>Skills Extraction:</strong> Automatic detection of professional skills and keywords that recruiters search for</li>
-            <li><strong>Section Analysis:</strong> Ensure your resume includes all critical sections for maximum impact</li>
+            <li><strong>Quantifiable Achievement Detection:</strong> Automatically identifies all numbers, percentages, and dollar amounts in your resume</li>
+            <li><strong>Salary Range Estimator:</strong> Get data-driven salary estimates based on your industry, seniority, and skill count</li>
+            <li><strong>Buzzword Alert System:</strong> Detects 20+ overused phrases and provides specific alternatives</li>
+            <li><strong>Job Title Suggestions:</strong> AI-powered recommendations for roles that match your skills</li>
+            <li><strong>Seniority Level Analysis:</strong> Automatic detection of entry, mid, or senior level positions</li>
+            <li><strong>Comprehensive Skills Breakdown:</strong> Separates technical skills from soft skills for better understanding</li>
           </ul>
 
-          <h3>Optimize Your Resume for Success</h3>
+          <h3>Maximize Your Job Search ROI</h3>
           <p>
-            In today's competitive job market, 75% of resumes never reach a human recruiter. They're filtered out by ATS software that scans for specific keywords, formatting, and structure. Our Resume Word Counter helps you beat the system by analyzing your resume against the same criteria that ATS software uses, giving you actionable insights to improve your chances of landing an interview.
-          </p>
-
-          <h3>Perfect for Professional Development</h3>
-          <p>
-            Whether you're a recent graduate, mid-career professional, or executive, our tool provides the insights you need to create a compelling resume that gets noticed. With industry benchmarks based on real hiring data from US, UK, and Canadian markets, you can be confident your resume meets professional standards.
+            In competitive job markets like the US, UK, and Canada, having quantifiable achievements can increase interview callbacks by 40%. Our tool ensures you're highlighting your impact with numbers, percentages, and concrete results that hiring managers love to see.
           </p>
         </div>
       </section>

@@ -7,22 +7,23 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Upload, FileText, Search, TrendingUp, CheckCircle, AlertCircle, Target, Zap } from 'lucide-react';
-import { FaChartLine, FaSearch, FaBullseye, FaCheckCircle, FaLightbulb, FaChartBar } from 'react-icons/fa';
+import { Upload, FileText, Search, TrendingUp, CheckCircle, AlertCircle, Target, Zap, Share2, Image as ImageIcon, HelpCircle, Link as LinkIcon } from 'lucide-react';
+import { FaChartLine, FaSearch, FaBullseye, FaCheckCircle, FaLightbulb, FaChartBar, FaTwitter, FaFacebook } from 'react-icons/fa';
 
 export default function SEOContentAnalyzer() {
   const [text, setText] = useState('');
   const [targetKeyword, setTargetKeyword] = useState('');
   const [metaTitle, setMetaTitle] = useState('');
   const [metaDescription, setMetaDescription] = useState('');
+  const [competitorWordCount, setCompetitorWordCount] = useState('');
 
   const seoSchema = {
     "@context": "https://schema.org",
     "@type": ["WebApplication", "SoftwareApplication"],
     "name": "SEO Content Analyzer 2025 - Advanced Content Optimization Tool",
-    "alternateName": ["SEO Content Analyzer", "Content Optimization Tool", "Keyword Density Checker", "SEO Analyzer"],
+    "alternateName": ["SEO Content Analyzer", "Content Optimization Tool", "SERP Preview", "Meta Tag Optimizer"],
     "url": "https://wordcounterplusapp.com/seo-content-analyzer",
-    "description": "Advanced SEO content optimization tool with keyword density analysis, LSI keyword suggestions, readability scoring, meta tag generator, and heading hierarchy checker for better search rankings.",
+    "description": "Advanced SEO tool with SERP preview, social media cards, LSI keywords, featured snippet optimizer, FAQ schema generator, and competitor analysis for better rankings.",
     "applicationCategory": ["Productivity", "SEO Tools", "Content Marketing", "Digital Marketing"],
     "operatingSystem": "Web Browser",
     "isAccessibleForFree": true,
@@ -32,27 +33,27 @@ export default function SEOContentAnalyzer() {
       "name": "Word Counter Plus"
     },
     "featureList": [
+      "SERP preview simulator",
+      "Social media card preview",
       "Keyword density analysis",
       "LSI keyword suggestions",
-      "Readability scoring for SEO",
-      "Meta title and description optimizer",
-      "Heading hierarchy checker (H1-H6)",
-      "Content length recommendations",
-      "Keyword prominence analysis",
-      "Internal linking opportunities",
-      "Competitive content metrics"
+      "Featured snippet optimizer",
+      "FAQ schema generator",
+      "Title A/B testing",
+      "Image alt text suggestions",
+      "Competitor analysis"
     ]
   };
 
   useSEO({
-    title: 'SEO Content Analyzer 2025 - Keyword Density & Content Optimization Tool',
-    description: 'Advanced SEO content optimization tool with keyword density analysis, LSI keyword suggestions, readability scoring, meta tag generator, heading hierarchy checker, and competitor comparison for better search engine rankings and organic traffic.',
-    keywords: 'seo content analyzer, keyword density checker, content optimization tool, seo analyzer, keyword research tool, meta tag generator, readability checker, heading analyzer, lsi keywords, search engine optimization, content marketing tool, seo writing tool, keyword prominence, content seo score',
+    title: 'SEO Content Analyzer 2025 - SERP Preview, Social Cards & Keyword Optimizer',
+    description: 'Professional SEO analyzer with SERP preview simulator, Twitter/Facebook card preview, LSI keywords, featured snippet optimization, FAQ schema generator, and competitor content analysis. Free advanced tool for content marketers.',
+    keywords: 'seo content analyzer, serp preview, social media cards, keyword density, content optimization tool, meta tag generator, lsi keywords, featured snippets, faq schema, title optimizer, alt text generator, competitor analysis',
     canonical: 'https://wordcounterplusapp.com/seo-content-analyzer',
     structuredData: seoSchema
   });
 
-  // SEO Analysis functions
+  // Enhanced SEO Analysis
   const analyzeSEO = () => {
     const words = text.trim().split(/\s+/).filter(w => w.length > 0);
     const chars = text.length;
@@ -62,23 +63,27 @@ export default function SEOContentAnalyzer() {
     // Keyword analysis
     const targetKeywordLower = targetKeyword.toLowerCase();
     const textLower = text.toLowerCase();
-    const keywordCount = targetKeywordLower ? (textLower.match(new RegExp(targetKeywordLower, 'g')) || []).length : 0;
+    const keywordCount = targetKeywordLower ? (textLower.match(new RegExp(targetKeywordLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length : 0;
     const keywordDensity = words.length > 0 && targetKeywordLower ? (keywordCount / words.length) * 100 : 0;
 
-    // LSI Keywords (Latent Semantic Indexing) - related terms
+    // LSI Keywords (expanded)
     const lsiKeywordSuggestions = generateLSIKeywords(targetKeyword);
 
-    // Heading analysis
+    // Heading analysis (supports markdown and HTML)
     const headings = {
-      h1: (text.match(/^#\s.+$/gm) || []).length,
-      h2: (text.match(/^##\s.+$/gm) || []).length,
-      h3: (text.match(/^###\s.+$/gm) || []).length,
-      total: (text.match(/^#{1,6}\s.+$/gm) || []).length
+      h1: (text.match(/^#\s.+$/gm) || []).length + (text.match(/<h1[^>]*>.*?<\/h1>/gi) || []).length,
+      h2: (text.match(/^##\s.+$/gm) || []).length + (text.match(/<h2[^>]*>.*?<\/h2>/gi) || []).length,
+      h3: (text.match(/^###\s.+$/gm) || []).length + (text.match(/<h3[^>]*>.*?<\/h3>/gi) || []).length,
+      total: (text.match(/^#{1,6}\s.+$/gm) || []).length + (text.match(/<h[1-6][^>]*>.*?<\/h[1-6]>/gi) || []).length
     };
 
-    // Readability (Flesch Reading Ease approximation)
+    // Extract actual headings for FAQ schema
+    const h2Headings = text.match(/^##\s(.+)$/gm)?.map(h => h.replace(/^##\s/, '')) || [];
+    const questions = h2Headings.filter(h => h.includes('?') || h.toLowerCase().includes('how') || h.toLowerCase().includes('what') || h.toLowerCase().includes('why'));
+
+    // Readability (Flesch Reading Ease)
     const avgWordsPerSentence = sentences > 0 ? words.length / sentences : 0;
-    const avgSyllablesPerWord = 1.5; // Simplified estimation
+    const avgSyllablesPerWord = 1.5;
     const fleschScore = 206.835 - 1.015 * avgWordsPerSentence - 84.6 * avgSyllablesPerWord;
     const readabilityScore = Math.max(0, Math.min(100, fleschScore));
 
@@ -123,15 +128,18 @@ export default function SEOContentAnalyzer() {
       (metaDescScore * 0.15)
     );
 
-    // Keyword prominence (appears in first 100 words)
+    // Keyword prominence
     const first100Words = words.slice(0, 100).join(' ').toLowerCase();
     const keywordInIntro = targetKeywordLower && first100Words.includes(targetKeywordLower);
+    const keywordInTitle = targetKeywordLower && metaTitle.toLowerCase().includes(targetKeywordLower);
+    const keywordInDescription = targetKeywordLower && metaDescription.toLowerCase().includes(targetKeywordLower);
 
-    // Extract common words for internal linking opportunities
+    // Extract common words for internal linking
     const wordFrequency: Record<string, number> = {};
+    const stopWords = ['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by'];
     words.forEach(word => {
       const cleanWord = word.toLowerCase().replace(/[^a-z]/g, '');
-      if (cleanWord.length > 4) {
+      if (cleanWord.length > 4 && !stopWords.includes(cleanWord)) {
         wordFrequency[cleanWord] = (wordFrequency[cleanWord] || 0) + 1;
       }
     });
@@ -139,6 +147,38 @@ export default function SEOContentAnalyzer() {
       .sort((a, b) => b[1] - a[1])
       .slice(0, 10)
       .map(([word]) => word);
+
+    // Featured snippet optimization
+    const hasListFormat = /^(\d+\.|-|\*)\s/gm.test(text);
+    const hasTable = /\|.*\|/g.test(text);
+    const hasBulletPoints = text.includes('•') || text.includes('-') || text.includes('*');
+    
+    // Image detection and alt text analysis
+    const imageCount = (text.match(/!\[.*?\]\(.*?\)/g) || []).length + (text.match(/<img[^>]+>/gi) || []).length;
+    const imagesWithAlt = (text.match(/!\[.+?\]\(.*?\)/g) || []).length + (text.match(/<img[^>]+alt=['""][^'""]+['""][^>]*>/gi) || []).length;
+    const missingAltText = imageCount - imagesWithAlt;
+
+    // Internal/External link detection
+    const internalLinks = (text.match(/\[.*?\]\(\/.*?\)/g) || []).length;
+    const externalLinks = (text.match(/\[.*?\]\(https?:\/\/.*?\)/g) || []).length;
+
+    // Competitor comparison
+    const competitorWords = parseInt(competitorWordCount) || 0;
+    const competitorComparison = competitorWords > 0 ? 
+      {
+        difference: words.length - competitorWords,
+        percentage: ((words.length / competitorWords) * 100 - 100).toFixed(1),
+        status: words.length > competitorWords ? 'longer' : words.length < competitorWords ? 'shorter' : 'equal'
+      } : null;
+
+    // Generate title variations for A/B testing
+    const titleVariations = generateTitleVariations(metaTitle, targetKeyword);
+
+    // FAQ Schema generation
+    const faqSchema = questions.length > 0 ? generateFAQSchema(questions) : null;
+
+    // Image alt text suggestions
+    const altTextSuggestions = generateAltTextSuggestions(targetKeyword, imageCount);
 
     return {
       wordCount: words.length,
@@ -156,8 +196,23 @@ export default function SEOContentAnalyzer() {
       metaDescScore,
       seoScore,
       keywordInIntro,
+      keywordInTitle,
+      keywordInDescription,
       topWords,
-      avgWordsPerSentence
+      avgWordsPerSentence,
+      hasListFormat,
+      hasTable,
+      hasBulletPoints,
+      imageCount,
+      imagesWithAlt,
+      missingAltText,
+      internalLinks,
+      externalLinks,
+      competitorComparison,
+      titleVariations,
+      faqSchema,
+      altTextSuggestions,
+      questions: questions.length
     };
   };
 
@@ -165,11 +220,11 @@ export default function SEOContentAnalyzer() {
     if (!keyword) return [];
     
     const lsiMap: Record<string, string[]> = {
-      'seo': ['search engine optimization', 'search rankings', 'organic traffic', 'serp', 'google ranking'],
-      'content': ['content marketing', 'content strategy', 'blog posts', 'articles', 'copywriting'],
-      'marketing': ['digital marketing', 'online marketing', 'marketing strategy', 'brand awareness', 'customer engagement'],
-      'resume': ['cv', 'curriculum vitae', 'job application', 'professional profile', 'career summary'],
-      'writing': ['content writing', 'copywriting', 'creative writing', 'blog writing', 'article writing']
+      'seo': ['search engine optimization', 'search rankings', 'organic traffic', 'serp position', 'google ranking', 'on-page seo', 'off-page seo', 'technical seo'],
+      'content': ['content marketing', 'content strategy', 'blog posts', 'articles', 'copywriting', 'content creation', 'editorial calendar', 'content planning'],
+      'marketing': ['digital marketing', 'online marketing', 'marketing strategy', 'brand awareness', 'customer engagement', 'marketing automation', 'email marketing', 'social media marketing'],
+      'resume': ['cv', 'curriculum vitae', 'job application', 'professional profile', 'career summary', 'cover letter', 'job search', 'career development'],
+      'writing': ['content writing', 'copywriting', 'creative writing', 'blog writing', 'article writing', 'technical writing', 'business writing', 'web content']
     };
 
     const keyLower = keyword.toLowerCase();
@@ -179,7 +234,51 @@ export default function SEOContentAnalyzer() {
       }
     }
     
-    return [`${keyword} tips`, `${keyword} guide`, `best ${keyword}`, `${keyword} strategy`, `${keyword} tutorial`];
+    return [`${keyword} tips`, `${keyword} guide`, `best ${keyword}`, `${keyword} strategy`, `${keyword} tutorial`, `how to ${keyword}`, `${keyword} examples`, `${keyword} best practices`];
+  };
+
+  const generateTitleVariations = (title: string, keyword: string): string[] => {
+    if (!title || !keyword) return [];
+    
+    const variations: string[] = [];
+    const year = new Date().getFullYear();
+    
+    variations.push(`${keyword} - ${title}`);
+    variations.push(`${title} | ${keyword} Guide ${year}`);
+    variations.push(`Ultimate ${keyword} Guide: ${title}`);
+    variations.push(`${title} - Complete ${keyword} Tutorial`);
+    variations.push(`${keyword}: ${title} [${year} Update]`);
+    
+    return variations.filter(v => v.length <= 70);
+  };
+
+  const generateFAQSchema = (questions: string[]): string => {
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": questions.slice(0, 5).map(q => ({
+        "@type": "Question",
+        "name": q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "[Add your answer here]"
+        }
+      }))
+    };
+    
+    return JSON.stringify(schema, null, 2);
+  };
+
+  const generateAltTextSuggestions = (keyword: string, count: number): string[] => {
+    if (!keyword || count === 0) return [];
+    
+    return [
+      `${keyword} - infographic`,
+      `${keyword} - step by step guide`,
+      `${keyword} - example screenshot`,
+      `${keyword} - comparison chart`,
+      `${keyword} - statistics and data`
+    ].slice(0, count);
   };
 
   const analysis = text ? analyzeSEO() : null;
@@ -196,8 +295,8 @@ export default function SEOContentAnalyzer() {
   };
 
   const getReadabilityGrade = (score: number) => {
-    if (score >= 90) return { grade: 'Very Easy', color: 'text-green-600' };
-    if (score >= 80) return { grade: 'Easy', color: 'text-green-500' };
+    if (score >= 90) return { grade: 'Very Easy', color: 'text-green-600 dark:text-green-400' };
+    if (score >= 80) return { grade: 'Easy', color: 'text-green-500 dark:text-green-300' };
     if (score >= 70) return { grade: 'Fairly Easy', color: 'text-blue-500' };
     if (score >= 60) return { grade: 'Standard', color: 'text-yellow-500' };
     if (score >= 50) return { grade: 'Fairly Difficult', color: 'text-orange-500' };
@@ -215,10 +314,10 @@ export default function SEOContentAnalyzer() {
               <FaChartLine className="text-4xl sm:text-5xl text-primary" />
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
-              SEO Content Analyzer
+              Advanced SEO Content Analyzer & SERP Preview
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
-              Optimize your content for search engines with AI-powered keyword analysis and SEO scoring
+              Get SERP previews, social media cards, LSI keywords, FAQ schemas, and competitor analysis
             </p>
           </div>
 
@@ -227,7 +326,7 @@ export default function SEOContentAnalyzer() {
             <CardHeader>
               <CardTitle>Content & Keyword Settings</CardTitle>
               <CardDescription>
-                Paste your content and set your target keyword for comprehensive SEO analysis
+                Complete SEO analysis with SERP preview and social media card simulation
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -275,6 +374,18 @@ export default function SEOContentAnalyzer() {
                 />
               </div>
 
+              {/* Competitor Word Count */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Competitor Average Word Count (Optional)</label>
+                <Input
+                  type="number"
+                  value={competitorWordCount}
+                  onChange={(e) => setCompetitorWordCount(e.target.value)}
+                  placeholder="e.g., 1500"
+                  data-testid="input-competitor-words"
+                />
+              </div>
+
               {/* Text Input */}
               <div className="space-y-2">
                 <div className="flex gap-2">
@@ -298,7 +409,7 @@ export default function SEOContentAnalyzer() {
                 <Textarea
                   value={text}
                   onChange={(e) => setText(e.target.value)}
-                  placeholder="Paste your article or blog content here... Include headings with # syntax (# for H1, ## for H2, etc.)"
+                  placeholder="Paste your article or blog content here... Use # for H1, ## for H2, ### for H3. Add questions in headings for FAQ schema generation."
                   className="min-h-[300px] font-mono text-sm"
                   data-testid="textarea-content-input"
                 />
@@ -324,25 +435,94 @@ export default function SEOContentAnalyzer() {
                           </Badge>
                         </div>
                         <Progress value={analysis.seoScore} className="h-3" />
-                        <p className="text-sm text-muted-foreground">
-                          {analysis.seoScore >= 80 
-                            ? 'Your content is well-optimized for search engines!'
-                            : 'Follow the recommendations below to improve your SEO score.'}
-                        </p>
                       </div>
                     </CardContent>
                   </Card>
 
-                  <Tabs defaultValue="keywords" className="w-full">
-                    <TabsList className="grid w-full grid-cols-4">
+                  {/* SERP Preview */}
+                  <Card className="bg-gradient-to-r from-blue-500/10 to-cyan-500/5 border-blue-500/20">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Search className="h-5 w-5" />
+                        Google SERP Preview
+                      </CardTitle>
+                      <CardDescription>How your page will appear in Google search results</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="bg-white dark:bg-gray-900 p-4 rounded border border-gray-200 dark:border-gray-700">
+                        <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">https://yourwebsite.com/article</div>
+                        <div className="text-xl text-blue-800 dark:text-blue-400 hover:underline mb-1 cursor-pointer">
+                          {metaTitle || 'Your Page Title Goes Here'}
+                        </div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300">
+                          {metaDescription || 'Your meta description will appear here. Make it compelling to increase click-through rates!'}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Tabs defaultValue="social" className="w-full">
+                    <TabsList className="grid w-full grid-cols-7 text-xs">
+                      <TabsTrigger value="social" data-testid="tab-social">Social</TabsTrigger>
                       <TabsTrigger value="keywords" data-testid="tab-keywords">Keywords</TabsTrigger>
-                      <TabsTrigger value="readability" data-testid="tab-readability">Readability</TabsTrigger>
-                      <TabsTrigger value="structure" data-testid="tab-structure">Structure</TabsTrigger>
-                      <TabsTrigger value="opportunities" data-testid="tab-opportunities">Tips</TabsTrigger>
+                      <TabsTrigger value="snippets" data-testid="tab-snippets">Snippets</TabsTrigger>
+                      <TabsTrigger value="titles" data-testid="tab-titles">Titles</TabsTrigger>
+                      <TabsTrigger value="images" data-testid="tab-images">Images</TabsTrigger>
+                      <TabsTrigger value="competitor" data-testid="tab-competitor">vs Competitor</TabsTrigger>
+                      <TabsTrigger value="schema" data-testid="tab-schema">Schema</TabsTrigger>
                     </TabsList>
 
+                    <TabsContent value="social" className="space-y-4">
+                      {/* Twitter Card Preview */}
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-base flex items-center gap-2">
+                            <FaTwitter className="h-5 w-5 text-blue-400" />
+                            Twitter Card Preview
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="border rounded-lg overflow-hidden max-w-md">
+                            <div className="bg-gray-200 dark:bg-gray-700 h-32 flex items-center justify-center text-gray-500">
+                              [Featured Image]
+                            </div>
+                            <div className="p-3 bg-white dark:bg-gray-800 border-t">
+                              <div className="text-sm font-semibold line-clamp-1">{metaTitle || 'Your Title'}</div>
+                              <div className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2 mt-1">
+                                {metaDescription || 'Your description'}
+                              </div>
+                              <div className="text-xs text-gray-500 mt-1">yourwebsite.com</div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      {/* Facebook Card Preview */}
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-base flex items-center gap-2">
+                            <FaFacebook className="h-5 w-5 text-blue-600" />
+                            Facebook Card Preview
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="border rounded-lg overflow-hidden max-w-lg">
+                            <div className="bg-gray-200 dark:bg-gray-700 h-48 flex items-center justify-center text-gray-500">
+                              [Featured Image 1200x630]
+                            </div>
+                            <div className="p-3 bg-gray-50 dark:bg-gray-800 border-t">
+                              <div className="text-xs text-gray-500 uppercase mb-1">yourwebsite.com</div>
+                              <div className="text-base font-semibold line-clamp-1">{metaTitle || 'Your Title'}</div>
+                              <div className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mt-1">
+                                {metaDescription || 'Your description'}
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </TabsContent>
+
                     <TabsContent value="keywords" className="space-y-4">
-                      {/* Keyword Density */}
                       <Card>
                         <CardHeader>
                           <CardTitle className="text-base">Keyword Analysis</CardTitle>
@@ -350,206 +530,222 @@ export default function SEOContentAnalyzer() {
                         <CardContent className="space-y-4">
                           {targetKeyword ? (
                             <>
-                              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 <div>
                                   <div className="text-2xl font-bold" data-testid="text-keyword-count">{analysis.keywordCount}</div>
-                                  <div className="text-xs text-muted-foreground">Keyword Occurrences</div>
+                                  <div className="text-xs text-muted-foreground">Occurrences</div>
                                 </div>
                                 <div>
                                   <div className="text-2xl font-bold" data-testid="text-keyword-density">{analysis.keywordDensity.toFixed(2)}%</div>
-                                  <div className="text-xs text-muted-foreground">Keyword Density</div>
+                                  <div className="text-xs text-muted-foreground">Density</div>
                                 </div>
                                 <div>
-                                  <div className="flex items-center gap-2">
-                                    {analysis.keywordInIntro ? (
-                                      <CheckCircle className="h-5 w-5 text-green-500" />
-                                    ) : (
-                                      <AlertCircle className="h-5 w-5 text-yellow-500" />
-                                    )}
-                                    <span className="text-sm">{analysis.keywordInIntro ? 'In intro' : 'Not in intro'}</span>
+                                  <div className="flex items-center gap-1">
+                                    {analysis.keywordInTitle ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertCircle className="h-5 w-5 text-red-500" />}
                                   </div>
-                                  <div className="text-xs text-muted-foreground">Keyword Prominence</div>
+                                  <div className="text-xs text-muted-foreground">In Title</div>
+                                </div>
+                                <div>
+                                  <div className="flex items-center gap-1">
+                                    {analysis.keywordInDescription ? <CheckCircle className="h-5 w-5 text-green-500" /> : <AlertCircle className="h-5 w-5 text-red-500" />}
+                                  </div>
+                                  <div className="text-xs text-muted-foreground">In Description</div>
                                 </div>
                               </div>
-                              
-                              <div>
-                                <Progress value={analysis.keywordDensityScore} className="h-2" />
-                                <p className="text-sm text-muted-foreground mt-2">
-                                  {analysis.keywordDensity < 1 && 'Keyword density is low. Consider using your target keyword more (1-3% is ideal).'}
-                                  {analysis.keywordDensity >= 1 && analysis.keywordDensity <= 3 && 'Perfect keyword density for SEO!'}
-                                  {analysis.keywordDensity > 3 && 'Keyword density is high. Reduce usage to avoid keyword stuffing penalties.'}
-                                </p>
+
+                              {/* LSI Keywords */}
+                              <div className="border-t pt-4">
+                                <p className="text-sm font-medium mb-2">LSI Keywords to Include:</p>
+                                <div className="flex flex-wrap gap-2">
+                                  {analysis.lsiKeywordSuggestions.map((keyword, idx) => (
+                                    <Badge key={idx} variant="outline" className="text-xs">
+                                      {keyword}
+                                    </Badge>
+                                  ))}
+                                </div>
                               </div>
                             </>
                           ) : (
-                            <p className="text-sm text-muted-foreground">Enter a target keyword to see keyword analysis.</p>
+                            <p className="text-sm text-muted-foreground">Enter a target keyword to see analysis.</p>
                           )}
                         </CardContent>
                       </Card>
-
-                      {/* LSI Keywords */}
-                      <Card>
-                        <CardHeader>
-                          <CardTitle className="text-base">LSI Keyword Suggestions</CardTitle>
-                          <CardDescription>Related terms to include for better SEO</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="flex flex-wrap gap-2">
-                            {analysis.lsiKeywordSuggestions.map((keyword, idx) => (
-                              <Badge key={idx} variant="outline" className="text-xs">
-                                {keyword}
-                              </Badge>
-                            ))}
-                          </div>
-                          <p className="text-sm text-muted-foreground mt-3">
-                            Include these related terms naturally in your content to improve topical relevance and ranking potential.
-                          </p>
-                        </CardContent>
-                      </Card>
                     </TabsContent>
 
-                    <TabsContent value="readability" className="space-y-4">
+                    <TabsContent value="snippets" className="space-y-4">
                       <Card>
                         <CardHeader>
-                          <CardTitle className="text-base">Readability Analysis</CardTitle>
+                          <CardTitle className="text-base">Featured Snippet Optimization</CardTitle>
+                          <CardDescription>Increase chances of appearing in Google's featured snippets</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div>
-                              <div className="text-2xl font-bold">{Math.round(analysis.readabilityScore)}</div>
-                              <div className="text-xs text-muted-foreground">Flesch Score</div>
+                          <div className="grid grid-cols-3 gap-4">
+                            <div className="text-center">
+                              {analysis.hasListFormat ? <CheckCircle className="h-8 w-8 mx-auto text-green-500" /> : <AlertCircle className="h-8 w-8 mx-auto text-yellow-500" />}
+                              <div className="text-sm mt-2">List Format</div>
                             </div>
-                            <div>
-                              <div className={`text-lg font-bold ${getReadabilityGrade(analysis.readabilityScore).color}`}>
-                                {getReadabilityGrade(analysis.readabilityScore).grade}
-                              </div>
-                              <div className="text-xs text-muted-foreground">Reading Level</div>
+                            <div className="text-center">
+                              {analysis.hasTable ? <CheckCircle className="h-8 w-8 mx-auto text-green-500" /> : <AlertCircle className="h-8 w-8 mx-auto text-yellow-500" />}
+                              <div className="text-sm mt-2">Table</div>
                             </div>
-                            <div>
-                              <div className="text-2xl font-bold">{analysis.avgWordsPerSentence.toFixed(1)}</div>
-                              <div className="text-xs text-muted-foreground">Words/Sentence</div>
-                            </div>
-                            <div>
-                              <div className="text-2xl font-bold">{analysis.paragraphCount}</div>
-                              <div className="text-xs text-muted-foreground">Paragraphs</div>
+                            <div className="text-center">
+                              {analysis.questions > 0 ? <CheckCircle className="h-8 w-8 mx-auto text-green-500" /> : <AlertCircle className="h-8 w-8 mx-auto text-yellow-500" />}
+                              <div className="text-sm mt-2">Q&A Format</div>
                             </div>
                           </div>
-                          <Progress value={analysis.readabilityScore} className="h-2" />
-                          <p className="text-sm text-muted-foreground">
-                            Aim for a Flesch score of 60-70 for general audiences. Use shorter sentences and simpler words to improve readability.
-                          </p>
+
+                          <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                            <p className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-2">💡 Featured Snippet Tips:</p>
+                            <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
+                              <li>• Use numbered or bulleted lists for "how-to" content</li>
+                              <li>• Answer questions directly in the first paragraph</li>
+                              <li>• Keep answers concise (40-60 words for best results)</li>
+                              <li>• Use tables for comparisons and data</li>
+                            </ul>
+                          </div>
                         </CardContent>
                       </Card>
                     </TabsContent>
 
-                    <TabsContent value="structure" className="space-y-4">
+                    <TabsContent value="titles" className="space-y-4">
                       <Card>
                         <CardHeader>
-                          <CardTitle className="text-base">Content Structure</CardTitle>
+                          <CardTitle className="text-base">Title A/B Testing Variations</CardTitle>
+                          <CardDescription>Alternative title formats to test for better CTR</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          {analysis.titleVariations.length > 0 ? (
+                            <div className="space-y-2">
+                              {analysis.titleVariations.map((title, idx) => (
+                                <div key={idx} className="p-3 bg-muted rounded-lg">
+                                  <div className="flex items-start justify-between">
+                                    <span className="text-sm font-medium">{title}</span>
+                                    <Badge variant="outline" className="text-xs">{title.length} chars</Badge>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <p className="text-sm text-muted-foreground">Enter both meta title and target keyword to generate variations.</p>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </TabsContent>
+
+                    <TabsContent value="images" className="space-y-4">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-base flex items-center gap-2">
+                            <ImageIcon className="h-5 w-5" />
+                            Image SEO Analysis
+                          </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                          <div className="grid grid-cols-3 gap-4">
                             <div>
-                              <div className="text-2xl font-bold" data-testid="text-word-count-seo">{analysis.wordCount}</div>
-                              <div className="text-xs text-muted-foreground">Total Words</div>
+                              <div className="text-2xl font-bold">{analysis.imageCount}</div>
+                              <div className="text-xs text-muted-foreground">Total Images</div>
                             </div>
                             <div>
-                              <div className="text-2xl font-bold">{analysis.headings.h1}</div>
-                              <div className="text-xs text-muted-foreground">H1 Headings</div>
+                              <div className="text-2xl font-bold text-green-600">{analysis.imagesWithAlt}</div>
+                              <div className="text-xs text-muted-foreground">With Alt Text</div>
                             </div>
                             <div>
-                              <div className="text-2xl font-bold">{analysis.headings.h2}</div>
-                              <div className="text-xs text-muted-foreground">H2 Headings</div>
-                            </div>
-                            <div>
-                              <div className="text-2xl font-bold">{analysis.headings.total}</div>
-                              <div className="text-xs text-muted-foreground">Total Headings</div>
+                              <div className="text-2xl font-bold text-red-600">{analysis.missingAltText}</div>
+                              <div className="text-xs text-muted-foreground">Missing Alt</div>
                             </div>
                           </div>
 
-                          <div>
-                            <label className="text-sm font-medium mb-2 block">Content Length Score</label>
-                            <Progress value={analysis.contentLengthScore} className="h-2" />
-                            <p className="text-sm text-muted-foreground mt-2">
-                              {analysis.wordCount < 600 && 'Content is short. Aim for 1000-2500 words for better SEO performance.'}
-                              {analysis.wordCount >= 600 && analysis.wordCount < 1000 && 'Good length, but consider expanding to 1000+ words.'}
-                              {analysis.wordCount >= 1000 && 'Excellent content length for SEO!'}
-                            </p>
-                          </div>
-
-                          <div className="border-t pt-4">
-                            <h4 className="font-semibold mb-2">Heading Best Practices</h4>
-                            <div className="space-y-2 text-sm">
-                              <div className="flex items-center gap-2">
-                                {analysis.headings.h1 === 1 ? (
-                                  <CheckCircle className="h-4 w-4 text-green-500" />
-                                ) : (
-                                  <AlertCircle className="h-4 w-4 text-yellow-500" />
-                                )}
-                                <span>Use exactly one H1 heading {analysis.headings.h1 === 1 ? '✓' : `(found ${analysis.headings.h1})`}</span>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                {analysis.headings.h2 > 0 ? (
-                                  <CheckCircle className="h-4 w-4 text-green-500" />
-                                ) : (
-                                  <AlertCircle className="h-4 w-4 text-yellow-500" />
-                                )}
-                                <span>Include H2 subheadings {analysis.headings.h2 > 0 ? '✓' : '(none found)'}</span>
+                          {analysis.altTextSuggestions.length > 0 && (
+                            <div>
+                              <p className="text-sm font-medium mb-2">Alt Text Suggestions:</p>
+                              <div className="space-y-2">
+                                {analysis.altTextSuggestions.map((suggestion, idx) => (
+                                  <div key={idx} className="p-2 bg-muted rounded text-sm font-mono">
+                                    alt="{suggestion}"
+                                  </div>
+                                ))}
                               </div>
                             </div>
-                          </div>
+                          )}
                         </CardContent>
                       </Card>
                     </TabsContent>
 
-                    <TabsContent value="opportunities" className="space-y-4">
+                    <TabsContent value="competitor" className="space-y-4">
                       <Card>
                         <CardHeader>
-                          <CardTitle className="text-base">Internal Linking Opportunities</CardTitle>
-                          <CardDescription>Frequently used words that could link to other pages</CardDescription>
+                          <CardTitle className="text-base">Competitor Content Analysis</CardTitle>
+                          <CardDescription>Compare your content length with competitors</CardDescription>
                         </CardHeader>
                         <CardContent>
-                          <div className="flex flex-wrap gap-2">
-                            {analysis.topWords.map((word, idx) => (
-                              <Badge key={idx} variant="secondary">
-                                {word}
-                              </Badge>
-                            ))}
-                          </div>
+                          {analysis.competitorComparison ? (
+                            <div className="space-y-4">
+                              <div className="grid grid-cols-2 gap-4">
+                                <div className="text-center p-4 bg-primary/10 rounded-lg">
+                                  <div className="text-2xl font-bold">{analysis.wordCount}</div>
+                                  <div className="text-sm text-muted-foreground">Your Content</div>
+                                </div>
+                                <div className="text-center p-4 bg-muted rounded-lg">
+                                  <div className="text-2xl font-bold">{competitorWordCount}</div>
+                                  <div className="text-sm text-muted-foreground">Competitor Avg</div>
+                                </div>
+                              </div>
+
+                              <div className="text-center p-4 border rounded-lg">
+                                <div className="text-sm text-muted-foreground mb-1">Your content is</div>
+                                <div className={`text-3xl font-bold ${analysis.competitorComparison.status === 'longer' ? 'text-green-600' : 'text-orange-600'}`}>
+                                  {Math.abs(analysis.competitorComparison.difference)} words {analysis.competitorComparison.status}
+                                </div>
+                                <div className="text-sm text-muted-foreground mt-1">
+                                  ({analysis.competitorComparison.percentage}% {analysis.competitorComparison.status === 'longer' ? 'more' : 'less'})
+                                </div>
+                              </div>
+
+                              <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                                <p className="text-sm text-blue-800 dark:text-blue-200">
+                                  💡 {analysis.competitorComparison.status === 'longer' 
+                                    ? 'Great! Longer content typically ranks better. Ensure quality matches quantity.' 
+                                    : 'Consider expanding your content to be more comprehensive than competitors.'}
+                                </p>
+                              </div>
+                            </div>
+                          ) : (
+                            <p className="text-sm text-muted-foreground">Enter competitor average word count to see comparison.</p>
+                          )}
                         </CardContent>
                       </Card>
+                    </TabsContent>
 
+                    <TabsContent value="schema" className="space-y-4">
                       <Card>
                         <CardHeader>
-                          <CardTitle className="text-base">SEO Optimization Tips</CardTitle>
+                          <CardTitle className="text-base flex items-center gap-2">
+                            <HelpCircle className="h-5 w-5" />
+                            FAQ Schema Generator
+                          </CardTitle>
+                          <CardDescription>
+                            {analysis.questions > 0 ? `Found ${analysis.questions} questions in your content` : 'Add questions in headings to generate FAQ schema'}
+                          </CardDescription>
                         </CardHeader>
                         <CardContent>
-                          <ul className="space-y-2 text-sm">
-                            <li className="flex items-start gap-2">
-                              <Zap className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
-                              <span>{analysis.metaTitleScore < 80 ? 'Optimize your meta title to 50-60 characters' : 'Meta title is well-optimized ✓'}</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <Zap className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
-                              <span>{analysis.metaDescScore < 80 ? 'Improve your meta description to 150-160 characters' : 'Meta description is well-optimized ✓'}</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <Zap className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
-                              <span>{!analysis.keywordInIntro ? 'Include your target keyword in the first 100 words' : 'Target keyword appears early in content ✓'}</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <Zap className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
-                              <span>Add more LSI keywords naturally throughout your content</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <Zap className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
-                              <span>Include images with alt text containing your target keyword</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <Zap className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
-                              <span>Add internal links to related content on your website</span>
-                            </li>
-                          </ul>
+                          {analysis.faqSchema ? (
+                            <div>
+                              <div className="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-xs overflow-x-auto">
+                                <pre>{analysis.faqSchema}</pre>
+                              </div>
+                              <p className="text-sm text-muted-foreground mt-3">
+                                💡 Copy this JSON-LD schema and add it to your page's &lt;head&gt; section to enable FAQ rich results in Google.
+                              </p>
+                            </div>
+                          ) : (
+                            <div className="bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+                              <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                                To generate FAQ schema, add questions as H2 headings (##) in your content. Example:<br/>
+                                <code className="block mt-2 font-mono text-xs">## What is SEO content optimization?</code>
+                              </p>
+                            </div>
+                          )}
                         </CardContent>
                       </Card>
                     </TabsContent>
@@ -565,40 +761,52 @@ export default function SEOContentAnalyzer() {
       <section className="bg-muted/30 py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-10">Powerful SEO Features</h2>
-            <div className="grid md:grid-cols-3 gap-6">
+            <h2 className="text-3xl font-bold text-center mb-10">Advanced SEO Features Not Found Elsewhere</h2>
+            <div className="grid md:grid-cols-4 gap-6">
               <Card>
                 <CardHeader>
-                  <FaSearch className="h-8 w-8 text-primary mb-2" />
-                  <CardTitle className="text-lg">Keyword Density Analysis</CardTitle>
+                  <Search className="h-8 w-8 text-primary mb-2" />
+                  <CardTitle className="text-lg">SERP Preview</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Track your target keyword usage and maintain the optimal 1-3% density range for best SEO performance without keyword stuffing.
+                    See exactly how your page will appear in Google search results before publishing.
                   </p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
-                  <FaBullseye className="h-8 w-8 text-primary mb-2" />
-                  <CardTitle className="text-lg">LSI Keywords</CardTitle>
+                  <Share2 className="h-8 w-8 text-primary mb-2" />
+                  <CardTitle className="text-lg">Social Cards</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Get AI-powered LSI (Latent Semantic Indexing) keyword suggestions to improve topical relevance and ranking potential.
+                    Preview your content as Twitter and Facebook cards to optimize social media sharing.
                   </p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
-                  <FaChartBar className="h-8 w-8 text-primary mb-2" />
-                  <CardTitle className="text-lg">Content Structure</CardTitle>
+                  <TrendingUp className="h-8 w-8 text-primary mb-2" />
+                  <CardTitle className="text-lg">Competitor Analysis</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Analyze heading hierarchy, content length, and readability to ensure your content is perfectly structured for search engines and readers.
+                    Compare your content length with competitors to ensure you're providing comprehensive coverage.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <HelpCircle className="h-8 w-8 text-primary mb-2" />
+                  <CardTitle className="text-lg">FAQ Schema</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    Auto-generate JSON-LD FAQ schema markup from your content for rich search results.
                   </p>
                 </CardContent>
               </Card>
@@ -610,32 +818,25 @@ export default function SEOContentAnalyzer() {
       {/* SEO Content Section */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="max-w-4xl mx-auto prose dark:prose-invert">
-          <h2>Advanced SEO Content Analyzer for US, UK, and Canada Markets</h2>
+          <h2>Professional SEO Content Analyzer with SERP Preview for Content Marketers</h2>
           <p>
-            Our SEO Content Analyzer is specifically designed for content creators, marketers, and businesses targeting high-value English-speaking markets including the United States, United Kingdom, and Canada. Optimize your content for Google and other search engines with advanced keyword analysis and actionable SEO recommendations.
+            Our SEO Content Analyzer is the most comprehensive free tool available for content optimization. Unlike basic keyword density checkers, we provide SERP preview simulation, social media card preview, competitor analysis, FAQ schema generation, and advanced SEO recommendations that help you rank #1 in Google search results.
           </p>
 
-          <h3>Unique Features That Set Us Apart</h3>
-          <p>
-            Unlike basic keyword density checkers, our comprehensive SEO analyzer provides:
-          </p>
+          <h3>Features That Make Us Unique</h3>
           <ul>
-            <li><strong>Real-Time SEO Scoring:</strong> Instant overall score based on multiple SEO factors including keyword usage, content length, readability, and structure</li>
-            <li><strong>LSI Keyword Suggestions:</strong> AI-powered related keyword recommendations to improve topical authority and semantic relevance</li>
-            <li><strong>Meta Tag Optimization:</strong> Live character count and scoring for title tags and meta descriptions with best practice guidelines</li>
-            <li><strong>Heading Hierarchy Analysis:</strong> Ensure proper H1-H6 structure for both SEO and accessibility</li>
-            <li><strong>Internal Linking Opportunities:</strong> Identify frequently used terms that could link to other valuable pages on your site</li>
-            <li><strong>Keyword Prominence Detection:</strong> Verify your target keyword appears early in your content for maximum SEO impact</li>
+            <li><strong>Google SERP Preview:</strong> See exactly how your title and description appear in search results</li>
+            <li><strong>Social Media Card Preview:</strong> Preview Twitter and Facebook cards to optimize social sharing</li>
+            <li><strong>Competitor Content Analysis:</strong> Compare your word count vs. competitors for comprehensive coverage</li>
+            <li><strong>FAQ Schema Generator:</strong> Auto-create JSON-LD schema markup for FAQ rich results</li>
+            <li><strong>Title A/B Testing:</strong> Get 5 optimized title variations to test for better CTR</li>
+            <li><strong>Image Alt Text Suggestions:</strong> SEO-optimized alt text recommendations for better image search rankings</li>
+            <li><strong>Featured Snippet Optimization:</strong> Analysis of list formats, tables, and Q&A structure</li>
           </ul>
 
-          <h3>Optimize Content for Search Engines</h3>
+          <h3>Perfect for US, UK, and Canada Markets</h3>
           <p>
-            Content is king in SEO, but only when it's properly optimized. Our analyzer helps you achieve the perfect balance between writing for humans and optimizing for search engines. With features like Flesch reading ease scoring, keyword density tracking, and content length recommendations, you can ensure your content ranks well while providing genuine value to readers.
-          </p>
-
-          <h3>Built for Professional Content Marketers</h3>
-          <p>
-            Whether you're a blogger, digital marketer, SEO specialist, or business owner, this tool provides professional-grade insights typically found in expensive SEO software. All features are free and accessible directly in your browser, with no signup required and complete privacy for your content.
+            Content marketing professionals in high-CPC markets need every advantage. Our tool provides insights that help you create content that ranks in competitive English-speaking markets where search visibility directly impacts revenue.
           </p>
         </div>
       </section>
