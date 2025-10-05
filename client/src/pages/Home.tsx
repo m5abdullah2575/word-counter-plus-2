@@ -3,7 +3,6 @@ import { lazy, Suspense } from 'react';
 const WordCounterTool = lazy(() => import('@/components/word-counter/WordCounterTool'));
 import { Link } from 'wouter';
 import { FaArrowRight, FaBolt, FaChartLine, FaCheckCircle, FaDownload, FaGraduationCap, FaPenFancy } from 'react-icons/fa';
-import RelatedContent, { TOOL_RELATED_CONTENT } from '@/components/common/RelatedContent';
 import { getCurrentOrigin } from '@/lib/site';
 import { getWordCounterSEO } from '@/lib/seo-config';
 
@@ -296,14 +295,6 @@ export default function Home() {
             </article>
           </div>
         </div>
-
-        {/* Related Content Section */}
-        <RelatedContent
-          title="Explore More Tools & Writing Resources"
-          items={TOOL_RELATED_CONTENT['word-counter']}
-          maxItems={4}
-          className="mt-12"
-        />
       </section>
       
       
