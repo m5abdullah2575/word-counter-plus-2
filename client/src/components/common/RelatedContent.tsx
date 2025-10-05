@@ -83,6 +83,20 @@ export default function RelatedContent({
 export const TOOL_RELATED_CONTENT: Record<string, RelatedItem[]> = {
   'word-counter': [
     {
+      title: 'Random Word Generator',
+      description: 'Generate random words for creative writing, brainstorming, and word games with customizable options.',
+      href: '/random-word-generator',
+      type: 'tool',
+      category: 'Writing Tools'
+    },
+    {
+      title: 'Words Per Page Calculator',
+      description: 'Convert words to pages and pages to words with accurate formatting calculations for any document.',
+      href: '/words-per-page',
+      type: 'tool',
+      category: 'Writing Tools'
+    },
+    {
       title: 'How to Improve Your Writing Readability Score',
       description: 'Learn proven techniques to make your content more readable using our word counter analysis.',
       href: '/blog/improve-writing-readability-score',
@@ -95,6 +109,66 @@ export const TOOL_RELATED_CONTENT: Record<string, RelatedItem[]> = {
       href: '/blog/seo-content-writing-ultimate-guide',
       type: 'blog',
       category: 'SEO'
+    }
+  ],
+  'random-word-generator': [
+    {
+      title: 'Word Counter',
+      description: 'Count words, characters, and analyze text with advanced readability scoring.',
+      href: '/',
+      type: 'tool',
+      category: 'Text Analysis'
+    },
+    {
+      title: 'Words Per Page Calculator',
+      description: 'Calculate how many pages your word count translates to with custom formatting.',
+      href: '/words-per-page',
+      type: 'tool',
+      category: 'Writing Tools'
+    },
+    {
+      title: 'Character Counter',
+      description: 'Count characters with and without spaces for social media and content writing.',
+      href: '/character-counter',
+      type: 'tool',
+      category: 'Text Analysis'
+    },
+    {
+      title: 'Word Frequency Counter',
+      description: 'Analyze word frequency and keyword density for SEO optimization.',
+      href: '/word-frequency-counter',
+      type: 'tool',
+      category: 'SEO Tools'
+    }
+  ],
+  'words-per-page': [
+    {
+      title: 'Word Counter',
+      description: 'Analyze your text with real-time word count, character count, and readability scores.',
+      href: '/',
+      type: 'tool',
+      category: 'Text Analysis'
+    },
+    {
+      title: 'Random Word Generator',
+      description: 'Generate random words for writing prompts and creative inspiration.',
+      href: '/random-word-generator',
+      type: 'tool',
+      category: 'Writing Tools'
+    },
+    {
+      title: 'Character Counter',
+      description: 'Count characters precisely for essays, articles, and social media posts.',
+      href: '/character-counter',
+      type: 'tool',
+      category: 'Text Analysis'
+    },
+    {
+      title: 'Text Case Converter',
+      description: 'Convert text between different case formats for professional documents.',
+      href: '/text-case-converter',
+      type: 'tool',
+      category: 'Text Formatting'
     }
   ],
   'character-counter': [
