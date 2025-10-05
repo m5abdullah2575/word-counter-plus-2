@@ -3,7 +3,8 @@ import {
   FaTextHeight, 
   FaHashtag,
   FaChartBar,
-  FaPlus
+  FaPlus,
+  FaRandom
 } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 
@@ -65,6 +66,17 @@ export const getToolsData = (): Tool[] => {
       isExternal: false,
       category: 'Analysis',
       tags: ['word frequency', 'word count', 'occurrence', 'analysis', 'statistics'],
+      featured: true
+    },
+    {
+      id: 'random-word-generator',
+      title: 'Random Word Generator',
+      description: 'Generate random words with customizable options including word count, length, type, and complexity for creative writing and brainstorming.',
+      icon: FaRandom,
+      href: '/random-word-generator',
+      isExternal: false,
+      category: 'Generation',
+      tags: ['random words', 'word generator', 'creative writing', 'brainstorming', 'random'],
       featured: true
     },
     // Future tools (coming soon) - only one placeholder
