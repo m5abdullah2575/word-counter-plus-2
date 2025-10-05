@@ -569,34 +569,34 @@ ${text}
               {result && (
                 <Card data-testid="card-highlighted-text">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <FaQuoteRight className="text-primary" />
+                    <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                      <FaQuoteRight className="text-primary text-sm sm:text-base" />
                       Highlighted Content
                     </CardTitle>
-                    <CardDescription>
+                    <CardDescription className="text-xs sm:text-sm">
                       Click on highlighted sections to see source details
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="bg-muted p-4 rounded-lg max-h-[400px] overflow-y-auto">
-                      <div className="text-sm leading-relaxed whitespace-pre-wrap font-mono">
+                    <div className="bg-muted p-3 sm:p-4 rounded-lg max-h-[300px] sm:max-h-[400px] overflow-y-auto">
+                      <div className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap font-mono">
                         {highlightedText}
                       </div>
                     </div>
                     
                     {/* Legend */}
-                    <div className="mt-4 flex flex-wrap gap-3 text-xs">
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 bg-red-200 dark:bg-red-900 rounded" />
-                        <span>Exact Match</span>
+                    <div className="mt-4 flex flex-wrap gap-2 sm:gap-3 text-xs">
+                      <div className="flex items-center gap-1 sm:gap-2">
+                        <div className="w-3 h-3 sm:w-4 sm:h-4 bg-red-200 dark:bg-red-900 rounded" />
+                        <span className="text-xs">Exact Match</span>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 bg-orange-200 dark:bg-orange-900 rounded" />
-                        <span>Paraphrased</span>
+                      <div className="flex items-center gap-1 sm:gap-2">
+                        <div className="w-3 h-3 sm:w-4 sm:h-4 bg-orange-200 dark:bg-orange-900 rounded" />
+                        <span className="text-xs">Paraphrased</span>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 bg-yellow-200 dark:bg-yellow-900 rounded" />
-                        <span>Minor Match</span>
+                      <div className="flex items-center gap-1 sm:gap-2">
+                        <div className="w-3 h-3 sm:w-4 sm:h-4 bg-yellow-200 dark:bg-yellow-900 rounded" />
+                        <span className="text-xs">Minor Match</span>
                       </div>
                     </div>
                   </CardContent>
@@ -612,11 +612,11 @@ ${text}
                 <>
                   <Card data-testid="card-originality-score">
                     <CardHeader>
-                      <CardTitle className="text-sm">Originality Score</CardTitle>
+                      <CardTitle className="text-sm sm:text-base">Originality Score</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="text-center">
-                        <div className={`text-5xl font-bold ${getScoreColor(result.overallScore)}`}>
+                        <div className={`text-4xl sm:text-5xl font-bold ${getScoreColor(result.overallScore)}`}>
                           {result.overallScore}%
                         </div>
                         <Badge 
@@ -638,7 +638,7 @@ ${text}
 
                       <div className="space-y-3">
                         <div>
-                          <div className="flex justify-between text-sm mb-1">
+                          <div className="flex justify-between text-xs sm:text-sm mb-1">
                             <span>Unique Content</span>
                             <span className="font-semibold">{result.uniqueContent}%</span>
                           </div>
@@ -646,7 +646,7 @@ ${text}
                         </div>
                         
                         <div>
-                          <div className="flex justify-between text-sm mb-1">
+                          <div className="flex justify-between text-xs sm:text-sm mb-1">
                             <span className="text-red-600 dark:text-red-400">Plagiarized Content</span>
                             <span className="font-semibold text-red-600 dark:text-red-400">
                               {result.plagiarizedContent}%
@@ -659,7 +659,7 @@ ${text}
                         </div>
                       </div>
 
-                      <div className="pt-4 border-t space-y-2 text-sm">
+                      <div className="pt-4 border-t space-y-2 text-xs sm:text-sm">
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Word Count</span>
                           <span className="font-semibold" data-testid="text-word-count">{result.wordCount}</span>
@@ -689,8 +689,8 @@ ${text}
                   {/* Suggestions */}
                   <Card data-testid="card-suggestions">
                     <CardHeader>
-                      <CardTitle className="text-sm flex items-center gap-2">
-                        <FaInfoCircle className="text-primary" />
+                      <CardTitle className="text-sm sm:text-base flex items-center gap-2">
+                        <FaInfoCircle className="text-primary text-sm" />
                         Suggestions
                       </CardTitle>
                     </CardHeader>
@@ -711,8 +711,8 @@ ${text}
                   {result.matches.length > 0 && (
                     <Card data-testid="card-matches">
                       <CardHeader>
-                        <CardTitle className="text-sm flex items-center gap-2">
-                          <FaLink className="text-primary" />
+                        <CardTitle className="text-sm sm:text-base flex items-center gap-2">
+                          <FaLink className="text-primary text-sm" />
                           Detected Matches ({result.matches.length})
                         </CardTitle>
                       </CardHeader>
@@ -827,7 +827,7 @@ ${text}
               {!result && (
                 <Card data-testid="card-getting-started">
                   <CardHeader>
-                    <CardTitle className="text-sm">How It Works</CardTitle>
+                    <CardTitle className="text-sm sm:text-base">How It Works</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm text-muted-foreground">
                     <div className="flex gap-3">
@@ -868,30 +868,30 @@ ${text}
           </div>
 
           {/* Feature Highlights */}
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             <Card>
-              <CardContent className="pt-6 text-center">
-                <FaChartBar className="text-3xl text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-2">Advanced Analysis</h3>
-                <p className="text-sm text-muted-foreground">
+              <CardContent className="pt-4 sm:pt-6 text-center px-3 sm:px-4">
+                <FaChartBar className="text-2xl sm:text-3xl text-primary mx-auto mb-2 sm:mb-3" />
+                <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Advanced Analysis</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   Deep scanning with n-gram matching and paraphrase detection
                 </p>
               </CardContent>
             </Card>
             <Card>
-              <CardContent className="pt-6 text-center">
-                <FaShieldAlt className="text-3xl text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-2">Privacy Protected</h3>
-                <p className="text-sm text-muted-foreground">
+              <CardContent className="pt-4 sm:pt-6 text-center px-3 sm:px-4">
+                <FaShieldAlt className="text-2xl sm:text-3xl text-primary mx-auto mb-2 sm:mb-3" />
+                <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Privacy Protected</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   All processing happens locally - your content stays private
                 </p>
               </CardContent>
             </Card>
             <Card>
-              <CardContent className="pt-6 text-center">
-                <FaDownload className="text-3xl text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-2">Detailed Reports</h3>
-                <p className="text-sm text-muted-foreground">
+              <CardContent className="pt-4 sm:pt-6 text-center px-3 sm:px-4">
+                <FaDownload className="text-2xl sm:text-3xl text-primary mx-auto mb-2 sm:mb-3" />
+                <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Detailed Reports</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   Export comprehensive reports with all matches and suggestions
                 </p>
               </CardContent>
