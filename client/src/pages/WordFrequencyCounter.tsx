@@ -409,28 +409,6 @@ export default function WordFrequencyCounterPage() {
               </div>
             </article>
           </div>
-
-          {/* Related Tools Links */}
-          <div className="mt-8 bg-muted/30 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-foreground mb-4 text-center">Explore More Text Analysis Tools</h3>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/">
-                <span className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/80 transition-colors text-sm">
-                  Word Counter
-                </span>
-              </Link>
-              <Link href="/character-counter">
-                <span className="inline-flex items-center px-4 py-2 bg-secondary text-secondary-foreground rounded hover:bg-secondary/80 transition-colors text-sm">
-                  Character Counter
-                </span>
-              </Link>
-              <Link href="/text-case-convert">
-                <span className="inline-flex items-center px-4 py-2 bg-secondary text-secondary-foreground rounded hover:bg-secondary/80 transition-colors text-sm">
-                  Text Case Converter
-                </span>
-              </Link>
-            </div>
-          </div>
         </div>
       </section>
     </>

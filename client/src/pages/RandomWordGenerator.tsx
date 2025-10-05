@@ -716,40 +716,6 @@ export default function RandomWordGenerator() {
               </div>
             </div>
           </div>
-
-          {/* Related Tools */}
-          <div className="bg-muted/30 rounded-lg p-6 md:p-8">
-            <h2 className="text-2xl font-bold text-foreground mb-6">Related Writing Tools</h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Link href="/">
-                <div className="bg-card rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer border border-border">
-                  <h3 className="font-semibold text-foreground mb-2">Word Counter</h3>
-                  <p className="text-sm text-muted-foreground">Count words, characters, and analyze text instantly</p>
-                </div>
-              </Link>
-              
-              <Link href="/words-per-page">
-                <div className="bg-card rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer border border-border">
-                  <h3 className="font-semibold text-foreground mb-2">Words Per Page</h3>
-                  <p className="text-sm text-muted-foreground">Calculate pages from word count with formatting options</p>
-                </div>
-              </Link>
-
-              <Link href="/word-frequency-counter">
-                <div className="bg-card rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer border border-border">
-                  <h3 className="font-semibold text-foreground mb-2">Word Frequency</h3>
-                  <p className="text-sm text-muted-foreground">Analyze word frequency and keyword density</p>
-                </div>
-              </Link>
-
-              <Link href="/character-counter">
-                <div className="bg-card rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer border border-border">
-                  <h3 className="font-semibold text-foreground mb-2">Character Counter</h3>
-                  <p className="text-sm text-muted-foreground">Count characters with and without spaces</p>
-                </div>
-              </Link>
-            </div>
-          </div>
         </div>
       </section>
     </main>

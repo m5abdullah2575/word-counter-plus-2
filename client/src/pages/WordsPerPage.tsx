@@ -1110,40 +1110,6 @@ ${quickReference.map(ref => `${ref.words.toLocaleString()} words = ${ref.pages} 
             </div>
           </div>
 
-          {/* Related Tools */}
-          <div className="bg-muted/30 rounded-lg p-6 md:p-8">
-            <h2 className="text-2xl font-bold text-foreground mb-6">Related Writing & Text Tools</h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Link href="/">
-                <div className="bg-card rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer border border-border">
-                  <h3 className="font-semibold text-foreground mb-2">Word Counter</h3>
-                  <p className="text-sm text-muted-foreground">Count words, characters, sentences, and paragraphs with readability analysis</p>
-                </div>
-              </Link>
-              
-              <Link href="/random-word-generator">
-                <div className="bg-card rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer border border-border">
-                  <h3 className="font-semibold text-foreground mb-2">Random Word Generator</h3>
-                  <p className="text-sm text-muted-foreground">Generate random words for creative writing and brainstorming</p>
-                </div>
-              </Link>
-
-              <Link href="/word-frequency-counter">
-                <div className="bg-card rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer border border-border">
-                  <h3 className="font-semibold text-foreground mb-2">Word Frequency Counter</h3>
-                  <p className="text-sm text-muted-foreground">Analyze word frequency and keyword density for SEO</p>
-                </div>
-              </Link>
-
-              <Link href="/character-counter">
-                <div className="bg-card rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer border border-border">
-                  <h3 className="font-semibold text-foreground mb-2">Character Counter</h3>
-                  <p className="text-sm text-muted-foreground">Count characters with and without spaces for all text</p>
-                </div>
-              </Link>
-            </div>
-          </div>
-
           {/* Formatting Standards Guide */}
           <div className="bg-card rounded-lg p-6 md:p-8 shadow-sm border border-border">
             <h2 className="text-2xl font-bold text-foreground mb-6">Standard Formatting Guidelines</h2>
