@@ -423,13 +423,13 @@ ${text}
           
           {/* Header Section */}
           <div className="text-center mb-8 md:mb-12">
-            <div className="flex items-center justify-center mb-4">
-              <FaShieldAlt className="text-4xl md:text-5xl text-primary mr-3" />
-              <h1 className="text-3xl md:text-5xl font-bold text-foreground">
+            <div className="flex flex-col sm:flex-row items-center justify-center mb-4 gap-3">
+              <FaShieldAlt className="text-3xl sm:text-4xl md:text-5xl text-primary" />
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-foreground">
                 Plagiarism Checker
               </h1>
             </div>
-            <p className="text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto px-4">
               Advanced content originality scanner with deep analysis, source matching, and paraphrase detection
             </p>
           </div>
@@ -443,11 +443,11 @@ ${text}
               {/* Text Input Card */}
               <Card data-testid="card-text-input">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <FaFileAlt className="text-primary" />
+                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                    <FaFileAlt className="text-primary text-sm sm:text-base" />
                     Enter Your Text
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-xs sm:text-sm">
                     Paste or type your content to check for plagiarism
                   </CardDescription>
                 </CardHeader>
@@ -459,9 +459,11 @@ ${text}
                       variant="outline"
                       size="sm"
                       data-testid="button-upload"
+                      className="text-xs sm:text-sm"
                     >
-                      <FaUpload className="mr-2" />
-                      {isUploading ? 'Uploading...' : 'Upload File'}
+                      <FaUpload className="mr-1 sm:mr-2 text-xs sm:text-sm" />
+                      <span className="hidden sm:inline">{isUploading ? 'Uploading...' : 'Upload File'}</span>
+                      <span className="inline sm:hidden">{isUploading ? 'Upload...' : 'Upload'}</span>
                     </Button>
                     <Button
                       onClick={handleCopy}
@@ -469,8 +471,9 @@ ${text}
                       variant="outline"
                       size="sm"
                       data-testid="button-copy"
+                      className="text-xs sm:text-sm"
                     >
-                      <FaCopy className="mr-2" />
+                      <FaCopy className="mr-1 sm:mr-2 text-xs sm:text-sm" />
                       Copy
                     </Button>
                     <Button
@@ -479,8 +482,9 @@ ${text}
                       variant="outline"
                       size="sm"
                       data-testid="button-clear"
+                      className="text-xs sm:text-sm"
                     >
-                      <FaEraser className="mr-2" />
+                      <FaEraser className="mr-1 sm:mr-2 text-xs sm:text-sm" />
                       Clear
                     </Button>
                   </div>
@@ -489,7 +493,7 @@ ${text}
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     placeholder="Start typing or paste your text here to analyze it for plagiarism..."
-                    className="min-h-[300px] md:min-h-[400px] text-base font-mono"
+                    className="min-h-[250px] sm:min-h-[300px] md:min-h-[400px] text-sm sm:text-base font-mono"
                     data-testid="textarea-input"
                   />
 
@@ -503,9 +507,10 @@ ${text}
                         onClick={() => setScanType('quick')}
                         disabled={isScanning}
                         data-testid="button-scan-quick"
+                        className="text-xs sm:text-sm flex items-center justify-center"
                       >
-                        <FaClock className="mr-2" />
-                        Quick
+                        <FaClock className="sm:mr-2 text-xs sm:text-sm" />
+                        <span className="hidden sm:inline ml-1">Quick</span>
                       </Button>
                       <Button
                         variant={scanType === 'standard' ? 'default' : 'outline'}
@@ -513,9 +518,10 @@ ${text}
                         onClick={() => setScanType('standard')}
                         disabled={isScanning}
                         data-testid="button-scan-standard"
+                        className="text-xs sm:text-sm flex items-center justify-center"
                       >
-                        <FaSearch className="mr-2" />
-                        Standard
+                        <FaSearch className="sm:mr-2 text-xs sm:text-sm" />
+                        <span className="hidden sm:inline ml-1">Standard</span>
                       </Button>
                       <Button
                         variant={scanType === 'deep' ? 'default' : 'outline'}
@@ -523,15 +529,16 @@ ${text}
                         onClick={() => setScanType('deep')}
                         disabled={isScanning}
                         data-testid="button-scan-deep"
+                        className="text-xs sm:text-sm flex items-center justify-center"
                       >
-                        <FaChartBar className="mr-2" />
-                        Deep
+                        <FaChartBar className="sm:mr-2 text-xs sm:text-sm" />
+                        <span className="hidden sm:inline ml-1">Deep</span>
                       </Button>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      {scanType === 'quick' && 'Fast scan for basic plagiarism detection (1-2 seconds)'}
-                      {scanType === 'standard' && 'Balanced scan with good accuracy (3-4 seconds)'}
-                      {scanType === 'deep' && 'Comprehensive scan with paraphrase detection (5-6 seconds)'}
+                      {scanType === 'quick' && 'Fast scan (1-2 sec)'}
+                      {scanType === 'standard' && 'Balanced scan (3-4 sec)'}
+                      {scanType === 'deep' && 'Deep scan (5-6 sec)'}
                     </p>
                   </div>
 
