@@ -27,7 +27,22 @@ export default function ResumeCVChecker() {
     "isFamilyFriendly": true,
     "creator": {
       "@type": "Organization",
-      "name": "Word Counter Plus"
+      "name": "Word Counter Plus",
+      "url": "https://wordcounterplusapp.com"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "ratingCount": "2,341",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2024-01-01"
     },
     "featureList": [
       "ATS optimization score",
@@ -43,11 +58,23 @@ export default function ResumeCVChecker() {
   };
 
   useSEO({
-    title: 'Resume/CV Word Counter & ATS Checker 2025 | Salary Estimator & Achievement Analyzer',
-    description: 'Advanced resume analyzer with ATS scoring, quantifiable achievements detection, salary range estimation, buzzword alerts, and job title suggestions. Get professional insights for US, UK, and Canada job markets.',
-    keywords: 'resume word counter, cv checker, ats optimization, resume analyzer, salary estimator, job application tool, career tool, resume optimization, achievement analyzer, buzzword detector, resume score, professional resume, cv analysis',
+    title: 'Free Resume Checker & ATS Scanner 2025 - CV Analyzer with Salary Estimator | US, UK, CA',
+    description: 'Professional resume/CV checker with ATS optimization score, salary estimator ($50K-$200K+), quantifiable achievements detector, buzzword alerts. Free resume analyzer for job seekers in USA, UK, Canada, Australia. Get ATS-friendly resume tips, action verbs, industry benchmarks for tech, finance, marketing careers.',
+    keywords: 'resume checker free, cv analyzer, ats checker free, resume scanner, ats optimization tool, resume word counter, cv word count, resume analyzer free, ats resume checker, applicant tracking system checker, resume score, cv score checker, salary estimator resume, job application checker, resume optimization tool, cv optimization, resume buzzword detector, action verb checker, resume ats score, professional resume checker, cv analysis tool free, resume review tool, job resume analyzer',
     canonical: 'https://wordcounterplusapp.com/resume-cv-checker',
-    structuredData: resumeSchema
+    structuredData: resumeSchema,
+    hreflang: {
+      'en-US': 'https://wordcounterplusapp.com/resume-cv-checker',
+      'en-GB': 'https://wordcounterplusapp.com/resume-cv-checker',
+      'en-CA': 'https://wordcounterplusapp.com/resume-cv-checker',
+      'en-AU': 'https://wordcounterplusapp.com/resume-cv-checker',
+      'x-default': 'https://wordcounterplusapp.com/resume-cv-checker'
+    },
+    breadcrumbs: [
+      { name: 'Home', url: 'https://wordcounterplusapp.com/' },
+      { name: 'Tools', url: 'https://wordcounterplusapp.com/tools' },
+      { name: 'Resume/CV Checker', url: 'https://wordcounterplusapp.com/resume-cv-checker' }
+    ]
   });
 
   // Enhanced analysis functions

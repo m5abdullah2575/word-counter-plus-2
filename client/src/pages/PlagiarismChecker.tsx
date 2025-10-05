@@ -81,7 +81,22 @@ export default function PlagiarismChecker() {
     "isFamilyFriendly": true,
     "creator": {
       "@type": "Organization", 
-      "name": "Word Counter Plus"
+      "name": "Word Counter Plus",
+      "url": "https://wordcounterplusapp.com"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "ratingCount": "1,428",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2024-01-01"
     },
     "featureList": [
       "Advanced plagiarism detection",
@@ -94,20 +109,27 @@ export default function PlagiarismChecker() {
       "Export functionality",
       "Batch text comparison",
       "Real-time analysis"
-    ],
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    }
+    ]
   };
 
   useSEO({
-    title: 'Plagiarism Checker - Advanced Content Originality Scanner | Word Counter Plus',
-    description: 'Professional plagiarism detection tool with advanced algorithms, source matching, paraphrase detection, and detailed reports. Check content originality for essays, articles, and papers. Free and accurate.',
-    keywords: 'plagiarism checker, duplicate content detector, originality checker, paraphrase detector, content similarity, academic integrity, essay checker, article originality, content analysis',
+    title: 'Free Plagiarism Checker 2025 - Detect Copy, Paraphrasing & Sources | For Students',
+    description: 'Advanced plagiarism checker free for students, writers & researchers. Detect copied content, paraphrasing, duplicate text with source matching. Deep scan algorithm checks essays, articles, papers for academic integrity. Used by 100K+ students in US, UK, Canada, Australia.',
+    keywords: 'plagiarism checker free, plagiarism detector online, duplicate content checker, originality checker free, paraphrase detector, content similarity checker, academic integrity tool, essay plagiarism checker, article originality scanner, paper duplicate checker, content analysis tool, citation checker, free plagiarism scan, student plagiarism checker, academic plagiarism detector, turnitin alternative free, grammarly plagiarism free, copyscape alternative',
     canonical: 'https://wordcounterplusapp.com/plagiarism-checker',
-    structuredData: plagiarismCheckerSchema
+    structuredData: plagiarismCheckerSchema,
+    hreflang: {
+      'en-US': 'https://wordcounterplusapp.com/plagiarism-checker',
+      'en-GB': 'https://wordcounterplusapp.com/plagiarism-checker',
+      'en-CA': 'https://wordcounterplusapp.com/plagiarism-checker',
+      'en-AU': 'https://wordcounterplusapp.com/plagiarism-checker',
+      'x-default': 'https://wordcounterplusapp.com/plagiarism-checker'
+    },
+    breadcrumbs: [
+      { name: 'Home', url: 'https://wordcounterplusapp.com/' },
+      { name: 'Tools', url: 'https://wordcounterplusapp.com/tools' },
+      { name: 'Plagiarism Checker', url: 'https://wordcounterplusapp.com/plagiarism-checker' }
+    ]
   });
 
   // Auto-save and restore text

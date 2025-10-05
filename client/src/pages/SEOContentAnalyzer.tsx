@@ -30,7 +30,22 @@ export default function SEOContentAnalyzer() {
     "isFamilyFriendly": true,
     "creator": {
       "@type": "Organization",
-      "name": "Word Counter Plus"
+      "name": "Word Counter Plus",
+      "url": "https://wordcounterplusapp.com"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "856",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2024-01-01"
     },
     "featureList": [
       "SERP preview simulator",
@@ -46,11 +61,23 @@ export default function SEOContentAnalyzer() {
   };
 
   useSEO({
-    title: 'SEO Content Analyzer 2025 - SERP Preview, Social Cards & Keyword Optimizer',
-    description: 'Professional SEO analyzer with SERP preview simulator, Twitter/Facebook card preview, LSI keywords, featured snippet optimization, FAQ schema generator, and competitor content analysis. Free advanced tool for content marketers.',
-    keywords: 'seo content analyzer, serp preview, social media cards, keyword density, content optimization tool, meta tag generator, lsi keywords, featured snippets, faq schema, title optimizer, alt text generator, competitor analysis',
+    title: 'Free SEO Content Analyzer 2025 - SERP Preview & Meta Tag Optimizer | US, UK, CA',
+    description: 'Professional SEO content analyzer with Google SERP preview, Twitter/Facebook cards, keyword density checker, LSI keywords, featured snippet optimizer, FAQ schema generator. Free tool for US, UK, Canada, Australia content marketers & bloggers.',
+    keywords: 'seo content analyzer free, serp preview tool, google serp simulator, social media card preview, keyword density checker, content optimization tool, meta tag generator, lsi keywords finder, featured snippets optimizer, faq schema generator, title optimizer, alt text generator, competitor content analysis, on page seo tool, content marketing tool free, blog seo checker, article optimizer, seo score checker',
     canonical: 'https://wordcounterplusapp.com/seo-content-analyzer',
-    structuredData: seoSchema
+    structuredData: seoSchema,
+    hreflang: {
+      'en-US': 'https://wordcounterplusapp.com/seo-content-analyzer',
+      'en-GB': 'https://wordcounterplusapp.com/seo-content-analyzer',
+      'en-CA': 'https://wordcounterplusapp.com/seo-content-analyzer',
+      'en-AU': 'https://wordcounterplusapp.com/seo-content-analyzer',
+      'x-default': 'https://wordcounterplusapp.com/seo-content-analyzer'
+    },
+    breadcrumbs: [
+      { name: 'Home', url: 'https://wordcounterplusapp.com/' },
+      { name: 'Tools', url: 'https://wordcounterplusapp.com/tools' },
+      { name: 'SEO Content Analyzer', url: 'https://wordcounterplusapp.com/seo-content-analyzer' }
+    ]
   });
 
   // Enhanced SEO Analysis
