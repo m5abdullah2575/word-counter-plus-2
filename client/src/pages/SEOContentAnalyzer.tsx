@@ -487,7 +487,7 @@ export default function SEOContentAnalyzer() {
                           </CardTitle>
                         </CardHeader>
                         <CardContent>
-                          <div className="border rounded-lg overflow-hidden max-w-md">
+                          <div className="border rounded-lg overflow-hidden max-w-full sm:max-w-md mx-auto">
                             <div className="bg-gray-200 dark:bg-gray-700 h-32 flex items-center justify-center text-gray-500">
                               [Featured Image]
                             </div>
@@ -511,7 +511,7 @@ export default function SEOContentAnalyzer() {
                           </CardTitle>
                         </CardHeader>
                         <CardContent>
-                          <div className="border rounded-lg overflow-hidden max-w-lg">
+                          <div className="border rounded-lg overflow-hidden max-w-full sm:max-w-lg mx-auto">
                             <div className="bg-gray-200 dark:bg-gray-700 h-48 flex items-center justify-center text-gray-500">
                               [Featured Image 1200x630]
                             </div>
@@ -535,13 +535,13 @@ export default function SEOContentAnalyzer() {
                         <CardContent className="space-y-4">
                           {targetKeyword ? (
                             <>
-                              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                                 <div>
-                                  <div className="text-2xl font-bold" data-testid="text-keyword-count">{analysis.keywordCount}</div>
+                                  <div className="text-xl sm:text-2xl font-bold" data-testid="text-keyword-count">{analysis.keywordCount}</div>
                                   <div className="text-xs text-muted-foreground">Occurrences</div>
                                 </div>
                                 <div>
-                                  <div className="text-2xl font-bold" data-testid="text-keyword-density">{analysis.keywordDensity.toFixed(2)}%</div>
+                                  <div className="text-xl sm:text-2xl font-bold" data-testid="text-keyword-density">{analysis.keywordDensity.toFixed(2)}%</div>
                                   <div className="text-xs text-muted-foreground">Density</div>
                                 </div>
                                 <div>
@@ -584,7 +584,7 @@ export default function SEOContentAnalyzer() {
                           <CardDescription>Increase chances of appearing in Google's featured snippets</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                          <div className="grid grid-cols-3 gap-3 sm:gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                             <div className="text-center">
                               {analysis.hasListFormat ? <CheckCircle className="h-6 sm:h-8 w-6 sm:w-8 mx-auto text-green-500" /> : <AlertCircle className="h-6 sm:h-8 w-6 sm:w-8 mx-auto text-yellow-500" />}
                               <div className="text-xs sm:text-sm mt-2">List Format</div>
@@ -623,9 +623,9 @@ export default function SEOContentAnalyzer() {
                             <div className="space-y-2">
                               {analysis.titleVariations.map((title, idx) => (
                                 <div key={idx} className="p-3 bg-muted rounded-lg">
-                                  <div className="flex items-start justify-between">
-                                    <span className="text-sm font-medium">{title}</span>
-                                    <Badge variant="outline" className="text-xs">{title.length} chars</Badge>
+                                  <div className="flex flex-col sm:flex-row items-start sm:justify-between gap-2">
+                                    <span className="text-sm font-medium break-words flex-1">{title}</span>
+                                    <Badge variant="outline" className="text-xs whitespace-nowrap">{title.length} chars</Badge>
                                   </div>
                                 </div>
                               ))}
@@ -646,7 +646,7 @@ export default function SEOContentAnalyzer() {
                           </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                          <div className="grid grid-cols-3 gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div>
                               <div className="text-2xl font-bold">{analysis.imageCount}</div>
                               <div className="text-xs text-muted-foreground">Total Images</div>
@@ -666,7 +666,7 @@ export default function SEOContentAnalyzer() {
                               <p className="text-sm font-medium mb-2">Alt Text Suggestions:</p>
                               <div className="space-y-2">
                                 {analysis.altTextSuggestions.map((suggestion, idx) => (
-                                  <div key={idx} className="p-2 bg-muted rounded text-sm font-mono">
+                                  <div key={idx} className="p-2 bg-muted rounded text-xs sm:text-sm font-mono break-all">
                                     alt="{suggestion}"
                                   </div>
                                 ))}
@@ -736,10 +736,10 @@ export default function SEOContentAnalyzer() {
                         <CardContent>
                           {analysis.faqSchema ? (
                             <div>
-                              <div className="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-xs overflow-x-auto">
-                                <pre>{analysis.faqSchema}</pre>
+                              <div className="bg-gray-900 text-green-400 p-3 sm:p-4 rounded-lg font-mono text-[10px] sm:text-xs overflow-x-auto">
+                                <pre className="whitespace-pre-wrap break-all sm:whitespace-pre sm:break-normal">{analysis.faqSchema}</pre>
                               </div>
-                              <p className="text-sm text-muted-foreground mt-3">
+                              <p className="text-xs sm:text-sm text-muted-foreground mt-3">
                                 💡 Copy this JSON-LD schema and add it to your page's &lt;head&gt; section to enable FAQ rich results in Google.
                               </p>
                             </div>
