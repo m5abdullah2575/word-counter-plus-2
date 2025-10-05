@@ -6,7 +6,9 @@ import {
   FaPlus,
   FaRandom,
   FaFileAlt,
-  FaShieldAlt
+  FaShieldAlt,
+  FaBriefcase,
+  FaChartLine
 } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 
@@ -101,6 +103,28 @@ export const getToolsData = (): Tool[] => {
       isExternal: false,
       category: 'Analysis',
       tags: ['plagiarism', 'originality', 'duplicate content', 'academic integrity', 'content checker', 'paraphrase detection'],
+      featured: true
+    },
+    {
+      id: 'resume-cv-checker',
+      title: 'Resume/CV Word Counter',
+      description: 'Professional resume analyzer with ATS optimization score, section-specific word counts, industry benchmarks, action verb analysis, and skills extraction. Perfect for job seekers in US, UK, and Canada.',
+      icon: FaBriefcase,
+      href: '/resume-cv-checker',
+      isExternal: false,
+      category: 'Professional',
+      tags: ['resume', 'cv', 'ats', 'job application', 'career', 'optimization', 'word count', 'professional'],
+      featured: true
+    },
+    {
+      id: 'seo-content-analyzer',
+      title: 'SEO Content Analyzer',
+      description: 'Advanced SEO content optimization tool with keyword density analysis, LSI keyword suggestions, readability scoring, meta tag generator, heading hierarchy checker, and competitor comparison for better rankings.',
+      icon: FaChartLine,
+      href: '/seo-content-analyzer',
+      isExternal: false,
+      category: 'SEO',
+      tags: ['seo', 'content optimization', 'keywords', 'search engine', 'ranking', 'meta tags', 'readability', 'lsi keywords'],
       featured: true
     },
     // Future tools (coming soon) - only one placeholder
