@@ -61,8 +61,6 @@
     <link rel="manifest" href="/manifest.json" />
     
     <!-- Critical font loading with swap and performance optimization -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <style>
       /* Critical CSS - Inline font loading and essential styles to prevent render blocking */
       @font-face {
@@ -139,22 +137,16 @@
     </style>
     
     
-    <!-- DNS Prefetch for External Resources -->
-    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <!-- DNS Prefetch and Preconnect for External Resources - Performance Optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="//www.googletagmanager.com" />
     <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
     
     <!-- Preload critical resources for ultra-fast loading -->
-    <link rel="preload" href="/src/main.tsx" as="script" crossorigin>
-    <!-- CSS loaded asynchronously for optimal performance -->
-    <link rel="preload" href="/src/index.css" as="style" onload="this.onload=null;this.rel='stylesheet'" media="print">
-    <noscript><link rel="stylesheet" href="/src/index.css"></noscript>
-    <script>
-      // Immediately apply the stylesheet once loaded
-      document.addEventListener('DOMContentLoaded', () => {
-        const cssLink = document.querySelector('link[href*="index.css"]');
-        if (cssLink) cssLink.media = 'all';
-      });
-    </script>
+    <link rel="modulepreload" href="/src/main.tsx" crossorigin>
+    <link rel="preload" href="/src/index.css" as="style">
+    <link rel="stylesheet" href="/src/index.css">
     
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
