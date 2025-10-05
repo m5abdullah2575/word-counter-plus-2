@@ -148,7 +148,7 @@
     <link rel="preload" href="/src/index.css" as="style">
     <link rel="stylesheet" href="/src/index.css">
     
-    <!-- JSON-LD Structured Data -->
+    <!-- JSON-LD Structured Data - WebApplication -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -283,6 +283,44 @@
             }
           }
         ]
+      }
+    }
+    </script>
+    
+    <!-- JSON-LD Structured Data - Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Word Counter Plus",
+      "alternateName": "WordCounterPlus",
+      "url": "https://wordcounterplusapp.com",
+      "logo": "https://wordcounterplusapp.com/word-counter-plus-logo.png",
+      "description": "Professional text analysis and writing tools for students, writers, content creators, and marketers worldwide.",
+      "foundingDate": "2024",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "US"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Customer Support",
+        "url": "https://wordcounterplusapp.com/contact",
+        "areaServed": ["US", "GB", "CA", "AU", "Worldwide"],
+        "availableLanguage": "English"
+      },
+      "sameAs": [
+        "https://twitter.com/wordcounterplusapp",
+        "https://www.facebook.com/wordcounterplusapp"
+      ],
+      "serviceArea": {
+        "@type": "GeoCircle",
+        "geoMidpoint": {
+          "@type": "GeoCoordinates",
+          "latitude": "37.7749",
+          "longitude": "-122.4194"
+        },
+        "geoRadius": "20000000"
       }
     }
     </script>

@@ -14,15 +14,30 @@ const DIST_PUBLIC_PATH = join(__dirname, 'dist', 'public');
 // Function to get static pages from src/pages directory
 function getStaticPages() {
   // Use allowlist of actual routes based on the App.tsx routing configuration
+  // Prioritize high-value SEO tools for better RPM (US, UK, CA, AU targeting)
   const staticRoutes = [
-    { page: 'Home', url: '/', priority: 1.0, changefreq: 'weekly' },
+    { page: 'Home', url: '/', priority: 1.0, changefreq: 'daily' },
+    
+    // High-priority SEO tools (targeting high RPM countries)
+    { page: 'SEO Content Analyzer', url: '/seo-content-analyzer', priority: 0.95, changefreq: 'weekly' },
+    { page: 'Plagiarism Checker', url: '/plagiarism-checker', priority: 0.95, changefreq: 'weekly' },
+    { page: 'Resume/CV Checker', url: '/resume-cv-checker', priority: 0.95, changefreq: 'weekly' },
+    
+    // Core tools
     { page: 'Tools', url: '/tools', priority: 0.9, changefreq: 'weekly' },
     { page: 'Character Counter', url: '/character-counter', priority: 0.9, changefreq: 'weekly' },
     { page: 'Text Case Converter', url: '/text-case-convert', priority: 0.9, changefreq: 'weekly' },
+    { page: 'Word Frequency Counter', url: '/word-frequency-counter', priority: 0.85, changefreq: 'weekly' },
+    { page: 'Random Word Generator', url: '/random-word-generator', priority: 0.85, changefreq: 'weekly' },
+    { page: 'Words Per Page', url: '/words-per-page', priority: 0.85, changefreq: 'weekly' },
+    
+    // Supporting pages
     { page: 'About', url: '/about', priority: 0.8, changefreq: 'monthly' },
-    { page: 'Blog', url: '/blog', priority: 0.8, changefreq: 'weekly' },
+    { page: 'Blog', url: '/blog', priority: 0.8, changefreq: 'daily' },
     { page: 'Contact', url: '/contact', priority: 0.7, changefreq: 'monthly' },
     { page: 'FAQ', url: '/faq', priority: 0.7, changefreq: 'monthly' },
+    
+    // Legal pages
     { page: 'Privacy', url: '/privacy', priority: 0.5, changefreq: 'yearly' },
     { page: 'Terms', url: '/terms', priority: 0.5, changefreq: 'yearly' },
     { page: 'Disclaimer', url: '/disclaimer', priority: 0.5, changefreq: 'yearly' },
@@ -183,17 +198,46 @@ async function getBlogPosts() {
 
 // Function to generate robots.txt
 function generateRobotsTxt() {
-  const robotsContent = `User-agent: *
+  const robotsContent = `# Robots.txt for Word Counter Plus
+# Optimized for search engines (Google, Bing, Yahoo, DuckDuckGo)
+# Targeting high RPM countries: US, UK, Canada, Australia
+
+User-agent: *
 Allow: /
+Allow: /seo-content-analyzer
+Allow: /plagiarism-checker
+Allow: /resume-cv-checker
 
 # Disallow admin, API, and internal areas
 Disallow: /admin/
 Disallow: /api/
 Disallow: /drafts/
 Disallow: /*.pdf$
+Disallow: /private/
+Disallow: /.local/
+Disallow: /server/
 
-# Set crawl delay for general bots
-Crawl-delay: 1
+# Prioritize important tools for crawling
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 0
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
 
 # Sitemap location
 Sitemap: ${SITE_URL}/sitemap.xml
