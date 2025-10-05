@@ -28,6 +28,7 @@ const CharacterCounter = lazy(() => import("@/pages/CharacterCounter"));
 const WordFrequencyCounter = lazy(() => import("@/pages/WordFrequencyCounter"));
 const RandomWordGenerator = lazy(() => import("@/pages/RandomWordGenerator"));
 const WordsPerPage = lazy(() => import("@/pages/WordsPerPage"));
+const PlagiarismChecker = lazy(() => import("@/pages/PlagiarismChecker"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
 // Loading fallback component
@@ -55,6 +56,7 @@ function Router() {
             <Route path="/word-frequency-counter" component={WordFrequencyCounter} />
             <Route path="/random-word-generator" component={RandomWordGenerator} />
             <Route path="/words-per-page" component={WordsPerPage} />
+            <Route path="/plagiarism-checker" component={PlagiarismChecker} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
             <Route path="/blog/:slug" component={BlogPost} />
@@ -75,6 +77,7 @@ function Router() {
             <Route path="/word-frequency-counter" component={WordFrequencyCounter} />
             <Route path="/random-word-generator" component={RandomWordGenerator} />
             <Route path="/words-per-page" component={WordsPerPage} />
+            <Route path="/plagiarism-checker" component={PlagiarismChecker} />
             <Route path="/text-case-convert" component={TextCaseConverterPage} />
             <Route path="/text-case-converter" component={TextCaseConverterPage} />
             <Route path="/about" component={About} />

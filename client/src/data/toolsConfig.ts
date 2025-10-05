@@ -5,7 +5,8 @@ import {
   FaChartBar,
   FaPlus,
   FaRandom,
-  FaFileAlt
+  FaFileAlt,
+  FaShieldAlt
 } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 
@@ -89,6 +90,17 @@ export const getToolsData = (): Tool[] => {
       isExternal: false,
       category: 'Calculator',
       tags: ['words per page', 'page calculator', 'word count', 'essay length', 'formatting', 'page count'],
+      featured: true
+    },
+    {
+      id: 'plagiarism-checker',
+      title: 'Plagiarism Checker',
+      description: 'Advanced plagiarism detection with deep content analysis, source matching, paraphrase detection, and detailed originality reports for students and writers.',
+      icon: FaShieldAlt,
+      href: '/plagiarism-checker',
+      isExternal: false,
+      category: 'Analysis',
+      tags: ['plagiarism', 'originality', 'duplicate content', 'academic integrity', 'content checker', 'paraphrase detection'],
       featured: true
     },
     // Future tools (coming soon) - only one placeholder
