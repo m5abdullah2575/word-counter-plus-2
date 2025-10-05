@@ -1,10 +1,32 @@
+# robots.txt for Word Counter Plus
+# https://wordcounterplusapp.com
+
+# Allow all search engines to crawl
 User-agent: *
 Allow: /
+Allow: /random-word-generator
+Allow: /words-per-page
+Allow: /character-counter
+Allow: /word-frequency-counter
+Allow: /text-case-converter
+Allow: /blog/
 
 # Disallow admin and internal areas
 Disallow: /admin/
 Disallow: /drafts/
+Disallow: /private/
 Disallow: /*.pdf$
+Disallow: /api/
+
+# Google-specific settings
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Bing-specific settings
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
 
 # Set crawl delay for general bots
 Crawl-delay: 1
