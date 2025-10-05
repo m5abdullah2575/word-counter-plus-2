@@ -4,7 +4,8 @@ import {
   FaHashtag,
   FaChartBar,
   FaPlus,
-  FaRandom
+  FaRandom,
+  FaFileAlt
 } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 
@@ -77,6 +78,17 @@ export const getToolsData = (): Tool[] => {
       isExternal: false,
       category: 'Generation',
       tags: ['random words', 'word generator', 'creative writing', 'brainstorming', 'random'],
+      featured: true
+    },
+    {
+      id: 'words-per-page',
+      title: 'Words Per Page',
+      description: 'Convert words to pages or pages to words with customizable font, size, spacing, and margins. Includes reading time estimates and comparison tools.',
+      icon: FaFileAlt,
+      href: '/words-per-page',
+      isExternal: false,
+      category: 'Calculator',
+      tags: ['words per page', 'page calculator', 'word count', 'essay length', 'formatting', 'page count'],
       featured: true
     },
     // Future tools (coming soon) - only one placeholder
