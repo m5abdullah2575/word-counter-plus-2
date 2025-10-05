@@ -849,20 +849,25 @@ export default function WordFrequencyCounter() {
                       <CardDescription className="text-xs sm:text-sm">Size represents word frequency</CardDescription>
                     </CardHeader>
                     <CardContent className="p-3 sm:p-4 md:p-6 pt-0">
-                      <div className="flex flex-wrap gap-2 justify-center items-center min-h-[300px] sm:min-h-[400px] p-4 bg-muted/30 rounded-lg border">
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center items-center min-h-[250px] sm:min-h-[350px] md:min-h-[400px] p-3 sm:p-4 bg-muted/30 rounded-lg border overflow-hidden">
                         {topWords.map((item, index) => {
                           const sizePercent = (item.frequency / topWords[0].frequency) * 100;
-                          const fontSize = Math.max(12, Math.min(48, (sizePercent / 100) * 48));
+                          // Responsive font sizes based on screen size
+                          const baseFontSize = sizePercent / 100;
+                          const mobileFontSize = Math.max(10, Math.min(20, baseFontSize * 20));
+                          const tabletFontSize = Math.max(12, Math.min(28, baseFontSize * 28));
+                          const desktopFontSize = Math.max(14, Math.min(40, baseFontSize * 40));
                           
                           return (
                             <button
                               key={item.word}
                               onClick={() => handleWordClick(item.word)}
-                              className="transition-all hover:scale-110 hover:opacity-80 cursor-pointer px-2 py-1 rounded"
+                              className="transition-all hover:scale-105 sm:hover:scale-110 hover:opacity-80 cursor-pointer px-1.5 sm:px-2 py-0.5 sm:py-1 rounded break-words max-w-full"
                               style={{
-                                fontSize: `${fontSize}px`,
-                                fontWeight: sizePercent > 50 ? 'bold' : 'normal',
+                                fontSize: `clamp(${mobileFontSize}px, ${tabletFontSize}px, ${desktopFontSize}px)`,
+                                fontWeight: sizePercent > 50 ? 'bold' : sizePercent > 25 ? '600' : 'normal',
                                 color: CHART_COLORS[index % CHART_COLORS.length],
+                                lineHeight: '1.2',
                               }}
                               title={`${item.word}: ${item.frequency} (${item.density.toFixed(2)}%)`}
                             >
