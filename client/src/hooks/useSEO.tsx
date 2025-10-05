@@ -116,6 +116,17 @@ export const useSEO = ({
     updateMetaTag('language', 'en-US');
     updateMetaTag('content-language', 'en');
     
+    // Geo-targeting for high RPM countries (US, UK, Canada, Australia)
+    updateMetaTag('geo.region', 'US-CA');
+    updateMetaTag('geo.placename', 'United States');
+    updateMetaTag('coverage', 'Worldwide');
+    updateMetaTag('distribution', 'Global');
+    updateMetaTag('target', 'all');
+    
+    // Enhanced crawling directives
+    updateMetaTag('googlebot', 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1');
+    updateMetaTag('bingbot', 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1');
+    
     // Remove existing hreflang links
     document.querySelectorAll('link[hreflang]').forEach(link => link.remove());
     
