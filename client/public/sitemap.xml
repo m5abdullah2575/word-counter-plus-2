@@ -54,4 +54,76 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- Tools Pages -->
+  <url>
+    <loc>https://wordcounterplusapp.com/tools</loc>
+    <lastmod>2025-10-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Random Word Generator Tool -->
+  <url>
+    <loc>https://wordcounterplusapp.com/random-word-generator</loc>
+    <lastmod>2025-10-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Words Per Page Calculator -->
+  <url>
+    <loc>https://wordcounterplusapp.com/words-per-page</loc>
+    <lastmod>2025-10-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Text Case Converter -->
+  <url>
+    <loc>https://wordcounterplusapp.com/text-case-converter</loc>
+    <lastmod>2025-10-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Character Counter -->
+  <url>
+    <loc>https://wordcounterplusapp.com/character-counter</loc>
+    <lastmod>2025-10-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Word Frequency Counter -->
+  <url>
+    <loc>https://wordcounterplusapp.com/word-frequency-counter</loc>
+    <lastmod>2025-10-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- About Page -->
+  <url>
+    <loc>https://wordcounterplusapp.com/about</loc>
+    <lastmod>2025-10-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Disclaimer -->
+  <url>
+    <loc>https://wordcounterplusapp.com/disclaimer</loc>
+    <lastmod>2025-10-05</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Cookies Policy -->
+  <url>
+    <loc>https://wordcounterplusapp.com/cookies</loc>
+    <lastmod>2025-10-05</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
 </urlset>
