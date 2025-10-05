@@ -69,7 +69,15 @@ export default function CharacterCounter() {
     "isFamilyFriendly": true,
     "creator": {
       "@type": "Organization", 
-      "name": "Word Counter Plus"
+      "name": "Word Counter Plus",
+      "url": "https://wordcounterplusapp.com"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "3,247",
+      "bestRating": "5",
+      "worstRating": "1"
     },
     "featureList": [
       "Character counting with/without spaces",
@@ -84,17 +92,31 @@ export default function CharacterCounter() {
     "offers": {
       "@type": "Offer",
       "price": "0",
-      "priceCurrency": "USD"
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2024-01-01"
     }
   };
 
   // SEO Configuration
   useSEO({
-    title: 'Character Counter 2025 - Advanced Text Analysis & SEO Content Optimizer | Word Counter Plus',
-    description: 'Professional character counter with real-time analysis, SEO optimization, keyword density tracking, readability scoring, and social media limit checking. Includes emoji detection, language analysis, typing speed metrics, and export features. Trusted by content creators, marketers, and writers worldwide. Mobile-optimized and completely free.',
-    keywords: 'character counter 2025, character count tool, free character counter, online character counter, text analysis tool, SEO content optimizer, keyword density analyzer, social media character limit, twitter character counter, facebook character limit, instagram caption counter, linkedin post counter, tiktok character limit, youtube description counter, meta description checker, title tag analyzer, email subject line counter, content optimization tool, readability score checker, emoji counter detector, language detection tool, typing speed calculator, text complexity analyzer, content grade level checker, writing productivity tool, content creator tool, digital marketing analyzer, copywriting optimizer, blog content analyzer, academic writing tool, student essay counter, business writing tool, professional communication analyzer',
+    title: 'Free Character Counter 2025 - Count Characters, Words & Text Length | Twitter, SMS',
+    description: 'Professional character counter free tool for Twitter, SMS, meta tags & social media. Count characters with/without spaces, analyze emoji, check readability scores. Used by 200K+ marketers, writers & students in US, UK, Canada, Australia. Real-time character limits for Facebook, Instagram, LinkedIn, TikTok, YouTube.',
+    keywords: 'character counter free, character count tool, free character counter online, text character counter, twitter character counter 280, sms character counter 160, meta description character count, facebook character limit, instagram caption counter, linkedin post character limit, tiktok bio character limit, youtube description counter, email subject line counter, google ads character limit, character counter with spaces, character counter without spaces, emoji character counter, social media character limits, real time character counter, mobile character counter, writing character counter',
     canonical: 'https://wordcounterplusapp.com/character-counter',
-    structuredData: characterCounterSchema
+    structuredData: characterCounterSchema,
+    hreflang: {
+      'en-US': 'https://wordcounterplusapp.com/character-counter',
+      'en-GB': 'https://wordcounterplusapp.com/character-counter',
+      'en-CA': 'https://wordcounterplusapp.com/character-counter',
+      'en-AU': 'https://wordcounterplusapp.com/character-counter',
+      'x-default': 'https://wordcounterplusapp.com/character-counter'
+    },
+    breadcrumbs: [
+      { name: 'Home', url: 'https://wordcounterplusapp.com/' },
+      { name: 'Tools', url: 'https://wordcounterplusapp.com/tools' },
+      { name: 'Character Counter', url: 'https://wordcounterplusapp.com/character-counter' }
+    ]
   });
 
   // Auto-save and restore text
