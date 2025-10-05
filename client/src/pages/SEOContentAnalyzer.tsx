@@ -309,14 +309,14 @@ export default function SEOContentAnalyzer() {
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-8">
-            <div className="flex items-center justify-center mb-4">
-              <FaChartLine className="text-4xl sm:text-5xl text-primary" />
+          <div className="text-center mb-6 sm:mb-8 px-2">
+            <div className="flex items-center justify-center mb-3 sm:mb-4">
+              <FaChartLine className="text-3xl sm:text-4xl md:text-5xl text-primary" />
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 leading-tight">
               Advanced SEO Content Analyzer & SERP Preview
             </h1>
-            <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
               Get SERP previews, social media cards, LSI keywords, FAQ schemas, and competitor analysis
             </p>
           </div>
@@ -332,73 +332,78 @@ export default function SEOContentAnalyzer() {
             <CardContent className="space-y-6">
               {/* Target Keyword */}
               <div className="space-y-2">
-                <label className="text-sm font-medium">Target Keyword</label>
+                <label className="text-sm sm:text-base font-medium">Target Keyword</label>
                 <Input
                   value={targetKeyword}
                   onChange={(e) => setTargetKeyword(e.target.value)}
                   placeholder="e.g., SEO content optimization"
+                  className="h-10 sm:h-11 text-sm sm:text-base"
                   data-testid="input-target-keyword"
                 />
               </div>
 
               {/* Meta Title */}
               <div className="space-y-2">
-                <label className="text-sm font-medium">Meta Title ({metaTitle.length}/60)</label>
+                <label className="text-sm sm:text-base font-medium">Meta Title ({metaTitle.length}/60)</label>
                 <Input
                   value={metaTitle}
                   onChange={(e) => setMetaTitle(e.target.value)}
                   placeholder="Your optimized page title (50-60 characters recommended)"
                   maxLength={70}
+                  className="h-10 sm:h-11 text-sm sm:text-base"
                   data-testid="input-meta-title"
                 />
                 <Progress 
                   value={(metaTitle.length / 60) * 100} 
-                  className={`h-1 ${metaTitle.length >= 50 && metaTitle.length <= 60 ? 'bg-green-500' : ''}`} 
+                  className={`h-2 ${metaTitle.length >= 50 && metaTitle.length <= 60 ? 'bg-green-500' : ''}`} 
                 />
               </div>
 
               {/* Meta Description */}
               <div className="space-y-2">
-                <label className="text-sm font-medium">Meta Description ({metaDescription.length}/160)</label>
+                <label className="text-sm sm:text-base font-medium">Meta Description ({metaDescription.length}/160)</label>
                 <Textarea
                   value={metaDescription}
                   onChange={(e) => setMetaDescription(e.target.value)}
                   placeholder="Your meta description (150-160 characters recommended)"
                   maxLength={170}
                   rows={3}
+                  className="text-sm sm:text-base"
                   data-testid="textarea-meta-description"
                 />
                 <Progress 
                   value={(metaDescription.length / 160) * 100} 
-                  className={`h-1 ${metaDescription.length >= 150 && metaDescription.length <= 160 ? 'bg-green-500' : ''}`} 
+                  className={`h-2 ${metaDescription.length >= 150 && metaDescription.length <= 160 ? 'bg-green-500' : ''}`} 
                 />
               </div>
 
               {/* Competitor Word Count */}
               <div className="space-y-2">
-                <label className="text-sm font-medium">Competitor Average Word Count (Optional)</label>
+                <label className="text-sm sm:text-base font-medium">Competitor Average Word Count (Optional)</label>
                 <Input
                   type="number"
                   value={competitorWordCount}
                   onChange={(e) => setCompetitorWordCount(e.target.value)}
                   placeholder="e.g., 1500"
+                  className="h-10 sm:h-11 text-sm sm:text-base"
                   data-testid="input-competitor-words"
                 />
               </div>
 
               {/* Text Input */}
               <div className="space-y-2">
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" asChild data-testid="button-upload-content">
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Button variant="outline" size="default" className="w-full sm:w-auto h-10 sm:h-10" asChild data-testid="button-upload-content">
                     <label className="cursor-pointer">
                       <Upload className="h-4 w-4 mr-2" />
-                      Upload Text
+                      <span className="text-sm sm:text-base">Upload Text</span>
                       <input type="file" accept=".txt" onChange={handleFileUpload} className="hidden" />
                     </label>
                   </Button>
                   <Button 
                     variant="outline" 
-                    size="sm" 
+                    size="default"
+                    className="w-full sm:w-auto h-10 sm:h-10 text-sm sm:text-base"
                     onClick={() => setText('')}
                     data-testid="button-clear-content"
                   >
@@ -462,14 +467,14 @@ export default function SEOContentAnalyzer() {
                   </Card>
 
                   <Tabs defaultValue="social" className="w-full">
-                    <TabsList className="grid w-full grid-cols-7 text-xs">
-                      <TabsTrigger value="social" data-testid="tab-social">Social</TabsTrigger>
-                      <TabsTrigger value="keywords" data-testid="tab-keywords">Keywords</TabsTrigger>
-                      <TabsTrigger value="snippets" data-testid="tab-snippets">Snippets</TabsTrigger>
-                      <TabsTrigger value="titles" data-testid="tab-titles">Titles</TabsTrigger>
-                      <TabsTrigger value="images" data-testid="tab-images">Images</TabsTrigger>
-                      <TabsTrigger value="competitor" data-testid="tab-competitor">vs Competitor</TabsTrigger>
-                      <TabsTrigger value="schema" data-testid="tab-schema">Schema</TabsTrigger>
+                    <TabsList className="w-full overflow-x-auto flex flex-nowrap justify-start sm:justify-center gap-1 h-auto p-1">
+                      <TabsTrigger value="social" className="text-xs sm:text-sm whitespace-nowrap flex-shrink-0 px-2 sm:px-3" data-testid="tab-social">Social</TabsTrigger>
+                      <TabsTrigger value="keywords" className="text-xs sm:text-sm whitespace-nowrap flex-shrink-0 px-2 sm:px-3" data-testid="tab-keywords">Keywords</TabsTrigger>
+                      <TabsTrigger value="snippets" className="text-xs sm:text-sm whitespace-nowrap flex-shrink-0 px-2 sm:px-3" data-testid="tab-snippets">Snippets</TabsTrigger>
+                      <TabsTrigger value="titles" className="text-xs sm:text-sm whitespace-nowrap flex-shrink-0 px-2 sm:px-3" data-testid="tab-titles">Titles</TabsTrigger>
+                      <TabsTrigger value="images" className="text-xs sm:text-sm whitespace-nowrap flex-shrink-0 px-2 sm:px-3" data-testid="tab-images">Images</TabsTrigger>
+                      <TabsTrigger value="competitor" className="text-xs sm:text-sm whitespace-nowrap flex-shrink-0 px-2 sm:px-3" data-testid="tab-competitor">Competitor</TabsTrigger>
+                      <TabsTrigger value="schema" className="text-xs sm:text-sm whitespace-nowrap flex-shrink-0 px-2 sm:px-3" data-testid="tab-schema">Schema</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="social" className="space-y-4">
@@ -530,7 +535,7 @@ export default function SEOContentAnalyzer() {
                         <CardContent className="space-y-4">
                           {targetKeyword ? (
                             <>
-                              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                                 <div>
                                   <div className="text-2xl font-bold" data-testid="text-keyword-count">{analysis.keywordCount}</div>
                                   <div className="text-xs text-muted-foreground">Occurrences</div>
@@ -579,18 +584,18 @@ export default function SEOContentAnalyzer() {
                           <CardDescription>Increase chances of appearing in Google's featured snippets</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                          <div className="grid grid-cols-3 gap-4">
+                          <div className="grid grid-cols-3 gap-3 sm:gap-4">
                             <div className="text-center">
-                              {analysis.hasListFormat ? <CheckCircle className="h-8 w-8 mx-auto text-green-500" /> : <AlertCircle className="h-8 w-8 mx-auto text-yellow-500" />}
-                              <div className="text-sm mt-2">List Format</div>
+                              {analysis.hasListFormat ? <CheckCircle className="h-6 sm:h-8 w-6 sm:w-8 mx-auto text-green-500" /> : <AlertCircle className="h-6 sm:h-8 w-6 sm:w-8 mx-auto text-yellow-500" />}
+                              <div className="text-xs sm:text-sm mt-2">List Format</div>
                             </div>
                             <div className="text-center">
-                              {analysis.hasTable ? <CheckCircle className="h-8 w-8 mx-auto text-green-500" /> : <AlertCircle className="h-8 w-8 mx-auto text-yellow-500" />}
-                              <div className="text-sm mt-2">Table</div>
+                              {analysis.hasTable ? <CheckCircle className="h-6 sm:h-8 w-6 sm:w-8 mx-auto text-green-500" /> : <AlertCircle className="h-6 sm:h-8 w-6 sm:w-8 mx-auto text-yellow-500" />}
+                              <div className="text-xs sm:text-sm mt-2">Table</div>
                             </div>
                             <div className="text-center">
-                              {analysis.questions > 0 ? <CheckCircle className="h-8 w-8 mx-auto text-green-500" /> : <AlertCircle className="h-8 w-8 mx-auto text-yellow-500" />}
-                              <div className="text-sm mt-2">Q&A Format</div>
+                              {analysis.questions > 0 ? <CheckCircle className="h-6 sm:h-8 w-6 sm:w-8 mx-auto text-green-500" /> : <AlertCircle className="h-6 sm:h-8 w-6 sm:w-8 mx-auto text-yellow-500" />}
+                              <div className="text-xs sm:text-sm mt-2">Q&A Format</div>
                             </div>
                           </div>
 
@@ -681,20 +686,20 @@ export default function SEOContentAnalyzer() {
                         <CardContent>
                           {analysis.competitorComparison ? (
                             <div className="space-y-4">
-                              <div className="grid grid-cols-2 gap-4">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="text-center p-4 bg-primary/10 rounded-lg">
-                                  <div className="text-2xl font-bold">{analysis.wordCount}</div>
+                                  <div className="text-2xl sm:text-3xl font-bold">{analysis.wordCount}</div>
                                   <div className="text-sm text-muted-foreground">Your Content</div>
                                 </div>
                                 <div className="text-center p-4 bg-muted rounded-lg">
-                                  <div className="text-2xl font-bold">{competitorWordCount}</div>
+                                  <div className="text-2xl sm:text-3xl font-bold">{competitorWordCount}</div>
                                   <div className="text-sm text-muted-foreground">Competitor Avg</div>
                                 </div>
                               </div>
 
                               <div className="text-center p-4 border rounded-lg">
                                 <div className="text-sm text-muted-foreground mb-1">Your content is</div>
-                                <div className={`text-3xl font-bold ${analysis.competitorComparison.status === 'longer' ? 'text-green-600' : 'text-orange-600'}`}>
+                                <div className={`text-2xl sm:text-3xl font-bold ${analysis.competitorComparison.status === 'longer' ? 'text-green-600' : 'text-orange-600'}`}>
                                   {Math.abs(analysis.competitorComparison.difference)} words {analysis.competitorComparison.status}
                                 </div>
                                 <div className="text-sm text-muted-foreground mt-1">
@@ -758,11 +763,11 @@ export default function SEOContentAnalyzer() {
       </section>
 
       {/* Features Section */}
-      <section className="bg-muted/30 py-12">
+      <section className="bg-muted/30 py-8 sm:py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-10">Advanced SEO Features Not Found Elsewhere</h2>
-            <div className="grid md:grid-cols-4 gap-6">
+            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-10">Advanced SEO Features Not Found Elsewhere</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               <Card>
                 <CardHeader>
                   <Search className="h-8 w-8 text-primary mb-2" />

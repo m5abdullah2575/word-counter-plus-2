@@ -277,14 +277,14 @@ export default function ResumeCVChecker() {
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-8">
-            <div className="flex items-center justify-center mb-4">
-              <FaBriefcase className="text-4xl sm:text-5xl text-primary" />
+          <div className="text-center mb-6 sm:mb-8 px-2">
+            <div className="flex items-center justify-center mb-3 sm:mb-4">
+              <FaBriefcase className="text-3xl sm:text-4xl md:text-5xl text-primary" />
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 leading-tight">
               AI-Powered Resume Analyzer & Salary Estimator
             </h1>
-            <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
               Get ATS scores, achievement analysis, salary estimates, buzzword alerts, and job title suggestions
             </p>
           </div>
@@ -299,15 +299,16 @@ export default function ResumeCVChecker() {
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Industry & Seniority Selection */}
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Industry:</label>
+                  <label className="text-sm sm:text-base font-medium">Industry:</label>
                   <div className="flex flex-wrap gap-2">
                     {['general', 'tech', 'finance', 'marketing', 'healthcare'].map((ind) => (
                       <Button
                         key={ind}
                         variant={industry === ind ? 'default' : 'outline'}
-                        size="sm"
+                        size="default"
+                        className="text-sm sm:text-base h-9 sm:h-10"
                         onClick={() => setIndustry(ind)}
                         data-testid={`button-industry-${ind}`}
                       >
@@ -318,13 +319,14 @@ export default function ResumeCVChecker() {
                 </div>
                 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Seniority Level:</label>
+                  <label className="text-sm sm:text-base font-medium">Seniority Level:</label>
                   <div className="flex flex-wrap gap-2">
                     {[{ value: '', label: 'Auto' }, { value: 'entry', label: 'Entry' }, { value: 'mid', label: 'Mid' }, { value: 'senior', label: 'Senior' }].map((level) => (
                       <Button
                         key={level.value}
                         variant={seniorityLevel === level.value ? 'default' : 'outline'}
-                        size="sm"
+                        size="default"
+                        className="text-sm sm:text-base h-9 sm:h-10"
                         onClick={() => setSeniorityLevel(level.value as any)}
                         data-testid={`button-seniority-${level.value || 'auto'}`}
                       >
@@ -337,17 +339,18 @@ export default function ResumeCVChecker() {
 
               {/* Text Input */}
               <div className="space-y-2">
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" asChild data-testid="button-upload-resume">
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Button variant="outline" size="default" className="w-full sm:w-auto h-10 sm:h-10" asChild data-testid="button-upload-resume">
                     <label className="cursor-pointer">
                       <Upload className="h-4 w-4 mr-2" />
-                      Upload Text
+                      <span className="text-sm sm:text-base">Upload Text</span>
                       <input type="file" accept=".txt" onChange={handleFileUpload} className="hidden" />
                     </label>
                   </Button>
                   <Button 
                     variant="outline" 
-                    size="sm" 
+                    size="default"
+                    className="w-full sm:w-auto h-10 sm:h-10 text-sm sm:text-base"
                     onClick={() => setText('')}
                     data-testid="button-clear-resume"
                   >
@@ -414,13 +417,13 @@ export default function ResumeCVChecker() {
                   </Card>
 
                   <Tabs defaultValue="achievements" className="w-full">
-                    <TabsList className="grid w-full grid-cols-6 text-xs">
-                      <TabsTrigger value="achievements" data-testid="tab-achievements">Achievements</TabsTrigger>
-                      <TabsTrigger value="buzzwords" data-testid="tab-buzzwords">Buzzwords</TabsTrigger>
-                      <TabsTrigger value="ats" data-testid="tab-ats">ATS</TabsTrigger>
-                      <TabsTrigger value="skills" data-testid="tab-skills">Skills</TabsTrigger>
-                      <TabsTrigger value="suggestions" data-testid="tab-suggestions">Tips</TabsTrigger>
-                      <TabsTrigger value="titles" data-testid="tab-titles">Jobs</TabsTrigger>
+                    <TabsList className="w-full overflow-x-auto flex flex-nowrap justify-start sm:justify-center gap-1 h-auto p-1">
+                      <TabsTrigger value="achievements" className="text-xs sm:text-sm whitespace-nowrap flex-shrink-0 px-2 sm:px-3" data-testid="tab-achievements">Achievements</TabsTrigger>
+                      <TabsTrigger value="buzzwords" className="text-xs sm:text-sm whitespace-nowrap flex-shrink-0 px-2 sm:px-3" data-testid="tab-buzzwords">Buzzwords</TabsTrigger>
+                      <TabsTrigger value="ats" className="text-xs sm:text-sm whitespace-nowrap flex-shrink-0 px-2 sm:px-3" data-testid="tab-ats">ATS</TabsTrigger>
+                      <TabsTrigger value="skills" className="text-xs sm:text-sm whitespace-nowrap flex-shrink-0 px-2 sm:px-3" data-testid="tab-skills">Skills</TabsTrigger>
+                      <TabsTrigger value="suggestions" className="text-xs sm:text-sm whitespace-nowrap flex-shrink-0 px-2 sm:px-3" data-testid="tab-suggestions">Tips</TabsTrigger>
+                      <TabsTrigger value="titles" className="text-xs sm:text-sm whitespace-nowrap flex-shrink-0 px-2 sm:px-3" data-testid="tab-titles">Jobs</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="achievements" className="space-y-4">
@@ -435,18 +438,18 @@ export default function ResumeCVChecker() {
                           </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                          <div className="grid grid-cols-3 gap-4">
-                            <div>
-                              <div className="text-2xl font-bold" data-testid="text-achievement-count">{analysis.achievements.length}</div>
-                              <div className="text-xs text-muted-foreground">Total Metrics</div>
+                          <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                            <div className="text-center sm:text-left">
+                              <div className="text-xl sm:text-2xl font-bold" data-testid="text-achievement-count">{analysis.achievements.length}</div>
+                              <div className="text-xs sm:text-sm text-muted-foreground">Total Metrics</div>
                             </div>
-                            <div>
-                              <div className="text-2xl font-bold">{analysis.percentages.length}</div>
-                              <div className="text-xs text-muted-foreground">Percentages</div>
+                            <div className="text-center sm:text-left">
+                              <div className="text-xl sm:text-2xl font-bold">{analysis.percentages.length}</div>
+                              <div className="text-xs sm:text-sm text-muted-foreground">Percentages</div>
                             </div>
-                            <div>
-                              <div className="text-2xl font-bold">{analysis.dollarAmounts.length}</div>
-                              <div className="text-xs text-muted-foreground">Dollar Amounts</div>
+                            <div className="text-center sm:text-left">
+                              <div className="text-xl sm:text-2xl font-bold">{analysis.dollarAmounts.length}</div>
+                              <div className="text-xs sm:text-sm text-muted-foreground">Dollar Amounts</div>
                             </div>
                           </div>
                           
@@ -529,9 +532,9 @@ export default function ResumeCVChecker() {
                             <Progress value={analysis.atsScore} className="h-3" />
                           </div>
 
-                          <div className="grid grid-cols-2 gap-4 mt-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                             <div className="space-y-2">
-                              <p className="text-sm font-medium">Resume Sections:</p>
+                              <p className="text-sm sm:text-base font-medium">Resume Sections:</p>
                               {Object.entries(analysis.sections).map(([section, found]) => (
                                 <div key={section} className="flex items-center gap-2 text-sm">
                                   {found ? (
@@ -545,7 +548,7 @@ export default function ResumeCVChecker() {
                             </div>
 
                             <div className="space-y-2">
-                              <p className="text-sm font-medium">Key Metrics:</p>
+                              <p className="text-sm sm:text-base font-medium">Key Metrics:</p>
                               <div className="text-sm space-y-1">
                                 <div className="flex justify-between">
                                   <span>Word Count:</span>
@@ -668,11 +671,11 @@ export default function ResumeCVChecker() {
       </section>
 
       {/* Features Section */}
-      <section className="bg-muted/30 py-12">
+      <section className="bg-muted/30 py-8 sm:py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-10">Why Our Resume Analyzer is Different</h2>
-            <div className="grid md:grid-cols-4 gap-6">
+            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-10">Why Our Resume Analyzer is Different</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               <Card>
                 <CardHeader>
                   <Sparkles className="h-8 w-8 text-primary mb-2" />
