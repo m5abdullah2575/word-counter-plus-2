@@ -296,32 +296,32 @@ export default function RandomWordGenerator() {
 
   return (
     <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-        <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-3 sm:py-6 md:py-8">
+        <div className="max-w-4xl mx-auto space-y-3 sm:space-y-4 md:space-y-6">
           {/* Tool Header */}
-          <div className="text-center mb-4 sm:mb-8">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">
+          <div className="text-center mb-3 sm:mb-6 md:mb-8">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-1 sm:mb-2 px-2">
               Random Word Generator
             </h1>
-            <p className="text-sm sm:text-base text-muted-foreground">
+            <p className="text-xs sm:text-sm md:text-base text-muted-foreground px-2">
               Generate random words for creative writing, brainstorming, and word games
             </p>
           </div>
 
           {/* Options Panel */}
           <Card className="bg-card border border-border">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FaCog className="text-primary" />
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg md:text-xl">
+                <FaCog className="text-primary text-sm sm:text-base" />
                 Generator Options
               </CardTitle>
-              <CardDescription>Customize your random word generation settings</CardDescription>
+              <CardDescription className="text-xs sm:text-sm">Customize your random word generation settings</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <CardContent className="space-y-3 sm:space-y-4 p-4 sm:p-6 pt-0">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {/* Number of Words */}
-                <div className="space-y-2">
-                  <Label htmlFor="numberOfWords">Number of Words</Label>
+                <div className="space-y-1.5 sm:space-y-2">
+                  <Label htmlFor="numberOfWords" className="text-xs sm:text-sm">Number of Words</Label>
                   <Input
                     id="numberOfWords"
                     type="number"
@@ -329,16 +329,16 @@ export default function RandomWordGenerator() {
                     max="100"
                     value={numberOfWords}
                     onChange={(e) => setNumberOfWords(Math.max(1, Math.min(100, parseInt(e.target.value) || 1)))}
-                    className="w-full"
+                    className="w-full h-9 sm:h-10 text-sm sm:text-base"
                     data-testid="input-number-of-words"
                   />
                 </div>
 
                 {/* Word Type */}
-                <div className="space-y-2">
-                  <Label htmlFor="wordType">Word Type</Label>
+                <div className="space-y-1.5 sm:space-y-2">
+                  <Label htmlFor="wordType" className="text-xs sm:text-sm">Word Type</Label>
                   <Select value={wordType} onValueChange={(value) => setWordType(value as keyof typeof WORD_LISTS)}>
-                    <SelectTrigger id="wordType" data-testid="select-word-type">
+                    <SelectTrigger id="wordType" data-testid="select-word-type" className="h-9 sm:h-10 text-sm sm:text-base">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -352,10 +352,10 @@ export default function RandomWordGenerator() {
                 </div>
 
                 {/* Word Length */}
-                <div className="space-y-2">
-                  <Label htmlFor="wordLength">Word Length</Label>
+                <div className="space-y-1.5 sm:space-y-2">
+                  <Label htmlFor="wordLength" className="text-xs sm:text-sm">Word Length</Label>
                   <Select value={wordLength} onValueChange={(value) => setWordLength(value as any)}>
-                    <SelectTrigger id="wordLength" data-testid="select-word-length">
+                    <SelectTrigger id="wordLength" data-testid="select-word-length" className="h-9 sm:h-10 text-sm sm:text-base">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -368,10 +368,10 @@ export default function RandomWordGenerator() {
                 </div>
 
                 {/* Separator */}
-                <div className="space-y-2">
-                  <Label htmlFor="separator">Separator</Label>
+                <div className="space-y-1.5 sm:space-y-2">
+                  <Label htmlFor="separator" className="text-xs sm:text-sm">Separator</Label>
                   <Select value={separator} onValueChange={(value) => setSeparator(value as any)}>
-                    <SelectTrigger id="separator" data-testid="select-separator">
+                    <SelectTrigger id="separator" data-testid="select-separator" className="h-9 sm:h-10 text-sm sm:text-base">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -384,10 +384,10 @@ export default function RandomWordGenerator() {
                 </div>
 
                 {/* Text Case */}
-                <div className="space-y-2 sm:col-span-2">
-                  <Label htmlFor="textCase">Text Case</Label>
+                <div className="space-y-1.5 sm:space-y-2 sm:col-span-2">
+                  <Label htmlFor="textCase" className="text-xs sm:text-sm">Text Case</Label>
                   <Select value={textCase} onValueChange={(value) => setTextCase(value as any)}>
-                    <SelectTrigger id="textCase" data-testid="select-text-case">
+                    <SelectTrigger id="textCase" data-testid="select-text-case" className="h-9 sm:h-10 text-sm sm:text-base">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -403,11 +403,11 @@ export default function RandomWordGenerator() {
               {/* Generate Button */}
               <Button 
                 onClick={generateWords} 
-                className="w-full" 
+                className="w-full h-10 sm:h-11 text-sm sm:text-base" 
                 size="lg"
                 data-testid="button-generate-words"
               >
-                <FaRandom className="mr-2" />
+                <FaRandom className="mr-1.5 sm:mr-2 text-sm sm:text-base" />
                 Generate Random Words
               </Button>
             </CardContent>
@@ -415,14 +415,14 @@ export default function RandomWordGenerator() {
 
           {/* Output Display */}
           <Card className="bg-card border border-border">
-            <CardHeader>
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                <div>
-                  <CardTitle className="flex items-center gap-2">
-                    <FaListUl className="text-primary" />
+            <CardHeader className="p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-3">
+                <div className="flex-1">
+                  <CardTitle className="flex items-center gap-1.5 sm:gap-2 text-base sm:text-lg md:text-xl">
+                    <FaListUl className="text-primary text-sm sm:text-base" />
                     Generated Words
                   </CardTitle>
-                  <CardDescription className="mt-1">
+                  <CardDescription className="mt-0.5 sm:mt-1 text-xs sm:text-sm">
                     {generatedWords.length} word{generatedWords.length !== 1 ? 's' : ''} generated
                   </CardDescription>
                 </div>
@@ -431,21 +431,21 @@ export default function RandomWordGenerator() {
                     onClick={generateWords} 
                     variant="secondary" 
                     size="sm"
-                    className="flex-1 sm:flex-none"
+                    className="flex-1 sm:flex-none h-8 sm:h-9 text-xs sm:text-sm"
                     data-testid="button-regenerate"
                   >
-                    <FaRedoAlt className="mr-1" />
+                    <FaRedoAlt className="mr-1 text-xs sm:text-sm" />
                     <span className="hidden sm:inline">Regenerate</span>
                     <span className="sm:hidden">Regen</span>
                   </Button>
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3 sm:space-y-4 p-4 sm:p-6 pt-0">
               <Textarea
                 value={formattedOutput}
                 readOnly
-                className="w-full h-48 sm:h-64 p-3 sm:p-4 bg-background border border-border rounded-lg font-mono text-sm sm:text-base"
+                className="w-full h-40 sm:h-48 md:h-64 p-2.5 sm:p-3 md:p-4 bg-background border border-border rounded-lg font-mono text-xs sm:text-sm md:text-base resize-none"
                 placeholder="Click 'Generate Random Words' to create your word list..."
                 data-testid="textarea-generated-words"
               />
@@ -455,10 +455,10 @@ export default function RandomWordGenerator() {
                   onClick={copyToClipboard}
                   disabled={!generatedWords.length}
                   size="sm"
-                  className="flex-1 sm:flex-none"
+                  className="flex-1 min-w-[80px] sm:flex-none h-8 sm:h-9 text-xs sm:text-sm"
                   data-testid="button-copy-words"
                 >
-                  <FaCopy className="mr-1" />
+                  <FaCopy className="mr-1 text-xs sm:text-sm" />
                   Copy
                 </Button>
                 
@@ -467,10 +467,10 @@ export default function RandomWordGenerator() {
                   disabled={!generatedWords.length}
                   variant="secondary"
                   size="sm"
-                  className="flex-1 sm:flex-none"
+                  className="flex-1 min-w-[80px] sm:flex-none h-8 sm:h-9 text-xs sm:text-sm"
                   data-testid="button-download-words"
                 >
-                  <FaDownload className="mr-1" />
+                  <FaDownload className="mr-1 text-xs sm:text-sm" />
                   Download
                 </Button>
                 
@@ -479,10 +479,10 @@ export default function RandomWordGenerator() {
                   disabled={!generatedWords.length}
                   variant="outline"
                   size="sm"
-                  className="flex-1 sm:flex-none"
+                  className="flex-1 min-w-[80px] sm:flex-none h-8 sm:h-9 text-xs sm:text-sm"
                   data-testid="button-clear-words"
                 >
-                  <FaEraser className="mr-1" />
+                  <FaEraser className="mr-1 text-xs sm:text-sm" />
                   Clear
                 </Button>
               </div>
@@ -492,35 +492,35 @@ export default function RandomWordGenerator() {
           {/* Statistics */}
           {generatedWords.length > 0 && (
             <Card className="bg-card border border-border">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <FaFont className="text-primary" />
+              <CardHeader className="p-4 sm:p-6">
+                <CardTitle className="flex items-center gap-1.5 sm:gap-2 text-base sm:text-lg md:text-xl">
+                  <FaFont className="text-primary text-sm sm:text-base" />
                   Word Statistics
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  <div className="text-center p-3 bg-primary/10 rounded-lg">
-                    <div className="text-2xl font-bold text-primary" data-testid="stat-word-count">{generatedWords.length}</div>
-                    <div className="text-xs text-muted-foreground">Total Words</div>
+              <CardContent className="p-4 sm:p-6 pt-0">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+                  <div className="text-center p-2 sm:p-2.5 md:p-3 bg-primary/10 rounded-lg">
+                    <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary" data-testid="stat-word-count">{generatedWords.length}</div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 sm:mt-1">Total Words</div>
                   </div>
-                  <div className="text-center p-3 bg-primary/10 rounded-lg">
-                    <div className="text-2xl font-bold text-primary" data-testid="stat-avg-length">
+                  <div className="text-center p-2 sm:p-2.5 md:p-3 bg-primary/10 rounded-lg">
+                    <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary" data-testid="stat-avg-length">
                       {Math.round(generatedWords.reduce((sum, word) => sum + word.length, 0) / generatedWords.length)}
                     </div>
-                    <div className="text-xs text-muted-foreground">Avg Length</div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 sm:mt-1">Avg Length</div>
                   </div>
-                  <div className="text-center p-3 bg-primary/10 rounded-lg">
-                    <div className="text-2xl font-bold text-primary" data-testid="stat-shortest">
+                  <div className="text-center p-2 sm:p-2.5 md:p-3 bg-primary/10 rounded-lg">
+                    <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary" data-testid="stat-shortest">
                       {Math.min(...generatedWords.map(w => w.length))}
                     </div>
-                    <div className="text-xs text-muted-foreground">Shortest</div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 sm:mt-1">Shortest</div>
                   </div>
-                  <div className="text-center p-3 bg-primary/10 rounded-lg">
-                    <div className="text-2xl font-bold text-primary" data-testid="stat-longest">
+                  <div className="text-center p-2 sm:p-2.5 md:p-3 bg-primary/10 rounded-lg">
+                    <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary" data-testid="stat-longest">
                       {Math.max(...generatedWords.map(w => w.length))}
                     </div>
-                    <div className="text-xs text-muted-foreground">Longest</div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 sm:mt-1">Longest</div>
                   </div>
                 </div>
               </CardContent>
@@ -529,15 +529,15 @@ export default function RandomWordGenerator() {
 
           {/* Info Section */}
           <Card className="bg-muted/50 border border-border">
-            <CardHeader>
-              <CardTitle className="text-lg">How to Use the Random Word Generator</CardTitle>
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="text-sm sm:text-base md:text-lg">How to Use the Random Word Generator</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 text-sm text-muted-foreground">
-              <p><strong>Number of Words:</strong> Choose how many random words to generate (1-100)</p>
-              <p><strong>Word Type:</strong> Select specific word types (nouns, verbs, adjectives, adverbs) or mixed</p>
-              <p><strong>Word Length:</strong> Filter words by length - short, medium, long, or any</p>
-              <p><strong>Separator:</strong> Choose how words are separated in the output</p>
-              <p><strong>Text Case:</strong> Apply formatting - original, lowercase, uppercase, or capitalize</p>
+            <CardContent className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm text-muted-foreground p-4 sm:p-6 pt-0">
+              <p className="leading-relaxed"><strong className="text-foreground">Number of Words:</strong> Choose how many random words to generate (1-100)</p>
+              <p className="leading-relaxed"><strong className="text-foreground">Word Type:</strong> Select specific word types (nouns, verbs, adjectives, adverbs) or mixed</p>
+              <p className="leading-relaxed"><strong className="text-foreground">Word Length:</strong> Filter words by length - short, medium, long, or any</p>
+              <p className="leading-relaxed"><strong className="text-foreground">Separator:</strong> Choose how words are separated in the output</p>
+              <p className="leading-relaxed"><strong className="text-foreground">Text Case:</strong> Apply formatting - original, lowercase, uppercase, or capitalize</p>
             </CardContent>
           </Card>
         </div>
