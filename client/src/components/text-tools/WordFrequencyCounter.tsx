@@ -4,15 +4,25 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { FaEraser, FaDownload, FaUpload, FaSort, FaSortUp, FaSortDown, FaChartBar, FaHighlighter } from 'react-icons/fa';
+import { 
+  FaEraser, FaDownload, FaUpload, FaSort, FaSortUp, FaSortDown, 
+  FaChartBar, FaHighlighter, FaSearch, FaChartPie, FaFilter,
+  FaCog, FaFileAlt, FaCloud
+} from 'react-icons/fa';
 import useFileUpload from '@/hooks/useFileUpload';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 type SortDirection = 'asc' | 'desc';
 type SortField = 'word' | 'frequency';
+type ChartType = 'bar' | 'pie';
+type ViewMode = 'single' | '2-gram' | '3-gram';
 
 interface WordFrequency {
   word: string;
@@ -21,7 +31,7 @@ interface WordFrequency {
 }
 
 // Common stop words in English
-const STOP_WORDS = new Set([
+const DEFAULT_STOP_WORDS = new Set([
   'the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'i',
   'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at',
   'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she',
@@ -36,6 +46,19 @@ const STOP_WORDS = new Set([
   'may', 'should', 'am', 'does', 'being'
 ]);
 
+const CHART_COLORS = [
+  'hsl(var(--primary))',
+  'hsl(220, 70%, 50%)',
+  'hsl(340, 75%, 55%)',
+  'hsl(280, 65%, 60%)',
+  'hsl(160, 60%, 45%)',
+  'hsl(30, 80%, 55%)',
+  'hsl(200, 75%, 50%)',
+  'hsl(10, 70%, 50%)',
+  'hsl(260, 60%, 55%)',
+  'hsl(140, 65%, 45%)',
+];
+
 export default function WordFrequencyCounter() {
   const [text, setText] = useState('');
   const [sortField, setSortField] = useState<SortField>('frequency');
@@ -44,6 +67,11 @@ export default function WordFrequencyCounter() {
   const [caseSensitive, setCaseSensitive] = useState(false);
   const [minWordLength, setMinWordLength] = useState(1);
   const [highlightedWord, setHighlightedWord] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [chartType, setChartType] = useState<ChartType>('bar');
+  const [viewMode, setViewMode] = useState<ViewMode>('single');
+  const [customStopWords, setCustomStopWords] = useState('');
+  const [maxResults, setMaxResults] = useState(20);
   const { toast } = useToast();
 
   // File upload functionality
@@ -67,26 +95,62 @@ export default function WordFrequencyCounter() {
     localStorage.setItem('wordFrequencyText', text);
   }, [text]);
 
+  // Combine default and custom stop words
+  const stopWords = useMemo(() => {
+    const combined = new Set(DEFAULT_STOP_WORDS);
+    if (customStopWords) {
+      customStopWords.split(',').forEach(word => {
+        const trimmed = word.trim().toLowerCase();
+        if (trimmed) combined.add(trimmed);
+      });
+    }
+    return combined;
+  }, [customStopWords]);
+
+  // Calculate N-grams
+  const calculateNGrams = (words: string[], n: number): WordFrequency[] => {
+    if (words.length < n) return [];
+    
+    const ngramMap: Record<string, number> = {};
+    for (let i = 0; i <= words.length - n; i++) {
+      const ngram = words.slice(i, i + n).join(' ');
+      ngramMap[ngram] = (ngramMap[ngram] || 0) + 1;
+    }
+
+    const totalNgrams = Object.values(ngramMap).reduce((sum, count) => sum + count, 0);
+    return Object.entries(ngramMap).map(([word, frequency]) => ({
+      word,
+      frequency,
+      density: (frequency / totalNgrams) * 100
+    }));
+  };
+
   // Calculate word frequency with all filters
   const wordFrequencies = useMemo(() => {
     if (!text.trim()) return [];
 
-    // Normalize text: handle case sensitivity and remove special characters
+    // Normalize text
     const normalizedText = caseSensitive 
       ? text.replace(/[^\p{L}\p{N}\s]/gu, ' ')
       : text.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, ' ');
     
-    // Split into words and filter out empty strings
+    // Split into words
     let words = normalizedText.split(/\s+/).filter(word => word.length > 0);
     
-    // Apply minimum length filter
+    // For N-gram analysis
+    if (viewMode === '2-gram') {
+      return calculateNGrams(words, 2);
+    } else if (viewMode === '3-gram') {
+      return calculateNGrams(words, 3);
+    }
+    
+    // Apply filters for single word analysis
     if (minWordLength > 1) {
       words = words.filter(word => word.length >= minWordLength);
     }
     
-    // Apply stop words filter
     if (ignoreStopWords) {
-      words = words.filter(word => !STOP_WORDS.has(word.toLowerCase()));
+      words = words.filter(word => !stopWords.has(word.toLowerCase()));
     }
     
     const totalWords = words.length;
@@ -98,14 +162,14 @@ export default function WordFrequencyCounter() {
       frequencyMap[word] = (frequencyMap[word] || 0) + 1;
     });
 
-    // Convert to array of objects with density
+    // Convert to array
     const frequencies: WordFrequency[] = Object.entries(frequencyMap).map(([word, frequency]) => ({
       word,
       frequency,
       density: (frequency / totalWords) * 100
     }));
 
-    // Sort based on current sort settings
+    // Sort
     return frequencies.sort((a, b) => {
       if (sortField === 'frequency') {
         return sortDirection === 'desc' ? b.frequency - a.frequency : a.frequency - b.frequency;
@@ -113,7 +177,14 @@ export default function WordFrequencyCounter() {
         return sortDirection === 'desc' ? b.word.localeCompare(a.word) : a.word.localeCompare(b.word);
       }
     });
-  }, [text, sortField, sortDirection, ignoreStopWords, caseSensitive, minWordLength]);
+  }, [text, sortField, sortDirection, ignoreStopWords, caseSensitive, minWordLength, stopWords, viewMode]);
+
+  // Filter results based on search query
+  const filteredFrequencies = useMemo(() => {
+    if (!searchQuery.trim()) return wordFrequencies;
+    const query = searchQuery.toLowerCase();
+    return wordFrequencies.filter(item => item.word.toLowerCase().includes(query));
+  }, [wordFrequencies, searchQuery]);
 
   const totalWords = useMemo(() => {
     return wordFrequencies.reduce((sum, item) => sum + item.frequency, 0);
@@ -121,13 +192,42 @@ export default function WordFrequencyCounter() {
 
   const uniqueWords = wordFrequencies.length;
 
-  // Get top 20 words for chart - always sorted by frequency regardless of table sort
-  const top20Words = useMemo(() => {
+  // Get top N words for charts
+  const topWords = useMemo(() => {
     const sortedByFrequency = [...wordFrequencies].sort((a, b) => b.frequency - a.frequency);
-    return sortedByFrequency.slice(0, 20);
+    return sortedByFrequency.slice(0, maxResults);
+  }, [wordFrequencies, maxResults]);
+
+  // Word length distribution
+  const wordLengthDistribution = useMemo(() => {
+    if (!text.trim() || viewMode !== 'single') return [];
+    
+    const lengthMap: Record<number, number> = {};
+    wordFrequencies.forEach(({ word, frequency }) => {
+      const len = word.length;
+      lengthMap[len] = (lengthMap[len] || 0) + frequency;
+    });
+
+    return Object.entries(lengthMap)
+      .map(([length, count]) => ({ length: `${length} letters`, count }))
+      .sort((a, b) => parseInt(a.length) - parseInt(b.length));
+  }, [wordFrequencies, text, viewMode]);
+
+  // Advanced statistics
+  const advancedStats = useMemo(() => {
+    if (wordFrequencies.length === 0) return null;
+    
+    const frequencies = wordFrequencies.map(w => w.frequency);
+    const mean = frequencies.reduce((sum, f) => sum + f, 0) / frequencies.length;
+    const sortedFreqs = [...frequencies].sort((a, b) => a - b);
+    const median = sortedFreqs[Math.floor(sortedFreqs.length / 2)];
+    const mode = wordFrequencies[0].frequency;
+    const variance = frequencies.reduce((sum, f) => sum + Math.pow(f - mean, 2), 0) / frequencies.length;
+    const stdDev = Math.sqrt(variance);
+
+    return { mean, median, mode, stdDev };
   }, [wordFrequencies]);
 
-  // Safe highlight word in text using React nodes instead of dangerouslySetInnerHTML
   const renderHighlightedText = () => {
     if (!highlightedWord || !text) return text;
     
@@ -141,11 +241,9 @@ export default function WordFrequencyCounter() {
       let keyIndex = 0;
       
       while ((match = regex.exec(text)) !== null) {
-        // Add text before match
         if (match.index > lastIndex) {
           parts.push(text.substring(lastIndex, match.index));
         }
-        // Add highlighted match
         parts.push(
           <mark key={`highlight-${keyIndex++}`} className="bg-yellow-300 dark:bg-yellow-600 px-1 rounded">
             {match[0]}
@@ -154,14 +252,12 @@ export default function WordFrequencyCounter() {
         lastIndex = regex.lastIndex;
       }
       
-      // Add remaining text
       if (lastIndex < text.length) {
         parts.push(text.substring(lastIndex));
       }
       
       return parts.length > 0 ? parts : text;
     } catch (error) {
-      // If regex fails, return original text
       return text;
     }
   };
@@ -169,14 +265,15 @@ export default function WordFrequencyCounter() {
   const clearText = () => {
     setText('');
     setHighlightedWord(null);
+    setSearchQuery('');
     toast({
       title: "Text Cleared",
       description: "All text has been cleared.",
     });
   };
 
-  const downloadResults = () => {
-    if (wordFrequencies.length === 0) {
+  const downloadResults = (format: 'csv' | 'json' = 'csv') => {
+    if (filteredFrequencies.length === 0) {
       toast({
         title: "No Data",
         description: "Please enter some text to download results.",
@@ -185,44 +282,69 @@ export default function WordFrequencyCounter() {
       return;
     }
 
-    // Create CSV content with density
-    const csvHeader = 'Word,Frequency,Density (%)\n';
-    const csvRows = wordFrequencies.map(item => `${item.word},${item.frequency},${item.density.toFixed(2)}`).join('\n');
-    const csvContent = csvHeader + csvRows;
+    if (format === 'csv') {
+      const csvHeader = 'Word,Frequency,Density (%)\n';
+      const csvRows = filteredFrequencies.map(item => `${item.word},${item.frequency},${item.density.toFixed(2)}`).join('\n');
+      const csvContent = csvHeader + csvRows;
 
-    // Create and download file
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'word-frequency.csv';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `word-frequency-${viewMode}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
 
-    toast({
-      title: "File Downloaded",
-      description: "Word frequency results have been downloaded as CSV.",
-    });
+      toast({
+        title: "CSV Downloaded",
+        description: "Word frequency results have been downloaded.",
+      });
+    } else {
+      const jsonData = {
+        analysis: viewMode,
+        timestamp: new Date().toISOString(),
+        statistics: {
+          totalWords,
+          uniqueWords,
+          diversityRatio: totalWords > 0 ? ((uniqueWords / totalWords) * 100).toFixed(2) : '0',
+          ...advancedStats
+        },
+        frequencies: filteredFrequencies
+      };
+
+      const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `word-frequency-${viewMode}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      toast({
+        title: "JSON Downloaded",
+        description: "Detailed analysis has been downloaded.",
+      });
+    }
   };
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
-      // Toggle direction if clicking same field
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
-      // Set new field with default descending
       setSortField(field);
       setSortDirection('desc');
     }
   };
 
   const getSortIcon = (field: SortField) => {
-    if (sortField !== field) return <FaSort className="inline ml-1 text-muted-foreground" />;
+    if (sortField !== field) return <FaSort className="inline ml-1 text-xs sm:text-sm text-muted-foreground" />;
     return sortDirection === 'desc' ? 
-      <FaSortDown className="inline ml-1" /> : 
-      <FaSortUp className="inline ml-1" />;
+      <FaSortDown className="inline ml-1 text-xs sm:text-sm" /> : 
+      <FaSortUp className="inline ml-1 text-xs sm:text-sm" />;
   };
 
   const handleWordClick = (word: string) => {
@@ -232,7 +354,7 @@ export default function WordFrequencyCounter() {
       setHighlightedWord(word);
       toast({
         title: "Word Highlighted",
-        description: `All occurrences of "${word}" are highlighted in the text.`,
+        description: `Highlighting "${word}" in the text.`,
       });
     }
   };
@@ -246,311 +368,574 @@ export default function WordFrequencyCounter() {
 
   return (
     <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-        <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-3 sm:py-6 md:py-8">
+        <div className="max-w-7xl mx-auto space-y-3 sm:space-y-4 md:space-y-6">
           {/* Tool Header */}
-          <div className="text-center mb-4 sm:mb-8">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">
+          <div className="text-center mb-3 sm:mb-6 md:mb-8">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-1 sm:mb-2 px-2">
               Word Frequency Counter
             </h1>
-            <p className="text-sm sm:text-base text-muted-foreground">
-              Analyze word frequency, density, and patterns in your text
+            <p className="text-xs sm:text-sm md:text-base text-muted-foreground px-2">
+              Advanced text analysis with N-grams, word clouds, and detailed statistics
             </p>
           </div>
 
-          {/* Text Input Area with Highlighting */}
-          <div className="bg-card rounded-lg p-3 sm:p-6 shadow-sm border border-border">
-            <div className="mb-4">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
-                <label htmlFor="textInput" className="text-base sm:text-lg font-semibold text-foreground">
-                  Enter Your Text
-                </label>
+          {/* Text Input Area */}
+          <Card>
+            <CardHeader className="p-3 sm:p-4 md:p-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <CardTitle className="text-base sm:text-lg md:text-xl">Enter Your Text</CardTitle>
                 <div className="flex gap-2 w-full sm:w-auto">
-                  <button 
+                  <Button 
                     onClick={triggerFileUpload}
                     disabled={isUploading}
-                    className="flex-1 sm:flex-none px-3 py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    size="sm"
+                    className="flex-1 sm:flex-none h-8 sm:h-9 text-xs sm:text-sm"
                     data-testid="button-upload-text"
-                    title="Upload text file"
                   >
-                    <FaUpload className="inline mr-1" aria-hidden="true" />
+                    <FaUpload className="mr-1 text-xs sm:text-sm" />
                     <span className="hidden sm:inline">{isUploading ? 'Uploading...' : 'Upload'}</span>
-                    <span className="sm:hidden">{isUploading ? 'Up...' : 'Upload'}</span>
-                  </button>
-                  <button 
+                    <span className="sm:hidden">Upload</span>
+                  </Button>
+                  <Button 
                     onClick={clearText}
-                    className="flex-1 sm:flex-none px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 transition-colors"
+                    variant="secondary"
+                    size="sm"
+                    className="flex-1 sm:flex-none h-8 sm:h-9 text-xs sm:text-sm"
                     data-testid="button-clear-text"
-                    title="Clear all text"
                   >
-                    <FaEraser className="inline mr-1" aria-hidden="true" />
-                    <span className="hidden sm:inline">Clear</span>
-                    <span className="sm:hidden">Clear</span>
-                  </button>
+                    <FaEraser className="mr-1 text-xs sm:text-sm" />
+                    Clear
+                  </Button>
                 </div>
               </div>
-              
-              {highlightedWord ? (
+            </CardHeader>
+            <CardContent className="p-3 sm:p-4 md:p-6 pt-0">
+              {highlightedWord && (
                 <div className="mb-3">
                   <div className="flex items-center justify-between p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded border border-yellow-300 dark:border-yellow-700">
-                    <span className="text-sm text-yellow-900 dark:text-yellow-200">
-                      <FaHighlighter className="inline mr-2" />
+                    <span className="text-xs sm:text-sm text-yellow-900 dark:text-yellow-200">
+                      <FaHighlighter className="inline mr-1 sm:mr-2" />
                       Highlighting: <strong>{highlightedWord}</strong>
                     </span>
-                    <button
+                    <Button
                       onClick={() => setHighlightedWord(null)}
-                      className="text-xs px-2 py-1 bg-yellow-200 dark:bg-yellow-800 text-yellow-900 dark:text-yellow-100 rounded hover:bg-yellow-300 dark:hover:bg-yellow-700"
+                      size="sm"
+                      variant="ghost"
+                      className="h-6 text-xs px-2"
                       data-testid="button-clear-highlight"
                     >
                       Clear
-                    </button>
+                    </Button>
                   </div>
                 </div>
-              ) : null}
+              )}
               
               <Textarea
-                id="textInput"
-                placeholder="Type or paste your text here to analyze word frequency..."
+                placeholder="Type or paste your text here to analyze word frequency and patterns..."
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                className="w-full h-48 sm:h-64 p-3 sm:p-4 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none transition-all text-sm sm:text-base"
+                className="w-full h-40 sm:h-48 md:h-64 p-2.5 sm:p-3 md:p-4 resize-none text-xs sm:text-sm md:text-base"
                 data-testid="textarea-text-input"
               />
               
               {highlightedWord && (
                 <div 
-                  className="mt-3 p-3 bg-muted rounded border border-border max-h-32 overflow-y-auto text-sm"
+                  className="mt-3 p-2 sm:p-3 bg-muted rounded border border-border max-h-32 overflow-y-auto text-xs sm:text-sm"
                   data-testid="div-highlighted-text"
                 >
                   {renderHighlightedText()}
                 </div>
               )}
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
           {/* Filter Options */}
           {text.trim() && (
-            <div className="bg-card rounded-lg p-4 sm:p-6 shadow-sm border border-border">
-              <h2 className="text-base sm:text-lg font-semibold text-foreground mb-4">Filter Options</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {/* Stop Words Toggle */}
-                <div className="flex items-center justify-between space-x-2 p-3 bg-muted/50 rounded">
-                  <Label htmlFor="stop-words" className="text-sm font-medium cursor-pointer">
-                    Ignore Stop Words
-                  </Label>
-                  <Switch
-                    id="stop-words"
-                    checked={ignoreStopWords}
-                    onCheckedChange={setIgnoreStopWords}
-                    data-testid="switch-stop-words"
-                  />
+            <Card>
+              <CardHeader className="p-3 sm:p-4 md:p-6">
+                <CardTitle className="flex items-center gap-1.5 sm:gap-2 text-base sm:text-lg md:text-xl">
+                  <FaCog className="text-sm sm:text-base" />
+                  Analysis Options
+                </CardTitle>
+                <CardDescription className="text-xs sm:text-sm">Configure filters and analysis parameters</CardDescription>
+              </CardHeader>
+              <CardContent className="p-3 sm:p-4 md:p-6 pt-0 space-y-3 sm:space-y-4">
+                {/* Analysis Mode */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label className="text-xs sm:text-sm">Analysis Mode</Label>
+                    <Select value={viewMode} onValueChange={(value) => setViewMode(value as ViewMode)}>
+                      <SelectTrigger className="h-9 sm:h-10 text-xs sm:text-sm">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="single">Single Words</SelectItem>
+                        <SelectItem value="2-gram">2-Word Phrases</SelectItem>
+                        <SelectItem value="3-gram">3-Word Phrases</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label className="text-xs sm:text-sm">Chart Type</Label>
+                    <Select value={chartType} onValueChange={(value) => setChartType(value as ChartType)}>
+                      <SelectTrigger className="h-9 sm:h-10 text-xs sm:text-sm">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="bar">Bar Chart</SelectItem>
+                        <SelectItem value="pie">Pie Chart</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label className="text-xs sm:text-sm">Top Results: {maxResults}</Label>
+                    <Slider
+                      min={10}
+                      max={50}
+                      step={5}
+                      value={[maxResults]}
+                      onValueChange={(value) => setMaxResults(value[0])}
+                      className="w-full"
+                    />
+                  </div>
                 </div>
 
-                {/* Case Sensitivity Toggle */}
-                <div className="flex items-center justify-between space-x-2 p-3 bg-muted/50 rounded">
-                  <Label htmlFor="case-sensitive" className="text-sm font-medium cursor-pointer">
-                    Case Sensitive
-                  </Label>
-                  <Switch
-                    id="case-sensitive"
-                    checked={caseSensitive}
-                    onCheckedChange={setCaseSensitive}
-                    data-testid="switch-case-sensitive"
-                  />
-                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {/* Stop Words Toggle */}
+                  <div className="flex items-center justify-between space-x-2 p-2.5 sm:p-3 bg-muted/50 rounded">
+                    <Label htmlFor="stop-words" className="text-xs sm:text-sm font-medium cursor-pointer">
+                      Ignore Stop Words
+                    </Label>
+                    <Switch
+                      id="stop-words"
+                      checked={ignoreStopWords}
+                      onCheckedChange={setIgnoreStopWords}
+                      data-testid="switch-stop-words"
+                      disabled={viewMode !== 'single'}
+                    />
+                  </div>
 
-                {/* Minimum Word Length */}
-                <div className="p-3 bg-muted/50 rounded">
-                  <div className="flex items-center justify-between mb-2">
-                    <Label htmlFor="min-length" className="text-sm font-medium">
+                  {/* Case Sensitivity Toggle */}
+                  <div className="flex items-center justify-between space-x-2 p-2.5 sm:p-3 bg-muted/50 rounded">
+                    <Label htmlFor="case-sensitive" className="text-xs sm:text-sm font-medium cursor-pointer">
+                      Case Sensitive
+                    </Label>
+                    <Switch
+                      id="case-sensitive"
+                      checked={caseSensitive}
+                      onCheckedChange={setCaseSensitive}
+                      data-testid="switch-case-sensitive"
+                    />
+                  </div>
+
+                  {/* Minimum Word Length */}
+                  <div className="p-2.5 sm:p-3 bg-muted/50 rounded">
+                    <Label className="text-xs sm:text-sm font-medium mb-2 block">
                       Min Length: {minWordLength}
                     </Label>
+                    <Slider
+                      min={1}
+                      max={10}
+                      step={1}
+                      value={[minWordLength]}
+                      onValueChange={(value) => setMinWordLength(value[0])}
+                      className="w-full"
+                      data-testid="slider-min-length"
+                      disabled={viewMode !== 'single'}
+                    />
                   </div>
-                  <Slider
-                    id="min-length"
-                    min={1}
-                    max={10}
-                    step={1}
-                    value={[minWordLength]}
-                    onValueChange={(value) => setMinWordLength(value[0])}
-                    className="w-full"
-                    data-testid="slider-min-length"
-                  />
                 </div>
-              </div>
-            </div>
+
+                {/* Custom Stop Words */}
+                {viewMode === 'single' && (
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label className="text-xs sm:text-sm">Custom Stop Words (comma-separated)</Label>
+                    <Input
+                      placeholder="e.g., example, sample, test"
+                      value={customStopWords}
+                      onChange={(e) => setCustomStopWords(e.target.value)}
+                      className="h-9 sm:h-10 text-xs sm:text-sm"
+                    />
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           )}
 
           {/* Statistics Summary */}
           {text.trim() && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-              <div className="bg-card rounded-lg p-3 sm:p-4 shadow-sm border border-border" data-testid="card-total-words">
-                <div className="text-xs sm:text-sm text-muted-foreground mb-1">Total Words (Filtered)</div>
-                <div className="text-xl sm:text-2xl font-bold text-foreground" data-testid="text-total-words">{totalWords}</div>
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
+                <Card>
+                  <CardContent className="p-2.5 sm:p-3 md:p-4">
+                    <div className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1">Total Words</div>
+                    <div className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">{totalWords}</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-2.5 sm:p-3 md:p-4">
+                    <div className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1">Unique {viewMode === 'single' ? 'Words' : 'Phrases'}</div>
+                    <div className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">{uniqueWords}</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-2.5 sm:p-3 md:p-4">
+                    <div className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1">Diversity</div>
+                    <div className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">
+                      {totalWords > 0 ? ((uniqueWords / totalWords) * 100).toFixed(1) : 0}%
+                    </div>
+                  </CardContent>
+                </Card>
+                {advancedStats && (
+                  <>
+                    <Card>
+                      <CardContent className="p-2.5 sm:p-3 md:p-4">
+                        <div className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1">Mean Freq</div>
+                        <div className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">{advancedStats.mean.toFixed(1)}</div>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="p-2.5 sm:p-3 md:p-4">
+                        <div className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1">Median</div>
+                        <div className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">{advancedStats.median}</div>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="p-2.5 sm:p-3 md:p-4">
+                        <div className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1">Std Dev</div>
+                        <div className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">{advancedStats.stdDev.toFixed(1)}</div>
+                      </CardContent>
+                    </Card>
+                  </>
+                )}
               </div>
-              <div className="bg-card rounded-lg p-3 sm:p-4 shadow-sm border border-border" data-testid="card-unique-words">
-                <div className="text-xs sm:text-sm text-muted-foreground mb-1">Unique Words</div>
-                <div className="text-xl sm:text-2xl font-bold text-foreground" data-testid="text-unique-words">{uniqueWords}</div>
-              </div>
-              <div className="bg-card rounded-lg p-3 sm:p-4 shadow-sm border border-border col-span-2 sm:col-span-1" data-testid="card-diversity-ratio">
-                <div className="text-xs sm:text-sm text-muted-foreground mb-1">Diversity Ratio</div>
-                <div className="text-xl sm:text-2xl font-bold text-foreground" data-testid="text-diversity-ratio">
-                  {totalWords > 0 ? ((uniqueWords / totalWords) * 100).toFixed(1) : 0}%
-                </div>
-              </div>
-            </div>
+            </>
           )}
 
-          {/* Tabs for Table and Chart View */}
+          {/* Tabs for different views */}
           {wordFrequencies.length > 0 && (
             <Tabs defaultValue="table" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
-                <TabsTrigger value="table" data-testid="tab-table">Table View</TabsTrigger>
-                <TabsTrigger value="chart" data-testid="tab-chart">Chart View</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto">
+                <TabsTrigger value="table" className="text-xs sm:text-sm py-1.5 sm:py-2" data-testid="tab-table">
+                  <FaFileAlt className="mr-1 sm:mr-2 text-xs sm:text-sm" />
+                  Table
+                </TabsTrigger>
+                <TabsTrigger value="chart" className="text-xs sm:text-sm py-1.5 sm:py-2" data-testid="tab-chart">
+                  <FaChartBar className="mr-1 sm:mr-2 text-xs sm:text-sm" />
+                  Charts
+                </TabsTrigger>
+                {viewMode === 'single' && (
+                  <TabsTrigger value="wordcloud" className="text-xs sm:text-sm py-1.5 sm:py-2" data-testid="tab-wordcloud">
+                    <FaCloud className="mr-1 sm:mr-2 text-xs sm:text-sm" />
+                    Word Cloud
+                  </TabsTrigger>
+                )}
+                <TabsTrigger value="stats" className="text-xs sm:text-sm py-1.5 sm:py-2" data-testid="tab-stats">
+                  <FaChartPie className="mr-1 sm:mr-2 text-xs sm:text-sm" />
+                  Stats
+                </TabsTrigger>
               </TabsList>
 
               {/* Table View */}
-              <TabsContent value="table" className="mt-4">
-                <div className="bg-card rounded-lg p-3 sm:p-6 shadow-sm border border-border">
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
-                    <h2 className="text-base sm:text-lg font-semibold text-foreground">
-                      Word Frequency Results
-                    </h2>
-                    <button 
-                      onClick={downloadResults}
-                      className="px-3 py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 transition-colors"
-                      data-testid="button-download-csv"
-                    >
-                      <FaDownload className="inline mr-1" aria-hidden="true" />
-                      Download CSV
-                    </button>
-                  </div>
-
-                  <div className="overflow-x-auto">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead 
-                            className="cursor-pointer select-none hover:bg-muted/50 transition-colors"
-                            onClick={() => handleSort('word')}
-                          >
-                            Word {getSortIcon('word')}
-                          </TableHead>
-                          <TableHead 
-                            className="cursor-pointer select-none hover:bg-muted/50 transition-colors text-right"
-                            onClick={() => handleSort('frequency')}
-                          >
-                            Frequency {getSortIcon('frequency')}
-                          </TableHead>
-                          <TableHead className="text-right">
-                            Density (%)
-                          </TableHead>
-                          <TableHead className="text-center">
-                            Actions
-                          </TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {wordFrequencies.map((item, index) => (
-                          <TableRow 
-                            key={`${item.word}-${index}`}
-                            className={highlightedWord === item.word ? 'bg-yellow-100 dark:bg-yellow-900/30' : ''}
-                            data-testid={`row-word-${index}`}
-                          >
-                            <TableCell className="font-medium" data-testid={`cell-word-${index}`}>{item.word}</TableCell>
-                            <TableCell className="text-right" data-testid={`cell-frequency-${index}`}>{item.frequency}</TableCell>
-                            <TableCell className="text-right" data-testid={`cell-density-${index}`}>{item.density.toFixed(2)}%</TableCell>
-                            <TableCell className="text-center">
-                              <button
-                                onClick={() => handleWordClick(item.word)}
-                                className="px-2 py-1 text-xs bg-primary/10 text-primary hover:bg-primary/20 rounded transition-colors"
-                                data-testid={`button-highlight-${index}`}
-                                title="Highlight in text"
-                              >
-                                <FaHighlighter className="inline" />
-                              </button>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-
-                  {wordFrequencies.length > 10 && (
-                    <div className="mt-3 text-xs sm:text-sm text-muted-foreground text-center">
-                      Showing all {wordFrequencies.length} unique words
+              <TabsContent value="table" className="mt-3 sm:mt-4">
+                <Card>
+                  <CardHeader className="p-3 sm:p-4 md:p-6">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-3">
+                      <CardTitle className="text-base sm:text-lg md:text-xl">
+                        {viewMode === 'single' ? 'Word' : viewMode === '2-gram' ? '2-Word Phrase' : '3-Word Phrase'} Frequency Results
+                      </CardTitle>
+                      <div className="flex gap-2 w-full sm:w-auto">
+                        <Button 
+                          onClick={() => downloadResults('csv')}
+                          size="sm"
+                          className="flex-1 sm:flex-none h-8 sm:h-9 text-xs sm:text-sm"
+                          data-testid="button-download-csv"
+                        >
+                          <FaDownload className="mr-1 text-xs sm:text-sm" />
+                          CSV
+                        </Button>
+                        <Button 
+                          onClick={() => downloadResults('json')}
+                          size="sm"
+                          variant="secondary"
+                          className="flex-1 sm:flex-none h-8 sm:h-9 text-xs sm:text-sm"
+                          data-testid="button-download-json"
+                        >
+                          <FaDownload className="mr-1 text-xs sm:text-sm" />
+                          JSON
+                        </Button>
+                      </div>
                     </div>
-                  )}
-                </div>
+                  </CardHeader>
+                  <CardContent className="p-3 sm:p-4 md:p-6 pt-0 space-y-3">
+                    {/* Search/Filter */}
+                    <div className="relative">
+                      <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs sm:text-sm" />
+                      <Input
+                        placeholder={`Search ${viewMode === 'single' ? 'words' : 'phrases'}...`}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="pl-9 h-9 sm:h-10 text-xs sm:text-sm"
+                        data-testid="input-search"
+                      />
+                    </div>
+
+                    <div className="overflow-x-auto rounded-lg border">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead 
+                              className="cursor-pointer select-none hover:bg-muted/50 transition-colors text-xs sm:text-sm"
+                              onClick={() => handleSort('word')}
+                            >
+                              {viewMode === 'single' ? 'Word' : 'Phrase'} {getSortIcon('word')}
+                            </TableHead>
+                            <TableHead 
+                              className="cursor-pointer select-none hover:bg-muted/50 transition-colors text-right text-xs sm:text-sm"
+                              onClick={() => handleSort('frequency')}
+                            >
+                              Frequency {getSortIcon('frequency')}
+                            </TableHead>
+                            <TableHead className="text-right text-xs sm:text-sm">
+                              Density (%)
+                            </TableHead>
+                            {viewMode === 'single' && (
+                              <TableHead className="text-center text-xs sm:text-sm">
+                                Actions
+                              </TableHead>
+                            )}
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {filteredFrequencies.map((item, index) => (
+                            <TableRow 
+                              key={`${item.word}-${index}`}
+                              className={highlightedWord === item.word ? 'bg-yellow-100 dark:bg-yellow-900/30' : ''}
+                              data-testid={`row-word-${index}`}
+                            >
+                              <TableCell className="font-medium text-xs sm:text-sm" data-testid={`cell-word-${index}`}>{item.word}</TableCell>
+                              <TableCell className="text-right text-xs sm:text-sm" data-testid={`cell-frequency-${index}`}>{item.frequency}</TableCell>
+                              <TableCell className="text-right text-xs sm:text-sm" data-testid={`cell-density-${index}`}>{item.density.toFixed(2)}%</TableCell>
+                              {viewMode === 'single' && (
+                                <TableCell className="text-center">
+                                  <Button
+                                    onClick={() => handleWordClick(item.word)}
+                                    size="sm"
+                                    variant="ghost"
+                                    className="h-7 px-2 text-xs"
+                                    data-testid={`button-highlight-${index}`}
+                                  >
+                                    <FaHighlighter />
+                                  </Button>
+                                </TableCell>
+                              )}
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+
+                    {filteredFrequencies.length > 0 && (
+                      <div className="text-xs sm:text-sm text-muted-foreground text-center">
+                        Showing {filteredFrequencies.length} {searchQuery ? 'filtered' : 'total'} results
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
               </TabsContent>
 
               {/* Chart View */}
-              <TabsContent value="chart" className="mt-4">
-                <div className="bg-card rounded-lg p-3 sm:p-6 shadow-sm border border-border">
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
-                    <h2 className="text-base sm:text-lg font-semibold text-foreground">
-                      <FaChartBar className="inline mr-2" />
-                      Top 20 Words - Visual Distribution
-                    </h2>
-                  </div>
+              <TabsContent value="chart" className="mt-3 sm:mt-4">
+                <Card>
+                  <CardHeader className="p-3 sm:p-4 md:p-6">
+                    <CardTitle className="flex items-center gap-2 text-base sm:text-lg md:text-xl">
+                      {chartType === 'bar' ? <FaChartBar /> : <FaChartPie />}
+                      Top {maxResults} {viewMode === 'single' ? 'Words' : 'Phrases'} - Visual Distribution
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-3 sm:p-4 md:p-6 pt-0">
+                    {chartType === 'bar' ? (
+                      <ChartContainer config={chartConfig} className="h-[300px] sm:h-[400px] md:h-[500px] w-full">
+                        <BarChart data={topWords} margin={{ top: 10, right: 10, bottom: 60, left: 10 }}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis 
+                            dataKey="word" 
+                            angle={-45}
+                            textAnchor="end"
+                            height={100}
+                            interval={0}
+                            tick={{ fontSize: 10 }}
+                          />
+                          <YAxis tick={{ fontSize: 10 }} />
+                          <ChartTooltip 
+                            content={({ active, payload }) => {
+                              if (active && payload && payload.length) {
+                                const data = payload[0].payload;
+                                return (
+                                  <div className="bg-background border border-border rounded p-2 shadow-lg">
+                                    <p className="font-semibold text-xs sm:text-sm">{data.word}</p>
+                                    <p className="text-xs">Frequency: {data.frequency}</p>
+                                    <p className="text-xs text-muted-foreground">
+                                      Density: {data.density.toFixed(2)}%
+                                    </p>
+                                  </div>
+                                );
+                              }
+                              return null;
+                            }}
+                          />
+                          <Bar 
+                            dataKey="frequency" 
+                            fill="var(--color-frequency)" 
+                            radius={[4, 4, 0, 0]}
+                            onClick={({payload}) => viewMode === 'single' && payload && handleWordClick(payload.word)}
+                            cursor={viewMode === 'single' ? 'pointer' : 'default'}
+                          />
+                        </BarChart>
+                      </ChartContainer>
+                    ) : (
+                      <ChartContainer config={chartConfig} className="h-[300px] sm:h-[400px] md:h-[500px] w-full">
+                        <PieChart>
+                          <Pie
+                            data={topWords}
+                            dataKey="frequency"
+                            nameKey="word"
+                            cx="50%"
+                            cy="50%"
+                            outerRadius="80%"
+                            label={({ word, density }) => `${word} (${density.toFixed(1)}%)`}
+                            labelLine={false}
+                          >
+                            {topWords.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                            ))}
+                          </Pie>
+                          <ChartTooltip 
+                            content={({ active, payload }) => {
+                              if (active && payload && payload.length) {
+                                const data = payload[0].payload;
+                                return (
+                                  <div className="bg-background border border-border rounded p-2 shadow-lg">
+                                    <p className="font-semibold text-xs sm:text-sm">{data.word}</p>
+                                    <p className="text-xs">Frequency: {data.frequency}</p>
+                                    <p className="text-xs text-muted-foreground">
+                                      Density: {data.density.toFixed(2)}%
+                                    </p>
+                                  </div>
+                                );
+                              }
+                              return null;
+                            }}
+                          />
+                        </PieChart>
+                      </ChartContainer>
+                    )}
+                  </CardContent>
+                </Card>
+              </TabsContent>
 
-                  <ChartContainer config={chartConfig} className="h-[400px] w-full">
-                    <BarChart data={top20Words} margin={{ top: 20, right: 20, bottom: 60, left: 20 }}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis 
-                        dataKey="word" 
-                        angle={-45}
-                        textAnchor="end"
-                        height={100}
-                        interval={0}
-                        tick={{ fontSize: 12 }}
-                      />
-                      <YAxis />
-                      <ChartTooltip 
-                        content={({ active, payload }) => {
-                          if (active && payload && payload.length) {
-                            const data = payload[0].payload;
-                            return (
-                              <div className="bg-background border border-border rounded p-2 shadow-lg">
-                                <p className="font-semibold text-sm">{data.word}</p>
-                                <p className="text-xs">Frequency: {data.frequency}</p>
-                                <p className="text-xs text-muted-foreground">
-                                  Density: {data.density.toFixed(2)}%
-                                </p>
-                              </div>
-                            );
-                          }
-                          return null;
-                        }}
-                      />
-                      <Bar 
-                        dataKey="frequency" 
-                        fill="var(--color-frequency)" 
-                        radius={[4, 4, 0, 0]}
-                        onClick={({payload}) => payload && handleWordClick(payload.word)}
-                        cursor="pointer"
-                      />
-                    </BarChart>
-                  </ChartContainer>
+              {/* Word Cloud View */}
+              {viewMode === 'single' && (
+                <TabsContent value="wordcloud" className="mt-3 sm:mt-4">
+                  <Card>
+                    <CardHeader className="p-3 sm:p-4 md:p-6">
+                      <CardTitle className="flex items-center gap-2 text-base sm:text-lg md:text-xl">
+                        <FaCloud />
+                        Word Cloud Visualization
+                      </CardTitle>
+                      <CardDescription className="text-xs sm:text-sm">Size represents word frequency</CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-3 sm:p-4 md:p-6 pt-0">
+                      <div className="flex flex-wrap gap-2 justify-center items-center min-h-[300px] sm:min-h-[400px] p-4 bg-muted/30 rounded-lg border">
+                        {topWords.map((item, index) => {
+                          const sizePercent = (item.frequency / topWords[0].frequency) * 100;
+                          const fontSize = Math.max(12, Math.min(48, (sizePercent / 100) * 48));
+                          
+                          return (
+                            <button
+                              key={item.word}
+                              onClick={() => handleWordClick(item.word)}
+                              className="transition-all hover:scale-110 hover:opacity-80 cursor-pointer px-2 py-1 rounded"
+                              style={{
+                                fontSize: `${fontSize}px`,
+                                fontWeight: sizePercent > 50 ? 'bold' : 'normal',
+                                color: CHART_COLORS[index % CHART_COLORS.length],
+                              }}
+                              title={`${item.word}: ${item.frequency} (${item.density.toFixed(2)}%)`}
+                            >
+                              {item.word}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              )}
 
-                  <div className="mt-4 text-xs sm:text-sm text-muted-foreground text-center">
-                    Showing top 20 most frequent words. Click on any bar to highlight in text.
-                  </div>
+              {/* Advanced Statistics */}
+              <TabsContent value="stats" className="mt-3 sm:mt-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                  {/* Word Length Distribution */}
+                  {viewMode === 'single' && wordLengthDistribution.length > 0 && (
+                    <Card>
+                      <CardHeader className="p-3 sm:p-4 md:p-6">
+                        <CardTitle className="text-base sm:text-lg">Word Length Distribution</CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-3 sm:p-4 md:p-6 pt-0">
+                        <ChartContainer config={chartConfig} className="h-[250px] sm:h-[300px] w-full">
+                          <BarChart data={wordLengthDistribution}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="length" tick={{ fontSize: 10 }} />
+                            <YAxis tick={{ fontSize: 10 }} />
+                            <ChartTooltip />
+                            <Bar dataKey="count" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                          </BarChart>
+                        </ChartContainer>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Statistical Summary */}
+                  {advancedStats && (
+                    <Card>
+                      <CardHeader className="p-3 sm:p-4 md:p-6">
+                        <CardTitle className="text-base sm:text-lg">Statistical Summary</CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-3 sm:p-4 md:p-6 pt-0">
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-center p-2 bg-muted/50 rounded">
+                            <span className="text-xs sm:text-sm text-muted-foreground">Mean Frequency</span>
+                            <span className="text-sm sm:text-base font-semibold">{advancedStats.mean.toFixed(2)}</span>
+                          </div>
+                          <div className="flex justify-between items-center p-2 bg-muted/50 rounded">
+                            <span className="text-xs sm:text-sm text-muted-foreground">Median Frequency</span>
+                            <span className="text-sm sm:text-base font-semibold">{advancedStats.median}</span>
+                          </div>
+                          <div className="flex justify-between items-center p-2 bg-muted/50 rounded">
+                            <span className="text-xs sm:text-sm text-muted-foreground">Mode (Most Common)</span>
+                            <span className="text-sm sm:text-base font-semibold">{advancedStats.mode}</span>
+                          </div>
+                          <div className="flex justify-between items-center p-2 bg-muted/50 rounded">
+                            <span className="text-xs sm:text-sm text-muted-foreground">Standard Deviation</span>
+                            <span className="text-sm sm:text-base font-semibold">{advancedStats.stdDev.toFixed(2)}</span>
+                          </div>
+                          <div className="flex justify-between items-center p-2 bg-muted/50 rounded">
+                            <span className="text-xs sm:text-sm text-muted-foreground">Vocabulary Diversity</span>
+                            <span className="text-sm sm:text-base font-semibold">
+                              {totalWords > 0 ? ((uniqueWords / totalWords) * 100).toFixed(2) : 0}%
+                            </span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
                 </div>
               </TabsContent>
             </Tabs>
-          )}
-
-          {/* Empty State */}
-          {!text.trim() && (
-            <div className="bg-card rounded-lg p-8 sm:p-12 shadow-sm border border-border text-center">
-              <div className="text-muted-foreground">
-                <p className="text-base sm:text-lg mb-2">Enter text above to see word frequency analysis</p>
-                <p className="text-xs sm:text-sm">
-                  The tool will count how many times each unique word appears and show density percentages
-                </p>
-              </div>
-            </div>
           )}
         </div>
       </div>
