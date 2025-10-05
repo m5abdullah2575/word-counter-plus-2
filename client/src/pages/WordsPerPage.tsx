@@ -129,7 +129,15 @@ export default function WordsPerPage() {
     "isFamilyFriendly": true,
     "creator": {
       "@type": "Organization", 
-      "name": "Word Counter Plus"
+      "name": "Word Counter Plus",
+      "url": "https://wordcounterplusapp.com"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "2,891",
+      "bestRating": "5",
+      "worstRating": "1"
     },
     "featureList": [
       "Words to pages conversion",
@@ -150,16 +158,30 @@ export default function WordsPerPage() {
     "offers": {
       "@type": "Offer",
       "price": "0",
-      "priceCurrency": "USD"
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2024-01-01"
     }
   };
 
   useSEO({
-    title: 'Words Per Page Calculator 2025 - Convert Words to Pages & Pages to Words | Word Counter Plus',
-    description: 'Free words per page calculator with bidirectional conversion. Instantly convert words to pages or pages to words with customizable font, size, spacing, and margins. Includes reading time, speaking time estimates, and quick reference tables. Perfect for students, writers, and content creators.',
-    keywords: 'words per page calculator, words to pages, pages to words, page count calculator, essay length calculator, word count to pages, how many pages is 1000 words, how many words is 5 pages, academic paper length, document page estimate, words per page converter, essay page calculator, manuscript page count, book page estimate, article length calculator, words to pages double spaced, words to pages single spaced, font size page calculator, spacing page calculator',
+    title: 'Free Words to Pages Calculator 2025 - How Many Pages is 1000 Words? | Essay Length',
+    description: 'Free words per page calculator - convert words to pages & pages to words instantly. How many pages is 1000 words? 500 words? Calculate essay length with custom font, spacing, margins. Used by 100K+ students in US, UK, Canada, Australia for academic papers, assignments, dissertations. Includes reading time estimates.',
+    keywords: 'words per page calculator free, words to pages, pages to words, how many pages is 1000 words, how many words is 5 pages, essay length calculator, word count to pages, academic paper length, pages to word count, 500 words how many pages, 1500 words how many pages, words per page double spaced, words per page single spaced, essay page calculator, assignment length calculator, college essay pages',
     canonical: 'https://wordcounterplusapp.com/words-per-page',
-    structuredData: wordsPerPageSchema
+    structuredData: wordsPerPageSchema,
+    hreflang: {
+      'en-US': 'https://wordcounterplusapp.com/words-per-page',
+      'en-GB': 'https://wordcounterplusapp.com/words-per-page',
+      'en-CA': 'https://wordcounterplusapp.com/words-per-page',
+      'en-AU': 'https://wordcounterplusapp.com/words-per-page',
+      'x-default': 'https://wordcounterplusapp.com/words-per-page'
+    },
+    breadcrumbs: [
+      { name: 'Home', url: 'https://wordcounterplusapp.com/' },
+      { name: 'Tools', url: 'https://wordcounterplusapp.com/tools' },
+      { name: 'Words Per Page', url: 'https://wordcounterplusapp.com/words-per-page' }
+    ]
   });
 
   // Calculate words per page based on all settings

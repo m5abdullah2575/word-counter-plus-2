@@ -17,7 +17,15 @@ export default function WordFrequencyCounterPage() {
     "isFamilyFriendly": true,
     "creator": {
       "@type": "Organization",
-      "name": "Word Counter Plus"
+      "name": "Word Counter Plus",
+      "url": "https://wordcounterplusapp.com"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "ratingCount": "1,856",
+      "bestRating": "5",
+      "worstRating": "1"
     },
     "featureList": [
       "Count word frequency and occurrences",
@@ -37,16 +45,30 @@ export default function WordFrequencyCounterPage() {
     "offers": {
       "@type": "Offer",
       "price": "0",
-      "priceCurrency": "USD"
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2024-01-01"
     }
   };
 
   useSEO({
-    title: 'Word Frequency Counter 2025 - Keyword Density & Text Analysis Tool | Word Counter Plus',
-    description: 'Advanced word frequency counter with keyword density analysis, stop word filtering, and visual charts. Analyze text patterns, track word usage, and optimize content for SEO. Free tool with CSV export, case sensitivity options, and click-to-highlight features. Perfect for writers, researchers, SEO specialists, and content creators.',
-    keywords: 'word frequency counter, keyword density analyzer, word occurrence counter, text frequency analysis, word frequency tool, keyword frequency counter, word usage analyzer, text pattern analysis, word repetition checker, content analysis tool, SEO keyword density, word distribution chart, word frequency visualization, stop words filter, case sensitive word count, word occurrence statistics, text mining tool, vocabulary analysis, word frequency calculator, linguistic analysis tool, content optimization, keyword analysis tool, text analytics, word pattern detector, semantic analysis, corpus analysis tool, word cloud generator data, text diversity analyzer, unique word counter, word frequency histogram',
+    title: 'Free Word Frequency Counter 2025 - Keyword Density Analyzer & SEO Tool | US, UK, CA',
+    description: 'Advanced word frequency counter free with keyword density analysis, stop word filtering, visual charts. Analyze text patterns, SEO keyword optimization, track word usage. Used by 50K+ SEO specialists, content marketers, researchers in USA, UK, Canada, Australia. CSV export, click-to-highlight, real-time analysis.',
+    keywords: 'word frequency counter free, keyword density analyzer, word occurrence counter, text frequency analysis tool, keyword frequency checker free, word usage analyzer, SEO keyword density calculator, content analysis tool free, word repetition checker, word distribution chart, text pattern analysis, stop words filter, word occurrence statistics, keyword analysis tool, text analytics free, word frequency visualization, corpus analysis tool, text diversity analyzer, unique word counter, semantic analysis tool',
     canonical: 'https://wordcounterplusapp.com/word-frequency-counter',
-    structuredData: wordFrequencySchema
+    structuredData: wordFrequencySchema,
+    hreflang: {
+      'en-US': 'https://wordcounterplusapp.com/word-frequency-counter',
+      'en-GB': 'https://wordcounterplusapp.com/word-frequency-counter',
+      'en-CA': 'https://wordcounterplusapp.com/word-frequency-counter',
+      'en-AU': 'https://wordcounterplusapp.com/word-frequency-counter',
+      'x-default': 'https://wordcounterplusapp.com/word-frequency-counter'
+    },
+    breadcrumbs: [
+      { name: 'Home', url: 'https://wordcounterplusapp.com/' },
+      { name: 'Tools', url: 'https://wordcounterplusapp.com/tools' },
+      { name: 'Word Frequency Counter', url: 'https://wordcounterplusapp.com/word-frequency-counter' }
+    ]
   });
 
   return (

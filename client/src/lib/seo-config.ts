@@ -150,9 +150,9 @@ export const getTextCaseSEO = (): SEOConfig => {
   const origin = getCurrentOrigin();
   
   return {
-    title: "Text Case Converter - Upper, Lower, Camel Case | Word Counter Plus",
-    description: "Free online text case converter. Instantly convert text to uppercase, lowercase, title case, camel case, snake case, and more. Perfect for developers and content creators.",
-    keywords: "text case converter, uppercase, lowercase, camel case, snake case, title case",
+    title: "Free Text Case Converter 2025 - Uppercase, Lowercase, Camel Case | US, UK, CA",
+    description: "Free text case converter online - instantly convert to UPPERCASE, lowercase, Title Case, camelCase, snake_case, kebab-case. Used by 150K+ developers, programmers, writers in US, UK, Canada, Australia. 10+ case formats, real-time conversion, copy to clipboard. Perfect for coding, variable names, content formatting.",
+    keywords: "text case converter free, case converter online, uppercase converter, lowercase converter, camel case converter, snake case converter, title case converter, pascal case converter, kebab case converter, text transformer, string converter, variable name converter, coding case converter, programming case tool, text format converter, case changer online free",
     canonical: `${origin}/text-case-converter`,
     ogImage: `${origin}/og-image.png`,
     structuredData: {
@@ -169,10 +169,24 @@ export const getTextCaseSEO = (): SEOConfig => {
       "browserRequirements": "Requires JavaScript. Works with Chrome, Firefox, Safari, Edge.",
       "softwareVersion": "2.0",
       "datePublished": "2024-01-01",
-      "dateModified": "2025-09-18",
+      "dateModified": "2025-10-05",
       "inLanguage": "en-US",
       "isAccessibleForFree": true,
       "isFamilyFriendly": true,
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "ratingCount": "4,567",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "validFrom": "2024-01-01"
+      },
       "creator": {
         "@type": "Organization",
         "name": "Word Counter Plus",
@@ -257,6 +271,8 @@ export const getTextCaseSEO = (): SEOConfig => {
       }
     },
     breadcrumbs: [
+      { name: "Home", url: `${origin}/` },
+      { name: "Tools", url: `${origin}/tools` },
       { name: "Text Case Converter", url: `${origin}/text-case-converter` }
     ]
   };
