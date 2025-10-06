@@ -48,30 +48,54 @@ async function getBlogPosts() {
     console.log('📚 Loading blog data from modules...');
     
     const allBlogs = [];
-    const processedSlugs = new Set();
     
-    const { blogPosts } = await import('./client/src/data/blogData.ts');
+    // Import the blog data - this works during build with tsx/node
+    const blogDataModule = await import('./client/src/data/blogData.ts');
+    const blogPosts = blogDataModule.blogPosts || blogDataModule.default?.blogPosts || [];
     
-    console.log(`✅ Loaded ${blogPosts.length} blog posts from blogData`);
+    console.log(`✅ Loaded ${blogPosts.length} blog posts from blogData module`);
     
-    blogPosts.forEach((post) => {
-      if (!processedSlugs.has(post.slug)) {
-        processedSlugs.add(post.slug);
-        allBlogs.push({
-          url: `/blog/${post.slug}`,
-          changefreq: 'monthly',
-          priority: 0.6,
-          lastmod: post.publishDate ? new Date(post.publishDate).toISOString() : new Date().toISOString()
-        });
-      }
-    });
+    if (blogPosts.length === 0) {
+      console.warn('⚠️ No blog posts found in module, trying alternative method...');
+      // Fallback: try to get allBlogPosts or other exports
+      const allPosts = blogDataModule.allBlogPosts || [];
+      const additionalPosts = blogDataModule.additionalBlogPosts || [];
+      const morePosts = blogDataModule.moreBlogPosts || [];
+      const extensivePosts = blogDataModule.extensiveBlogPosts || [];
+      
+      const combinedPosts = [...allPosts, ...additionalPosts, ...morePosts, ...extensivePosts];
+      console.log(`✅ Found ${combinedPosts.length} posts using alternative method`);
+      
+      combinedPosts.forEach((post) => {
+        if (post.slug) {
+          allBlogs.push({
+            url: `/blog/${post.slug}`,
+            changefreq: 'monthly',
+            priority: 0.6,
+            lastmod: post.publishDate ? new Date(post.publishDate).toISOString() : new Date().toISOString()
+          });
+        }
+      });
+    } else {
+      blogPosts.forEach((post) => {
+        if (post.slug) {
+          allBlogs.push({
+            url: `/blog/${post.slug}`,
+            changefreq: 'monthly',
+            priority: 0.6,
+            lastmod: post.publishDate ? new Date(post.publishDate).toISOString() : new Date().toISOString()
+          });
+        }
+      });
+    }
     
-    console.log(`✅ Total unique blog posts: ${allBlogs.length}`);
+    console.log(`✅ Total unique blog posts for sitemap: ${allBlogs.length}`);
     return allBlogs;
     
   } catch (error) {
     console.error('❌ Error reading blog posts:', error);
     console.error('Error details:', error.message);
+    console.error('Stack:', error.stack);
     return [];
   }
 }
@@ -162,10 +186,16 @@ async function generateSitemap() {
     console.log(`   - Static pages: ${staticPages.length}`);
     console.log(`   - Blog posts: ${blogPosts.length}`);
     console.log(`   - Total URLs in sitemap: ${allUrls.length}`);
+    
+    if (allUrls.length < 50) {
+      console.warn(`\n⚠️ WARNING: Expected ~109 URLs but only got ${allUrls.length}!`);
+      console.warn('This may indicate an issue with blog data loading.');
+    }
 
   } catch (error) {
     console.error('❌ Error generating sitemap:', error);
     console.error('Error details:', error.message);
+    console.error('Stack:', error.stack);
     process.exit(1);
   }
 }
