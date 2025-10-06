@@ -280,7 +280,7 @@ Understanding words per page calculations empowers students, authors, and profes
 ## Try Our Words Per Page Calculator
 
 Calculate pages accurately with our [Words Per Page Tool](/words-per-page). Convert words to pages or pages to words with custom formatting options, get reading time estimates, and plan your writing projects with confidence!`,
-    publishDate: "2025-09-24",
+    publishDate: "2025-10-02",
     readTime: "12 min read",
     tags: ["Words Per Page", "Writing", "Academic", "Page Count"],
     slug: "words-per-page-calculator-complete-guide",
@@ -582,7 +582,7 @@ Understanding the relationship between word count and page count is essential fo
 ## Try Our Words Per Page Tool
 
 Plan your book project with our [Words Per Page Calculator](/words-per-page). Get accurate page estimates for your manuscript, compare formatting options, and ensure your work meets industry standards!`,
-    publishDate: "2025-09-24",
+    publishDate: "2025-10-02",
     readTime: "13 min read",
     tags: ["Book Writing", "Publishing", "Manuscript", "Page Count"],
     slug: "book-manuscript-formatting-word-count-guide",
@@ -896,7 +896,7 @@ Mastering essay length calculation and planning is essential for academic succes
 ## Try Our Words Per Page Calculator
 
 Plan your essays with precision using our [Words Per Page Tool](/words-per-page). Calculate exact page counts, plan section lengths, and ensure you meet all academic requirements every time!`,
-    publishDate: "2025-09-24",
+    publishDate: "2025-10-02",
     readTime: "11 min read",
     tags: ["Essay Writing", "Academic", "Student", "Page Planning"],
     slug: "essay-planning-perfect-length-academic-success",
