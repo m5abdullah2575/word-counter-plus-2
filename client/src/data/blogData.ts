@@ -1,6 +1,12 @@
 // Import tool-specific blog posts
 import { characterCounterBlogs } from './blogs/character-counter-blogs';
 import { textCaseConverterBlogs } from './blogs/text-case-converter-blogs';
+import { wordFrequencyCounterBlogs } from './blogs/word-frequency-counter-blogs';
+import { randomWordGeneratorBlogs } from './blogs/random-word-generator-blogs';
+import { wordsPerPageBlogs } from './blogs/words-per-page-blogs';
+import { plagiarismCheckerBlogs } from './blogs/plagiarism-checker-blogs';
+import { resumeCVBlogs } from './blogs/resume-cv-blogs';
+import { seoContentAnalyzerBlogs } from './blogs/seo-content-analyzer-blogs';
 
 export interface BlogPost {
   id: string;
@@ -2930,7 +2936,13 @@ export const blogPosts = [
   ...generateAdditionalPosts(18, 35),
   // Tool-specific blog posts
   ...characterCounterBlogs,
-  ...textCaseConverterBlogs
+  ...textCaseConverterBlogs,
+  ...wordFrequencyCounterBlogs,
+  ...randomWordGeneratorBlogs,
+  ...wordsPerPageBlogs,
+  ...plagiarismCheckerBlogs,
+  ...resumeCVBlogs,
+  ...seoContentAnalyzerBlogs
 ];
 
 // Development check to ensure we have the expected number of articles
