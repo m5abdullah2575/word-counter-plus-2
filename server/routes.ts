@@ -70,6 +70,155 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.redirect(301, `/text-case-convert${queryString}`);
   });
 
+  // Dynamic sitemap generation
+  app.get('/sitemap.xml', async (req, res) => {
+    try {
+      const SITE_URL = 'https://wordcounterplusapp.com';
+      
+      const staticPages = [
+        { url: '/', priority: 1.0, changefreq: 'daily' },
+        { url: '/seo-content-analyzer', priority: 0.95, changefreq: 'weekly' },
+        { url: '/plagiarism-checker', priority: 0.95, changefreq: 'weekly' },
+        { url: '/resume-cv-checker', priority: 0.95, changefreq: 'weekly' },
+        { url: '/tools', priority: 0.9, changefreq: 'weekly' },
+        { url: '/character-counter', priority: 0.9, changefreq: 'weekly' },
+        { url: '/text-case-convert', priority: 0.9, changefreq: 'weekly' },
+        { url: '/word-frequency-counter', priority: 0.85, changefreq: 'weekly' },
+        { url: '/random-word-generator', priority: 0.85, changefreq: 'weekly' },
+        { url: '/words-per-page', priority: 0.85, changefreq: 'weekly' },
+        { url: '/about', priority: 0.8, changefreq: 'monthly' },
+        { url: '/blog', priority: 0.8, changefreq: 'daily' },
+        { url: '/contact', priority: 0.7, changefreq: 'monthly' },
+        { url: '/faq', priority: 0.7, changefreq: 'monthly' },
+        { url: '/privacy', priority: 0.5, changefreq: 'yearly' },
+        { url: '/terms', priority: 0.5, changefreq: 'yearly' },
+        { url: '/disclaimer', priority: 0.5, changefreq: 'yearly' },
+        { url: '/cookies', priority: 0.5, changefreq: 'yearly' }
+      ];
+
+      const blogFiles = [
+        'client/src/data/blogData.ts',
+        'client/src/data/blogs/character-counter-blogs.ts',
+        'client/src/data/blogs/text-case-converter-blogs.ts',
+        'client/src/data/blogs/word-frequency-counter-blogs.ts',
+        'client/src/data/blogs/random-word-generator-blogs.ts',
+        'client/src/data/blogs/words-per-page-blogs.ts',
+        'client/src/data/blogs/plagiarism-checker-blogs.ts',
+        'client/src/data/blogs/resume-cv-blogs.ts',
+        'client/src/data/blogs/seo-content-analyzer-blogs.ts'
+      ];
+      
+      const blogPosts: Array<{ url: string; changefreq: string; priority: number; lastmod: string }> = [];
+      for (const filePath of blogFiles) {
+        const fullPath = path.join(__dirname, '..', filePath);
+        if (fs.existsSync(fullPath)) {
+          const content = fs.readFileSync(fullPath, 'utf8');
+          
+          const slugMatches = content.match(/slug:\s*["']([^"']+)["']/g);
+          const publishDateMatches = content.match(/publishDate:\s*["']([^"']+)["']/g);
+          
+          if (slugMatches) {
+            const slugs = slugMatches.map(match => {
+              const result = match.match(/["']([^"']+)["']/);
+              return result ? result[1] : '';
+            }).filter(s => s);
+            
+            const dates = publishDateMatches ? publishDateMatches.map(match => {
+              const result = match.match(/["']([^"']+)["']/);
+              return result ? result[1] : '';
+            }).filter(s => s) : [];
+            
+            slugs.forEach((slug, index) => {
+              blogPosts.push({
+                url: `/blog/${slug}`,
+                changefreq: 'monthly',
+                priority: 0.6,
+                lastmod: dates[index] ? new Date(dates[index]).toISOString() : new Date().toISOString()
+              });
+            });
+          }
+        }
+      }
+
+      const allUrls = [...staticPages, ...blogPosts];
+
+      let xmlContent = '<?xml version="1.0" encoding="UTF-8"?>\n';
+      xmlContent += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+      
+      allUrls.forEach(urlData => {
+        xmlContent += '  <url>\n';
+        xmlContent += `    <loc>${SITE_URL}${urlData.url}</loc>\n`;
+        if ('lastmod' in urlData && urlData.lastmod) {
+          xmlContent += `    <lastmod>${urlData.lastmod}</lastmod>\n`;
+        }
+        xmlContent += `    <changefreq>${urlData.changefreq}</changefreq>\n`;
+        xmlContent += `    <priority>${urlData.priority}</priority>\n`;
+        xmlContent += '  </url>\n';
+      });
+      
+      xmlContent += '</urlset>';
+
+      res.header('Content-Type', 'application/xml');
+      res.send(xmlContent);
+    } catch (error) {
+      console.error('Error generating sitemap:', error);
+      res.status(500).send('Error generating sitemap');
+    }
+  });
+
+  // Dynamic robots.txt generation
+  app.get('/robots.txt', (req, res) => {
+    const SITE_URL = 'https://wordcounterplusapp.com';
+    const robotsContent = `# Robots.txt for Word Counter Plus
+# Optimized for search engines (Google, Bing, Yahoo, DuckDuckGo)
+
+User-agent: *
+Allow: /
+Allow: /seo-content-analyzer
+Allow: /plagiarism-checker
+Allow: /resume-cv-checker
+Allow: /character-counter
+Allow: /text-case-convert
+Allow: /word-frequency-counter
+Allow: /random-word-generator
+Allow: /words-per-page
+Allow: /blog
+
+Disallow: /admin/
+Disallow: /api/
+Disallow: /drafts/
+Disallow: /*.pdf$
+Disallow: /private/
+Disallow: /.local/
+Disallow: /server/
+
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 0
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+Sitemap: ${SITE_URL}/sitemap.xml
+`;
+    
+    res.header('Content-Type', 'text/plain');
+    res.send(robotsContent);
+  });
+
   // put application routes here
   // prefix all routes with /api
 
