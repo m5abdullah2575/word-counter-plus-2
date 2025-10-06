@@ -401,7 +401,7 @@ Optimizing your resume for ATS is essential in modern job searching. By understa
 ## Try Our Resume/CV Word Counter
 
 Optimize your resume for ATS with our [Resume/CV Checker](/resume-cv-checker). Get ATS compatibility scores, keyword analysis, section-specific recommendations, and industry benchmarks to maximize your job application success!`,
-    publishDate: "2025-09-30",
+    publishDate: "2025-10-05",
     readTime: "14 min read",
     tags: ["Resume", "ATS", "Job Applications", "Career"],
     slug: "ats-optimized-resume-complete-guide",
@@ -726,7 +726,7 @@ Creating an effective resume requires understanding regional expectations, indus
 ## Try Our Resume/CV Checker
 
 Perfect your resume with our [Resume/CV Word Counter](/resume-cv-checker). Get word count analysis, ATS scores, section recommendations, and professional insights to create winning resumes for any market!`,
-    publishDate: "2025-09-30",
+    publishDate: "2025-10-05",
     readTime: "12 min read",
     tags: ["Resume Writing", "CV", "Job Search", "Career Development"],
     slug: "resume-writing-best-practices-guide",
@@ -1025,7 +1025,7 @@ A well-crafted cover letter of optimal length, customized for each position, and
 ## Try Our Resume/CV Word Counter
 
 Optimize your cover letter length with our [Resume/CV Tool](/resume-cv-checker). Track word counts, ensure optimal length, and create compelling cover letters that get you interviews!`,
-    publishDate: "2025-09-30",
+    publishDate: "2025-10-05",
     readTime: "11 min read",
     tags: ["Cover Letter", "Job Applications", "Career", "Professional Writing"],
     slug: "cover-letter-optimization-perfect-length",

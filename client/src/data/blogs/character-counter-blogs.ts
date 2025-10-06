@@ -137,7 +137,7 @@ Understanding and optimizing for character limits across social media platforms 
 ## Try Our Character Counter Tool
 
 Ready to optimize your social media content? Use our [Character Counter Tool](/character-counter) to ensure your posts meet platform requirements and engage your audience effectively. Get real-time character counts, platform-specific optimization suggestions, and improve your social media performance today!`,
-    publishDate: "2025-10-06",
+    publishDate: "2025-09-29",
     readTime: "8 min read",
     tags: ["Social Media", "Character Counter", "Digital Marketing"],
     slug: "social-media-character-limits-complete-guide",
@@ -321,7 +321,7 @@ Character counting is a fundamental skill that improves both writing efficiency 
 ## Try Our Character Counter Tool
 
 Start improving your writing efficiency today with our [Character Counter Tool](/character-counter). Track your progress, optimize your content, and create more effective communications across all platforms. Perfect for writers, marketers, and content creators who want to maximize their impact!`,
-    publishDate: "2025-10-06",
+    publishDate: "2025-09-29",
     readTime: "9 min read",
     tags: ["Writing Tips", "Character Counter", "Content Efficiency"],
     slug: "character-counting-writing-efficiency-quality",
@@ -556,7 +556,7 @@ Mastering email marketing character limits is essential for maximizing engagemen
 ## Try Our Character Counter Tool
 
 Ready to optimize your email campaigns? Use our [Character Counter Tool](/character-counter) to perfect your subject lines, preview text, and email content for maximum impact and engagement. Get real-time character counts, platform-specific limits, and improve your email marketing results today!`,
-    publishDate: "2025-10-06",
+    publishDate: "2025-09-29",
     readTime: "10 min read",
     tags: ["Email Marketing", "Character Counter", "Digital Marketing"],
     slug: "email-marketing-character-limits-guide",

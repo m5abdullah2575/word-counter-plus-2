@@ -267,7 +267,7 @@ Mastering text case conversion is essential for professional communication acros
 ## Try Our Text Case Converter Tool
 
 Ready to perfect your text formatting? Try our [Text Case Converter Tool](/text-case-convert) to instantly convert between all major text case formats and ensure your content meets professional standards. Perfect for writers, designers, and professionals who need consistent, properly formatted text!`,
-    publishDate: "2025-10-05",
+    publishDate: "2025-09-30",
     readTime: "11 min read",
     tags: ["Text Case", "Professional Writing", "Content Formatting"],
     slug: "text-case-conversion-complete-guide",
@@ -636,7 +636,7 @@ Mastering proper text case for business communication is essential for professio
 ## Try Our Text Case Converter Tool
 
 Ready to elevate your professional writing? Use our [Text Case Converter Tool](/text-case-convert) to ensure your business communications meet the highest professional standards and create the right impression with your audience. Perfect for business professionals, executives, and anyone who values professional presentation!`,
-    publishDate: "2025-10-05",
+    publishDate: "2025-09-30",
     readTime: "12 min read",
     tags: ["Professional Writing", "Business Communication", "Text Case"],
     slug: "professional-business-text-case-communication",
@@ -990,7 +990,7 @@ The relationship between typography and text case is fundamental to effective de
 ## Try Our Text Case Converter Tool
 
 Ready to optimize your typography? Use our [Text Case Converter Tool](/text-case-convert) to experiment with different case options and find the perfect formatting for your design projects and brand communications. Perfect for designers, developers, and anyone working with typography!`,
-    publishDate: "2025-10-05",
+    publishDate: "2025-09-30",
     readTime: "13 min read",
     tags: ["Typography", "Design Principles", "Text Case"],
     slug: "typography-text-case-design-principles",
