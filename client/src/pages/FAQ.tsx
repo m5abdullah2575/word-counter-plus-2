@@ -163,6 +163,106 @@ export default function FAQ() {
     {
       question: "What makes Word Counter Plus different from other tools?",
       answer: "Word Counter Plus offers: TXT/DOC/PDF file upload (10MB), multiple export formats (PDF, CSV, TXT, JSON), advanced analytics (typing speed, vocabulary diversity, complexity score), 9 specialized tools (Word Counter, Character Counter, Case Converter, Frequency Counter, Random Generator, Page Calculator, Plagiarism Checker, Resume Checker, SEO Analyzer), offline functionality, no usage limits, 100% free, privacy-first (no data storage), and optimized for users worldwide including high-value markets (US, UK, Canada, Australia)."
+    },
+    {
+      question: "What is the best free word counter for writers and authors in 2025?",
+      answer: "Word Counter Plus is the best free word counter for writers, authors, novelists, and content creators in US, UK, Canada, Australia, and worldwide. Features include: real-time word/character counting, readability scores (Flesch-Kincaid, Gunning Fog, ARI), keyword density analysis, reading/speaking time estimates, vocabulary diversity tracking, and TXT file upload/download. No registration required, 100% free, unlimited usage, and works offline."
+    },
+    {
+      question: "Can I use this word counter for Google Docs and Microsoft Word?",
+      answer: "Yes! Copy your text from Google Docs, Microsoft Word, or any text editor and paste it into our word counter for instant analysis. Or upload DOCX/TXT files directly (up to 10MB). Get detailed statistics, readability scores, and keyword analysis. Export results back as PDF, TXT, or CSV. Works seamlessly with all document formats used in US, UK, Canada, Australia, and globally."
+    },
+    {
+      question: "Is there a free online word counter with no download required?",
+      answer: "Yes! Word Counter Plus is a free online tool that requires no download, installation, or registration. Access instantly from any browser (Chrome, Safari, Firefox, Edge) on desktop, mobile, or tablet. All processing happens in your browser for maximum privacy and speed. Works offline after initial load. Perfect for users in US, UK, Canada, Australia, and 200+ countries worldwide."
+    },
+    {
+      question: "How do I count words in an essay for college or university?",
+      answer: "Upload your essay as TXT/DOCX file or paste text into our word counter. Get instant word count, character count, paragraph count, and readability scores. Check against university requirements (500 words for short essays, 1,500-2,500 for standard essays, 5,000+ for dissertations). Supports US, UK, Canadian, and Australian academic standards. Download analysis as PDF for submission verification."
+    },
+    {
+      question: "What is the best free plagiarism checker for students in 2025?",
+      answer: "Our Plagiarism Checker is the best free tool for students in US, UK, Canada, Australia, and worldwide. Upload TXT/DOC/DOCX files (10MB), choose scan mode (Quick/Standard/Deep), get originality score (90%+ is excellent), detect exact matches and paraphrasing, view source URLs, and download comprehensive plagiarism report as PDF. No subscription required, unlimited scans, privacy-protected."
+    },
+    {
+      question: "Is there a free ATS resume checker and scanner online?",
+      answer: "Yes! Our free ATS Resume Checker scans your resume for Applicant Tracking System compatibility with 95%+ accuracy. Upload TXT or DOCX files, get optimization score, detect quantifiable achievements, identify buzzwords, analyze action verbs and skills, estimate salary range, and receive job title suggestions. Perfect for job seekers in competitive markets: US, UK, Canada, Australia, and international positions."
+    },
+    {
+      question: "How do I check character count for Twitter/X and Instagram posts?",
+      answer: "Use our free Character Counter with built-in limits for all social platforms. Real-time character counting for Twitter/X (280 chars), Instagram captions (2,200 chars), Facebook (63,206 chars), LinkedIn (3,000 chars), TikTok (300 chars), and YouTube descriptions (5,000 chars). Includes emoji detection, hashtag counting, and URL handling. Essential for social media managers in US, UK, Canada, Australia, and globally."
+    },
+    {
+      question: "What is the best free keyword density checker for SEO?",
+      answer: "Our Word Frequency Counter and SEO Content Analyzer provide the best free keyword density analysis. Track single keywords, 2-word phrases, and 3-word phrases with density percentages (aim 1-3% for primary keywords). Export data as CSV/JSON, visualize with charts, compare against competitors, get LSI keyword suggestions. Optimize content for Google rankings in US, UK, Canada, Australia, and international markets."
+    },
+    {
+      question: "Can I count words in a blog post for SEO optimization?",
+      answer: "Absolutely! Upload your blog post as TXT file or paste content for instant analysis. Get word count (target 1,500-2,500 for SEO), character count, readability score (aim 60-70), keyword density (1-2% optimal), paragraph structure, and estimated reading time. Preview SERP appearance, check meta descriptions, and export SEO report as PDF. Perfect for bloggers in US, UK, Canada, Australia, and worldwide."
+    },
+    {
+      question: "How accurate is the word counter with readability score?",
+      answer: "Our word counter provides 100% accurate counts with industry-standard readability scores: Flesch Reading Ease (60-70 for general content), Gunning Fog Index (8-10 for clarity), and Automated Readability Index. Analysis includes sentence complexity, syllable count, and vocabulary difficulty. Used by professional writers, educators, and publishers in US, UK, Canada, Australia, and globally for content quality assurance."
+    },
+    {
+      question: "Is there an academic word counter for research papers and theses?",
+      answer: "Yes! Our academic word counter supports research papers (3,000-12,000 words), theses (10,000-80,000 words), dissertations (80,000-100,000 words), and abstracts (150-300 words). Upload TXT/DOCX files, check word limits, analyze readability for academic level, track citations, and export detailed reports as PDF. Complies with university standards in US, UK, Canada, Australia, and international institutions."
+    },
+    {
+      question: "Can I use the word counter for technical writing and documentation?",
+      answer: "Absolutely! Perfect for technical writers and documentation specialists. Analyze manuals, user guides, API documentation, and technical reports. Get word/character counts, readability scores for technical complexity, keyword frequency for indexing, and export documentation metrics. Supports all technical writing standards used in US, UK, Canada, Australia, and global tech companies."
+    },
+    {
+      question: "What is the best free text case converter for developers?",
+      answer: "Our Text Case Converter is the best free tool for developers and programmers. Convert text to 12 formats: camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, dot.case, UPPERCASE, lowercase, Title Case, Sentence case, aLtErNaTiNg CaSe, and REVERSE case. Upload TXT files for bulk conversion, download results. Perfect for variable naming, file naming conventions, and code formatting in US, UK, Canada, Australia, and worldwide."
+    },
+    {
+      question: "How do I check word count for Kindle and eBook publishing?",
+      answer: "Use our word counter to check eBook length standards: short stories (1,000-7,500 words), novellas (20,000-50,000 words), novels (50,000-110,000 words), and non-fiction books (40,000-80,000 words). Upload manuscript as TXT/DOCX, get detailed analytics, estimate reading time, and export reports. Perfect for self-publishers on Amazon KDP in US, UK, Canada, Australia, and global markets."
+    },
+    {
+      question: "Is there a free word counter for freelance writers and copywriters?",
+      answer: "Yes! Perfect for freelancers charging per word or project. Track word count for articles (500-2,000 words), blog posts (1,500-2,500 words), white papers (3,000-5,000 words), and sales copy. Upload TXT files, analyze content quality with readability scores, track keyword density, export invoicing reports as PDF/CSV. Trusted by freelancers in US, UK, Canada, Australia, and worldwide."
+    },
+    {
+      question: "Can I count words for social media captions and posts?",
+      answer: "Absolutely! Our Character Counter shows word count alongside character limits for all platforms: Twitter/X bio (160 chars), Instagram captions (2,200 chars), Facebook posts (63,206 chars), LinkedIn articles (110,000 chars), TikTok captions (300 chars), and YouTube descriptions (5,000 chars). Real-time counting, emoji detection, hashtag analysis. Essential for content creators in US, UK, Canada, Australia, and globally."
+    },
+    {
+      question: "What is the best word counter for marketing content and ad copy?",
+      answer: "Word Counter Plus is ideal for marketing professionals and copywriters. Analyze ad headlines (30-60 chars), meta descriptions (150-160 chars), email subject lines (40-50 chars), landing page content (300-500 words), and sales pages (1,000-2,500 words). Get readability scores, keyword density, A/B testing metrics, and export campaign reports. Used by marketers in US, UK, Canada, Australia, and international markets."
+    },
+    {
+      question: "How do I check if my content is suitable for mobile reading?",
+      answer: "Use our readability analyzer to ensure mobile-friendly content. Aim for: Flesch Reading Ease 60-70, average sentence length 15-20 words, paragraphs 3-5 sentences, and word count 300-600 for mobile articles. Check character count for SMS (160 chars) and mobile notifications. Upload TXT files, analyze, and optimize for mobile users in US, UK, Canada, Australia, and worldwide."
+    },
+    {
+      question: "Can I use this tool for email writing and newsletter optimization?",
+      answer: "Yes! Perfect for email marketers and newsletter creators. Check subject line length (40-50 chars for 50%+ open rates), preview text (80-100 chars), email body (50-125 words for best engagement), and newsletter articles (500-1,000 words). Upload TXT/HTML content, analyze readability, track keyword frequency, export email metrics. Essential for email campaigns in US, UK, Canada, Australia, and global markets."
+    },
+    {
+      question: "Is there a word counter for legal documents and contracts?",
+      answer: "Absolutely! Our word counter supports legal professionals analyzing contracts (2,000-10,000 words), agreements (500-3,000 words), terms of service (1,500-5,000 words), and legal briefs (5,000-15,000 words). Upload TXT/DOCX files, track word limits for court submissions, analyze document complexity, and export reports as PDF. Used by legal firms in US, UK, Canada, Australia, and international jurisdictions."
+    },
+    {
+      question: "How do I optimize product descriptions for Amazon and eCommerce?",
+      answer: "Use our word counter to optimize eCommerce content: Amazon titles (200 chars), bullet points (1,000 chars total), product descriptions (2,000 chars), enhanced brand content (5,000 chars), and meta descriptions (160 chars). Analyze keyword density (2-3% for product keywords), readability for shoppers, and export optimization reports. Essential for sellers in US, UK, Canada, Australia, and global marketplaces."
+    },
+    {
+      question: "Can I check word count for YouTube video scripts and descriptions?",
+      answer: "Yes! Perfect for YouTubers and video creators. Analyze video scripts (100-150 words per minute of video), YouTube titles (70 chars), descriptions (5,000 chars), tags, and closed captions. Upload TXT scripts, estimate video length, check keyword density for SEO, and export scripts as PDF. Optimize for YouTube algorithm in US, UK, Canada, Australia, and worldwide audiences."
+    },
+    {
+      question: "What is the best free tool for grant writing and proposals?",
+      answer: "Our word counter is ideal for grant writers and proposal specialists. Track word limits for grant applications (500-5,000 words), executive summaries (250-500 words), project narratives (1,000-3,000 words), and abstracts (150-250 words). Upload DOCX/TXT files, check readability for reviewers, analyze persuasive language, and export compliance reports. Used by nonprofits and researchers in US, UK, Canada, Australia, and globally."
+    },
+    {
+      question: "How do I count words for press releases and PR content?",
+      answer: "Use our word counter to optimize press releases (300-500 words for standard, 500-800 for feature releases), media pitches (150-200 words), boilerplates (100 words), and PR statements. Check headline length (80-100 chars), analyze readability for journalists (Flesch 60-70), track keyword mentions, and export PR reports. Essential for PR professionals in US, UK, Canada, Australia, and international media markets."
+    },
+    {
+      question: "Can I analyze scientific papers and research abstracts?",
+      answer: "Absolutely! Perfect for researchers and academics. Analyze research abstracts (150-300 words), scientific papers (3,000-10,000 words), journal articles (5,000-8,000 words), and conference papers (3,000-6,000 words). Upload TXT/DOCX files, check journal requirements, analyze technical readability, track terminology frequency, and export citation-ready reports. Used in universities and research institutions in US, UK, Canada, Australia, and worldwide."
     }
   ];
 
