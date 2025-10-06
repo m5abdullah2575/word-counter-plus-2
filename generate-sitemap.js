@@ -2,7 +2,7 @@ import { SitemapStream, streamToPromise } from 'sitemap';
 import { createWriteStream } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { writeFileSync, readFileSync, existsSync } from 'fs';
+import { writeFileSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -45,131 +45,33 @@ function getStaticPages() {
 
 async function getBlogPosts() {
   try {
-    console.log('Reading blog data from all sources...');
+    console.log('📚 Loading blog data from modules...');
     
     const allBlogs = [];
     const processedSlugs = new Set();
     
-    // Read main blogData.ts file
-    const blogDataPath = join(__dirname, 'client/src/data/blogData.ts');
-    const mainContent = readFileSync(blogDataPath, 'utf8');
+    const { blogPosts } = await import('./client/src/data/blogData.ts');
     
-    const mainSlugMatches = mainContent.match(/slug:\s*["']([^"']+)["']/g);
-    const mainDateMatches = mainContent.match(/publishDate:\s*["']([^"']+)["']/g);
+    console.log(`✅ Loaded ${blogPosts.length} blog posts from blogData`);
     
-    if (mainSlugMatches) {
-      const slugs = mainSlugMatches.map(match => match.match(/["']([^"']+)["']/)[1]);
-      const dates = mainDateMatches ? mainDateMatches.map(match => match.match(/["']([^"']+)["']/)[1]) : [];
-      
-      slugs.forEach((slug, index) => {
-        if (!processedSlugs.has(slug)) {
-          processedSlugs.add(slug);
-          allBlogs.push({
-            url: `/blog/${slug}`,
-            changefreq: 'monthly',
-            priority: 0.6,
-            lastmod: dates[index] ? new Date(dates[index]).toISOString() : new Date().toISOString()
-          });
-        }
-      });
-    }
-    
-    // Read all category blog files
-    const categoryFiles = [
-      'client/src/data/blogs/character-counter-blogs.ts',
-      'client/src/data/blogs/text-case-converter-blogs.ts',
-      'client/src/data/blogs/word-frequency-counter-blogs.ts',
-      'client/src/data/blogs/random-word-generator-blogs.ts',
-      'client/src/data/blogs/words-per-page-blogs.ts',
-      'client/src/data/blogs/plagiarism-checker-blogs.ts',
-      'client/src/data/blogs/resume-cv-blogs.ts',
-      'client/src/data/blogs/seo-content-analyzer-blogs.ts'
-    ];
-    
-    for (const categoryFile of categoryFiles) {
-      const fullPath = join(__dirname, categoryFile);
-      if (existsSync(fullPath)) {
-        const content = readFileSync(fullPath, 'utf8');
-        const slugMatches = content.match(/slug:\s*["']([^"']+)["']/g);
-        const dateMatches = content.match(/publishDate:\s*["']([^"']+)["']/g);
-        
-        if (slugMatches) {
-          const slugs = slugMatches.map(match => match.match(/["']([^"']+)["']/)[1]);
-          const dates = dateMatches ? dateMatches.map(match => match.match(/["']([^"']+)["']/)[1]) : [];
-          
-          slugs.forEach((slug, index) => {
-            if (!processedSlugs.has(slug)) {
-              processedSlugs.add(slug);
-              allBlogs.push({
-                url: `/blog/${slug}`,
-                changefreq: 'monthly',
-                priority: 0.6,
-                lastmod: dates[index] ? new Date(dates[index]).toISOString() : new Date().toISOString()
-              });
-            }
-          });
-        }
-      }
-    }
-    
-    // Generate slugs for dynamically created posts (matching the generateAdditionalPosts function)
-    const dynamicTopics = [
-      "Grant Writing: Securing Funding for Projects",
-      "Newsletter Writing: Building Subscriber Relationships", 
-      "Blog SEO: Optimizing Content for Search",
-      "Screenwriting: Crafting Compelling Scripts",
-      "Resume Writing: Landing Your Dream Job",
-      "Press Release Writing: Getting Media Attention",
-      "Website Copy: Converting Visitors to Customers",
-      "Proposal Writing: Winning Business Deals",
-      "Product Description Writing: Selling with Words",
-      "Editorial Writing: Expressing Opinions Effectively",
-      "Travel Writing: Capturing Experiences in Words",
-      "Food Writing: Making Readers Taste Your Words",
-      "Review Writing: Honest and Helpful Critiques",
-      "Interview Writing: Capturing Authentic Voices",
-      "Memoir Writing: Telling Your Life Story",
-      "Children's Book Writing: Engaging Young Readers",
-      "Poetry Writing: Expressing Emotions Through Verse",
-      "Ghostwriting: Writing in Someone Else's Voice",
-      "Web Content Strategy: Planning Digital Presence",
-      "Content Curation: Finding and Sharing Quality Content",
-      "Writing for Mobile: Optimizing for Small Screens",
-      "Voice and Tone: Developing Brand Personality",
-      "Writing Headlines That Get Clicks",
-      "Content Calendar Planning: Organizing Your Strategy",
-      "Writing for Different Generations",
-      "International Writing: Cultural Considerations",
-      "Legal Writing: Clear and Precise Documentation",
-      "Medical Writing: Communicating Health Information",
-      "Scientific Writing: Presenting Research Clearly",
-      "Financial Writing: Explaining Complex Concepts",
-      "Real Estate Writing: Property Descriptions That Sell",
-      "Non-Profit Writing: Inspiring Action for Causes",
-      "Event Writing: Promoting and Documenting Gatherings",
-      "Sports Writing: Capturing Athletic Excellence",
-      "Fashion Writing: Describing Style and Trends"
-    ];
-    
-    dynamicTopics.forEach((topic, index) => {
-      const slug = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-      if (!processedSlugs.has(slug)) {
-        processedSlugs.add(slug);
-        const date = new Date(2025, 7, 28 - index);
+    blogPosts.forEach((post) => {
+      if (!processedSlugs.has(post.slug)) {
+        processedSlugs.add(post.slug);
         allBlogs.push({
-          url: `/blog/${slug}`,
+          url: `/blog/${post.slug}`,
           changefreq: 'monthly',
           priority: 0.6,
-          lastmod: date.toISOString()
+          lastmod: post.publishDate ? new Date(post.publishDate).toISOString() : new Date().toISOString()
         });
       }
     });
     
-    console.log(`✅ Found ${allBlogs.length} unique blog posts`);
+    console.log(`✅ Total unique blog posts: ${allBlogs.length}`);
     return allBlogs;
     
   } catch (error) {
     console.error('❌ Error reading blog posts:', error);
+    console.error('Error details:', error.message);
     return [];
   }
 }
@@ -263,6 +165,7 @@ async function generateSitemap() {
 
   } catch (error) {
     console.error('❌ Error generating sitemap:', error);
+    console.error('Error details:', error.message);
     process.exit(1);
   }
 }

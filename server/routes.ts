@@ -96,51 +96,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
         { url: '/cookies', priority: 0.5, changefreq: 'yearly' }
       ];
 
-      const blogFiles = [
-        'client/src/data/blogData.ts',
-        'client/src/data/blogs/character-counter-blogs.ts',
-        'client/src/data/blogs/text-case-converter-blogs.ts',
-        'client/src/data/blogs/word-frequency-counter-blogs.ts',
-        'client/src/data/blogs/random-word-generator-blogs.ts',
-        'client/src/data/blogs/words-per-page-blogs.ts',
-        'client/src/data/blogs/plagiarism-checker-blogs.ts',
-        'client/src/data/blogs/resume-cv-blogs.ts',
-        'client/src/data/blogs/seo-content-analyzer-blogs.ts'
-      ];
+      const blogPostsData: Array<{ url: string; changefreq: string; priority: number; lastmod: string }> = [];
       
-      const blogPosts: Array<{ url: string; changefreq: string; priority: number; lastmod: string }> = [];
-      for (const filePath of blogFiles) {
-        const fullPath = path.join(__dirname, '..', filePath);
-        if (fs.existsSync(fullPath)) {
-          const content = fs.readFileSync(fullPath, 'utf8');
-          
-          const slugMatches = content.match(/slug:\s*["']([^"']+)["']/g);
-          const publishDateMatches = content.match(/publishDate:\s*["']([^"']+)["']/g);
-          
-          if (slugMatches) {
-            const slugs = slugMatches.map(match => {
-              const result = match.match(/["']([^"']+)["']/);
-              return result ? result[1] : '';
-            }).filter(s => s);
-            
-            const dates = publishDateMatches ? publishDateMatches.map(match => {
-              const result = match.match(/["']([^"']+)["']/);
-              return result ? result[1] : '';
-            }).filter(s => s) : [];
-            
-            slugs.forEach((slug, index) => {
-              blogPosts.push({
-                url: `/blog/${slug}`,
-                changefreq: 'monthly',
-                priority: 0.6,
-                lastmod: dates[index] ? new Date(dates[index]).toISOString() : new Date().toISOString()
-              });
-            });
-          }
-        }
+      try {
+        const { blogPosts } = await import('../client/src/data/blogData.ts');
+        
+        blogPosts.forEach((post: any) => {
+          blogPostsData.push({
+            url: `/blog/${post.slug}`,
+            changefreq: 'monthly',
+            priority: 0.6,
+            lastmod: post.publishDate ? new Date(post.publishDate).toISOString() : new Date().toISOString()
+          });
+        });
+        
+        console.log(`✅ Loaded ${blogPostsData.length} blog posts for sitemap`);
+      } catch (error) {
+        console.error('Error loading blog posts for sitemap:', error);
       }
 
-      const allUrls = [...staticPages, ...blogPosts];
+      const allUrls = [...staticPages, ...blogPostsData];
 
       let xmlContent = '<?xml version="1.0" encoding="UTF-8"?>\n';
       xmlContent += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
