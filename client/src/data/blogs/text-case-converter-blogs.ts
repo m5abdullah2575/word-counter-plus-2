@@ -1672,7 +1672,7 @@ Build powerful brand consistency with our [Text Case Converter Tool](/text-case-
     readTime: "15 min read",
     tags: ["Content Marketing", "Brand Consistency", "Text Case"],
     slug: "content-marketing-text-case-brand-consistency",
-    image: "/images/content_marketing_blog_image.png"
+    image: "/images/Brand_consistency_content_strategy_90496963.png"
   },
   {
     id: "69",
