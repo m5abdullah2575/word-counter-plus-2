@@ -72,7 +72,7 @@ Improving readability makes your content more accessible to a wider audience. St
     readTime: "5 min read",
     tags: ["Writing Tips", "Readability", "Content Creation"],
     slug: "improve-writing-readability-score",
-    image: "/images/Text_analysis_blog_image_e338860d.png"
+    image: "/images/Writing_readability_improvement_guide_6a36e40a.png"
   },
   {
     id: "2",
@@ -753,7 +753,7 @@ Use Word Counter Plus to maintain optimal keyword density while creating valuabl
     readTime: "7 min read",
     tags: ["SEO", "Keywords", "Content Optimization"],
     slug: "keyword-density-optimization-guide",
-    image: "/images/SEO_content_blog_image_17fd0347.png"
+    image: "/images/Keyword_density_optimization_guide_877527ad.png"
   }
 ];
 
@@ -972,7 +972,7 @@ Practice these techniques ethically and measure results to continually improve y
     readTime: "8 min read",
     tags: ["Persuasive Writing", "Psychology", "Copywriting"],
     slug: "psychology-persuasive-writing",
-    image: "/images/Text_analysis_blog_image_e338860d.png"
+    image: "/images/Psychology_of_persuasive_writing_b61f5f40.png"
   },
   // Adding more posts to reach 50+ total...
   {
@@ -1257,7 +1257,7 @@ Use Word Counter Plus to ensure your content meets quality standards and effecti
     readTime: "10 min read",
     tags: ["Content Marketing", "Small Business", "Marketing Strategy"],
     slug: "content-marketing-small-businesses",
-    image: "/images/Content_strategy_blog_image_fc6428d5.png"
+    image: "/images/Content_marketing_for_businesses_a60e89c4.png"
   },
   {
     id: "10",
@@ -1505,7 +1505,7 @@ Remember: every email is an opportunity to build relationships and achieve your 
     readTime: "8 min read",
     tags: ["Email Writing", "Communication", "Business Skills"],
     slug: "email-writing-craft-messages-results",
-    image: "/images/Text_analysis_blog_image_e338860d.png"
+    image: "/images/Email_writing_mastery_guide_2abaad2a.png"
   },
   {
     id: "11",
@@ -1841,7 +1841,7 @@ Your blogging journey begins with that first post. What will you write about?`,
     readTime: "12 min read",
     tags: ["Blogging", "Beginners", "Content Creation"],
     slug: "blogging-beginners-complete-startup-guide",
-    image: "/images/Content_strategy_blog_image_fc6428d5.png"
+    image: "/images/Beginner_blogging_complete_guide_d9225fc7.png"
   }
 ];
 
@@ -2062,7 +2062,7 @@ Effective technical writing makes complex information accessible and actionable.
     readTime: "7 min read",
     tags: ["Technical Writing", "Documentation", "Clear Communication"],
     slug: "technical-writing-complex-ideas-simple",
-    image: "/images/technical_writing_blog_image.png"
+    image: "/images/Technical_documentation_best_practices_04cf99ee.png"
   },
   {
     id: "13",
@@ -2438,7 +2438,7 @@ Academic writing requires careful attention to structure, evidence, and conventi
     readTime: "9 min read",
     tags: ["Academic Writing", "Research", "Essay Writing"],
     slug: "academic-writing-research-papers-essays",
-    image: "/images/academic_writing_blog_image.png"
+    image: "/images/Academic_research_writing_guide_f38c9168.png"
   }
 ];
 
@@ -2625,7 +2625,7 @@ Creative writing combines art and craft. Develop your unique voice while masteri
     readTime: "10 min read",
     tags: ["Creative Writing", "Storytelling", "Fiction"],
     slug: "creative-writing-techniques-engaging-stories",
-    image: "/images/creative_writing_blog_image.png"
+    image: "/images/Creative_writing_techniques_guide_93435c12.png"
   },
   {
     id: "16",

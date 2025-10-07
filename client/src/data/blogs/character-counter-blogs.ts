@@ -1810,7 +1810,7 @@ Master copywriting character psychology with our [Character Counter Tool](/chara
     readTime: "15 min read",
     tags: ["Copywriting", "Character Counter", "Conversion Optimization"],
     slug: "copywriting-character-count-psychology-conversions",
-    image: "/images/copywriting_blog_image.png"
+    image: "/images/Copywriting_character_count_psychology_0a38f993.png"
   },
   {
     id: "64",

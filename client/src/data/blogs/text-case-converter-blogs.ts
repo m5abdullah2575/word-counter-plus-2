@@ -1334,7 +1334,7 @@ Perfect your grammar and text case with our [Text Case Converter Tool](/text-cas
     readTime: "14 min read",
     tags: ["Grammar", "Text Case", "Writing Rules"],
     slug: "grammar-text-case-language-rules-perfect-writing",
-    image: "/images/Grammar_tips_blog_image_64d0441b.png"
+    image: "/images/Grammar_and_text_case_rules_ae056388.png"
   },
   {
     id: "68",
@@ -2004,7 +2004,7 @@ Optimize your web development workflow with our [Text Case Converter Tool](/text
     readTime: "16 min read",
     tags: ["Web Development", "Text Case", "User Experience"],
     slug: "web-development-text-case-user-experience-best-practices",
-    image: "/images/technical_writing_blog_image.png"
+    image: "/images/Web_development_text_standards_33d21245.png"
   },
   {
     id: "70",
