@@ -9,24 +9,22 @@
       }
     }
   ],
-  "redirects": [
-    {
-      "source": "/text-case-converter/(.*)",
-      "destination": "/text-case-convert",
-      "permanent": true
-    },
-    {
-      "source": "/text-case-converter",
-      "destination": "/text-case-convert",
-      "permanent": true
-    },
-    {
-      "source": "/text-case",
-      "destination": "/text-case-convert",
-      "permanent": true
-    }
-  ],
   "routes": [
+    {
+      "src": "/text-case-converter/(.*)",
+      "status": 301,
+      "headers": { "Location": "/text-case-convert" }
+    },
+    {
+      "src": "/text-case-converter",
+      "status": 301,
+      "headers": { "Location": "/text-case-convert" }
+    },
+    {
+      "src": "/text-case",
+      "status": 301,
+      "headers": { "Location": "/text-case-convert" }
+    },
     {
       "handle": "filesystem"
     },
