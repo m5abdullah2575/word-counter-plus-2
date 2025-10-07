@@ -2927,7 +2927,7 @@ const generateAdditionalPosts = (startId: number, count: number): BlogPost[] => 
 };
 
 // Combine all posts to create 50+ comprehensive collection
-export const blogPosts = [
+const allCombinedBlogPosts = [
   ...allBlogPosts,
   ...additionalBlogPosts, 
   ...moreBlogPosts,
@@ -2944,6 +2944,11 @@ export const blogPosts = [
   ...resumeCVBlogs,
   ...seoContentAnalyzerBlogs
 ];
+
+// Export sorted by date (newest first) without mutating original
+export const blogPosts = [...allCombinedBlogPosts].sort((a, b) => 
+  new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
+);
 
 // Development check to ensure we have the expected number of articles
 // Check if we're in a Vite environment before accessing import.meta.env
