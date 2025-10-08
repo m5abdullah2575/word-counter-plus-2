@@ -32,6 +32,8 @@ const PlagiarismChecker = lazy(() => import("@/pages/PlagiarismChecker"));
 const ResumeCVChecker = lazy(() => import("@/pages/ResumeCVChecker"));
 const SEOContentAnalyzer = lazy(() => import("@/pages/SEOContentAnalyzer"));
 const SpeechToText = lazy(() => import("@/pages/SpeechToText"));
+const ReadabilityCalculator = lazy(() => import("@/pages/ReadabilityCalculator"));
+const ParaphrasingTool = lazy(() => import("@/pages/ParaphrasingTool"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
 // Loading fallback component
@@ -63,6 +65,8 @@ function Router() {
             <Route path="/resume-cv-checker" component={ResumeCVChecker} />
             <Route path="/seo-content-analyzer" component={SEOContentAnalyzer} />
             <Route path="/speech-to-text" component={SpeechToText} />
+            <Route path="/readability-calculator" component={ReadabilityCalculator} />
+            <Route path="/paraphrasing-tool" component={ParaphrasingTool} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
             <Route path="/blog/:slug" component={BlogPost} />
@@ -87,6 +91,8 @@ function Router() {
             <Route path="/resume-cv-checker" component={ResumeCVChecker} />
             <Route path="/seo-content-analyzer" component={SEOContentAnalyzer} />
             <Route path="/speech-to-text" component={SpeechToText} />
+            <Route path="/readability-calculator" component={ReadabilityCalculator} />
+            <Route path="/paraphrasing-tool" component={ParaphrasingTool} />
             <Route path="/text-case-convert" component={TextCaseConverterPage} />
             <Route path="/text-case-converter" component={TextCaseConverterPage} />
             <Route path="/about" component={About} />

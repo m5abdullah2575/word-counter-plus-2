@@ -9,7 +9,9 @@ import {
   FaShieldAlt,
   FaBriefcase,
   FaChartLine,
-  FaMicrophone
+  FaMicrophone,
+  FaBookReader,
+  FaExchangeAlt
 } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 
@@ -137,6 +139,28 @@ export const getToolsData = (): Tool[] => {
       isExternal: false,
       category: 'Generation',
       tags: ['speech to text', 'voice recognition', 'transcription', 'dictation', 'voice typing', 'speech recognition', 'audio to text'],
+      featured: true
+    },
+    {
+      id: 'readability-calculator',
+      title: 'Readability Calculator',
+      description: 'Advanced readability calculator with Flesch Reading Ease, Flesch-Kincaid Grade Level, Gunning Fog Index, SMOG, Coleman-Liau, and ARI scores. Optimize content for your target audience.',
+      icon: FaBookReader,
+      href: '/readability-calculator',
+      isExternal: false,
+      category: 'Analysis',
+      tags: ['readability score', 'flesch reading ease', 'flesch kincaid', 'grade level', 'text readability', 'gunning fog', 'SMOG index', 'reading level', 'content optimization'],
+      featured: true
+    },
+    {
+      id: 'paraphrasing-tool',
+      title: 'Paraphrasing Tool',
+      description: 'AI-powered paraphrasing tool to rewrite text, articles, and essays instantly. Multiple modes: standard, formal, simple, creative, academic. Free unlimited use.',
+      icon: FaExchangeAlt,
+      href: '/paraphrasing-tool',
+      isExternal: false,
+      category: 'Writing',
+      tags: ['paraphrasing tool', 'text rewriter', 'article spinner', 'rephrase', 'paraphrase', 'content rewriter', 'reword tool', 'sentence rephraser', 'AI paraphraser'],
       featured: true
     },
     // Future tools (coming soon) - only one placeholder
