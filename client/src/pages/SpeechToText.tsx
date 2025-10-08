@@ -167,6 +167,9 @@ export default function SpeechToText() {
     };
   }, [text]);
 
+  // Check for HTTPS/secure context
+  const isSecureContext = window.isSecureContext || window.location.protocol === 'https:' || window.location.hostname === 'localhost';
+
   // Initialize Speech Recognition
   useEffect(() => {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -214,6 +217,7 @@ export default function SpeechToText() {
         'not-allowed': 'Microphone permission denied. Please allow access.',
         'network': 'Network error. Please check your connection.',
         'language-not-supported': 'Selected language is not supported.',
+        'aborted': 'Speech recognition was aborted.',
       };
 
       toast({
@@ -222,7 +226,8 @@ export default function SpeechToText() {
         variant: "destructive",
       });
 
-      if (event.error === 'not-allowed' || event.error === 'audio-capture') {
+      // Reset state on critical errors
+      if (event.error === 'not-allowed' || event.error === 'audio-capture' || event.error === 'aborted') {
         setIsRecording(false);
         setIsPaused(false);
         setInterimText('');
@@ -234,6 +239,7 @@ export default function SpeechToText() {
 
     recognition.onend = () => {
       console.log('Speech recognition ended');
+      // Only restart if we're actively recording (not paused, not stopped)
       if (isRecordingRef.current && !isPausedRef.current) {
         try {
           recognition.start();
@@ -241,6 +247,9 @@ export default function SpeechToText() {
           console.error('Failed to restart recognition:', error);
           setIsRecording(false);
           setIsPaused(false);
+          if (recordingTimerRef.current) {
+            clearInterval(recordingTimerRef.current);
+          }
         }
       } else if (!isRecordingRef.current && !isPausedRef.current) {
         // Only reset if truly stopped (not paused)
@@ -448,6 +457,16 @@ export default function SpeechToText() {
             </Alert>
           )}
 
+          {/* HTTPS Warning */}
+          {!isSecureContext && (
+            <Alert className="border-red-500 bg-red-50 dark:bg-red-950/20">
+              <FaExclamationTriangle className="h-4 w-4 text-red-500" />
+              <AlertDescription className="text-sm text-red-700 dark:text-red-400">
+                Speech recognition requires a secure connection (HTTPS). Please access this page via HTTPS to use this feature.
+              </AlertDescription>
+            </Alert>
+          )}
+
           {/* Language Selection */}
           <Card className="bg-card border border-border">
             <CardHeader className="pb-4">
@@ -494,12 +513,12 @@ export default function SpeechToText() {
               )}
 
               {/* Recording Buttons */}
-              <div className="flex flex-wrap gap-2 justify-center">
+              <div className="flex flex-col sm:flex-row gap-2 justify-center">
                 {!isRecording ? (
                   <Button
                     onClick={startRecording}
-                    disabled={!isBrowserSupported}
-                    className="flex-1 sm:flex-none min-w-[120px]"
+                    disabled={!isBrowserSupported || !isSecureContext}
+                    className="w-full sm:w-auto sm:min-w-[140px]"
                     data-testid="button-start-recording"
                   >
                     <FaMicrophone className="mr-2" />
@@ -511,7 +530,7 @@ export default function SpeechToText() {
                       <Button
                         onClick={resumeRecording}
                         variant="default"
-                        className="flex-1 sm:flex-none min-w-[120px]"
+                        className="w-full sm:w-auto sm:min-w-[120px]"
                         data-testid="button-resume-recording"
                       >
                         <FaPlay className="mr-2" />
@@ -521,7 +540,7 @@ export default function SpeechToText() {
                       <Button
                         onClick={pauseRecording}
                         variant="secondary"
-                        className="flex-1 sm:flex-none min-w-[120px]"
+                        className="w-full sm:w-auto sm:min-w-[120px]"
                         data-testid="button-pause-recording"
                       >
                         <FaPause className="mr-2" />
@@ -531,7 +550,7 @@ export default function SpeechToText() {
                     <Button
                       onClick={stopRecording}
                       variant="destructive"
-                      className="flex-1 sm:flex-none min-w-[120px]"
+                      className="w-full sm:w-auto sm:min-w-[120px]"
                       data-testid="button-stop-recording"
                     >
                       <FaStop className="mr-2" />
@@ -566,8 +585,7 @@ export default function SpeechToText() {
                     title="Upload text file"
                   >
                     <FaUpload className="inline mr-1" />
-                    <span className="hidden sm:inline">{isUploading ? 'Uploading...' : 'Upload'}</span>
-                    <span className="sm:hidden">{isUploading ? 'Up...' : 'Upload'}</span>
+                    {isUploading ? 'Uploading...' : 'Upload'}
                   </button>
                 </div>
               </div>
@@ -578,40 +596,40 @@ export default function SpeechToText() {
                 placeholder="Your transcribed text will appear here..."
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                className="w-full h-48 sm:h-64 p-3 sm:p-4 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none transition-all text-sm sm:text-base"
+                className="w-full min-h-[12rem] h-48 sm:h-64 md:h-72 p-3 sm:p-4 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-y transition-all text-sm sm:text-base"
                 data-testid="textarea-transcribed-text"
               />
               
-              <div className="flex flex-wrap gap-2">
+              <div className="grid grid-cols-3 gap-2">
                 <button 
                   onClick={copyToClipboard}
                   disabled={!text}
-                  className="flex-1 sm:flex-none px-3 py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-xs sm:text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
                   data-testid="button-copy-text"
                   title="Copy text to clipboard"
                 >
-                  <FaCopy className="inline mr-1" />
-                  Copy
+                  <FaCopy className="text-sm" />
+                  <span>Copy</span>
                 </button>
                 <button 
                   onClick={downloadText}
                   disabled={!text}
-                  className="flex-1 sm:flex-none px-3 py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-xs sm:text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
                   data-testid="button-download-text"
                   title="Download as text file"
                 >
-                  <FaDownload className="inline mr-1" />
-                  Download
+                  <FaDownload className="text-sm" />
+                  <span>Download</span>
                 </button>
                 <button 
                   onClick={clearText}
                   disabled={!text}
-                  className="flex-1 sm:flex-none px-3 py-1.5 bg-destructive text-destructive-foreground rounded text-sm hover:bg-destructive/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-2 sm:px-3 py-2 bg-destructive text-destructive-foreground rounded text-xs sm:text-sm hover:bg-destructive/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
                   data-testid="button-clear-text"
                   title="Clear all text"
                 >
-                  <FaEraser className="inline mr-1" />
-                  Clear
+                  <FaEraser className="text-sm" />
+                  <span>Clear</span>
                 </button>
               </div>
             </CardContent>
@@ -619,14 +637,14 @@ export default function SpeechToText() {
 
           {/* Text Statistics */}
           <Tabs defaultValue="basic" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3">
-              <TabsTrigger value="basic" data-testid="tab-basic-stats">Basic Stats</TabsTrigger>
-              <TabsTrigger value="detailed" data-testid="tab-detailed-stats">Detailed</TabsTrigger>
-              <TabsTrigger value="reading" data-testid="tab-reading-stats">Reading Time</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="basic" data-testid="tab-basic-stats" className="text-xs sm:text-sm">Basic Stats</TabsTrigger>
+              <TabsTrigger value="detailed" data-testid="tab-detailed-stats" className="text-xs sm:text-sm">Detailed</TabsTrigger>
+              <TabsTrigger value="reading" data-testid="tab-reading-stats" className="text-xs sm:text-sm">Reading Time</TabsTrigger>
             </TabsList>
 
             <TabsContent value="basic" className="space-y-4">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                 <Card className="bg-card border border-border">
                   <CardContent className="p-3 sm:p-4 text-center">
                     <FaHashtag className="mx-auto mb-2 text-primary text-xl sm:text-2xl" />
@@ -741,25 +759,25 @@ export default function SpeechToText() {
               <CardTitle className="text-lg sm:text-xl">Related Tools</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                 <Link href="/">
-                  <div className="p-3 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer" data-testid="link-word-counter">
-                    <FaFileAlt className="text-primary mb-2" />
-                    <p className="font-semibold text-sm text-foreground">Word Counter</p>
+                  <div className="p-3 sm:p-4 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer" data-testid="link-word-counter">
+                    <FaFileAlt className="text-primary mb-2 text-lg" />
+                    <p className="font-semibold text-sm sm:text-base text-foreground">Word Counter</p>
                     <p className="text-xs text-muted-foreground">Count words & analyze text</p>
                   </div>
                 </Link>
                 <Link href="/character-counter">
-                  <div className="p-3 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer" data-testid="link-character-counter">
-                    <FaHashtag className="text-primary mb-2" />
-                    <p className="font-semibold text-sm text-foreground">Character Counter</p>
+                  <div className="p-3 sm:p-4 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer" data-testid="link-character-counter">
+                    <FaHashtag className="text-primary mb-2 text-lg" />
+                    <p className="font-semibold text-sm sm:text-base text-foreground">Character Counter</p>
                     <p className="text-xs text-muted-foreground">Count characters & limits</p>
                   </div>
                 </Link>
                 <Link href="/text-case-converter">
-                  <div className="p-3 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer" data-testid="link-text-case-converter">
-                    <FaGlobe className="text-primary mb-2" />
-                    <p className="font-semibold text-sm text-foreground">Text Case Converter</p>
+                  <div className="p-3 sm:p-4 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer" data-testid="link-text-case-converter">
+                    <FaGlobe className="text-primary mb-2 text-lg" />
+                    <p className="font-semibold text-sm sm:text-base text-foreground">Text Case Converter</p>
                     <p className="text-xs text-muted-foreground">Convert text cases</p>
                   </div>
                 </Link>
