@@ -223,34 +223,51 @@ export default function SpeechToText() {
       });
 
       if (event.error === 'not-allowed' || event.error === 'audio-capture') {
-        stopRecording();
-      }
-    };
-
-    recognition.onend = () => {
-      console.log('Speech recognition ended');
-      if (isRecordingRef.current && !isPausedRef.current) {
-        recognition.start();
-      } else {
         setIsRecording(false);
         setIsPaused(false);
+        setInterimText('');
         if (recordingTimerRef.current) {
           clearInterval(recordingTimerRef.current);
         }
       }
     };
 
+    recognition.onend = () => {
+      console.log('Speech recognition ended');
+      if (isRecordingRef.current && !isPausedRef.current) {
+        try {
+          recognition.start();
+        } catch (error) {
+          console.error('Failed to restart recognition:', error);
+          setIsRecording(false);
+          setIsPaused(false);
+        }
+      } else if (!isRecordingRef.current && !isPausedRef.current) {
+        // Only reset if truly stopped (not paused)
+        setIsRecording(false);
+        setIsPaused(false);
+        if (recordingTimerRef.current) {
+          clearInterval(recordingTimerRef.current);
+        }
+      }
+      // If paused, keep state as-is so UI stays in paused state
+    };
+
     recognitionRef.current = recognition;
 
     return () => {
       if (recognitionRef.current) {
-        recognitionRef.current.stop();
+        try {
+          recognitionRef.current.stop();
+        } catch (error) {
+          console.error('Error stopping recognition:', error);
+        }
       }
       if (recordingTimerRef.current) {
         clearInterval(recordingTimerRef.current);
       }
     };
-  }, [selectedLanguage]);
+  }, [selectedLanguage, toast]);
 
   // Recording timer
   useEffect(() => {
@@ -326,6 +343,7 @@ export default function SpeechToText() {
 
   const resumeRecording = () => {
     if (recognitionRef.current && isPaused) {
+      setIsRecording(true);
       setIsPaused(false);
       recognitionRef.current.start();
       
