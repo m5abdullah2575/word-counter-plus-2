@@ -8,7 +8,8 @@ import {
   FaFileAlt,
   FaShieldAlt,
   FaBriefcase,
-  FaChartLine
+  FaChartLine,
+  FaMicrophone
 } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 
@@ -125,6 +126,17 @@ export const getToolsData = (): Tool[] => {
       isExternal: false,
       category: 'SEO',
       tags: ['seo', 'content optimization', 'keywords', 'search engine', 'ranking', 'meta tags', 'readability', 'lsi keywords'],
+      featured: true
+    },
+    {
+      id: 'speech-to-text',
+      title: 'Speech to Text',
+      description: 'Convert voice to text instantly with real-time speech recognition. Multi-language support, continuous recording, and browser-based transcription without API keys.',
+      icon: FaMicrophone,
+      href: '/speech-to-text',
+      isExternal: false,
+      category: 'Generation',
+      tags: ['speech to text', 'voice recognition', 'transcription', 'dictation', 'voice typing', 'speech recognition', 'audio to text'],
       featured: true
     },
     // Future tools (coming soon) - only one placeholder
