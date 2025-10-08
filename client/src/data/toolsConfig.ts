@@ -10,8 +10,7 @@ import {
   FaBriefcase,
   FaChartLine,
   FaMicrophone,
-  FaBookReader,
-  FaExchangeAlt
+  FaBookReader
 } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 
@@ -150,17 +149,6 @@ export const getToolsData = (): Tool[] => {
       isExternal: false,
       category: 'Analysis',
       tags: ['readability score', 'flesch reading ease', 'flesch kincaid', 'grade level', 'text readability', 'gunning fog', 'SMOG index', 'reading level', 'content optimization'],
-      featured: true
-    },
-    {
-      id: 'paraphrasing-tool',
-      title: 'Paraphrasing Tool',
-      description: 'AI-powered paraphrasing tool to rewrite text, articles, and essays instantly. Multiple modes: standard, formal, simple, creative, academic. Free unlimited use.',
-      icon: FaExchangeAlt,
-      href: '/paraphrasing-tool',
-      isExternal: false,
-      category: 'Writing',
-      tags: ['paraphrasing tool', 'text rewriter', 'article spinner', 'rephrase', 'paraphrase', 'content rewriter', 'reword tool', 'sentence rephraser', 'AI paraphraser'],
       featured: true
     },
     // Future tools (coming soon) - only one placeholder
