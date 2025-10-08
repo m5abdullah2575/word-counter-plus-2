@@ -43,7 +43,18 @@ export default function SpeechToText() {
   const [recordingTime, setRecordingTime] = useState(0);
   const recognitionRef = useRef<any>(null);
   const recordingTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const isRecordingRef = useRef(false);
+  const isPausedRef = useRef(false);
   const { toast } = useToast();
+
+  // Keep refs in sync with state
+  useEffect(() => {
+    isRecordingRef.current = isRecording;
+  }, [isRecording]);
+
+  useEffect(() => {
+    isPausedRef.current = isPaused;
+  }, [isPaused]);
 
   // File upload functionality
   const { isLoading: isUploading, triggerFileUpload, FileInput } = useFileUpload({
@@ -218,7 +229,7 @@ export default function SpeechToText() {
 
     recognition.onend = () => {
       console.log('Speech recognition ended');
-      if (isRecording && !isPaused) {
+      if (isRecordingRef.current && !isPausedRef.current) {
         recognition.start();
       } else {
         setIsRecording(false);
