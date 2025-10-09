@@ -34,6 +34,7 @@ const SEOContentAnalyzer = lazy(() => import("@/pages/SEOContentAnalyzer"));
 const SpeechToText = lazy(() => import("@/pages/SpeechToText"));
 const ReadabilityCalculator = lazy(() => import("@/pages/ReadabilityCalculator"));
 const GrammarChecker = lazy(() => import("@/pages/GrammarChecker"));
+const TextCompare = lazy(() => import("@/pages/TextCompare"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
 // Loading fallback component
@@ -67,6 +68,7 @@ function Router() {
             <Route path="/speech-to-text" component={SpeechToText} />
             <Route path="/readability-calculator" component={ReadabilityCalculator} />
             <Route path="/grammar-checker" component={GrammarChecker} />
+            <Route path="/text-compare" component={TextCompare} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
             <Route path="/blog/:slug" component={BlogPost} />
@@ -93,6 +95,7 @@ function Router() {
             <Route path="/speech-to-text" component={SpeechToText} />
             <Route path="/readability-calculator" component={ReadabilityCalculator} />
             <Route path="/grammar-checker" component={GrammarChecker} />
+            <Route path="/text-compare" component={TextCompare} />
             <Route path="/text-case-convert" component={TextCaseConverterPage} />
             <Route path="/text-case-converter" component={TextCaseConverterPage} />
             <Route path="/about" component={About} />

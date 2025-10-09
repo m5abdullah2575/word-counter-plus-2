@@ -11,7 +11,8 @@ import {
   FaChartLine,
   FaMicrophone,
   FaBookReader,
-  FaSpellCheck
+  FaSpellCheck,
+  FaExchangeAlt
 } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 
@@ -161,6 +162,17 @@ export const getToolsData = (): Tool[] => {
       isExternal: false,
       category: 'Writing',
       tags: ['grammar checker', 'spell checker', 'grammar check', 'spelling errors', 'punctuation checker', 'grammar correction', 'writing tool', 'grammar fix', 'free grammar checker'],
+      featured: true
+    },
+    {
+      id: 'text-compare',
+      title: 'Text Compare',
+      description: 'Free text comparison tool to find differences between two texts. Compare documents side-by-side with highlighted additions, deletions, and changes.',
+      icon: FaExchangeAlt,
+      href: '/text-compare',
+      isExternal: false,
+      category: 'Analysis',
+      tags: ['text compare', 'text diff', 'compare text', 'diff checker', 'text comparison', 'compare documents', 'find differences', 'text difference', 'compare versions', 'diff tool'],
       featured: true
     },
     // Future tools (coming soon) - only one placeholder
