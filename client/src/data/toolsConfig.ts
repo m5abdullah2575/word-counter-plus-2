@@ -10,7 +10,8 @@ import {
   FaBriefcase,
   FaChartLine,
   FaMicrophone,
-  FaBookReader
+  FaBookReader,
+  FaSpellCheck
 } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 
@@ -149,6 +150,17 @@ export const getToolsData = (): Tool[] => {
       isExternal: false,
       category: 'Analysis',
       tags: ['readability score', 'flesch reading ease', 'flesch kincaid', 'grade level', 'text readability', 'gunning fog', 'SMOG index', 'reading level', 'content optimization'],
+      featured: true
+    },
+    {
+      id: 'grammar-checker',
+      title: 'Grammar Checker',
+      description: 'Free online grammar and spell checker. Instantly detect and fix grammar mistakes, spelling errors, and punctuation issues with AI-powered suggestions.',
+      icon: FaSpellCheck,
+      href: '/grammar-checker',
+      isExternal: false,
+      category: 'Writing',
+      tags: ['grammar checker', 'spell checker', 'grammar check', 'spelling errors', 'punctuation checker', 'grammar correction', 'writing tool', 'grammar fix', 'free grammar checker'],
       featured: true
     },
     // Future tools (coming soon) - only one placeholder
