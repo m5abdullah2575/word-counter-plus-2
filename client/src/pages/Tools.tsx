@@ -5,15 +5,12 @@ import { getToolsData } from '@/data/toolsConfig';
 import { useEffect } from 'react';
 
 export default function Tools() {
-  // Ensure page starts at the top
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Get tools data from configuration - merge all tools together
   const allTools = getToolsData();
 
-  // Enhanced structured data for Tools collection (only available tools)
   const availableTools = allTools.filter(tool => !tool.isComingSoon);
   const toolsCollectionSchema = {
     "@context": "https://schema.org",
@@ -72,70 +69,82 @@ export default function Tools() {
   });
 
   return (
-    <div className="bg-background">
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto">
+    <div className="bg-background min-h-screen">
+      <div className="container mx-auto px-4 py-8 sm:py-12 md:py-16">
+        <div className="max-w-7xl mx-auto">
           
           {/* Header Section */}
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4">
               Text Analysis Tools
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
               Professional text analysis and processing tools for writers, students, and content creators.
             </p>
           </div>
 
-          {/* All Tools Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+          {/* All Tools Grid - Responsive for all devices */}
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5 md:gap-6 max-w-7xl mx-auto">
             {allTools.map((tool) => {
               const IconComponent = tool.icon;
               const isComingSoon = tool.isComingSoon;
               
               const cardContent = (
-                <Card className={`aspect-square group transition-all duration-300 bg-card border border-border rounded-lg overflow-hidden ${
+                <Card className={`relative group transition-all duration-300 bg-card border-2 border-border rounded-xl overflow-hidden ${
                   isComingSoon 
-                    ? 'opacity-75 cursor-default' 
-                    : 'hover:shadow-lg hover:-translate-y-1 cursor-pointer hover:border-primary/30'
+                    ? 'opacity-60 cursor-not-allowed' 
+                    : 'hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer hover:border-primary/50 active:scale-95'
                 }`}>
-                  <CardHeader className="text-center p-4 h-full flex flex-col justify-center">
-                    {/* Icon */}
-                    <div className="flex justify-center mb-3">
-                      <div className={`p-3 rounded-lg ${
+                  <CardHeader className="text-center p-4 sm:p-5 md:p-6 h-full flex flex-col justify-center items-center min-h-[180px] sm:min-h-[200px] md:min-h-[220px]">
+                    
+                    {/* Icon Container with enhanced hover effect */}
+                    <div className="flex justify-center mb-3 sm:mb-4">
+                      <div className={`p-3 sm:p-4 rounded-xl transition-all duration-300 ${
                         isComingSoon 
                           ? 'bg-muted' 
-                          : 'bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300'
+                          : 'bg-gradient-to-br from-primary/10 to-primary/5 group-hover:from-primary/20 group-hover:to-primary/10 group-hover:scale-110 group-hover:rotate-3'
                       }`}>
-                        <IconComponent className={`text-2xl ${
+                        <IconComponent className={`text-2xl sm:text-3xl transition-all duration-300 ${
                           isComingSoon 
                             ? 'text-muted-foreground' 
-                            : 'text-primary group-hover:scale-105 transition-transform duration-300'
+                            : 'text-primary group-hover:scale-110 group-hover:text-primary'
                         }`} />
                       </div>
                     </div>
                     
-                    {/* Title */}
-                    <CardTitle className={`text-sm font-bold mb-2 leading-tight ${
+                    {/* Title with better responsive sizing */}
+                    <CardTitle className={`text-sm sm:text-base md:text-lg font-bold mb-2 leading-tight transition-colors duration-300 ${
                       isComingSoon 
                         ? 'text-muted-foreground' 
-                        : 'text-foreground group-hover:text-primary transition-colors duration-300'
+                        : 'text-foreground group-hover:text-primary'
                     }`}>
                       {tool.title}
                     </CardTitle>
                     
-                    {/* Description */}
-                    <CardDescription className={`text-xs leading-tight line-clamp-3 ${
+                    {/* Description with better line clamping */}
+                    <CardDescription className={`text-xs sm:text-sm leading-relaxed line-clamp-2 sm:line-clamp-3 transition-colors duration-300 ${
                       isComingSoon 
-                        ? 'text-muted-foreground/80' 
-                        : 'text-muted-foreground'
+                        ? 'text-muted-foreground/70' 
+                        : 'text-muted-foreground group-hover:text-foreground/80'
                     }`}>
                       {tool.description}
                     </CardDescription>
+
+                    {/* Coming Soon Badge */}
+                    {isComingSoon && (
+                      <div className="absolute top-2 right-2 bg-muted text-muted-foreground text-xs px-2 py-1 rounded-md font-medium">
+                        Coming Soon
+                      </div>
+                    )}
+
+                    {/* Hover Shine Effect */}
+                    {!isComingSoon && (
+                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                    )}
                   </CardHeader>
                 </Card>
               );
 
-              // Only make clickable if not coming soon
               if (isComingSoon) {
                 return (
                   <div key={tool.id} data-testid={`tool-${tool.id}`}>
@@ -144,7 +153,6 @@ export default function Tools() {
                 );
               }
 
-              // Use external link for cross-domain navigation, internal Link for same-domain
               if (tool.isExternal) {
                 return (
                   <a 
@@ -152,6 +160,7 @@ export default function Tools() {
                     href={tool.href} 
                     data-testid={`link-tool-${tool.id}`}
                     rel="noopener noreferrer"
+                    className="block"
                   >
                     {cardContent}
                   </a>
@@ -159,27 +168,30 @@ export default function Tools() {
               } else {
                 return (
                   <Link key={tool.id} href={tool.href} data-testid={`link-tool-${tool.id}`}>
-                    {cardContent}
+                    <div className="block">
+                      {cardContent}
+                    </div>
                   </Link>
                 );
               }
             })}
           </div>
 
-
-          {/* CTA Section */}
-          <div className="mt-16 text-center">
-            <h2 className="text-2xl font-bold text-foreground mb-4">
-              Need a Specific Tool?
-            </h2>
-            <p className="text-muted-foreground mb-6">
-              Can't find what you're looking for? Let us know what text processing tool would help your workflow.
-            </p>
-            <Link href="/contact" data-testid="link-request-tool-cta">
-              <div className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium">
-                Request a Tool
-              </div>
-            </Link>
+          {/* CTA Section with enhanced styling */}
+          <div className="mt-12 sm:mt-16 md:mt-20 text-center px-4">
+            <div className="max-w-2xl mx-auto bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-6 sm:p-8 md:p-10 border border-primary/20">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-3 sm:mb-4">
+                Need a Specific Tool?
+              </h2>
+              <p className="text-sm sm:text-base text-muted-foreground mb-5 sm:mb-6">
+                Can't find what you're looking for? Let us know what text processing tool would help your workflow.
+              </p>
+              <Link href="/contact" data-testid="link-request-tool-cta">
+                <div className="inline-flex items-center px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 bg-gradient-to-r from-primary to-primary/90 text-primary-foreground rounded-lg hover:from-primary/90 hover:to-primary hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 font-medium text-sm sm:text-base active:scale-95">
+                  Request a Tool
+                </div>
+              </Link>
+            </div>
           </div>
 
         </div>
