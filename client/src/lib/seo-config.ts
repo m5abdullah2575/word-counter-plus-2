@@ -1,5 +1,6 @@
 // Comprehensive SEO configuration for both Word Counter and Text Case Converter
 import { getCurrentOrigin, isMainHost, isCaseHost } from './site';
+import { getKeywordsString } from './seo-keywords';
 
 export interface SEOConfig {
   title: string;
