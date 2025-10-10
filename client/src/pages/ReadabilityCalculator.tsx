@@ -121,53 +121,70 @@ export default function ReadabilityCalculator() {
 
   // Advanced text analysis with readability scores
   const stats = useMemo(() => {
-    const words = text.trim() ? text.trim().split(/\s+/).filter(word => word.length > 0).length : 0;
-    const sentences = text.trim() ? text.split(/[.!?]+/).filter(s => s.trim().length > 0).length : 0;
-    const syllables = text.split(/\s+/).reduce((count, word) => count + countSyllables(word), 0);
+    const trimmedText = text.trim();
+    const words = trimmedText ? trimmedText.split(/\s+/).filter(word => word.length > 0).length : 0;
+    const sentences = trimmedText ? trimmedText.split(/[.!?]+/).filter(s => s.trim().length > 0).length : 0;
+    const syllables = trimmedText ? trimmedText.split(/\s+/).reduce((count, word) => count + countSyllables(word), 0) : 0;
     const characters = text.replace(/\s/g, '').length;
     
+    // Need minimum text for accurate readability scores
+    const hasMinimumText = words >= 5 && sentences >= 1;
+    
     // Flesch Reading Ease (0-100, higher = easier)
-    const fleschReadingEase = sentences > 0 && words > 0
-      ? 206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words)
-      : 0;
+    let fleschReadingEase = null;
+    if (hasMinimumText && sentences > 0 && words > 0) {
+      const score = 206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words);
+      fleschReadingEase = Math.max(0, Math.min(100, score));
+    }
     
     // Flesch-Kincaid Grade Level
-    const fleschKincaidGrade = sentences > 0 && words > 0
-      ? 0.39 * (words / sentences) + 11.8 * (syllables / words) - 15.59
-      : 0;
+    let fleschKincaidGrade = null;
+    if (hasMinimumText && sentences > 0 && words > 0) {
+      const grade = 0.39 * (words / sentences) + 11.8 * (syllables / words) - 15.59;
+      fleschKincaidGrade = Math.max(0, grade);
+    }
     
     // Gunning Fog Index
-    const complexWords = text.split(/\s+/).filter(word => countSyllables(word) >= 3).length;
-    const gunningFog = sentences > 0 && words > 0
-      ? 0.4 * ((words / sentences) + 100 * (complexWords / words))
-      : 0;
+    const complexWords = trimmedText ? trimmedText.split(/\s+/).filter(word => countSyllables(word) >= 3).length : 0;
+    let gunningFog = null;
+    if (hasMinimumText && sentences > 0 && words > 0) {
+      const fog = 0.4 * ((words / sentences) + 100 * (complexWords / words));
+      gunningFog = Math.max(0, fog);
+    }
     
-    // SMOG Index
-    const smogIndex = sentences >= 30
-      ? 1.0430 * Math.sqrt(complexWords * (30 / sentences)) + 3.1291
-      : 0;
+    // SMOG Index (requires at least 30 sentences)
+    let smogIndex = null;
+    if (sentences >= 30 && complexWords > 0) {
+      smogIndex = 1.0430 * Math.sqrt(complexWords * (30 / sentences)) + 3.1291;
+    }
     
     // Coleman-Liau Index
-    const avgLettersPer100Words = words > 0 ? (characters / words) * 100 : 0;
-    const avgSentencesPer100Words = words > 0 ? (sentences / words) * 100 : 0;
-    const colemanLiau = 0.0588 * avgLettersPer100Words - 0.296 * avgSentencesPer100Words - 15.8;
+    let colemanLiau = null;
+    if (hasMinimumText && words > 0) {
+      const avgLettersPer100Words = (characters / words) * 100;
+      const avgSentencesPer100Words = (sentences / words) * 100;
+      colemanLiau = 0.0588 * avgLettersPer100Words - 0.296 * avgSentencesPer100Words - 15.8;
+    }
     
     // Automated Readability Index (ARI)
-    const ari = sentences > 0 && words > 0
-      ? 4.71 * (characters / words) + 0.5 * (words / sentences) - 21.43
-      : 0;
+    let ari = null;
+    if (hasMinimumText && sentences > 0 && words > 0) {
+      const ariScore = 4.71 * (characters / words) + 0.5 * (words / sentences) - 21.43;
+      ari = Math.max(0, ariScore);
+    }
     
     return {
       words,
       sentences,
       syllables,
       characters,
-      fleschReadingEase: Math.max(0, Math.min(100, fleschReadingEase)).toFixed(1),
-      fleschKincaidGrade: Math.max(0, fleschKincaidGrade).toFixed(1),
-      gunningFog: Math.max(0, gunningFog).toFixed(1),
-      smogIndex: Math.max(0, smogIndex).toFixed(1),
-      colemanLiau: Math.max(0, colemanLiau).toFixed(1),
-      ari: Math.max(0, ari).toFixed(1),
+      hasMinimumText,
+      fleschReadingEase: fleschReadingEase !== null ? fleschReadingEase.toFixed(1) : null,
+      fleschKincaidGrade: fleschKincaidGrade !== null ? fleschKincaidGrade.toFixed(1) : null,
+      gunningFog: gunningFog !== null ? gunningFog.toFixed(1) : null,
+      smogIndex: smogIndex !== null ? smogIndex.toFixed(1) : null,
+      colemanLiau: colemanLiau !== null ? colemanLiau.toFixed(1) : null,
+      ari: ari !== null ? ari.toFixed(1) : null,
       readingTime: words > 0 ? Math.ceil(words / 200) : 0,
     };
   }, [text]);
@@ -197,8 +214,11 @@ export default function ReadabilityCalculator() {
   }
 
   // Get readability level description
-  const getReadabilityLevel = (score: number): { level: string; color: string; audience: string } => {
-    const numScore = parseFloat(score.toString());
+  const getReadabilityLevel = (score: string | null): { level: string; color: string; audience: string } => {
+    if (score === null) {
+      return { level: 'Enter Text', color: 'text-muted-foreground', audience: 'Type at least 5 words to analyze' };
+    }
+    const numScore = parseFloat(score);
     if (numScore >= 90) return { level: 'Very Easy', color: 'text-green-600 dark:text-green-400', audience: '5th grade, Very easy to read' };
     if (numScore >= 80) return { level: 'Easy', color: 'text-green-500 dark:text-green-500', audience: '6th grade, Easy to read' };
     if (numScore >= 70) return { level: 'Fairly Easy', color: 'text-blue-500 dark:text-blue-400', audience: '7th grade, Fairly easy' };
@@ -208,7 +228,7 @@ export default function ReadabilityCalculator() {
     return { level: 'Very Difficult', color: 'text-red-600 dark:text-red-500', audience: 'College graduate, Very difficult' };
   };
 
-  const readabilityLevel = getReadabilityLevel(parseFloat(stats.fleschReadingEase));
+  const readabilityLevel = getReadabilityLevel(stats.fleschReadingEase);
 
   const clearText = () => {
     setText('');
@@ -361,18 +381,20 @@ https://wordcounterplusapp.com/readability-calculator
               <CardDescription>Higher scores indicate easier readability (0-100 scale)</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="text-center p-6 bg-muted rounded-lg">
-                <div className={`text-6xl font-bold ${readabilityLevel.color} mb-2`}>
-                  {stats.fleschReadingEase}
+              <div className="text-center p-4 sm:p-6 bg-muted rounded-lg">
+                <div className={`text-4xl sm:text-5xl md:text-6xl font-bold ${readabilityLevel.color} mb-2`}>
+                  {stats.fleschReadingEase !== null ? stats.fleschReadingEase : '—'}
                 </div>
-                <Badge className={`${readabilityLevel.color} mb-2`}>
+                <Badge className={`${readabilityLevel.color} mb-2 text-xs sm:text-sm`}>
                   {readabilityLevel.level}
                 </Badge>
-                <p className="text-sm text-muted-foreground mt-2">
+                <p className="text-xs sm:text-sm text-muted-foreground mt-2">
                   {readabilityLevel.audience}
                 </p>
               </div>
-              <Progress value={parseFloat(stats.fleschReadingEase)} className="h-3" />
+              {stats.fleschReadingEase !== null && (
+                <Progress value={parseFloat(stats.fleschReadingEase)} className="h-3" />
+              )}
             </CardContent>
           </Card>
 
@@ -385,62 +407,64 @@ https://wordcounterplusapp.com/readability-calculator
             </TabsList>
 
             <TabsContent value="scores" className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                 <Card className="bg-card border border-border">
-                  <CardContent className="p-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Flesch-Kincaid Grade</span>
-                      <span className="text-2xl font-bold text-foreground">{stats.fleschKincaidGrade}</span>
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-0">
+                      <span className="text-xs sm:text-sm text-muted-foreground">Flesch-Kincaid Grade</span>
+                      <span className="text-xl sm:text-2xl font-bold text-foreground">{stats.fleschKincaidGrade !== null ? stats.fleschKincaidGrade : '—'}</span>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1">U.S. school grade level</p>
                   </CardContent>
                 </Card>
 
                 <Card className="bg-card border border-border">
-                  <CardContent className="p-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Gunning Fog Index</span>
-                      <span className="text-2xl font-bold text-foreground">{stats.gunningFog}</span>
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-0">
+                      <span className="text-xs sm:text-sm text-muted-foreground">Gunning Fog Index</span>
+                      <span className="text-xl sm:text-2xl font-bold text-foreground">{stats.gunningFog !== null ? stats.gunningFog : '—'}</span>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1">Years of formal education needed</p>
                   </CardContent>
                 </Card>
 
                 <Card className="bg-card border border-border">
-                  <CardContent className="p-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">SMOG Index</span>
-                      <span className="text-2xl font-bold text-foreground">{stats.smogIndex}</span>
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-0">
+                      <span className="text-xs sm:text-sm text-muted-foreground">SMOG Index</span>
+                      <span className="text-xl sm:text-2xl font-bold text-foreground">
+                        {stats.smogIndex !== null ? stats.smogIndex : (stats.hasMinimumText && stats.sentences < 30 ? 'Need 30+' : '—')}
+                      </span>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">Years of education required</p>
+                    <p className="text-xs text-muted-foreground mt-1">{stats.hasMinimumText && stats.sentences < 30 ? 'Requires 30+ sentences' : 'Years of education required'}</p>
                   </CardContent>
                 </Card>
 
                 <Card className="bg-card border border-border">
-                  <CardContent className="p-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Coleman-Liau Index</span>
-                      <span className="text-2xl font-bold text-foreground">{stats.colemanLiau}</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1">U.S. grade level</p>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-card border border-border">
-                  <CardContent className="p-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Automated Readability (ARI)</span>
-                      <span className="text-2xl font-bold text-foreground">{stats.ari}</span>
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-0">
+                      <span className="text-xs sm:text-sm text-muted-foreground">Coleman-Liau Index</span>
+                      <span className="text-xl sm:text-2xl font-bold text-foreground">{stats.colemanLiau !== null ? stats.colemanLiau : '—'}</span>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1">U.S. grade level</p>
                   </CardContent>
                 </Card>
 
                 <Card className="bg-card border border-border">
-                  <CardContent className="p-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Reading Time</span>
-                      <span className="text-2xl font-bold text-foreground">{stats.readingTime}</span>
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-0">
+                      <span className="text-xs sm:text-sm text-muted-foreground">Automated Readability (ARI)</span>
+                      <span className="text-xl sm:text-2xl font-bold text-foreground">{stats.ari !== null ? stats.ari : '—'}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">U.S. grade level</p>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card border border-border">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-0">
+                      <span className="text-xs sm:text-sm text-muted-foreground">Reading Time</span>
+                      <span className="text-xl sm:text-2xl font-bold text-foreground">{stats.readingTime > 0 ? stats.readingTime : '—'}</span>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1">Minutes (~200 words/min)</p>
                   </CardContent>
