@@ -84,51 +84,53 @@ export default function Tools() {
           </div>
 
           {/* All Tools Grid - Responsive for all devices */}
-          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 xs:gap-4 sm:gap-5 md:gap-6 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 xs:gap-4 sm:gap-5 md:gap-6 max-w-7xl mx-auto auto-rows-fr">
             {allTools.map((tool) => {
               const IconComponent = tool.icon;
               const isComingSoon = tool.isComingSoon;
               
               const cardContent = (
-                <Card className={`relative group transition-all duration-300 bg-card border-2 border-border rounded-xl overflow-hidden ${
+                <Card className={`relative group transition-all duration-300 bg-card border-2 border-border rounded-xl overflow-hidden h-full ${
                   isComingSoon 
                     ? 'opacity-60 cursor-not-allowed' 
                     : 'hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer hover:border-primary/50 active:scale-95'
                 }`}>
-                  <CardHeader className="text-center p-3 xs:p-4 sm:p-5 md:p-6 h-full flex flex-col justify-center items-center min-h-[160px] xs:min-h-[180px] sm:min-h-[200px] md:min-h-[220px]">
+                  <CardHeader className="text-center p-3 xs:p-4 sm:p-5 md:p-6 h-full flex flex-col justify-between items-center">
                     
-                    {/* Icon Container with enhanced hover effect */}
-                    <div className="flex justify-center mb-2 xs:mb-3 sm:mb-4">
-                      <div className={`p-2 xs:p-3 sm:p-4 rounded-xl transition-all duration-300 ${
-                        isComingSoon 
-                          ? 'bg-muted' 
-                          : 'bg-gradient-to-br from-primary/10 to-primary/5 group-hover:from-primary/20 group-hover:to-primary/10 group-hover:scale-110 group-hover:rotate-3'
-                      }`}>
-                        <IconComponent className={`text-xl xs:text-2xl sm:text-3xl transition-all duration-300 ${
+                    <div className="flex-1 flex flex-col justify-center items-center">
+                      {/* Icon Container with enhanced hover effect */}
+                      <div className="flex justify-center mb-2 xs:mb-3 sm:mb-4">
+                        <div className={`p-2 xs:p-3 sm:p-4 rounded-xl transition-all duration-300 ${
                           isComingSoon 
-                            ? 'text-muted-foreground' 
-                            : 'text-primary group-hover:scale-110 group-hover:text-primary'
-                        }`} />
+                            ? 'bg-muted' 
+                            : 'bg-gradient-to-br from-primary/10 to-primary/5 group-hover:from-primary/20 group-hover:to-primary/10 group-hover:scale-110 group-hover:rotate-3'
+                        }`}>
+                          <IconComponent className={`text-xl xs:text-2xl sm:text-3xl transition-all duration-300 ${
+                            isComingSoon 
+                              ? 'text-muted-foreground' 
+                              : 'text-primary group-hover:scale-110 group-hover:text-primary'
+                          }`} />
+                        </div>
                       </div>
+                      
+                      {/* Title with better responsive sizing */}
+                      <CardTitle className={`text-xs xs:text-sm sm:text-base md:text-lg font-bold mb-1 xs:mb-2 leading-tight transition-colors duration-300 ${
+                        isComingSoon 
+                          ? 'text-muted-foreground' 
+                          : 'text-foreground group-hover:text-primary'
+                      }`}>
+                        {tool.title}
+                      </CardTitle>
+                      
+                      {/* Description with better line clamping */}
+                      <CardDescription className={`text-xs sm:text-sm leading-relaxed line-clamp-2 sm:line-clamp-3 transition-colors duration-300 ${
+                        isComingSoon 
+                          ? 'text-muted-foreground/70' 
+                          : 'text-muted-foreground group-hover:text-foreground/80'
+                      }`}>
+                        {tool.description}
+                      </CardDescription>
                     </div>
-                    
-                    {/* Title with better responsive sizing */}
-                    <CardTitle className={`text-xs xs:text-sm sm:text-base md:text-lg font-bold mb-1 xs:mb-2 leading-tight transition-colors duration-300 ${
-                      isComingSoon 
-                        ? 'text-muted-foreground' 
-                        : 'text-foreground group-hover:text-primary'
-                    }`}>
-                      {tool.title}
-                    </CardTitle>
-                    
-                    {/* Description with better line clamping */}
-                    <CardDescription className={`text-xs sm:text-sm leading-relaxed line-clamp-2 sm:line-clamp-3 transition-colors duration-300 ${
-                      isComingSoon 
-                        ? 'text-muted-foreground/70' 
-                        : 'text-muted-foreground group-hover:text-foreground/80'
-                    }`}>
-                      {tool.description}
-                    </CardDescription>
 
                     {/* Coming Soon Badge */}
                     {isComingSoon && (
