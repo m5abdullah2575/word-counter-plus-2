@@ -339,40 +339,40 @@ export default function TextCompare() {
 
           {/* Stats Cards */}
           {diffResult.length > 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
               <Card className="bg-card border border-border">
-                <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-bold text-green-500">
+                <CardContent className="p-3 sm:p-4 text-center">
+                  <div className="text-xl sm:text-2xl font-bold text-green-500">
                     +{stats.additions}
                   </div>
-                  <p className="text-sm text-muted-foreground">Additions</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Additions</p>
                 </CardContent>
               </Card>
               
               <Card className="bg-card border border-border">
-                <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-bold text-red-500">
+                <CardContent className="p-3 sm:p-4 text-center">
+                  <div className="text-xl sm:text-2xl font-bold text-red-500">
                     -{stats.deletions}
                   </div>
-                  <p className="text-sm text-muted-foreground">Deletions</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Deletions</p>
                 </CardContent>
               </Card>
 
               <Card className="bg-card border border-border">
-                <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-bold text-yellow-500">
+                <CardContent className="p-3 sm:p-4 text-center">
+                  <div className="text-xl sm:text-2xl font-bold text-yellow-500">
                     ~{stats.changes}
                   </div>
-                  <p className="text-sm text-muted-foreground">Changes</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Changes</p>
                 </CardContent>
               </Card>
 
               <Card className="bg-card border border-border">
-                <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-bold text-primary">
+                <CardContent className="p-3 sm:p-4 text-center">
+                  <div className="text-xl sm:text-2xl font-bold text-primary">
                     {similarity}%
                   </div>
-                  <p className="text-sm text-muted-foreground">Similarity</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Similarity</p>
                 </CardContent>
               </Card>
             </div>
@@ -382,20 +382,20 @@ export default function TextCompare() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Text 1 */}
             <Card className="bg-card border border-border">
-              <CardHeader className="pb-4">
+              <CardHeader className="pb-3 sm:pb-4">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                  <CardTitle className="text-lg sm:text-xl">Original Text</CardTitle>
+                  <CardTitle className="text-base sm:text-lg md:text-xl">Original Text</CardTitle>
                   <button 
                     onClick={triggerUpload1}
                     disabled={isUploading1}
-                    className="px-3 py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-2 sm:px-3 py-1 sm:py-1.5 bg-primary text-primary-foreground rounded text-xs sm:text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     data-testid="button-upload-text1"
                   >
                     <FaUpload className="inline mr-1" />
                     {isUploading1 ? 'Uploading...' : 'Upload'}
                   </button>
                 </div>
-                <CardDescription>
+                <CardDescription className="text-xs sm:text-sm">
                   {stats.words1} words, {stats.chars1} characters
                 </CardDescription>
               </CardHeader>
@@ -415,20 +415,20 @@ export default function TextCompare() {
 
             {/* Text 2 */}
             <Card className="bg-card border border-border">
-              <CardHeader className="pb-4">
+              <CardHeader className="pb-3 sm:pb-4">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                  <CardTitle className="text-lg sm:text-xl">Modified Text</CardTitle>
+                  <CardTitle className="text-base sm:text-lg md:text-xl">Modified Text</CardTitle>
                   <button 
                     onClick={triggerUpload2}
                     disabled={isUploading2}
-                    className="px-3 py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-2 sm:px-3 py-1 sm:py-1.5 bg-primary text-primary-foreground rounded text-xs sm:text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     data-testid="button-upload-text2"
                   >
                     <FaUpload className="inline mr-1" />
                     {isUploading2 ? 'Uploading...' : 'Upload'}
                   </button>
                 </div>
-                <CardDescription>
+                <CardDescription className="text-xs sm:text-sm">
                   {stats.words2} words, {stats.chars2} characters
                 </CardDescription>
               </CardHeader>
@@ -450,51 +450,51 @@ export default function TextCompare() {
           {/* Action Buttons */}
           <Card className="bg-card border border-border">
             <CardContent className="p-4">
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3">
                 <Button
                   onClick={compareTexts}
                   disabled={!text1 && !text2}
-                  className="w-full"
+                  className="w-full col-span-2 sm:col-span-1"
                   data-testid="button-compare"
                 >
-                  <FaEquals className="mr-2" />
-                  Compare
+                  <FaEquals className="mr-1 sm:mr-2" />
+                  <span className="hidden xs:inline sm:inline">Compare</span>
                 </Button>
                 <button 
                   onClick={swapTexts}
                   disabled={!text1 && !text2}
-                  className="px-3 py-2 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                  className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 sm:gap-2"
                   data-testid="button-swap"
                 >
                   <FaExchangeAlt />
-                  Swap
+                  <span className="hidden sm:inline">Swap</span>
                 </button>
                 <button 
                   onClick={copyDiff}
                   disabled={diffResult.length === 0}
-                  className="px-3 py-2 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                  className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 sm:gap-2"
                   data-testid="button-copy-diff"
                 >
                   <FaCopy />
-                  Copy
+                  <span className="hidden sm:inline">Copy</span>
                 </button>
                 <button 
                   onClick={downloadDiff}
                   disabled={diffResult.length === 0}
-                  className="px-3 py-2 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                  className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 sm:gap-2"
                   data-testid="button-download-diff"
                 >
                   <FaDownload />
-                  Download
+                  <span className="hidden sm:inline">Download</span>
                 </button>
                 <button 
                   onClick={clearAll}
                   disabled={!text1 && !text2 && diffResult.length === 0}
-                  className="px-3 py-2 bg-destructive text-destructive-foreground rounded text-sm hover:bg-destructive/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                  className="px-2 sm:px-3 py-2 bg-destructive text-destructive-foreground rounded text-sm hover:bg-destructive/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 sm:gap-2 col-span-2 sm:col-span-1"
                   data-testid="button-clear-all"
                 >
                   <FaEraser />
-                  Clear All
+                  <span className="hidden xs:inline sm:inline">Clear All</span>
                 </button>
               </div>
             </CardContent>
@@ -534,10 +534,10 @@ export default function TextCompare() {
 
           {/* Features & Tips */}
           <Tabs defaultValue="features" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="features" className="text-xs sm:text-sm">Features</TabsTrigger>
-              <TabsTrigger value="tips" className="text-xs sm:text-sm">Use Cases</TabsTrigger>
-              <TabsTrigger value="legend" className="text-xs sm:text-sm">Color Legend</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-3 h-auto">
+              <TabsTrigger value="features" className="text-xs sm:text-sm py-2">Features</TabsTrigger>
+              <TabsTrigger value="tips" className="text-xs sm:text-sm py-2">Use Cases</TabsTrigger>
+              <TabsTrigger value="legend" className="text-xs sm:text-sm py-2">Legend</TabsTrigger>
             </TabsList>
 
             <TabsContent value="features" className="space-y-4">

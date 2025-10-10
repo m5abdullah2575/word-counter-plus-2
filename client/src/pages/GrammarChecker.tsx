@@ -314,34 +314,34 @@ export default function GrammarChecker() {
           </Alert>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
             <Card className="bg-card border border-border">
-              <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-primary">
+              <CardContent className="p-3 sm:p-4 text-center">
+                <div className="text-xl sm:text-2xl font-bold text-primary">
                   <FaHashtag className="inline mr-1" />
                   {wordCount}
                 </div>
-                <p className="text-sm text-muted-foreground">Words</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Words</p>
               </CardContent>
             </Card>
             
             <Card className="bg-card border border-border">
-              <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-orange-500">
+              <CardContent className="p-3 sm:p-4 text-center">
+                <div className="text-xl sm:text-2xl font-bold text-orange-500">
                   <FaExclamationTriangle className="inline mr-1" />
                   {errorCount}
                 </div>
-                <p className="text-sm text-muted-foreground">Issues Found</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Issues Found</p>
               </CardContent>
             </Card>
 
-            <Card className="bg-card border border-border col-span-2 md:col-span-1">
-              <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-green-500">
+            <Card className="bg-card border border-border col-span-2 sm:col-span-1">
+              <CardContent className="p-3 sm:p-4 text-center">
+                <div className="text-xl sm:text-2xl font-bold text-green-500">
                   <FaCheckCircle className="inline mr-1" />
                   {errorCount === 0 && result ? '100%' : result ? `${Math.max(0, Math.round((1 - errorCount / Math.max(wordCount, 1)) * 100))}%` : '-'}
                 </div>
-                <p className="text-sm text-muted-foreground">Accuracy</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Accuracy</p>
               </CardContent>
             </Card>
           </div>
@@ -350,13 +350,13 @@ export default function GrammarChecker() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Original Text */}
             <Card className="bg-card border border-border">
-              <CardHeader className="pb-4">
+              <CardHeader className="pb-3 sm:pb-4">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                  <CardTitle className="text-lg sm:text-xl">Your Text</CardTitle>
+                  <CardTitle className="text-base sm:text-lg md:text-xl">Your Text</CardTitle>
                   <button 
                     onClick={triggerFileUpload}
                     disabled={isUploading}
-                    className="px-3 py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-2 sm:px-3 py-1 sm:py-1.5 bg-primary text-primary-foreground rounded text-xs sm:text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     data-testid="button-upload-text"
                     title="Upload text file"
                   >
@@ -364,7 +364,7 @@ export default function GrammarChecker() {
                     {isUploading ? 'Uploading...' : 'Upload'}
                   </button>
                 </div>
-                <CardDescription>Enter or paste text to check grammar</CardDescription>
+                <CardDescription className="text-xs sm:text-sm">Enter or paste text to check grammar</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <Textarea
@@ -386,11 +386,11 @@ export default function GrammarChecker() {
 
             {/* Corrected Text with Highlights */}
             <Card className="bg-card border border-border">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-lg sm:text-xl">
+              <CardHeader className="pb-3 sm:pb-4">
+                <CardTitle className="text-base sm:text-lg md:text-xl">
                   {result && errorCount > 0 ? 'Errors Highlighted' : 'Preview'}
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-xs sm:text-sm">
                   {result && errorCount > 0 ? 'Hover over highlighted text to see suggestions' : 'Your checked text will appear here'}
                 </CardDescription>
               </CardHeader>
@@ -407,51 +407,51 @@ export default function GrammarChecker() {
           {/* Action Buttons */}
           <Card className="bg-card border border-border">
             <CardContent className="p-4">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
                 <Button
                   onClick={checkGrammar}
                   disabled={!text.trim() || isChecking}
-                  className="w-full"
+                  className="w-full col-span-2 sm:col-span-1"
                   data-testid="button-check-grammar"
                 >
                   {isChecking ? (
                     <>
-                      <FaSync className="mr-2 animate-spin" />
-                      Checking...
+                      <FaSync className="mr-1 sm:mr-2 animate-spin" />
+                      <span className="text-xs sm:text-sm">Checking...</span>
                     </>
                   ) : (
                     <>
-                      <FaSpellCheck className="mr-2" />
-                      Check Grammar
+                      <FaSpellCheck className="mr-1 sm:mr-2" />
+                      <span className="text-xs sm:text-sm">Check</span>
                     </>
                   )}
                 </Button>
                 <button 
                   onClick={copyCorrected}
                   disabled={!result}
-                  className="px-3 py-2 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                  className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 sm:gap-2"
                   data-testid="button-copy-corrected"
                 >
                   <FaCopy />
-                  Copy
+                  <span className="hidden sm:inline">Copy</span>
                 </button>
                 <button 
                   onClick={downloadCorrected}
                   disabled={!result}
-                  className="px-3 py-2 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                  className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 sm:gap-2"
                   data-testid="button-download-corrected"
                 >
                   <FaDownload />
-                  Download
+                  <span className="hidden sm:inline">Download</span>
                 </button>
                 <button 
                   onClick={clearAll}
                   disabled={!text && !result}
-                  className="px-3 py-2 bg-destructive text-destructive-foreground rounded text-sm hover:bg-destructive/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                  className="px-2 sm:px-3 py-2 bg-destructive text-destructive-foreground rounded text-sm hover:bg-destructive/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 sm:gap-2 col-span-2 sm:col-span-1"
                   data-testid="button-clear-all"
                 >
                   <FaEraser />
-                  Clear All
+                  <span className="hidden xs:inline sm:inline">Clear All</span>
                 </button>
               </div>
             </CardContent>
@@ -460,13 +460,13 @@ export default function GrammarChecker() {
           {/* Error Details */}
           {result && errorCount > 0 && (
             <Tabs defaultValue="all" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
-                <TabsTrigger value="all" className="text-xs sm:text-sm">
-                  All Issues ({errorCount})
+              <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto gap-1">
+                <TabsTrigger value="all" className="text-xs sm:text-sm py-2 px-2">
+                  All ({errorCount})
                 </TabsTrigger>
                 {Object.keys(errorsByType).slice(0, 3).map((type) => (
-                  <TabsTrigger key={type} value={type} className="text-xs sm:text-sm">
-                    {type} ({errorsByType[type].length})
+                  <TabsTrigger key={type} value={type} className="text-xs sm:text-sm py-2 px-2 truncate">
+                    {type.length > 10 ? type.substring(0, 10) + '...' : type} ({errorsByType[type].length})
                   </TabsTrigger>
                 ))}
               </TabsList>
@@ -557,10 +557,10 @@ export default function GrammarChecker() {
 
           {/* Features & Tips */}
           <Tabs defaultValue="features" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="features" className="text-xs sm:text-sm">Features</TabsTrigger>
-              <TabsTrigger value="tips" className="text-xs sm:text-sm">Tips</TabsTrigger>
-              <TabsTrigger value="faq" className="text-xs sm:text-sm">FAQ</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-3 h-auto">
+              <TabsTrigger value="features" className="text-xs sm:text-sm py-2">Features</TabsTrigger>
+              <TabsTrigger value="tips" className="text-xs sm:text-sm py-2">Tips</TabsTrigger>
+              <TabsTrigger value="faq" className="text-xs sm:text-sm py-2">FAQ</TabsTrigger>
             </TabsList>
 
             <TabsContent value="features" className="space-y-4">
