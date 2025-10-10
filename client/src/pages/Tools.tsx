@@ -84,7 +84,7 @@ export default function Tools() {
           </div>
 
           {/* All Tools Grid - Responsive for all devices */}
-          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 xs:gap-4 sm:gap-5 md:gap-6 max-w-7xl mx-auto auto-rows-fr">
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 xs:gap-4 sm:gap-5 md:gap-6 max-w-7xl mx-auto">
             {allTools.map((tool) => {
               const IconComponent = tool.icon;
               const isComingSoon = tool.isComingSoon;
@@ -149,7 +149,7 @@ export default function Tools() {
 
               if (isComingSoon) {
                 return (
-                  <div key={tool.id} data-testid={`tool-${tool.id}`}>
+                  <div key={tool.id} data-testid={`tool-${tool.id}`} className="h-[240px]">
                     {cardContent}
                   </div>
                 );
@@ -162,7 +162,7 @@ export default function Tools() {
                     href={tool.href} 
                     data-testid={`link-tool-${tool.id}`}
                     rel="noopener noreferrer"
-                    className="block"
+                    className="block h-[240px]"
                   >
                     {cardContent}
                   </a>
@@ -170,7 +170,7 @@ export default function Tools() {
               } else {
                 return (
                   <Link key={tool.id} href={tool.href} data-testid={`link-tool-${tool.id}`}>
-                    <div className="block">
+                    <div className="block h-[240px]">
                       {cardContent}
                     </div>
                   </Link>
