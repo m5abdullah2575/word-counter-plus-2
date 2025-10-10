@@ -74,17 +74,17 @@ export default function Tools() {
         <div className="max-w-7xl mx-auto">
           
           {/* Header Section */}
-          <div className="text-center mb-8 sm:mb-12 md:mb-16">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4">
+          <div className="text-center mb-6 xs:mb-8 sm:mb-12 md:mb-16">
+            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-2 xs:mb-3 sm:mb-4">
               Text Analysis Tools
             </h1>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
+            <p className="text-sm xs:text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
               Professional text analysis and processing tools for writers, students, and content creators.
             </p>
           </div>
 
           {/* All Tools Grid - Responsive for all devices */}
-          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5 md:gap-6 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 xs:gap-4 sm:gap-5 md:gap-6 max-w-7xl mx-auto">
             {allTools.map((tool) => {
               const IconComponent = tool.icon;
               const isComingSoon = tool.isComingSoon;
@@ -95,16 +95,16 @@ export default function Tools() {
                     ? 'opacity-60 cursor-not-allowed' 
                     : 'hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer hover:border-primary/50 active:scale-95'
                 }`}>
-                  <CardHeader className="text-center p-4 sm:p-5 md:p-6 h-full flex flex-col justify-center items-center min-h-[180px] sm:min-h-[200px] md:min-h-[220px]">
+                  <CardHeader className="text-center p-3 xs:p-4 sm:p-5 md:p-6 h-full flex flex-col justify-center items-center min-h-[160px] xs:min-h-[180px] sm:min-h-[200px] md:min-h-[220px]">
                     
                     {/* Icon Container with enhanced hover effect */}
-                    <div className="flex justify-center mb-3 sm:mb-4">
-                      <div className={`p-3 sm:p-4 rounded-xl transition-all duration-300 ${
+                    <div className="flex justify-center mb-2 xs:mb-3 sm:mb-4">
+                      <div className={`p-2 xs:p-3 sm:p-4 rounded-xl transition-all duration-300 ${
                         isComingSoon 
                           ? 'bg-muted' 
                           : 'bg-gradient-to-br from-primary/10 to-primary/5 group-hover:from-primary/20 group-hover:to-primary/10 group-hover:scale-110 group-hover:rotate-3'
                       }`}>
-                        <IconComponent className={`text-2xl sm:text-3xl transition-all duration-300 ${
+                        <IconComponent className={`text-xl xs:text-2xl sm:text-3xl transition-all duration-300 ${
                           isComingSoon 
                             ? 'text-muted-foreground' 
                             : 'text-primary group-hover:scale-110 group-hover:text-primary'
@@ -113,7 +113,7 @@ export default function Tools() {
                     </div>
                     
                     {/* Title with better responsive sizing */}
-                    <CardTitle className={`text-sm sm:text-base md:text-lg font-bold mb-2 leading-tight transition-colors duration-300 ${
+                    <CardTitle className={`text-xs xs:text-sm sm:text-base md:text-lg font-bold mb-1 xs:mb-2 leading-tight transition-colors duration-300 ${
                       isComingSoon 
                         ? 'text-muted-foreground' 
                         : 'text-foreground group-hover:text-primary'
@@ -178,12 +178,12 @@ export default function Tools() {
           </div>
 
           {/* CTA Section with enhanced styling */}
-          <div className="mt-12 sm:mt-16 md:mt-20 text-center px-4">
-            <div className="max-w-2xl mx-auto bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-6 sm:p-8 md:p-10 border border-primary/20">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-3 sm:mb-4">
+          <div className="mt-8 xs:mt-12 sm:mt-16 md:mt-20 text-center px-4">
+            <div className="max-w-2xl mx-auto bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-4 xs:p-6 sm:p-8 md:p-10 border border-primary/20">
+              <h2 className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-2 xs:mb-3 sm:mb-4">
                 Need a Specific Tool?
               </h2>
-              <p className="text-sm sm:text-base text-muted-foreground mb-5 sm:mb-6">
+              <p className="text-xs xs:text-sm sm:text-base text-muted-foreground mb-4 xs:mb-5 sm:mb-6">
                 Can't find what you're looking for? Let us know what text processing tool would help your workflow.
               </p>
               <Link href="/contact" data-testid="link-request-tool-cta">
