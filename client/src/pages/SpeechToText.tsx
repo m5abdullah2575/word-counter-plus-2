@@ -753,37 +753,6 @@ export default function SpeechToText() {
             </CardContent>
           </Card>
 
-          {/* Related Tools */}
-          <Card className="bg-card border border-border">
-            <CardHeader>
-              <CardTitle className="text-lg sm:text-xl">Related Tools</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                <Link href="/">
-                  <div className="p-3 sm:p-4 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer" data-testid="link-word-counter">
-                    <FaFileAlt className="text-primary mb-2 text-lg" />
-                    <p className="font-semibold text-sm sm:text-base text-foreground">Word Counter</p>
-                    <p className="text-xs text-muted-foreground">Count words & analyze text</p>
-                  </div>
-                </Link>
-                <Link href="/character-counter">
-                  <div className="p-3 sm:p-4 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer" data-testid="link-character-counter">
-                    <FaHashtag className="text-primary mb-2 text-lg" />
-                    <p className="font-semibold text-sm sm:text-base text-foreground">Character Counter</p>
-                    <p className="text-xs text-muted-foreground">Count characters & limits</p>
-                  </div>
-                </Link>
-                <Link href="/text-case-converter">
-                  <div className="p-3 sm:p-4 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer" data-testid="link-text-case-converter">
-                    <FaGlobe className="text-primary mb-2 text-lg" />
-                    <p className="font-semibold text-sm sm:text-base text-foreground">Text Case Converter</p>
-                    <p className="text-xs text-muted-foreground">Convert text cases</p>
-                  </div>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </main>

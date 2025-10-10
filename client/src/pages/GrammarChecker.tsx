@@ -645,38 +645,6 @@ export default function GrammarChecker() {
             </TabsContent>
           </Tabs>
 
-          {/* Related Tools */}
-          <Card className="bg-card border border-border">
-            <CardContent className="p-4">
-              <h3 className="font-semibold text-lg mb-3">Related Tools</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                <Link href="/plagiarism-checker">
-                  <div className="block p-3 bg-muted hover:bg-muted/80 rounded-lg transition-colors cursor-pointer">
-                    <div className="flex items-center gap-2">
-                      <FaFileAlt className="text-primary" />
-                      <span className="text-sm font-medium">Plagiarism Checker</span>
-                    </div>
-                  </div>
-                </Link>
-                <Link href="/readability-calculator">
-                  <div className="block p-3 bg-muted hover:bg-muted/80 rounded-lg transition-colors cursor-pointer">
-                    <div className="flex items-center gap-2">
-                      <FaFileAlt className="text-primary" />
-                      <span className="text-sm font-medium">Readability Calculator</span>
-                    </div>
-                  </div>
-                </Link>
-                <Link href="/">
-                  <div className="block p-3 bg-muted hover:bg-muted/80 rounded-lg transition-colors cursor-pointer">
-                    <div className="flex items-center gap-2">
-                      <FaFileAlt className="text-primary" />
-                      <span className="text-sm font-medium">Word Counter</span>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </main>

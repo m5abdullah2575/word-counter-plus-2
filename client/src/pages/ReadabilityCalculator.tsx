@@ -541,37 +541,6 @@ https://wordcounterplusapp.com/readability-calculator
             </CardContent>
           </Card>
 
-          {/* Related Tools */}
-          <Card className="bg-card border border-border">
-            <CardHeader>
-              <CardTitle className="text-lg sm:text-xl">Related Tools</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                <Link href="/">
-                  <div className="p-3 sm:p-4 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer">
-                    <FaFileAlt className="text-primary mb-2 text-lg" />
-                    <p className="font-semibold text-sm sm:text-base text-foreground">Word Counter</p>
-                    <p className="text-xs text-muted-foreground">Count words & analyze text</p>
-                  </div>
-                </Link>
-                <Link href="/seo-content-analyzer">
-                  <div className="p-3 sm:p-4 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer">
-                    <FaChartLine className="text-primary mb-2 text-lg" />
-                    <p className="font-semibold text-sm sm:text-base text-foreground">SEO Content Analyzer</p>
-                    <p className="text-xs text-muted-foreground">Optimize content for SEO</p>
-                  </div>
-                </Link>
-                <Link href="/plagiarism-checker">
-                  <div className="p-3 sm:p-4 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer">
-                    <FaGraduationCap className="text-primary mb-2 text-lg" />
-                    <p className="font-semibold text-sm sm:text-base text-foreground">Plagiarism Checker</p>
-                    <p className="text-xs text-muted-foreground">Check content originality</p>
-                  </div>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </main>
