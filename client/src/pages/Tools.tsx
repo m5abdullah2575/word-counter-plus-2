@@ -189,7 +189,7 @@ export default function Tools() {
                 Can't find what you're looking for? Let us know what text processing tool would help your workflow.
               </p>
               <Link href="/contact" data-testid="link-request-tool-cta">
-                <div className="inline-flex items-center px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 bg-gradient-to-r from-primary to-primary/90 text-primary-foreground rounded-lg hover:from-primary/90 hover:to-primary hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 font-medium text-sm sm:text-base active:scale-95">
+                <div className="inline-flex items-center px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 font-medium text-sm sm:text-base active:scale-95">
                   Request a Tool
                 </div>
               </Link>
