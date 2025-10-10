@@ -12,13 +12,15 @@ import {
   FaCommentDots,
   FaHeadset,
   FaRocket,
-  FaShieldAlt
+  FaShieldAlt,
+  FaTag
 } from 'react-icons/fa';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    subject: '',
     message: ''
   });
   const { toast } = useToast();
@@ -34,7 +36,7 @@ export default function Contact() {
     e.preventDefault();
     
     // Create WhatsApp message
-    const whatsappMessage = `Name: ${formData.name}%0AEmail: ${formData.email}%0AMessage: ${formData.message}`;
+    const whatsappMessage = `Name: ${formData.name}%0AEmail: ${formData.email}%0ASubject: ${formData.subject}%0AMessage: ${formData.message}`;
     const whatsappURL = `https://wa.me/923194124382?text=${whatsappMessage}`;
     
     // Open WhatsApp
@@ -46,7 +48,7 @@ export default function Contact() {
     });
 
     // Reset form
-    setFormData({ name: '', email: '', message: '' });
+    setFormData({ name: '', email: '', subject: '', message: '' });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -162,6 +164,26 @@ export default function Contact() {
                       className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm sm:text-base"
                       placeholder="john@example.com"
                       data-testid="input-contact-email"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">
+                      <div className="flex items-center gap-2">
+                        <FaTag className="w-4 h-4 text-primary" />
+                        Subject
+                      </div>
+                    </label>
+                    <input 
+                      type="text" 
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm sm:text-base"
+                      placeholder="How can we help you?"
+                      data-testid="input-contact-subject"
                       required
                     />
                   </div>
