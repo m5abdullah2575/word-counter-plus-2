@@ -109,35 +109,32 @@ export const getWordCounterSEO = (): SEOConfig => {
           "name": "Word Counter Plus Tool"
         }
       },
-      "mainEntity": {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "How do I count words in a text?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Simply paste or type your text into the text area and Word Counter Plus will automatically count words, characters, paragraphs, and sentences in real-time."
-            }
-          },
-          {
-            "@type": "Question", 
-            "name": "Is Word Counter Plus free to use?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes, Word Counter Plus is completely free to use with no registration required. All features including export options are available at no cost."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Can I export my text analysis results?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes, you can export your text analysis results to PDF, CSV, or TXT formats with detailed statistics and readability scores."
-            }
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I count words in a text?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Simply paste or type your text into the text area and Word Counter Plus will automatically count words, characters, paragraphs, and sentences in real-time."
           }
-        ]
-      }
+        },
+        {
+          "@type": "Question", 
+          "name": "Is Word Counter Plus free to use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, Word Counter Plus is completely free to use with no registration required. All features including export options are available at no cost."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I export my text analysis results?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, you can export your text analysis results to PDF, CSV, or TXT formats with detailed statistics and readability scores."
+          }
+        }
+      ]
     },
     breadcrumbs: [
       { name: "Word Counter", url: `${origin}/` }
@@ -232,43 +229,40 @@ export const getTextCaseSEO = (): SEOConfig => {
           "name": "Text Case Converter Tool"
         }
       },
-      "mainEntity": {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "How do I convert text case online?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Simply paste or type your text into the input field and select the desired case conversion option. The text will be instantly converted to uppercase, lowercase, title case, camel case, or any other supported format."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What case conversion options are available?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Our tool supports uppercase, lowercase, title case, sentence case, camel case, pascal case, snake case, kebab case, alternating case, and inverse case conversions."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Is the text case converter free to use?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes, our text case converter is completely free to use with no registration required. All conversion features are available at no cost."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Can I use this tool for programming variable names?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Absolutely! Our case converter is perfect for converting text to programming-friendly formats like camelCase, PascalCase, snake_case, and kebab-case for variable names, function names, and file names."
-            }
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I convert text case online?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Simply paste or type your text into the input field and select the desired case conversion option. The text will be instantly converted to uppercase, lowercase, title case, camel case, or any other supported format."
           }
-        ]
-      }
+        },
+        {
+          "@type": "Question",
+          "name": "What case conversion options are available?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our tool supports uppercase, lowercase, title case, sentence case, camel case, pascal case, snake case, kebab case, alternating case, and inverse case conversions."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is the text case converter free to use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, our text case converter is completely free to use with no registration required. All conversion features are available at no cost."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use this tool for programming variable names?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely! Our case converter is perfect for converting text to programming-friendly formats like camelCase, PascalCase, snake_case, and kebab-case for variable names, function names, and file names."
+          }
+        }
+      ]
     },
     breadcrumbs: [
       { name: "Home", url: `${origin}/` },

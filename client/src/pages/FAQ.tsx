@@ -12,21 +12,6 @@ interface FAQItem {
 export default function FAQ() {
   const [openItems, setOpenItems] = useState<number[]>([]);
 
-  useSEO({
-    title: "FAQ - Word Counter Plus 2025 | TXT Upload/Download, Export PDF/CSV | US, UK, CA, AU",
-    description: "Complete FAQ for Word Counter Plus tools. Upload TXT files (10MB), download results as PDF/CSV/TXT/JSON. Free word counter, character counter, plagiarism checker, SEO analyzer, resume checker. Used in US, UK, Canada, Australia, and 200+ countries worldwide.",
-    keywords: "word counter faq, txt file upload, download text analysis, export pdf csv, free word counter help, character counter questions, plagiarism checker guide, resume ats checker, seo analyzer faq, text case converter help, word frequency counter, words per page calculator, us uk canada australia, global text analysis tool",
-    canonical: `${getCurrentOrigin()}/faq`
-  });
-
-  const toggleItem = (index: number) => {
-    setOpenItems(prev => 
-      prev.includes(index) 
-        ? prev.filter(i => i !== index)
-        : [...prev, index]
-    );
-  };
-
   const faqs: FAQItem[] = [
     {
       question: "How accurate is the word counter for US, UK, Canada, and global markets?",
@@ -279,6 +264,22 @@ export default function FAQ() {
       }
     }))
   };
+
+  const toggleItem = (index: number) => {
+    setOpenItems(prev => 
+      prev.includes(index) 
+        ? prev.filter(i => i !== index)
+        : [...prev, index]
+    );
+  };
+
+  useSEO({
+    title: "FAQ - Word Counter Plus 2025 | TXT Upload/Download, Export PDF/CSV | US, UK, CA, AU",
+    description: "Complete FAQ for Word Counter Plus tools. Upload TXT files (10MB), download results as PDF/CSV/TXT/JSON. Free word counter, character counter, plagiarism checker, SEO analyzer, resume checker. Used in US, UK, Canada, Australia, and 200+ countries worldwide.",
+    keywords: "word counter faq, txt file upload, download text analysis, export pdf csv, free word counter help, character counter questions, plagiarism checker guide, resume ats checker, seo analyzer faq, text case converter help, word frequency counter, words per page calculator, us uk canada australia, global text analysis tool",
+    canonical: `${getCurrentOrigin()}/faq`,
+    structuredData: faqSchema
+  });
 
   return (
     <main className="container mx-auto px-4 py-8">
