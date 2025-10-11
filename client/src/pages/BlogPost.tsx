@@ -9,13 +9,13 @@ import {
   FaBook,
   FaCalendar,
   FaCog,
-  FaTwitter,
   FaFacebook,
   FaLinkedin,
   FaWhatsapp,
   FaLink,
   FaCheck
 } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 import { useState } from 'react';
 
 export default function BlogPost() {
@@ -254,12 +254,13 @@ export default function BlogPost() {
                   const text = post.title;
                   window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
                 }}
-                style={{ backgroundColor: '#1DA1F2' }}
+                style={{ backgroundColor: '#000000' }}
                 className="w-10 h-10 rounded-full hover:opacity-90 flex items-center justify-center transition-all hover:scale-110"
                 data-testid="button-share-twitter"
-                aria-label="Share on Twitter"
+                aria-label="Share on X (Twitter)"
+                title="Share on X (Twitter)"
               >
-                <FaTwitter className="w-4 h-4 text-white" />
+                <FaXTwitter className="w-4 h-4 text-white" />
               </button>
 
               {/* Facebook */}
@@ -272,6 +273,7 @@ export default function BlogPost() {
                 className="w-10 h-10 rounded-full hover:opacity-90 flex items-center justify-center transition-all hover:scale-110"
                 data-testid="button-share-facebook"
                 aria-label="Share on Facebook"
+                title="Share on Facebook"
               >
                 <FaFacebook className="w-4 h-4 text-white" />
               </button>
@@ -286,6 +288,7 @@ export default function BlogPost() {
                 className="w-10 h-10 rounded-full hover:opacity-90 flex items-center justify-center transition-all hover:scale-110"
                 data-testid="button-share-linkedin"
                 aria-label="Share on LinkedIn"
+                title="Share on LinkedIn"
               >
                 <FaLinkedin className="w-4 h-4 text-white" />
               </button>
@@ -301,6 +304,7 @@ export default function BlogPost() {
                 className="w-10 h-10 rounded-full hover:opacity-90 flex items-center justify-center transition-all hover:scale-110"
                 data-testid="button-share-whatsapp"
                 aria-label="Share on WhatsApp"
+                title="Share on WhatsApp"
               >
                 <FaWhatsapp className="w-4 h-4 text-white" />
               </button>
@@ -317,6 +321,7 @@ export default function BlogPost() {
                 className="w-10 h-10 rounded-full hover:opacity-90 flex items-center justify-center transition-all hover:scale-110"
                 data-testid="button-copy-link"
                 aria-label="Copy link"
+                title={copied ? "Link copied!" : "Copy link"}
               >
                 {copied ? <FaCheck className="w-4 h-4 text-white" /> : <FaLink className="w-4 h-4 text-white" />}
               </button>
