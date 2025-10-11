@@ -109,7 +109,7 @@ export default function RelatedToolsSidebar({ currentTool, limit = 5 }: RelatedT
       category: "utility"
     },
     {
-      href: "/text-case-convert",
+      href: "/text-case-converter",
       name: "Case Converter",
       description: "Change text case format",
       icon: FaSync,
