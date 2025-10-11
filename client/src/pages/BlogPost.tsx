@@ -8,12 +8,20 @@ import {
   FaArrowLeft,
   FaBook,
   FaCalendar,
-  FaCog
+  FaCog,
+  FaTwitter,
+  FaFacebook,
+  FaLinkedin,
+  FaWhatsapp,
+  FaLink,
+  FaCheck
 } from 'react-icons/fa';
+import { useState } from 'react';
 
 export default function BlogPost() {
   const [match, params] = useRoute('/blog/:slug');
   const slug = params?.slug;
+  const [copied, setCopied] = useState(false);
 
   // Get the "from" parameter to know which page to return to
   const getReturnPage = () => {
@@ -233,6 +241,85 @@ export default function BlogPost() {
             <span>{post.readTime}</span>
           </div>
         </header>
+
+        {/* Share Section */}
+        <div className="mb-8 pb-6 border-b border-border">
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium text-muted-foreground">Share:</span>
+            <div className="flex items-center gap-2">
+              {/* Twitter/X */}
+              <button
+                onClick={() => {
+                  const url = `https://wordcounterplusapp.com/blog/${post.slug}`;
+                  const text = post.title;
+                  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+                }}
+                className="w-10 h-10 rounded-full bg-[#1DA1F2] hover:bg-[#1DA1F2]/90 text-white flex items-center justify-center transition-all hover:scale-110"
+                data-testid="button-share-twitter"
+                aria-label="Share on Twitter"
+              >
+                <FaTwitter className="w-4 h-4" />
+              </button>
+
+              {/* Facebook */}
+              <button
+                onClick={() => {
+                  const url = `https://wordcounterplusapp.com/blog/${post.slug}`;
+                  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+                }}
+                className="w-10 h-10 rounded-full bg-[#1877F2] hover:bg-[#1877F2]/90 text-white flex items-center justify-center transition-all hover:scale-110"
+                data-testid="button-share-facebook"
+                aria-label="Share on Facebook"
+              >
+                <FaFacebook className="w-4 h-4" />
+              </button>
+
+              {/* LinkedIn */}
+              <button
+                onClick={() => {
+                  const url = `https://wordcounterplusapp.com/blog/${post.slug}`;
+                  window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+                }}
+                className="w-10 h-10 rounded-full bg-[#0A66C2] hover:bg-[#0A66C2]/90 text-white flex items-center justify-center transition-all hover:scale-110"
+                data-testid="button-share-linkedin"
+                aria-label="Share on LinkedIn"
+              >
+                <FaLinkedin className="w-4 h-4" />
+              </button>
+
+              {/* WhatsApp */}
+              <button
+                onClick={() => {
+                  const url = `https://wordcounterplusapp.com/blog/${post.slug}`;
+                  const text = post.title;
+                  window.open(`https://wa.me/?text=${encodeURIComponent(`${text} - ${url}`)}`, '_blank');
+                }}
+                className="w-10 h-10 rounded-full bg-[#25D366] hover:bg-[#25D366]/90 text-white flex items-center justify-center transition-all hover:scale-110"
+                data-testid="button-share-whatsapp"
+                aria-label="Share on WhatsApp"
+              >
+                <FaWhatsapp className="w-4 h-4" />
+              </button>
+
+              {/* Copy Link */}
+              <button
+                onClick={() => {
+                  const url = `https://wordcounterplusapp.com/blog/${post.slug}`;
+                  navigator.clipboard.writeText(url);
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 2000);
+                }}
+                className={`w-10 h-10 rounded-full ${
+                  copied ? 'bg-green-500' : 'bg-muted hover:bg-muted/80'
+                } text-foreground flex items-center justify-center transition-all hover:scale-110`}
+                data-testid="button-copy-link"
+                aria-label="Copy link"
+              >
+                {copied ? <FaCheck className="w-4 h-4" /> : <FaLink className="w-4 h-4" />}
+              </button>
+            </div>
+          </div>
+        </div>
 
         {/* Featured Image */}
         {post.image && (
