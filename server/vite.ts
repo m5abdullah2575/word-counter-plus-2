@@ -21,8 +21,7 @@ async function injectBlogPostMeta(template: string, slug: string): Promise<strin
   try {
     log(`Attempting to inject meta tags for blog post slug: ${slug}`);
     // Import blog data from client location (server-safe)
-    const { allBlogPosts } = await import("../client/src/data/blogData.ts");
-    const blogPosts = allBlogPosts;
+    const { blogPosts } = await import("../client/src/data/blogData.ts");
     log(`Successfully imported blog data, found ${blogPosts.length} posts`);
     const post = blogPosts.find((p: any) => p.slug === slug);
     

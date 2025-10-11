@@ -145,10 +145,12 @@ export default function BlogPost() {
         const listItems = [];
         let j = i;
         while (j < lines.length && lines[j].trim().startsWith('- ')) {
+          const itemText = lines[j].trim().substring(2)
+            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary hover:text-primary/80 underline" target="_blank" rel="noopener noreferrer">$1</a>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>');
           listItems.push(
-            <li key={key++} className="mb-2">
-              {lines[j].trim().substring(2)}
-            </li>
+            <li key={key++} className="mb-2" dangerouslySetInnerHTML={{ __html: itemText }} />
           );
           j++;
         }
@@ -163,10 +165,12 @@ export default function BlogPost() {
         const listItems = [];
         let j = i;
         while (j < lines.length && lines[j].trim().match(/^\d+\. /)) {
+          const itemText = lines[j].trim().replace(/^\d+\. /, '')
+            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary hover:text-primary/80 underline" target="_blank" rel="noopener noreferrer">$1</a>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>');
           listItems.push(
-            <li key={key++} className="mb-2">
-              {lines[j].trim().replace(/^\d+\. /, '')}
-            </li>
+            <li key={key++} className="mb-2" dangerouslySetInnerHTML={{ __html: itemText }} />
           );
           j++;
         }
@@ -185,6 +189,7 @@ export default function BlogPost() {
       } else {
         // Regular paragraph
         const processedLine = line
+          .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary hover:text-primary/80 underline" target="_blank" rel="noopener noreferrer">$1</a>')
           .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
           .replace(/\*(.*?)\*/g, '<em>$1</em>');
 
