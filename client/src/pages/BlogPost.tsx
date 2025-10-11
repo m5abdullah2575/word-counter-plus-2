@@ -97,7 +97,7 @@ export default function BlogPost() {
     keywords: `${post.tags.join(', ')}, writing tips, content creation, word counter, text analysis`,
     canonical: `https://wordcounterplusapp.com/blog/${post.slug}`,
     ogType: 'article',
-    ogImage: post.image || '/og-image.png',
+    ogImage: post.image ? `https://wordcounterplusapp.com${post.image}` : 'https://wordcounterplusapp.com/og-image.png',
     twitterCard: 'summary_large_image',
     author: 'Word Counter Plus Team',
     siteName: 'Word Counter Plus',
