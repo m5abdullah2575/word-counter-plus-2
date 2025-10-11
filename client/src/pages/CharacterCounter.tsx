@@ -989,10 +989,10 @@ export default function CharacterCounter() {
       </div>
       {/* End Grid Layout */}
 
+      </div>
     </div>
-  </div>
-  {/* Hidden file input */}
-  <FileInput />
-</main>
+    {/* Hidden file input */}
+    <FileInput />
+    </main>
   );
 }

@@ -22,6 +22,7 @@ import {
 } from 'react-icons/fa';
 import { Link } from 'wouter';
 import useFileUpload from '@/hooks/useFileUpload';
+import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 
 interface GrammarError {
   message: string;
@@ -294,7 +295,7 @@ export default function GrammarChecker() {
       <FileInput />
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-        <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
+        <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
           {/* Tool Header */}
           <div className="text-center mb-4 sm:mb-8">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">
@@ -305,345 +306,355 @@ export default function GrammarChecker() {
             </p>
           </div>
 
-          {/* Info Alert */}
-          <Alert className="border-blue-500 bg-blue-50 dark:bg-blue-950/20">
-            <FaInfoCircle className="h-4 w-4 text-blue-500" />
-            <AlertDescription className="text-sm text-blue-700 dark:text-blue-400">
-              <strong>100% Free:</strong> Powered by LanguageTool - no API key or sign-up required. Check grammar unlimited times.
-            </AlertDescription>
-          </Alert>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 space-y-4 sm:space-y-6">
+              {/* Info Alert */}
+              <Alert className="border-blue-500 bg-blue-50 dark:bg-blue-950/20">
+                <FaInfoCircle className="h-4 w-4 text-blue-500" />
+                <AlertDescription className="text-sm text-blue-700 dark:text-blue-400">
+                  <strong>100% Free:</strong> Powered by LanguageTool - no API key or sign-up required. Check grammar unlimited times.
+                </AlertDescription>
+              </Alert>
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-            <Card className="bg-card border border-border">
-              <CardContent className="p-3 sm:p-4 text-center">
-                <div className="text-xl sm:text-2xl font-bold text-primary">
-                  <FaHashtag className="inline mr-1" />
-                  {wordCount}
-                </div>
-                <p className="text-xs sm:text-sm text-muted-foreground">Words</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-card border border-border">
-              <CardContent className="p-3 sm:p-4 text-center">
-                <div className="text-xl sm:text-2xl font-bold text-orange-500">
-                  <FaExclamationTriangle className="inline mr-1" />
-                  {errorCount}
-                </div>
-                <p className="text-xs sm:text-sm text-muted-foreground">Issues Found</p>
-              </CardContent>
-            </Card>
+              {/* Stats Cards */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+                <Card className="bg-card border border-border">
+                  <CardContent className="p-3 sm:p-4 text-center">
+                    <div className="text-xl sm:text-2xl font-bold text-primary">
+                      <FaHashtag className="inline mr-1" />
+                      {wordCount}
+                    </div>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Words</p>
+                  </CardContent>
+                </Card>
+                
+                <Card className="bg-card border border-border">
+                  <CardContent className="p-3 sm:p-4 text-center">
+                    <div className="text-xl sm:text-2xl font-bold text-orange-500">
+                      <FaExclamationTriangle className="inline mr-1" />
+                      {errorCount}
+                    </div>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Issues Found</p>
+                  </CardContent>
+                </Card>
 
-            <Card className="bg-card border border-border col-span-2 sm:col-span-1">
-              <CardContent className="p-3 sm:p-4 text-center">
-                <div className="text-xl sm:text-2xl font-bold text-green-500">
-                  <FaCheckCircle className="inline mr-1" />
-                  {errorCount === 0 && result ? '100%' : result ? `${Math.max(0, Math.round((1 - errorCount / Math.max(wordCount, 1)) * 100))}%` : '-'}
-                </div>
-                <p className="text-xs sm:text-sm text-muted-foreground">Accuracy</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Input/Output Area */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {/* Original Text */}
-            <Card className="bg-card border border-border">
-              <CardHeader className="pb-3 sm:pb-4">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                  <CardTitle className="text-base sm:text-lg md:text-xl">Your Text</CardTitle>
-                  <button 
-                    onClick={triggerFileUpload}
-                    disabled={isUploading}
-                    className="px-2 sm:px-3 py-1 sm:py-1.5 bg-primary text-primary-foreground rounded text-xs sm:text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    data-testid="button-upload-text"
-                    title="Upload text file"
-                  >
-                    <FaUpload className="inline mr-1" />
-                    {isUploading ? 'Uploading...' : 'Upload'}
-                  </button>
-                </div>
-                <CardDescription className="text-xs sm:text-sm">Enter or paste text to check grammar</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Textarea
-                  placeholder="Type or paste your text here to check for grammar and spelling errors..."
-                  value={text}
-                  onChange={(e) => {
-                    setText(e.target.value);
-                    // Reset results when text changes
-                    if (result) {
-                      setResult(null);
-                      setCorrectedText('');
-                    }
-                  }}
-                  className="w-full min-h-[16rem] h-64 sm:h-80 p-3 sm:p-4 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-y transition-all text-sm sm:text-base"
-                  data-testid="textarea-grammar-input"
-                />
-              </CardContent>
-            </Card>
-
-            {/* Corrected Text with Highlights */}
-            <Card className="bg-card border border-border">
-              <CardHeader className="pb-3 sm:pb-4">
-                <CardTitle className="text-base sm:text-lg md:text-xl">
-                  {result && errorCount > 0 ? 'Errors Highlighted' : 'Preview'}
-                </CardTitle>
-                <CardDescription className="text-xs sm:text-sm">
-                  {result && errorCount > 0 ? 'Hover over highlighted text to see suggestions' : 'Your checked text will appear here'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div
-                  className="w-full min-h-[16rem] h-64 sm:h-80 p-3 sm:p-4 bg-background border border-border rounded-lg overflow-y-auto text-sm sm:text-base whitespace-pre-wrap"
-                  dangerouslySetInnerHTML={{ __html: result ? getHighlightedText() : text || '<span class="text-muted-foreground">Check your text to see results...</span>' }}
-                  data-testid="preview-grammar-result"
-                />
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Action Buttons */}
-          <Card className="bg-card border border-border">
-            <CardContent className="p-4">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
-                <Button
-                  onClick={checkGrammar}
-                  disabled={!text.trim() || isChecking}
-                  className="w-full col-span-2 sm:col-span-1"
-                  data-testid="button-check-grammar"
-                >
-                  {isChecking ? (
-                    <>
-                      <FaSync className="mr-1 sm:mr-2 animate-spin" />
-                      <span className="text-xs sm:text-sm">Checking...</span>
-                    </>
-                  ) : (
-                    <>
-                      <FaSpellCheck className="mr-1 sm:mr-2" />
-                      <span className="text-xs sm:text-sm">Check</span>
-                    </>
-                  )}
-                </Button>
-                <button 
-                  onClick={copyCorrected}
-                  disabled={!result}
-                  className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 sm:gap-2"
-                  data-testid="button-copy-corrected"
-                >
-                  <FaCopy />
-                  <span className="hidden sm:inline">Copy</span>
-                </button>
-                <button 
-                  onClick={downloadCorrected}
-                  disabled={!result}
-                  className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 sm:gap-2"
-                  data-testid="button-download-corrected"
-                >
-                  <FaDownload />
-                  <span className="hidden sm:inline">Download</span>
-                </button>
-                <button 
-                  onClick={clearAll}
-                  disabled={!text && !result}
-                  className="px-2 sm:px-3 py-2 bg-destructive text-destructive-foreground rounded text-sm hover:bg-destructive/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 sm:gap-2 col-span-2 sm:col-span-1"
-                  data-testid="button-clear-all"
-                >
-                  <FaEraser />
-                  <span className="hidden xs:inline sm:inline">Clear All</span>
-                </button>
+                <Card className="bg-card border border-border col-span-2 sm:col-span-1">
+                  <CardContent className="p-3 sm:p-4 text-center">
+                    <div className="text-xl sm:text-2xl font-bold text-green-500">
+                      <FaCheckCircle className="inline mr-1" />
+                      {errorCount === 0 && result ? '100%' : result ? `${Math.max(0, Math.round((1 - errorCount / Math.max(wordCount, 1)) * 100))}%` : '-'}
+                    </div>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Accuracy</p>
+                  </CardContent>
+                </Card>
               </div>
-            </CardContent>
-          </Card>
 
-          {/* Error Details */}
-          {result && errorCount > 0 && (
-            <Tabs defaultValue="all" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto gap-1">
-                <TabsTrigger value="all" className="text-xs sm:text-sm py-2 px-2">
-                  All ({errorCount})
-                </TabsTrigger>
-                {Object.keys(errorsByType).slice(0, 3).map((type) => (
-                  <TabsTrigger key={type} value={type} className="text-xs sm:text-sm py-2 px-2 truncate">
-                    {type.length > 10 ? type.substring(0, 10) + '...' : type} ({errorsByType[type].length})
-                  </TabsTrigger>
-                ))}
-              </TabsList>
+              {/* Input/Output Area */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {/* Original Text */}
+                <Card className="bg-card border border-border">
+                  <CardHeader className="pb-3 sm:pb-4">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                      <CardTitle className="text-base sm:text-lg md:text-xl">Your Text</CardTitle>
+                      <button 
+                        onClick={triggerFileUpload}
+                        disabled={isUploading}
+                        className="px-2 sm:px-3 py-1 sm:py-1.5 bg-primary text-primary-foreground rounded text-xs sm:text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        data-testid="button-upload-text"
+                        title="Upload text file"
+                      >
+                        <FaUpload className="inline mr-1" />
+                        {isUploading ? 'Uploading...' : 'Upload'}
+                      </button>
+                    </div>
+                    <CardDescription className="text-xs sm:text-sm">Enter or paste text to check grammar</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <Textarea
+                      placeholder="Type or paste your text here to check for grammar and spelling errors..."
+                      value={text}
+                      onChange={(e) => {
+                        setText(e.target.value);
+                        // Reset results when text changes
+                        if (result) {
+                          setResult(null);
+                          setCorrectedText('');
+                        }
+                      }}
+                      className="w-full min-h-[16rem] h-64 sm:h-80 p-3 sm:p-4 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-y transition-all text-sm sm:text-base"
+                      data-testid="textarea-grammar-input"
+                    />
+                  </CardContent>
+                </Card>
 
-              <TabsContent value="all" className="space-y-3 max-h-[400px] overflow-y-auto">
-                {result.matches.map((error, idx) => (
-                  <Card key={idx} className="bg-card border border-orange-200 dark:border-orange-900">
-                    <CardContent className="p-4">
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Badge variant="outline" className="text-xs">
-                              {error.rule.category.name}
-                            </Badge>
-                          </div>
-                          <p className="text-sm font-medium mb-1">{error.message}</p>
-                          <p className="text-xs text-muted-foreground mb-2">
-                            "{text.substring(error.offset, error.offset + error.length)}"
-                          </p>
-                          {error.replacements && error.replacements.length > 0 && (
-                            <div className="flex items-center gap-2 mt-2">
-                              <span className="text-xs text-muted-foreground">Suggestion:</span>
-                              {error.replacements.slice(0, 3).map((rep, i) => (
-                                <Badge key={i} className="text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
-                                  {rep.value}
+                {/* Corrected Text with Highlights */}
+                <Card className="bg-card border border-border">
+                  <CardHeader className="pb-3 sm:pb-4">
+                    <CardTitle className="text-base sm:text-lg md:text-xl">
+                      {result && errorCount > 0 ? 'Errors Highlighted' : 'Preview'}
+                    </CardTitle>
+                    <CardDescription className="text-xs sm:text-sm">
+                      {result && errorCount > 0 ? 'Hover over highlighted text to see suggestions' : 'Your checked text will appear here'}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div
+                      className="w-full min-h-[16rem] h-64 sm:h-80 p-3 sm:p-4 bg-background border border-border rounded-lg overflow-y-auto text-sm sm:text-base whitespace-pre-wrap"
+                      dangerouslySetInnerHTML={{ __html: result ? getHighlightedText() : text || '<span class="text-muted-foreground">Check your text to see results...</span>' }}
+                      data-testid="preview-grammar-result"
+                    />
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Action Buttons */}
+              <Card className="bg-card border border-border">
+                <CardContent className="p-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+                    <Button
+                      onClick={checkGrammar}
+                      disabled={!text.trim() || isChecking}
+                      className="w-full col-span-2 sm:col-span-1"
+                      data-testid="button-check-grammar"
+                    >
+                      {isChecking ? (
+                        <>
+                          <FaSync className="mr-1 sm:mr-2 animate-spin" />
+                          <span className="text-xs sm:text-sm">Checking...</span>
+                        </>
+                      ) : (
+                        <>
+                          <FaSpellCheck className="mr-1 sm:mr-2" />
+                          <span className="text-xs sm:text-sm">Check</span>
+                        </>
+                      )}
+                    </Button>
+                    <button 
+                      onClick={copyCorrected}
+                      disabled={!result}
+                      className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 sm:gap-2"
+                      data-testid="button-copy-corrected"
+                    >
+                      <FaCopy />
+                      <span className="hidden sm:inline">Copy</span>
+                    </button>
+                    <button 
+                      onClick={downloadCorrected}
+                      disabled={!result}
+                      className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 sm:gap-2"
+                      data-testid="button-download-corrected"
+                    >
+                      <FaDownload />
+                      <span className="hidden sm:inline">Download</span>
+                    </button>
+                    <button 
+                      onClick={clearAll}
+                      disabled={!text && !result}
+                      className="px-2 sm:px-3 py-2 bg-destructive text-destructive-foreground rounded text-sm hover:bg-destructive/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 sm:gap-2 col-span-2 sm:col-span-1"
+                      data-testid="button-clear-all"
+                    >
+                      <FaEraser />
+                      <span className="hidden xs:inline sm:inline">Clear All</span>
+                    </button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Error Details */}
+              {result && errorCount > 0 && (
+                <Tabs defaultValue="all" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto gap-1">
+                    <TabsTrigger value="all" className="text-xs sm:text-sm py-2 px-2">
+                      All ({errorCount})
+                    </TabsTrigger>
+                    {Object.keys(errorsByType).slice(0, 3).map((type) => (
+                      <TabsTrigger key={type} value={type} className="text-xs sm:text-sm py-2 px-2 truncate">
+                        {type.length > 10 ? type.substring(0, 10) + '...' : type} ({errorsByType[type].length})
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+
+                  <TabsContent value="all" className="space-y-3 max-h-[400px] overflow-y-auto">
+                    {result.matches.map((error, idx) => (
+                      <Card key={idx} className="bg-card border border-orange-200 dark:border-orange-900">
+                        <CardContent className="p-4">
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Badge variant="outline" className="text-xs">
+                                  {error.rule.category.name}
                                 </Badge>
-                              ))}
+                              </div>
+                              <p className="text-sm font-medium mb-1">{error.message}</p>
+                              <p className="text-xs text-muted-foreground mb-2">
+                                "{text.substring(error.offset, error.offset + error.length)}"
+                              </p>
+                              {error.replacements && error.replacements.length > 0 && (
+                                <div className="flex items-center gap-2 mt-2">
+                                  <span className="text-xs text-muted-foreground">Suggestion:</span>
+                                  {error.replacements.slice(0, 3).map((rep, i) => (
+                                    <Badge key={i} className="text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
+                                      {rep.value}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              )}
                             </div>
-                          )}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </TabsContent>
+
+                  {Object.entries(errorsByType).slice(0, 3).map(([type, errors]) => (
+                    <TabsContent key={type} value={type} className="space-y-3 max-h-[400px] overflow-y-auto">
+                      {errors.map((error, idx) => (
+                        <Card key={idx} className="bg-card border border-orange-200 dark:border-orange-900">
+                          <CardContent className="p-4">
+                            <div className="flex items-start justify-between gap-3">
+                              <div className="flex-1">
+                                <p className="text-sm font-medium mb-1">{error.message}</p>
+                                <p className="text-xs text-muted-foreground mb-2">
+                                  "{text.substring(error.offset, error.offset + error.length)}"
+                                </p>
+                                {error.replacements && error.replacements.length > 0 && (
+                                  <div className="flex items-center gap-2 mt-2">
+                                    <span className="text-xs text-muted-foreground">Suggestion:</span>
+                                    {error.replacements.slice(0, 3).map((rep, i) => (
+                                      <Badge key={i} className="text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
+                                        {rep.value}
+                                      </Badge>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </TabsContent>
+                  ))}
+                </Tabs>
+              )}
+
+              {/* Corrected Text Output */}
+              {correctedText && (
+                <Card className="bg-card border border-green-200 dark:border-green-900">
+                  <CardHeader>
+                    <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
+                      <FaCheckCircle className="text-green-500" />
+                      Corrected Text
+                    </CardTitle>
+                    <CardDescription>Text with all suggested corrections applied</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Textarea
+                      value={correctedText}
+                      onChange={(e) => setCorrectedText(e.target.value)}
+                      className="w-full min-h-[12rem] p-3 sm:p-4 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-y transition-all text-sm sm:text-base"
+                      data-testid="textarea-corrected-text"
+                    />
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Features & Tips */}
+              <Tabs defaultValue="features" className="w-full">
+                <TabsList className="grid w-full grid-cols-3 h-auto">
+                  <TabsTrigger value="features" className="text-xs sm:text-sm py-2">Features</TabsTrigger>
+                  <TabsTrigger value="tips" className="text-xs sm:text-sm py-2">Tips</TabsTrigger>
+                  <TabsTrigger value="faq" className="text-xs sm:text-sm py-2">FAQ</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="features" className="space-y-4">
+                  <Card className="bg-card border border-border">
+                    <CardContent className="p-4 space-y-3">
+                      <h3 className="font-semibold text-lg">Key Features</h3>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start">
+                          <FaCheckCircle className="text-primary mr-3 mt-1 flex-shrink-0" />
+                          <span>Real-time grammar and spelling check</span>
+                        </li>
+                        <li className="flex items-start">
+                          <FaCheckCircle className="text-primary mr-3 mt-1 flex-shrink-0" />
+                          <span>Punctuation error detection</span>
+                        </li>
+                        <li className="flex items-start">
+                          <FaCheckCircle className="text-primary mr-3 mt-1 flex-shrink-0" />
+                          <span>Instant correction suggestions</span>
+                        </li>
+                        <li className="flex items-start">
+                          <FaCheckCircle className="text-primary mr-3 mt-1 flex-shrink-0" />
+                          <span>Error categorization and highlighting</span>
+                        </li>
+                        <li className="flex items-start">
+                          <FaCheckCircle className="text-primary mr-3 mt-1 flex-shrink-0" />
+                          <span>100% free - no API key required</span>
+                        </li>
+                        <li className="flex items-start">
+                          <FaCheckCircle className="text-primary mr-3 mt-1 flex-shrink-0" />
+                          <span>File upload support (TXT, DOC, DOCX)</span>
+                        </li>
+                        <li className="flex items-start">
+                          <FaCheckCircle className="text-primary mr-3 mt-1 flex-shrink-0" />
+                          <span>Export corrected text</span>
+                        </li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="tips" className="space-y-4">
+                  <Card className="bg-card border border-border">
+                    <CardContent className="p-4 space-y-3">
+                      <h3 className="font-semibold text-lg">Grammar Checking Tips</h3>
+                      <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
+                        <li>Always review suggested corrections before applying</li>
+                        <li>Check context - not all suggestions may be appropriate</li>
+                        <li>Use for essays, emails, articles, and professional writing</li>
+                        <li>Upload documents for batch checking</li>
+                        <li>Combine with spell checker for comprehensive review</li>
+                        <li>Read your text aloud after corrections</li>
+                        <li>Learn from repeated errors to improve your writing</li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="faq" className="space-y-4">
+                  <Card className="bg-card border border-border">
+                    <CardContent className="p-4 space-y-3">
+                      <h3 className="font-semibold text-lg">Frequently Asked Questions</h3>
+                      <div className="space-y-4 text-sm">
+                        <div>
+                          <p className="font-medium mb-1">Is this grammar checker really free?</p>
+                          <p className="text-muted-foreground">Yes! 100% free with no hidden costs or API keys needed. Powered by LanguageTool's free API.</p>
+                        </div>
+                        <div>
+                          <p className="font-medium mb-1">What types of errors does it detect?</p>
+                          <p className="text-muted-foreground">Grammar mistakes, spelling errors, punctuation issues, and style suggestions.</p>
+                        </div>
+                        <div>
+                          <p className="font-medium mb-1">Can I upload documents?</p>
+                          <p className="text-muted-foreground">Yes! Upload TXT, DOC, or DOCX files up to 10MB for instant checking.</p>
+                        </div>
+                        <div>
+                          <p className="font-medium mb-1">Is my text stored or shared?</p>
+                          <p className="text-muted-foreground">Your text is only saved locally in your browser. We don't store or share your content.</p>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
-                ))}
-              </TabsContent>
-
-              {Object.entries(errorsByType).slice(0, 3).map(([type, errors]) => (
-                <TabsContent key={type} value={type} className="space-y-3 max-h-[400px] overflow-y-auto">
-                  {errors.map((error, idx) => (
-                    <Card key={idx} className="bg-card border border-orange-200 dark:border-orange-900">
-                      <CardContent className="p-4">
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="flex-1">
-                            <p className="text-sm font-medium mb-1">{error.message}</p>
-                            <p className="text-xs text-muted-foreground mb-2">
-                              "{text.substring(error.offset, error.offset + error.length)}"
-                            </p>
-                            {error.replacements && error.replacements.length > 0 && (
-                              <div className="flex items-center gap-2 mt-2">
-                                <span className="text-xs text-muted-foreground">Suggestion:</span>
-                                {error.replacements.slice(0, 3).map((rep, i) => (
-                                  <Badge key={i} className="text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
-                                    {rep.value}
-                                  </Badge>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
                 </TabsContent>
-              ))}
-            </Tabs>
-          )}
+              </Tabs>
+            </div>
 
-          {/* Corrected Text Output */}
-          {correctedText && (
-            <Card className="bg-card border border-green-200 dark:border-green-900">
-              <CardHeader>
-                <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
-                  <FaCheckCircle className="text-green-500" />
-                  Corrected Text
-                </CardTitle>
-                <CardDescription>Text with all suggested corrections applied</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Textarea
-                  value={correctedText}
-                  onChange={(e) => setCorrectedText(e.target.value)}
-                  className="w-full min-h-[12rem] p-3 sm:p-4 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-y transition-all text-sm sm:text-base"
-                  data-testid="textarea-corrected-text"
-                />
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Features & Tips */}
-          <Tabs defaultValue="features" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 h-auto">
-              <TabsTrigger value="features" className="text-xs sm:text-sm py-2">Features</TabsTrigger>
-              <TabsTrigger value="tips" className="text-xs sm:text-sm py-2">Tips</TabsTrigger>
-              <TabsTrigger value="faq" className="text-xs sm:text-sm py-2">FAQ</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="features" className="space-y-4">
-              <Card className="bg-card border border-border">
-                <CardContent className="p-4 space-y-3">
-                  <h3 className="font-semibold text-lg">Key Features</h3>
-                  <ul className="space-y-2 text-sm">
-                    <li className="flex items-start">
-                      <FaCheckCircle className="text-primary mr-3 mt-1 flex-shrink-0" />
-                      <span>Real-time grammar and spelling check</span>
-                    </li>
-                    <li className="flex items-start">
-                      <FaCheckCircle className="text-primary mr-3 mt-1 flex-shrink-0" />
-                      <span>Punctuation error detection</span>
-                    </li>
-                    <li className="flex items-start">
-                      <FaCheckCircle className="text-primary mr-3 mt-1 flex-shrink-0" />
-                      <span>Instant correction suggestions</span>
-                    </li>
-                    <li className="flex items-start">
-                      <FaCheckCircle className="text-primary mr-3 mt-1 flex-shrink-0" />
-                      <span>Error categorization and highlighting</span>
-                    </li>
-                    <li className="flex items-start">
-                      <FaCheckCircle className="text-primary mr-3 mt-1 flex-shrink-0" />
-                      <span>100% free - no API key required</span>
-                    </li>
-                    <li className="flex items-start">
-                      <FaCheckCircle className="text-primary mr-3 mt-1 flex-shrink-0" />
-                      <span>File upload support (TXT, DOC, DOCX)</span>
-                    </li>
-                    <li className="flex items-start">
-                      <FaCheckCircle className="text-primary mr-3 mt-1 flex-shrink-0" />
-                      <span>Export corrected text</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="tips" className="space-y-4">
-              <Card className="bg-card border border-border">
-                <CardContent className="p-4 space-y-3">
-                  <h3 className="font-semibold text-lg">Grammar Checking Tips</h3>
-                  <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
-                    <li>Always review suggested corrections before applying</li>
-                    <li>Check context - not all suggestions may be appropriate</li>
-                    <li>Use for essays, emails, articles, and professional writing</li>
-                    <li>Upload documents for batch checking</li>
-                    <li>Combine with spell checker for comprehensive review</li>
-                    <li>Read your text aloud after corrections</li>
-                    <li>Learn from repeated errors to improve your writing</li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="faq" className="space-y-4">
-              <Card className="bg-card border border-border">
-                <CardContent className="p-4 space-y-3">
-                  <h3 className="font-semibold text-lg">Frequently Asked Questions</h3>
-                  <div className="space-y-4 text-sm">
-                    <div>
-                      <p className="font-medium mb-1">Is this grammar checker really free?</p>
-                      <p className="text-muted-foreground">Yes! 100% free with no hidden costs or API keys needed. Powered by LanguageTool's free API.</p>
-                    </div>
-                    <div>
-                      <p className="font-medium mb-1">What types of errors does it detect?</p>
-                      <p className="text-muted-foreground">Grammar mistakes, spelling errors, punctuation issues, and style suggestions.</p>
-                    </div>
-                    <div>
-                      <p className="font-medium mb-1">Can I upload documents?</p>
-                      <p className="text-muted-foreground">Yes! Upload TXT, DOC, or DOCX files up to 10MB for instant checking.</p>
-                    </div>
-                    <div>
-                      <p className="font-medium mb-1">Is my text stored or shared?</p>
-                      <p className="text-muted-foreground">Your text is only saved locally in your browser. We don't store or share your content.</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+            <div className="lg:col-span-1">
+              <div className="lg:sticky lg:top-4">
+                <RelatedToolsSidebar currentTool="/grammar-checker" limit={5} />
+              </div>
+            </div>
+          </div>
 
         </div>
       </div>
