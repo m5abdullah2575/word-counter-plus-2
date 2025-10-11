@@ -37,20 +37,20 @@ export default function About() {
         
         {/* Stats Section */}
         <section className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-          <div className="text-center p-6 bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl border border-primary/20" data-testid="stat-free">
+          <div className="text-center p-6 bg-card rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow" data-testid="stat-free">
             <div className="text-3xl md:text-4xl font-bold text-primary mb-2">100%</div>
             <div className="text-sm md:text-base text-muted-foreground font-medium">Free Forever</div>
           </div>
-          <div className="text-center p-6 bg-gradient-to-br from-accent/5 to-accent/10 rounded-xl border border-accent/20" data-testid="stat-tools">
-            <div className="text-3xl md:text-4xl font-bold text-accent mb-2">9</div>
+          <div className="text-center p-6 bg-card rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow" data-testid="stat-tools">
+            <div className="text-3xl md:text-4xl font-bold text-primary mb-2">9</div>
             <div className="text-sm md:text-base text-muted-foreground font-medium">Specialized Tools</div>
           </div>
-          <div className="text-center p-6 bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl border border-primary/20" data-testid="stat-upload">
+          <div className="text-center p-6 bg-card rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow" data-testid="stat-upload">
             <div className="text-3xl md:text-4xl font-bold text-primary mb-2">10MB</div>
             <div className="text-sm md:text-base text-muted-foreground font-medium">Max File Upload</div>
           </div>
-          <div className="text-center p-6 bg-gradient-to-br from-accent/5 to-accent/10 rounded-xl border border-accent/20" data-testid="stat-countries">
-            <div className="text-3xl md:text-4xl font-bold text-accent mb-2">200+</div>
+          <div className="text-center p-6 bg-card rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow" data-testid="stat-countries">
+            <div className="text-3xl md:text-4xl font-bold text-primary mb-2">200+</div>
             <div className="text-sm md:text-base text-muted-foreground font-medium">Countries Served</div>
           </div>
         </section>
@@ -304,14 +304,14 @@ export default function About() {
         </section>
 
         {/* Call to Action */}
-        <section className="bg-gradient-to-r from-primary to-accent rounded-2xl p-8 md:p-12 text-center shadow-2xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4" data-testid="heading-cta">Ready to Improve Your Writing?</h2>
-          <p className="text-lg text-white/90 mb-8 max-w-3xl mx-auto" data-testid="text-cta">
+        <section className="bg-primary rounded-2xl p-8 md:p-12 text-center shadow-2xl">
+          <h2 className="text-3xl md:text-4xl font-bold text-primary-foreground mb-4" data-testid="heading-cta">Ready to Improve Your Writing?</h2>
+          <p className="text-lg text-primary-foreground/90 mb-8 max-w-3xl mx-auto" data-testid="text-cta">
             Access 9 professional text analysis tools—completely free, no registration required, unlimited usage. 
             Upload files, analyze content, export reports. Start creating better content today.
           </p>
           <Link href="/">
-            <button className="bg-white text-primary px-10 py-5 rounded-lg font-bold text-lg hover:bg-white/90 transition-all hover:scale-105 shadow-2xl" data-testid="button-start">
+            <button className="bg-background text-foreground px-10 py-5 rounded-lg font-bold text-lg hover:bg-background/90 transition-all hover:scale-105 shadow-2xl" data-testid="button-start">
               Start Analyzing Your Text - Free
             </button>
           </Link>
