@@ -1,21 +1,32 @@
 import { Link } from 'wouter';
 import { FaCopy, FaSync, FaClock, FaSort, FaCheck } from "@/components/common/Icons";
+import { 
+  FaSpellCheck, 
+  FaSearch, 
+  FaChartLine, 
+  FaMicrophone, 
+  FaFileAlt, 
+  FaRandom,
+  FaHashtag
+} from 'react-icons/fa';
 
 interface RelatedToolsSidebarProps {
-  currentTool?: string; // To highlight the current tool or exclude it from the list
+  currentTool?: string;
+  limit?: number;
 }
 
-export default function RelatedToolsSidebar({ currentTool }: RelatedToolsSidebarProps) {
-  // Define all related tools with their metadata
-  const relatedTools = [
+export default function RelatedToolsSidebar({ currentTool, limit = 5 }: RelatedToolsSidebarProps) {
+  // Define all tools with their metadata and categories
+  const allTools = [
     {
       href: "/",
       name: "Word Counter",
       description: "Count words & analyze text",
-      icon: FaCopy,
+      icon: FaHashtag,
       iconColor: "text-red-600 dark:text-red-400",
       bgColor: "bg-red-100 dark:bg-red-900/30",
-      testId: "link-word-counter"
+      testId: "link-word-counter",
+      category: "analysis"
     },
     {
       href: "/character-counter",
@@ -24,7 +35,78 @@ export default function RelatedToolsSidebar({ currentTool }: RelatedToolsSidebar
       icon: FaCopy,
       iconColor: "text-blue-600 dark:text-blue-400",
       bgColor: "bg-blue-100 dark:bg-blue-900/30",
-      testId: "link-character-counter"
+      testId: "link-character-counter",
+      category: "analysis"
+    },
+    {
+      href: "/grammar-checker",
+      name: "Grammar Checker",
+      description: "Fix grammar & spelling",
+      icon: FaSpellCheck,
+      iconColor: "text-purple-600 dark:text-purple-400",
+      bgColor: "bg-purple-100 dark:bg-purple-900/30",
+      testId: "link-grammar-checker",
+      category: "writing"
+    },
+    {
+      href: "/plagiarism-checker",
+      name: "Plagiarism Checker",
+      description: "Check content originality",
+      icon: FaSearch,
+      iconColor: "text-orange-600 dark:text-orange-400",
+      bgColor: "bg-orange-100 dark:bg-orange-900/30",
+      testId: "link-plagiarism-checker",
+      category: "writing"
+    },
+    {
+      href: "/readability-calculator",
+      name: "Readability Score",
+      description: "Check text readability",
+      icon: FaChartLine,
+      iconColor: "text-teal-600 dark:text-teal-400",
+      bgColor: "bg-teal-100 dark:bg-teal-900/30",
+      testId: "link-readability-calculator",
+      category: "analysis"
+    },
+    {
+      href: "/seo-content-analyzer",
+      name: "SEO Analyzer",
+      description: "Optimize content for SEO",
+      icon: FaChartLine,
+      iconColor: "text-indigo-600 dark:text-indigo-400",
+      bgColor: "bg-indigo-100 dark:bg-indigo-900/30",
+      testId: "link-seo-analyzer",
+      category: "seo"
+    },
+    {
+      href: "/speech-to-text",
+      name: "Speech to Text",
+      description: "Convert voice to text",
+      icon: FaMicrophone,
+      iconColor: "text-pink-600 dark:text-pink-400",
+      bgColor: "bg-pink-100 dark:bg-pink-900/30",
+      testId: "link-speech-to-text",
+      category: "conversion"
+    },
+    {
+      href: "/resume-cv-checker",
+      name: "Resume Checker",
+      description: "Analyze your resume",
+      icon: FaFileAlt,
+      iconColor: "text-cyan-600 dark:text-cyan-400",
+      bgColor: "bg-cyan-100 dark:bg-cyan-900/30",
+      testId: "link-resume-checker",
+      category: "writing"
+    },
+    {
+      href: "/random-word-generator",
+      name: "Word Generator",
+      description: "Generate random words",
+      icon: FaRandom,
+      iconColor: "text-yellow-600 dark:text-yellow-400",
+      bgColor: "bg-yellow-100 dark:bg-yellow-900/30",
+      testId: "link-word-generator",
+      category: "utility"
     },
     {
       href: "/text-case-convert",
@@ -33,12 +115,25 @@ export default function RelatedToolsSidebar({ currentTool }: RelatedToolsSidebar
       icon: FaSync,
       iconColor: "text-green-600 dark:text-green-400",
       bgColor: "bg-green-100 dark:bg-green-900/30",
-      testId: "link-text-case-converter"
+      testId: "link-text-case-converter",
+      category: "utility"
     }
   ];
 
-  // Filter out the current tool from both lists
-  const filteredRelatedTools = relatedTools.filter(tool => tool.href !== currentTool);
+  // Smart filtering: prioritize tools from the same category, then others
+  const currentToolData = allTools.find(tool => tool.href === currentTool);
+  const currentCategory = currentToolData?.category;
+  
+  const filteredRelatedTools = allTools
+    .filter(tool => tool.href !== currentTool)
+    .sort((a, b) => {
+      if (currentCategory) {
+        if (a.category === currentCategory && b.category !== currentCategory) return -1;
+        if (a.category !== currentCategory && b.category === currentCategory) return 1;
+      }
+      return 0;
+    })
+    .slice(0, limit);
 
   return (
     <div className="space-y-4 sm:space-y-6">
