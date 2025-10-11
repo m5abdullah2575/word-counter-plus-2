@@ -445,12 +445,9 @@ ${text}
           
           {/* Header Section */}
           <div className="text-center mb-8 md:mb-12">
-            <div className="flex flex-col sm:flex-row items-center justify-center mb-4 gap-3">
-              <FaShieldAlt className="text-3xl sm:text-4xl md:text-5xl text-primary" />
-              <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-foreground">
-                Plagiarism Checker
-              </h1>
-            </div>
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-foreground mb-4">
+              Plagiarism Checker
+            </h1>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto px-4">
               Advanced content originality scanner with deep analysis, source matching, and paraphrase detection
             </p>

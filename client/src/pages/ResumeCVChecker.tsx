@@ -305,11 +305,8 @@ export default function ResumeCVChecker() {
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="text-center mb-6 sm:mb-8 px-2">
-            <div className="flex items-center justify-center mb-3 sm:mb-4">
-              <FaBriefcase className="text-3xl sm:text-4xl md:text-5xl text-primary" />
-            </div>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 leading-tight">
-              AI-Powered Resume Analyzer & Salary Estimator
+              Resume Analyzer
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
               Get ATS scores, achievement analysis, salary estimates, buzzword alerts, and job title suggestions
