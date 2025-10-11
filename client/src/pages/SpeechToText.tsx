@@ -33,6 +33,7 @@ import {
 import { Link } from 'wouter';
 import useFileUpload from '@/hooks/useFileUpload';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 
 export default function SpeechToText() {
   const [text, setText] = useState('');
@@ -436,7 +437,7 @@ export default function SpeechToText() {
       
       {/* Centered Container with Max Width */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-        <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
+        <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
           {/* Tool Header */}
           <div className="text-center mb-4 sm:mb-8">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">
@@ -447,312 +448,324 @@ export default function SpeechToText() {
             </p>
           </div>
 
-          {/* Browser Support Alert */}
-          {!isBrowserSupported && (
-            <Alert className="border-orange-500 bg-orange-50 dark:bg-orange-950/20">
-              <FaExclamationTriangle className="h-4 w-4 text-orange-500" />
-              <AlertDescription className="text-sm text-orange-700 dark:text-orange-400">
-                Speech recognition is not supported in your browser. Please use Chrome, Edge, or Safari for the best experience.
-              </AlertDescription>
-            </Alert>
-          )}
-
-          {/* HTTPS Warning */}
-          {!isSecureContext && (
-            <Alert className="border-red-500 bg-red-50 dark:bg-red-950/20">
-              <FaExclamationTriangle className="h-4 w-4 text-red-500" />
-              <AlertDescription className="text-sm text-red-700 dark:text-red-400">
-                Speech recognition requires a secure connection (HTTPS). Please access this page via HTTPS to use this feature.
-              </AlertDescription>
-            </Alert>
-          )}
-
-          {/* Language Selection */}
-          <Card className="bg-card border border-border">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
-                <FaLanguage className="text-primary" />
-                Language Selection
-              </CardTitle>
-              <CardDescription>Choose the language for speech recognition</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Select value={selectedLanguage} onValueChange={setSelectedLanguage} disabled={isRecording}>
-                <SelectTrigger className="w-full" data-testid="select-language">
-                  <SelectValue placeholder="Select language" />
-                </SelectTrigger>
-                <SelectContent>
-                  {languages.map(lang => (
-                    <SelectItem key={lang.code} value={lang.code}>
-                      {lang.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </CardContent>
-          </Card>
-
-          {/* Recording Controls */}
-          <Card className="bg-card border border-border">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
-                <FaMicrophone className={`${isRecording ? 'text-red-500 animate-pulse' : 'text-primary'}`} />
-                Voice Recording
-              </CardTitle>
-              <CardDescription>
-                {isRecording ? (isPaused ? 'Recording paused' : 'Recording in progress...') : 'Click to start recording'}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Recording Time */}
-              {isRecording && (
-                <div className="flex items-center justify-center gap-2 p-4 bg-muted rounded-lg">
-                  <FaClock className="text-primary" />
-                  <span className="text-2xl font-mono font-bold">{formatTime(recordingTime)}</span>
-                </div>
+          {/* Grid Layout for Main Content and Sidebar */}
+          <div className="grid lg:grid-cols-3 gap-6">
+            {/* Main Content Area */}
+            <div className="lg:col-span-2 space-y-4 sm:space-y-6">
+              {/* Browser Support Alert */}
+              {!isBrowserSupported && (
+                <Alert className="border-orange-500 bg-orange-50 dark:bg-orange-950/20">
+                  <FaExclamationTriangle className="h-4 w-4 text-orange-500" />
+                  <AlertDescription className="text-sm text-orange-700 dark:text-orange-400">
+                    Speech recognition is not supported in your browser. Please use Chrome, Edge, or Safari for the best experience.
+                  </AlertDescription>
+                </Alert>
               )}
 
-              {/* Recording Buttons */}
-              <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                {!isRecording ? (
-                  <Button
-                    onClick={startRecording}
-                    disabled={!isBrowserSupported || !isSecureContext}
-                    className="w-full sm:w-auto sm:min-w-[140px]"
-                    data-testid="button-start-recording"
-                  >
-                    <FaMicrophone className="mr-2" />
-                    Start Recording
-                  </Button>
-                ) : (
-                  <>
-                    {isPaused ? (
+              {/* HTTPS Warning */}
+              {!isSecureContext && (
+                <Alert className="border-red-500 bg-red-50 dark:bg-red-950/20">
+                  <FaExclamationTriangle className="h-4 w-4 text-red-500" />
+                  <AlertDescription className="text-sm text-red-700 dark:text-red-400">
+                    Speech recognition requires a secure connection (HTTPS). Please access this page via HTTPS to use this feature.
+                  </AlertDescription>
+                </Alert>
+              )}
+
+              {/* Language Selection */}
+              <Card className="bg-card border border-border">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
+                    <FaLanguage className="text-primary" />
+                    Language Selection
+                  </CardTitle>
+                  <CardDescription>Choose the language for speech recognition</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Select value={selectedLanguage} onValueChange={setSelectedLanguage} disabled={isRecording}>
+                    <SelectTrigger className="w-full" data-testid="select-language">
+                      <SelectValue placeholder="Select language" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {languages.map(lang => (
+                        <SelectItem key={lang.code} value={lang.code}>
+                          {lang.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </CardContent>
+              </Card>
+
+              {/* Recording Controls */}
+              <Card className="bg-card border border-border">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
+                    <FaMicrophone className={`${isRecording ? 'text-red-500 animate-pulse' : 'text-primary'}`} />
+                    Voice Recording
+                  </CardTitle>
+                  <CardDescription>
+                    {isRecording ? (isPaused ? 'Recording paused' : 'Recording in progress...') : 'Click to start recording'}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Recording Time */}
+                  {isRecording && (
+                    <div className="flex items-center justify-center gap-2 p-4 bg-muted rounded-lg">
+                      <FaClock className="text-primary" />
+                      <span className="text-2xl font-mono font-bold">{formatTime(recordingTime)}</span>
+                    </div>
+                  )}
+
+                  {/* Recording Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                    {!isRecording ? (
                       <Button
-                        onClick={resumeRecording}
-                        variant="default"
-                        className="w-full sm:w-auto sm:min-w-[120px]"
-                        data-testid="button-resume-recording"
+                        onClick={startRecording}
+                        disabled={!isBrowserSupported || !isSecureContext}
+                        className="w-full sm:w-auto sm:min-w-[140px]"
+                        data-testid="button-start-recording"
                       >
-                        <FaPlay className="mr-2" />
-                        Resume
+                        <FaMicrophone className="mr-2" />
+                        Start Recording
                       </Button>
                     ) : (
-                      <Button
-                        onClick={pauseRecording}
-                        variant="secondary"
-                        className="w-full sm:w-auto sm:min-w-[120px]"
-                        data-testid="button-pause-recording"
-                      >
-                        <FaPause className="mr-2" />
-                        Pause
-                      </Button>
+                      <>
+                        {isPaused ? (
+                          <Button
+                            onClick={resumeRecording}
+                            variant="default"
+                            className="w-full sm:w-auto sm:min-w-[120px]"
+                            data-testid="button-resume-recording"
+                          >
+                            <FaPlay className="mr-2" />
+                            Resume
+                          </Button>
+                        ) : (
+                          <Button
+                            onClick={pauseRecording}
+                            variant="secondary"
+                            className="w-full sm:w-auto sm:min-w-[120px]"
+                            data-testid="button-pause-recording"
+                          >
+                            <FaPause className="mr-2" />
+                            Pause
+                          </Button>
+                        )}
+                        <Button
+                          onClick={stopRecording}
+                          variant="destructive"
+                          className="w-full sm:w-auto sm:min-w-[120px]"
+                          data-testid="button-stop-recording"
+                        >
+                          <FaStop className="mr-2" />
+                          Stop
+                        </Button>
+                      </>
                     )}
-                    <Button
-                      onClick={stopRecording}
-                      variant="destructive"
-                      className="w-full sm:w-auto sm:min-w-[120px]"
-                      data-testid="button-stop-recording"
-                    >
-                      <FaStop className="mr-2" />
-                      Stop
-                    </Button>
-                  </>
-                )}
-              </div>
+                  </div>
 
-              {/* Interim Results */}
-              {interimText && (
-                <div className="p-3 bg-muted rounded-lg">
-                  <p className="text-sm text-muted-foreground italic">
-                    {interimText}
-                  </p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                  {/* Interim Results */}
+                  {interimText && (
+                    <div className="p-3 bg-muted rounded-lg">
+                      <p className="text-sm text-muted-foreground italic">
+                        {interimText}
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
 
-          {/* Text Output Area */}
-          <Card className="bg-card border border-border">
-            <CardHeader className="pb-4">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                <CardTitle className="text-lg sm:text-xl">Transcribed Text</CardTitle>
-                <div className="flex gap-2 w-full sm:w-auto">
-                  <button 
-                    onClick={triggerFileUpload}
-                    disabled={isUploading || isRecording}
-                    className="flex-1 sm:flex-none px-3 py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    data-testid="button-upload-text"
-                    title="Upload text file"
-                  >
-                    <FaUpload className="inline mr-1" />
-                    {isUploading ? 'Uploading...' : 'Upload'}
-                  </button>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Textarea
-                id="textOutput"
-                placeholder="Your transcribed text will appear here..."
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                className="w-full min-h-[12rem] h-48 sm:h-64 md:h-72 p-3 sm:p-4 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-y transition-all text-sm sm:text-base"
-                data-testid="textarea-transcribed-text"
-              />
-              
-              <div className="grid grid-cols-3 gap-2">
-                <button 
-                  onClick={copyToClipboard}
-                  disabled={!text}
-                  className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-xs sm:text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
-                  data-testid="button-copy-text"
-                  title="Copy text to clipboard"
-                >
-                  <FaCopy className="text-sm" />
-                  <span>Copy</span>
-                </button>
-                <button 
-                  onClick={downloadText}
-                  disabled={!text}
-                  className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-xs sm:text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
-                  data-testid="button-download-text"
-                  title="Download as text file"
-                >
-                  <FaDownload className="text-sm" />
-                  <span>Download</span>
-                </button>
-                <button 
-                  onClick={clearText}
-                  disabled={!text}
-                  className="px-2 sm:px-3 py-2 bg-destructive text-destructive-foreground rounded text-xs sm:text-sm hover:bg-destructive/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
-                  data-testid="button-clear-text"
-                  title="Clear all text"
-                >
-                  <FaEraser className="text-sm" />
-                  <span>Clear</span>
-                </button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Text Statistics */}
-          <Tabs defaultValue="basic" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="basic" data-testid="tab-basic-stats" className="text-xs sm:text-sm">Basic Stats</TabsTrigger>
-              <TabsTrigger value="detailed" data-testid="tab-detailed-stats" className="text-xs sm:text-sm">Detailed</TabsTrigger>
-              <TabsTrigger value="reading" data-testid="tab-reading-stats" className="text-xs sm:text-sm">Reading Time</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="basic" className="space-y-4">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-                <Card className="bg-card border border-border">
-                  <CardContent className="p-3 sm:p-4 text-center">
-                    <FaHashtag className="mx-auto mb-2 text-primary text-xl sm:text-2xl" />
-                    <p className="text-xl sm:text-2xl font-bold text-foreground" data-testid="stat-characters">{stats.charactersWithSpaces.toLocaleString()}</p>
-                    <p className="text-xs text-muted-foreground">Characters</p>
-                  </CardContent>
-                </Card>
-                <Card className="bg-card border border-border">
-                  <CardContent className="p-3 sm:p-4 text-center">
-                    <FaFont className="mx-auto mb-2 text-primary text-xl sm:text-2xl" />
-                    <p className="text-xl sm:text-2xl font-bold text-foreground" data-testid="stat-words">{stats.words.toLocaleString()}</p>
-                    <p className="text-xs text-muted-foreground">Words</p>
-                  </CardContent>
-                </Card>
-                <Card className="bg-card border border-border">
-                  <CardContent className="p-3 sm:p-4 text-center">
-                    <FaListOl className="mx-auto mb-2 text-primary text-xl sm:text-2xl" />
-                    <p className="text-xl sm:text-2xl font-bold text-foreground" data-testid="stat-sentences">{stats.sentences.toLocaleString()}</p>
-                    <p className="text-xs text-muted-foreground">Sentences</p>
-                  </CardContent>
-                </Card>
-                <Card className="bg-card border border-border">
-                  <CardContent className="p-3 sm:p-4 text-center">
-                    <FaParagraph className="mx-auto mb-2 text-primary text-xl sm:text-2xl" />
-                    <p className="text-xl sm:text-2xl font-bold text-foreground" data-testid="stat-paragraphs">{stats.paragraphs.toLocaleString()}</p>
-                    <p className="text-xs text-muted-foreground">Paragraphs</p>
-                  </CardContent>
-                </Card>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="detailed" className="space-y-4">
+              {/* Text Output Area */}
               <Card className="bg-card border border-border">
-                <CardContent className="p-4 space-y-3">
-                  <div className="flex justify-between items-center pb-2 border-b border-border">
-                    <span className="text-sm text-muted-foreground">Characters (with spaces)</span>
-                    <span className="font-semibold text-foreground" data-testid="detail-chars-with-spaces">{stats.charactersWithSpaces.toLocaleString()}</span>
+                <CardHeader className="pb-4">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <CardTitle className="text-lg sm:text-xl">Transcribed Text</CardTitle>
+                    <div className="flex gap-2 w-full sm:w-auto">
+                      <button 
+                        onClick={triggerFileUpload}
+                        disabled={isUploading || isRecording}
+                        className="flex-1 sm:flex-none px-3 py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        data-testid="button-upload-text"
+                        title="Upload text file"
+                      >
+                        <FaUpload className="inline mr-1" />
+                        {isUploading ? 'Uploading...' : 'Upload'}
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex justify-between items-center pb-2 border-b border-border">
-                    <span className="text-sm text-muted-foreground">Characters (without spaces)</span>
-                    <span className="font-semibold text-foreground" data-testid="detail-chars-without-spaces">{stats.charactersWithoutSpaces.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-2 border-b border-border">
-                    <span className="text-sm text-muted-foreground">Lines</span>
-                    <span className="font-semibold text-foreground" data-testid="detail-lines">{stats.lines.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-2 border-b border-border">
-                    <span className="text-sm text-muted-foreground">Average words per sentence</span>
-                    <span className="font-semibold text-foreground" data-testid="detail-avg-words-sentence">{stats.averageWordsPerSentence}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Average characters per word</span>
-                    <span className="font-semibold text-foreground" data-testid="detail-avg-chars-word">{stats.averageCharsPerWord}</span>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Textarea
+                    id="textOutput"
+                    placeholder="Your transcribed text will appear here..."
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    className="w-full min-h-[12rem] h-48 sm:h-64 md:h-72 p-3 sm:p-4 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-y transition-all text-sm sm:text-base"
+                    data-testid="textarea-transcribed-text"
+                  />
+                  
+                  <div className="grid grid-cols-3 gap-2">
+                    <button 
+                      onClick={copyToClipboard}
+                      disabled={!text}
+                      className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-xs sm:text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
+                      data-testid="button-copy-text"
+                      title="Copy text to clipboard"
+                    >
+                      <FaCopy className="text-sm" />
+                      <span>Copy</span>
+                    </button>
+                    <button 
+                      onClick={downloadText}
+                      disabled={!text}
+                      className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-xs sm:text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
+                      data-testid="button-download-text"
+                      title="Download as text file"
+                    >
+                      <FaDownload className="text-sm" />
+                      <span>Download</span>
+                    </button>
+                    <button 
+                      onClick={clearText}
+                      disabled={!text}
+                      className="px-2 sm:px-3 py-2 bg-destructive text-destructive-foreground rounded text-xs sm:text-sm hover:bg-destructive/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
+                      data-testid="button-clear-text"
+                      title="Clear all text"
+                    >
+                      <FaEraser className="text-sm" />
+                      <span>Clear</span>
+                    </button>
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
 
-            <TabsContent value="reading" className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Card className="bg-card border border-border">
-                  <CardContent className="p-4 text-center">
-                    <FaClock className="mx-auto mb-3 text-primary text-3xl" />
-                    <p className="text-3xl font-bold text-foreground mb-1" data-testid="reading-time">{stats.readingTime}</p>
-                    <p className="text-sm text-muted-foreground">min reading time</p>
-                    <p className="text-xs text-muted-foreground mt-2">(~200 words/min)</p>
-                  </CardContent>
-                </Card>
-                <Card className="bg-card border border-border">
-                  <CardContent className="p-4 text-center">
-                    <FaClock className="mx-auto mb-3 text-primary text-3xl" />
-                    <p className="text-3xl font-bold text-foreground mb-1" data-testid="speaking-time">{stats.speakingTime}</p>
-                    <p className="text-sm text-muted-foreground">min speaking time</p>
-                    <p className="text-xs text-muted-foreground mt-2">(~150 words/min)</p>
-                  </CardContent>
-                </Card>
+              {/* Text Statistics */}
+              <Tabs defaultValue="basic" className="w-full">
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="basic" data-testid="tab-basic-stats" className="text-xs sm:text-sm">Basic Stats</TabsTrigger>
+                  <TabsTrigger value="detailed" data-testid="tab-detailed-stats" className="text-xs sm:text-sm">Detailed</TabsTrigger>
+                  <TabsTrigger value="reading" data-testid="tab-reading-stats" className="text-xs sm:text-sm">Reading Time</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="basic" className="space-y-4">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+                    <Card className="bg-card border border-border">
+                      <CardContent className="p-3 sm:p-4 text-center">
+                        <FaHashtag className="mx-auto mb-2 text-primary text-xl sm:text-2xl" />
+                        <p className="text-xl sm:text-2xl font-bold text-foreground" data-testid="stat-characters">{stats.charactersWithSpaces.toLocaleString()}</p>
+                        <p className="text-xs text-muted-foreground">Characters</p>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-card border border-border">
+                      <CardContent className="p-3 sm:p-4 text-center">
+                        <FaFont className="mx-auto mb-2 text-primary text-xl sm:text-2xl" />
+                        <p className="text-xl sm:text-2xl font-bold text-foreground" data-testid="stat-words">{stats.words.toLocaleString()}</p>
+                        <p className="text-xs text-muted-foreground">Words</p>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-card border border-border">
+                      <CardContent className="p-3 sm:p-4 text-center">
+                        <FaListOl className="mx-auto mb-2 text-primary text-xl sm:text-2xl" />
+                        <p className="text-xl sm:text-2xl font-bold text-foreground" data-testid="stat-sentences">{stats.sentences.toLocaleString()}</p>
+                        <p className="text-xs text-muted-foreground">Sentences</p>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-card border border-border">
+                      <CardContent className="p-3 sm:p-4 text-center">
+                        <FaParagraph className="mx-auto mb-2 text-primary text-xl sm:text-2xl" />
+                        <p className="text-xl sm:text-2xl font-bold text-foreground" data-testid="stat-paragraphs">{stats.paragraphs.toLocaleString()}</p>
+                        <p className="text-xs text-muted-foreground">Paragraphs</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="detailed" className="space-y-4">
+                  <Card className="bg-card border border-border">
+                    <CardContent className="p-4 space-y-3">
+                      <div className="flex justify-between items-center pb-2 border-b border-border">
+                        <span className="text-sm text-muted-foreground">Characters (with spaces)</span>
+                        <span className="font-semibold text-foreground" data-testid="detail-chars-with-spaces">{stats.charactersWithSpaces.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between items-center pb-2 border-b border-border">
+                        <span className="text-sm text-muted-foreground">Characters (without spaces)</span>
+                        <span className="font-semibold text-foreground" data-testid="detail-chars-without-spaces">{stats.charactersWithoutSpaces.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between items-center pb-2 border-b border-border">
+                        <span className="text-sm text-muted-foreground">Lines</span>
+                        <span className="font-semibold text-foreground" data-testid="detail-lines">{stats.lines.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between items-center pb-2 border-b border-border">
+                        <span className="text-sm text-muted-foreground">Average words per sentence</span>
+                        <span className="font-semibold text-foreground" data-testid="detail-avg-words-sentence">{stats.averageWordsPerSentence}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">Average characters per word</span>
+                        <span className="font-semibold text-foreground" data-testid="detail-avg-chars-word">{stats.averageCharsPerWord}</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="reading" className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <Card className="bg-card border border-border">
+                      <CardContent className="p-4 text-center">
+                        <FaClock className="mx-auto mb-3 text-primary text-3xl" />
+                        <p className="text-3xl font-bold text-foreground mb-1" data-testid="reading-time">{stats.readingTime}</p>
+                        <p className="text-sm text-muted-foreground">min reading time</p>
+                        <p className="text-xs text-muted-foreground mt-2">(~200 words/min)</p>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-card border border-border">
+                      <CardContent className="p-4 text-center">
+                        <FaClock className="mx-auto mb-3 text-primary text-3xl" />
+                        <p className="text-3xl font-bold text-foreground mb-1" data-testid="speaking-time">{stats.speakingTime}</p>
+                        <p className="text-sm text-muted-foreground">min speaking time</p>
+                        <p className="text-xs text-muted-foreground mt-2">(~150 words/min)</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </TabsContent>
+              </Tabs>
+
+              {/* How to Use */}
+              <Card className="bg-card border border-border">
+                <CardHeader>
+                  <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
+                    <FaInfoCircle className="text-primary" />
+                    How to Use Speech to Text
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
+                    <li>Select your preferred language from the dropdown</li>
+                    <li>Click "Start Recording" and allow microphone access when prompted</li>
+                    <li>Speak clearly into your microphone</li>
+                    <li>Your speech will be transcribed in real-time</li>
+                    <li>Use Pause/Resume to control recording</li>
+                    <li>Click "Stop" when finished</li>
+                    <li>Copy, download, or edit your transcribed text</li>
+                  </ol>
+                  
+                  <Alert className="border-blue-500 bg-blue-50 dark:bg-blue-950/20 mt-4">
+                    <FaInfoCircle className="h-4 w-4 text-blue-500" />
+                    <AlertDescription className="text-sm text-blue-700 dark:text-blue-400">
+                      <strong>Privacy Note:</strong> Speech recognition happens directly in your browser. Your audio is not sent to any servers.
+                    </AlertDescription>
+                  </Alert>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Sidebar */}
+            <div className="lg:col-span-1">
+              <div className="lg:sticky lg:top-4">
+                <RelatedToolsSidebar currentTool="/speech-to-text" limit={5} />
               </div>
-            </TabsContent>
-          </Tabs>
-
-          {/* How to Use */}
-          <Card className="bg-card border border-border">
-            <CardHeader>
-              <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
-                <FaInfoCircle className="text-primary" />
-                How to Use Speech to Text
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
-                <li>Select your preferred language from the dropdown</li>
-                <li>Click "Start Recording" and allow microphone access when prompted</li>
-                <li>Speak clearly into your microphone</li>
-                <li>Your speech will be transcribed in real-time</li>
-                <li>Use Pause/Resume to control recording</li>
-                <li>Click "Stop" when finished</li>
-                <li>Copy, download, or edit your transcribed text</li>
-              </ol>
-              
-              <Alert className="border-blue-500 bg-blue-50 dark:bg-blue-950/20 mt-4">
-                <FaInfoCircle className="h-4 w-4 text-blue-500" />
-                <AlertDescription className="text-sm text-blue-700 dark:text-blue-400">
-                  <strong>Privacy Note:</strong> Speech recognition happens directly in your browser. Your audio is not sent to any servers.
-                </AlertDescription>
-              </Alert>
-            </CardContent>
-          </Card>
-
+            </div>
+          </div>
         </div>
       </div>
     </main>

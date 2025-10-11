@@ -977,22 +977,21 @@ export default function CharacterCounter() {
               </article>
             </div>
           </div>
-        </div>
-        {/* End Main Content Area */}
+            </div>
+            {/* End Main Content Area */}
 
-        {/* Related Tools Sidebar */}
-        <div className="lg:col-span-1">
-          <div className="lg:sticky lg:top-4">
-            <RelatedToolsSidebar currentTool="/character-counter" limit={5} />
+            {/* Related Tools Sidebar */}
+            <div className="lg:col-span-1">
+              <div className="lg:sticky lg:top-4">
+                <RelatedToolsSidebar currentTool="/character-counter" limit={5} />
+              </div>
+            </div>
           </div>
+          {/* End Grid Layout */}
         </div>
       </div>
-      {/* End Grid Layout */}
-
-      </div>
-    </div>
-    {/* Hidden file input */}
-    <FileInput />
+      {/* Hidden file input */}
+      <FileInput />
     </main>
   );
 }

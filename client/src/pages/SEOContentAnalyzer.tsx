@@ -9,6 +9,7 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Upload, FileText, Search, TrendingUp, CheckCircle, AlertCircle, Target, Zap, Share2, Image as ImageIcon, HelpCircle, Link as LinkIcon } from 'lucide-react';
 import { FaChartLine, FaSearch, FaBullseye, FaCheckCircle, FaLightbulb, FaChartBar, FaTwitter, FaFacebook } from 'react-icons/fa';
+import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 
 export default function SEOContentAnalyzer() {
   const [text, setText] = useState('');
@@ -334,7 +335,7 @@ export default function SEOContentAnalyzer() {
     <>
       {/* Main Tool Section */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="text-center mb-6 sm:mb-8 px-2">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 leading-tight">
@@ -345,8 +346,10 @@ export default function SEOContentAnalyzer() {
             </p>
           </div>
 
-          {/* Main Card */}
-          <Card className="shadow-lg border-2 mb-6">
+          <div className="grid lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              {/* Main Card */}
+              <Card className="shadow-lg border-2 mb-6">
             <CardHeader>
               <CardTitle>Content & Keyword Settings</CardTitle>
               <CardDescription>
@@ -783,6 +786,12 @@ export default function SEOContentAnalyzer() {
               )}
             </CardContent>
           </Card>
+            </div>
+
+            <div className="lg:col-span-1 lg:sticky lg:top-4 self-start">
+              <RelatedToolsSidebar currentTool="/seo-content-analyzer" limit={5} />
+            </div>
+          </div>
         </div>
       </section>
 
