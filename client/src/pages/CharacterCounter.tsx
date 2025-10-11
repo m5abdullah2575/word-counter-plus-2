@@ -36,6 +36,7 @@ import {
 } from 'react-icons/fa';
 import { Link } from 'wouter';
 import useFileUpload from '@/hooks/useFileUpload';
+import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 
 export default function CharacterCounter() {
   const [text, setText] = useState('');
@@ -416,7 +417,7 @@ export default function CharacterCounter() {
     <main className="min-h-screen bg-background">
       {/* Centered Container with Max Width */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-        <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
+        <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
           {/* Tool Header */}
           <div className="text-center mb-4 sm:mb-8">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">
@@ -427,14 +428,18 @@ export default function CharacterCounter() {
             </p>
           </div>
 
-          {/* File Information Display */}
+          {/* Main Grid Layout with Sidebar */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Main Content Area */}
+            <div className="lg:col-span-2 space-y-4 sm:space-y-6">
+              {/* File Information Display */}
 
-          {/* Text Input Area */}
-          <div className="bg-card rounded-lg p-3 sm:p-6 shadow-sm border border-border">
-            <div className="mb-4">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
-                <label htmlFor="textInput" className="text-base sm:text-lg font-semibold text-foreground">Enter Your Text</label>
-                <div className="flex gap-2 w-full sm:w-auto">
+              {/* Text Input Area */}
+              <div className="bg-card rounded-lg p-3 sm:p-6 shadow-sm border border-border">
+                <div className="mb-4">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
+                    <label htmlFor="textInput" className="text-base sm:text-lg font-semibold text-foreground">Enter Your Text</label>
+                    <div className="flex gap-2 w-full sm:w-auto">
                   {/* Upload Button */}
                   <button 
                     onClick={triggerFileUpload}
@@ -972,11 +977,22 @@ export default function CharacterCounter() {
               </article>
             </div>
           </div>
+        </div>
+        {/* End Main Content Area */}
 
+        {/* Related Tools Sidebar */}
+        <div className="lg:col-span-1">
+          <div className="lg:sticky lg:top-4">
+            <RelatedToolsSidebar currentTool="/character-counter" limit={5} />
+          </div>
         </div>
       </div>
-      {/* Hidden file input */}
-      <FileInput />
-    </main>
+      {/* End Grid Layout */}
+
+    </div>
+  </div>
+  {/* Hidden file input */}
+  <FileInput />
+</main>
   );
 }
