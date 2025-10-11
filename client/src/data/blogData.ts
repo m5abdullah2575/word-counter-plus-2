@@ -7,6 +7,7 @@ import { wordsPerPageBlogs } from './blogs/words-per-page-blogs';
 import { plagiarismCheckerBlogs } from './blogs/plagiarism-checker-blogs';
 import { resumeCVBlogs } from './blogs/resume-cv-blogs';
 import { seoContentAnalyzerBlogs } from './blogs/seo-content-analyzer-blogs';
+import { brokenLinkBlogs } from './blogs/broken-link-blogs';
 
 export interface BlogPost {
   id: string;
@@ -2942,7 +2943,9 @@ const allCombinedBlogPosts = [
   ...wordsPerPageBlogs,
   ...plagiarismCheckerBlogs,
   ...resumeCVBlogs,
-  ...seoContentAnalyzerBlogs
+  ...seoContentAnalyzerBlogs,
+  // Broken link replacement blogs
+  ...brokenLinkBlogs
 ];
 
 // Export sorted by date (newest first) without mutating original
