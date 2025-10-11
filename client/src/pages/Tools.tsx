@@ -83,38 +83,40 @@ export default function Tools() {
             </p>
           </div>
 
-          {/* All Tools Grid - Responsive for all devices */}
-          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 xs:gap-4 sm:gap-5 md:gap-6 max-w-7xl mx-auto">
+          {/* All Tools Grid - Compact mobile, card-style desktop */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2 sm:gap-4 md:gap-5 lg:gap-6 max-w-7xl mx-auto">
             {allTools.map((tool) => {
               const IconComponent = tool.icon;
               const isComingSoon = tool.isComingSoon;
               
               const cardContent = (
-                <Card className={`relative group transition-all duration-300 bg-card border-2 border-border rounded-xl overflow-hidden h-full ${
+                <Card className={`relative group transition-all duration-300 bg-card border border-border rounded-lg sm:rounded-xl overflow-hidden h-full ${
                   isComingSoon 
                     ? 'opacity-60 cursor-not-allowed' 
-                    : 'hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer hover:border-primary/50 active:scale-95'
+                    : 'hover:shadow-xl hover:shadow-primary/10 sm:hover:-translate-y-2 cursor-pointer hover:border-primary/50 active:scale-[0.98]'
                 }`}>
-                  <CardHeader className="text-center p-3 xs:p-4 sm:p-5 md:p-6 h-full flex flex-col justify-between items-center">
+                  {/* Mobile: Horizontal Layout */}
+                  <CardHeader className="p-3 sm:p-5 md:p-6 h-full flex sm:flex-col flex-row sm:justify-between sm:items-center items-start gap-3 sm:gap-0">
                     
-                    <div className="flex-1 flex flex-col justify-center items-center">
-                      {/* Icon Container with enhanced hover effect */}
-                      <div className="flex justify-center mb-2 xs:mb-3 sm:mb-4">
-                        <div className={`p-2 xs:p-3 sm:p-4 rounded-xl transition-all duration-300 ${
+                    {/* Icon - Left on mobile, top on desktop */}
+                    <div className="flex-shrink-0 sm:mb-3 md:mb-4">
+                      <div className={`p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl transition-all duration-300 ${
+                        isComingSoon 
+                          ? 'bg-muted' 
+                          : 'bg-gradient-to-br from-primary/10 to-primary/5 group-hover:from-primary/20 group-hover:to-primary/10 sm:group-hover:scale-110 sm:group-hover:rotate-3'
+                      }`}>
+                        <IconComponent className={`text-2xl sm:text-2xl md:text-3xl transition-all duration-300 ${
                           isComingSoon 
-                            ? 'bg-muted' 
-                            : 'bg-gradient-to-br from-primary/10 to-primary/5 group-hover:from-primary/20 group-hover:to-primary/10 group-hover:scale-110 group-hover:rotate-3'
-                        }`}>
-                          <IconComponent className={`text-xl xs:text-2xl sm:text-3xl transition-all duration-300 ${
-                            isComingSoon 
-                              ? 'text-muted-foreground' 
-                              : 'text-primary group-hover:scale-110 group-hover:text-primary'
-                          }`} />
-                        </div>
+                            ? 'text-muted-foreground' 
+                            : 'text-primary sm:group-hover:scale-110'
+                        }`} />
                       </div>
-                      
-                      {/* Title with better responsive sizing */}
-                      <CardTitle className={`text-xs xs:text-sm sm:text-base md:text-lg font-bold mb-1 xs:mb-2 leading-tight transition-colors duration-300 ${
+                    </div>
+                    
+                    {/* Text Content - Right on mobile, center on desktop */}
+                    <div className="flex-1 sm:flex-initial sm:text-center text-left min-w-0">
+                      {/* Title */}
+                      <CardTitle className={`text-sm sm:text-base md:text-lg font-bold mb-1 sm:mb-2 leading-tight transition-colors duration-300 ${
                         isComingSoon 
                           ? 'text-muted-foreground' 
                           : 'text-foreground group-hover:text-primary'
@@ -122,8 +124,8 @@ export default function Tools() {
                         {tool.title}
                       </CardTitle>
                       
-                      {/* Description with better line clamping */}
-                      <CardDescription className={`text-xs sm:text-sm leading-relaxed line-clamp-2 sm:line-clamp-3 transition-colors duration-300 ${
+                      {/* Description - Hidden on mobile, visible on tablet+ */}
+                      <CardDescription className={`hidden sm:block text-xs sm:text-sm leading-relaxed line-clamp-2 sm:line-clamp-3 transition-colors duration-300 ${
                         isComingSoon 
                           ? 'text-muted-foreground/70' 
                           : 'text-muted-foreground group-hover:text-foreground/80'
@@ -139,9 +141,9 @@ export default function Tools() {
                       </div>
                     )}
 
-                    {/* Hover Shine Effect */}
+                    {/* Hover Shine Effect - Desktop only */}
                     {!isComingSoon && (
-                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                      <div className="hidden sm:block absolute inset-0 bg-gradient-to-tr from-transparent via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                     )}
                   </CardHeader>
                 </Card>
@@ -149,7 +151,7 @@ export default function Tools() {
 
               if (isComingSoon) {
                 return (
-                  <div key={tool.id} data-testid={`tool-${tool.id}`} className="h-[240px]">
+                  <div key={tool.id} data-testid={`tool-${tool.id}`} className="h-auto sm:h-[200px] md:h-[240px]">
                     {cardContent}
                   </div>
                 );
@@ -162,7 +164,7 @@ export default function Tools() {
                     href={tool.href} 
                     data-testid={`link-tool-${tool.id}`}
                     rel="noopener noreferrer"
-                    className="block h-[240px]"
+                    className="block h-auto sm:h-[200px] md:h-[240px]"
                   >
                     {cardContent}
                   </a>
@@ -170,7 +172,7 @@ export default function Tools() {
               } else {
                 return (
                   <Link key={tool.id} href={tool.href} data-testid={`link-tool-${tool.id}`}>
-                    <div className="block h-[240px]">
+                    <div className="block h-auto sm:h-[200px] md:h-[240px]">
                       {cardContent}
                     </div>
                   </Link>
