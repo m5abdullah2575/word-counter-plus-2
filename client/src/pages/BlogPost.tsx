@@ -91,13 +91,17 @@ export default function BlogPost() {
     }
   };
 
+  const fullImageUrl = post.image 
+    ? `https://wordcounterplusapp.com${post.image}` 
+    : `https://wordcounterplusapp.com/og-image.png`;
+
   useSEO({
     title: `${post.title} | Word Counter Plus Blog`,
     description: post.excerpt,
     keywords: `${post.tags.join(', ')}, writing tips, content creation, word counter, text analysis`,
     canonical: `https://wordcounterplusapp.com/blog/${post.slug}`,
     ogType: 'article',
-    ogImage: post.image ? `https://wordcounterplusapp.com${post.image}` : 'https://wordcounterplusapp.com/og-image.png',
+    ogImage: fullImageUrl,
     twitterCard: 'summary_large_image',
     author: 'Word Counter Plus Team',
     siteName: 'Word Counter Plus',
