@@ -26,6 +26,7 @@ import {
   FaExclamationCircle
 } from 'react-icons/fa';
 import useFileUpload from '@/hooks/useFileUpload';
+import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 
 interface PlagiarismMatch {
   text: string;
@@ -441,7 +442,7 @@ ${text}
       <FileInput />
       
       <div className="container mx-auto px-4 py-8 md:py-16">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           
           {/* Header Section */}
           <div className="text-center mb-8 md:mb-12">
@@ -621,11 +622,7 @@ ${text}
                   </CardContent>
                 </Card>
               )}
-            </div>
 
-            {/* Right Column - Results */}
-            <div className="space-y-6">
-              
               {/* Originality Score */}
               {result && (
                 <>
@@ -883,6 +880,13 @@ ${text}
                   </CardContent>
                 </Card>
               )}
+            </div>
+
+            {/* Right Column - Sidebar */}
+            <div className="lg:col-span-1">
+              <div className="lg:sticky lg:top-4">
+                <RelatedToolsSidebar currentTool="/plagiarism-checker" limit={5} />
+              </div>
             </div>
           </div>
 
