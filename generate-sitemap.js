@@ -17,13 +17,18 @@ function getStaticPages() {
     { url: '/seo-content-analyzer', priority: 0.95, changefreq: 'weekly' },
     { url: '/plagiarism-checker', priority: 0.95, changefreq: 'weekly' },
     { url: '/resume-cv-checker', priority: 0.95, changefreq: 'weekly' },
+    { url: '/grammar-checker', priority: 0.95, changefreq: 'weekly' },
     
     { url: '/tools', priority: 0.9, changefreq: 'weekly' },
     { url: '/character-counter', priority: 0.9, changefreq: 'weekly' },
     { url: '/text-case-convert', priority: 0.9, changefreq: 'weekly' },
+    { url: '/text-case-converter', priority: 0.9, changefreq: 'weekly' },
     { url: '/word-frequency-counter', priority: 0.85, changefreq: 'weekly' },
     { url: '/random-word-generator', priority: 0.85, changefreq: 'weekly' },
     { url: '/words-per-page', priority: 0.85, changefreq: 'weekly' },
+    { url: '/speech-to-text', priority: 0.85, changefreq: 'weekly' },
+    { url: '/readability-calculator', priority: 0.85, changefreq: 'weekly' },
+    { url: '/text-compare', priority: 0.85, changefreq: 'weekly' },
     
     { url: '/about', priority: 0.8, changefreq: 'monthly' },
     { url: '/blog', priority: 0.8, changefreq: 'daily' },
@@ -85,12 +90,21 @@ Allow: /
 Allow: /seo-content-analyzer
 Allow: /plagiarism-checker
 Allow: /resume-cv-checker
+Allow: /grammar-checker
 Allow: /character-counter
 Allow: /text-case-convert
+Allow: /text-case-converter
 Allow: /word-frequency-counter
 Allow: /random-word-generator
 Allow: /words-per-page
+Allow: /speech-to-text
+Allow: /readability-calculator
+Allow: /text-compare
 Allow: /blog
+Allow: /tools
+Allow: /about
+Allow: /contact
+Allow: /faq
 
 Disallow: /admin/
 Disallow: /api/
