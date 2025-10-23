@@ -12,7 +12,6 @@ import webp from "imagemin-webp";
 const r = (...segments: string[]) => path.resolve(process.cwd(), ...segments);
 
 export default defineConfig({
-  base: '/',
   plugins: [
     react({
       jsxRuntime: 'automatic',
@@ -60,33 +59,18 @@ export default defineConfig({
     target: "esnext", // ✅ modern browsers only
     cssCodeSplit: true,
     sourcemap: false,
-    minify: "esbuild",
-    cssMinify: 'lightningcss',
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Core vendor (React)
           if (id.includes("react") || id.includes("react-dom")) return "vendor";
-          // Router
           if (id.includes("wouter")) return "routing";
-          // Query client
           if (id.includes("@tanstack/react-query")) return "query";
-          // UI framework core
           if (id.includes("@radix-ui") && (id.includes("slot") || id.includes("primitive"))) return "ui-core";
-          // Heavy libs - keep separate for lazy loading
-          if (id.includes("jspdf")) return "pdf";
-          if (id.includes("pdfjs-dist")) return "pdf-reader";
-          if (id.includes("mammoth") || id.includes("docxtemplater")) return "docx";
-          if (id.includes("recharts")) return "charts";
-          if (id.includes("framer-motion")) return "motion";
-          // Icons - separate chunk
-          if (id.includes("lucide-react") || id.includes("react-icons")) return "icons";
-          // Utils
+          if (id.includes("jspdf") || id.includes("html2canvas") || id.includes("recharts") || id.includes("framer-motion")) return null;
+          if (id.includes("lucide-react")) return "icons";
           if (id.includes("clsx") || id.includes("tailwind-merge")) return "utils";
-          // Forms
           if (id.includes("react-hook-form") || id.includes("@hookform/resolvers") || id.includes("zod")) return "form";
-          // UI components - lazy load
-          if (id.includes("@radix-ui") || id.includes("input-otp") || id.includes("react-day-picker") || id.includes("embla-carousel")) return "ui-components";
+          if (id.includes("@radix-ui") || id.includes("input-otp") || id.includes("react-day-picker") || id.includes("embla-carousel")) return null;
         },
         chunkFileNames: "js/[name]-[hash].js",
         entryFileNames: "js/[name]-[hash].js",
@@ -103,9 +87,19 @@ export default defineConfig({
         unknownGlobalSideEffects: false,
       },
     },
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: process.env.NODE_ENV === "production",
+        drop_debugger: true,
+        pure_funcs: ["console.log", "console.info", "console.debug", "console.trace"],
+        passes: 2,
+      },
+      mangle: true, // ✅ modern, no safari10 legacy fix
+      format: { comments: false },
+    },
     reportCompressedSize: true,
     chunkSizeWarningLimit: 1000,
-    assetsInlineLimit: 4096, // Inline assets smaller than 4KB
   },
 
   server: {
@@ -118,7 +112,7 @@ export default defineConfig({
   },
 
   optimizeDeps: {
-    include: ["react", "react-dom", "wouter", "@tanstack/react-query", "recharts"],
+    include: ["react", "react-dom", "wouter", "@tanstack/react-query"],
     exclude: ["@replit/vite-plugin-cartographer"],
     esbuildOptions: {
       target: "esnext", // ✅ force modern deps

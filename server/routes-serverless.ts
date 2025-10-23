@@ -6,6 +6,9 @@ import { fileURLToPath } from 'url';
 import { Resend } from 'resend';
 import { getFirestore } from './firebase';
 import { insertContactMessageSchema } from '../shared/schema';
+import dotenv from "dotenv";
+dotenv.config();
+
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;

@@ -4,6 +4,9 @@ import helmet from "helmet";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { initializeFirebase } from "./firebase";
+import dotenv from "dotenv";
+dotenv.config();
+
 
 const app = express();
 
@@ -105,7 +108,7 @@ app.use("/api", (req, res, next) => {
   }
 
   // Fixed port for Replit environment - must use 5000 for frontend
-  const DEFAULT_PORT = parseInt(process.env.PORT || "5000", 10);
+  const DEFAULT_PORT = parseInt(process.env.PORT || "5005", 10);
 
   const startServer = (port: number) => {
     const listener = server.listen(
