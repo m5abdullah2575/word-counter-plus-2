@@ -156,7 +156,7 @@ A: Absolutely! We're constantly improving based on user feedback. Firefox and Ed
 ---
 
 **About the Author:** This extension was built by the Word Counter Plus team, dedicated to creating free, privacy-focused writing tools that help people communicate better.`,
-    publishDate: "2025-10-21",
+    publishDate: "2025-10-24",
     readTime: "8 min read",
     tags: ["Chrome Extension", "Product Launch", "Writing Tools", "Privacy", "Productivity"],
     slug: "chrome-extension-launch-announcement",
@@ -336,7 +336,7 @@ A: Currently, Firefox extensions on mobile have limited support. We recommend us
 ---
 
 **About the Extension:** Word Counter Plus for Firefox was built with the same privacy-first philosophy that Firefox users love. Every feature works offline, and your data never leaves your device.`,
-    publishDate: "2025-10-21",
+    publishDate: "2025-10-24",
     readTime: "7 min read",
     tags: ["Firefox Extension", "Product Launch", "Writing Tools", "Privacy", "Mozilla"],
     slug: "firefox-extension-launch-announcement",
