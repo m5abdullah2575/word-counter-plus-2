@@ -98,8 +98,8 @@ export default function About() {
           "featureList": "Word Counter, Character Counter, Plagiarism Checker, SEO Analyzer, Grammar Checker, Readability Calculator, Text Case Converter, File Upload Support, Export Tools",
           "aggregateRating": {
             "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "ratingCount": "50000"
+            "ratingValue": 4.8,
+            "ratingCount": 50000
           }
         })
       }} />

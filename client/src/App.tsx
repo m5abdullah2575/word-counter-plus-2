@@ -43,6 +43,7 @@ const NotFound = lazy(() => import("@/pages/not-found"));
 const Extension = lazy(() => import("@/pages/Extension"));
 const HelpUs = lazy(() => import("@/pages/HelpUs"));
 const LoadingDemo = lazy(() => import("@/pages/LoadingDemo"));
+const Admin = lazy(() => import("@/pages/Admin"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -92,6 +93,7 @@ function Router() {
             <Route path="/cookies" component={Cookies} />
             <Route path="/help-us" component={HelpUs} />
             <Route path="/loading-demo" component={LoadingDemo} />
+            <Route path="/admin" component={Admin} />
           </>
         )}
         
@@ -128,6 +130,7 @@ function Router() {
             <Route path="/cookies" component={Cookies} />
             <Route path="/help-us" component={HelpUs} />
             <Route path="/loading-demo" component={LoadingDemo} />
+            <Route path="/admin" component={Admin} />
           </>
         )}
         

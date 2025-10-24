@@ -90,10 +90,10 @@ export default function SpeechToText() {
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "ratingCount": "2,156",
-      "bestRating": "5",
-      "worstRating": "1"
+      "ratingValue": 4.9,
+      "ratingCount": 2156,
+      "bestRating": 5,
+      "worstRating": 1
     },
     "featureList": [
       "Real-time speech recognition",

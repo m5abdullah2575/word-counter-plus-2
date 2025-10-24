@@ -135,10 +135,10 @@ export default function WordsPerPage() {
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "2,891",
-      "bestRating": "5",
-      "worstRating": "1"
+      "ratingValue": 4.8,
+      "ratingCount": 2891,
+      "bestRating": 5,
+      "worstRating": 1
     },
     "featureList": [
       "Words to pages conversion",

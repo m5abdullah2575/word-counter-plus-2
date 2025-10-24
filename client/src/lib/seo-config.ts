@@ -42,11 +42,11 @@ export const getWordCounterSEO = (): SEOConfig => {
       "isFamilyFriendly": true,
       "aggregateRating": {
         "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "ratingCount": "2847",
-        "bestRating": "5",
-        "worstRating": "1",
-        "reviewCount": "2847"
+        "ratingValue": 4.9,
+        "ratingCount": 2847,
+        "bestRating": 5,
+        "worstRating": 1,
+        "reviewCount": 2847
       },
       "offers": {
         "@type": "Offer",
@@ -173,10 +173,10 @@ export const getTextCaseSEO = (): SEOConfig => {
       "isFamilyFriendly": true,
       "aggregateRating": {
         "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "ratingCount": "4,567",
-        "bestRating": "5",
-        "worstRating": "1"
+        "ratingValue": 4.9,
+        "ratingCount": 4567,
+        "bestRating": 5,
+        "worstRating": 1
       },
       "offers": {
         "@type": "Offer",

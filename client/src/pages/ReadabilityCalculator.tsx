@@ -62,10 +62,10 @@ export default function ReadabilityCalculator() {
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "ratingCount": "3,482",
-      "bestRating": "5",
-      "worstRating": "1"
+      "ratingValue": 4.9,
+      "ratingCount": 3482,
+      "bestRating": 5,
+      "worstRating": 1
     },
     "featureList": [
       "Flesch Reading Ease Score (0-100)",

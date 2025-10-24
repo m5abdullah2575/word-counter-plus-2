@@ -75,10 +75,10 @@ export default function CharacterCounter() {
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "3,247",
-      "bestRating": "5",
-      "worstRating": "1"
+      "ratingValue": 4.8,
+      "ratingCount": 3247,
+      "bestRating": 5,
+      "worstRating": 1
     },
     "featureList": [
       "Character counting with/without spaces",

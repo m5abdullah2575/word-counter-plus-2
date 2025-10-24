@@ -22,10 +22,10 @@ export default function WordFrequencyCounterPage() {
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "ratingCount": "1,856",
-      "bestRating": "5",
-      "worstRating": "1"
+      "ratingValue": 4.9,
+      "ratingCount": 1856,
+      "bestRating": 5,
+      "worstRating": 1
     },
     "featureList": [
       "Count word frequency and occurrences",

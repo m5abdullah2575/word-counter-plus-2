@@ -91,10 +91,10 @@ export default function PlagiarismChecker() {
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "ratingCount": "1,428",
-      "bestRating": "5",
-      "worstRating": "1"
+      "ratingValue": 4.9,
+      "ratingCount": 1428,
+      "bestRating": 5,
+      "worstRating": 1
     },
     "offers": {
       "@type": "Offer",

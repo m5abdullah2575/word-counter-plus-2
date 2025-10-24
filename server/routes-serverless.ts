@@ -1,11 +1,13 @@
 import type { Express } from "express";
 import { Octokit } from '@octokit/rest';
+import { desc } from 'drizzle-orm';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { Resend } from 'resend';
 import { getFirestore } from './firebase';
-import { insertContactMessageSchema } from '../shared/schema';
+import { db } from './db';
+import { contactMessages, insertContactMessageSchema } from '../shared/schema';
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -360,22 +362,14 @@ Sitemap: ${SITE_URL}/sitemap.xml
   app.post('/api/contact', async (req, res) => {
     try {
       const validatedData = insertContactMessageSchema.parse(req.body);
-      const firestore = getFirestore();
+      
+      // Save to PostgreSQL
+      const [newMessage] = await db
+        .insert(contactMessages)
+        .values(validatedData)
+        .returning();
 
-      if (!firestore) {
-        return res.status(503).json({ 
-          success: false, 
-          message: 'Firebase Firestore is not configured. Please contact the administrator.' 
-        });
-      }
-
-      const contactData = {
-        ...validatedData,
-        createdAt: new Date().toISOString(),
-      };
-
-      const docRef = await firestore.collection('contactMessages').add(contactData);
-
+      // Optional: Send email notification
       if (resend && process.env.CONTACT_EMAIL) {
         await resend.emails.send({
           from: 'onboarding@resend.dev',
@@ -397,7 +391,7 @@ Sitemap: ${SITE_URL}/sitemap.xml
       res.json({ 
         success: true, 
         message: 'Your message has been sent successfully!',
-        id: docRef.id 
+        id: newMessage.id 
       });
 
     } catch (error: any) {
@@ -416,6 +410,29 @@ Sitemap: ${SITE_URL}/sitemap.xml
         message: 'Failed to send message. Please try again.',
         error: error.message 
       });
+    }
+  });
+
+  app.get('/api/contact-messages', async (req, res) => {
+    try {
+      // Simple authentication
+      const authHeader = req.headers.authorization;
+      const expectedPassword = process.env.ADMIN_PASSWORD || 'changeme123';
+      
+      if (authHeader !== `Bearer ${expectedPassword}`) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+
+      const messages = await db
+        .select()
+        .from(contactMessages)
+        .orderBy(desc(contactMessages.createdAt))
+        .limit(100);
+
+      res.json(messages);
+    } catch (error: any) {
+      console.error('Error fetching messages:', error);
+      res.status(500).json({ error: 'Failed to fetch messages', details: error.message });
     }
   });
 }

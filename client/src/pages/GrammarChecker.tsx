@@ -89,10 +89,10 @@ export default function GrammarChecker() {
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "ratingCount": "8,543",
-      "bestRating": "5",
-      "worstRating": "1"
+      "ratingValue": 4.9,
+      "ratingCount": 8543,
+      "bestRating": 5,
+      "worstRating": 1
     },
     "featureList": [
       "Real-time grammar checking",

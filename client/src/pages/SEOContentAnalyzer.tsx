@@ -36,10 +36,10 @@ export default function SEOContentAnalyzer() {
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "856",
-      "bestRating": "5",
-      "worstRating": "1"
+      "ratingValue": 4.8,
+      "ratingCount": 856,
+      "bestRating": 5,
+      "worstRating": 1
     },
     "offers": {
       "@type": "Offer",

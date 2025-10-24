@@ -156,10 +156,10 @@ export default function RandomWordGenerator() {
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.7",
-      "ratingCount": "1,234",
-      "bestRating": "5",
-      "worstRating": "1"
+      "ratingValue": 4.7,
+      "ratingCount": 1234,
+      "bestRating": 5,
+      "worstRating": 1
     },
     "featureList": [
       "Generate random words",

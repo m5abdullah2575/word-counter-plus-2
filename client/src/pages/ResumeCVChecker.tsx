@@ -33,10 +33,10 @@ export default function ResumeCVChecker() {
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "ratingCount": "2,341",
-      "bestRating": "5",
-      "worstRating": "1"
+      "ratingValue": 4.9,
+      "ratingCount": 2341,
+      "bestRating": 5,
+      "worstRating": 1
     },
     "offers": {
       "@type": "Offer",

@@ -80,10 +80,10 @@ export default function TextCompare() {
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "ratingCount": "6,234",
-      "bestRating": "5",
-      "worstRating": "1"
+      "ratingValue": 4.9,
+      "ratingCount": 6234,
+      "bestRating": 5,
+      "worstRating": 1
     },
     "featureList": [
       "Side-by-side text comparison",
