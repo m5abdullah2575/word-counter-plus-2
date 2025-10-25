@@ -1,10 +1,27 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
-import { contactMessages, insertContactMessageSchema, type InsertContactMessage } from '../shared/schema';
+import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 import { Resend } from 'resend';
+import { z } from 'zod';
 
 const { Pool } = pg;
+
+const contactMessages = pgTable("contact_messages", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  subject: text("subject").notNull(),
+  message: text("message").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+const insertContactMessageSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  subject: z.string(),
+  message: z.string(),
+});
 
 let pool: pg.Pool | null = null;
 
@@ -30,7 +47,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     
     const [newMessage] = await db
       .insert(contactMessages)
-      .values(validatedData as InsertContactMessage)
+      .values({
+        name: validatedData.name,
+        email: validatedData.email,
+        subject: validatedData.subject,
+        message: validatedData.message,
+      })
       .returning();
 
     if (resend && process.env.CONTACT_EMAIL) {
