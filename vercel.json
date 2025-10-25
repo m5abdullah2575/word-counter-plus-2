@@ -1,41 +1,55 @@
-{
-  "version": 2,
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist/public",
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Robots-Tag",
-          "value": "index, follow"
-        },
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        }
-      ]
-    }
-  ],
-  "redirects": [
-    {
-      "source": "/text-case-converter/(.*)",
-      "destination": "/text-case-converter",
-      "permanent": true
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
-}
+	
+version	2
+builds	
+0	
+src	"package.json"
+use	"@vercel/static-build"
+config	
+distDir	"dist/public"
+headers	
+0	
+source	"/(.*)"
+headers	
+0	
+key	"X-Robots-Tag"
+value	"index, follow"
+1	
+key	"X-Content-Type-Options"
+value	"nosniff"
+2	
+key	"X-Frame-Options"
+value	"SAMEORIGIN"
+3	
+key	"Referrer-Policy"
+value	"strict-origin-when-cross-origin"
+1	
+source	"/(.*).ico"
+headers	
+0	
+key	"X-Robots-Tag"
+value	"noindex, nofollow"
+2	
+source	"/manifest.json"
+headers	
+0	
+key	"X-Robots-Tag"
+value	"noindex, nofollow"
+3	
+source	"/sw.js"
+headers	
+0	
+key	"X-Robots-Tag"
+value	"noindex, nofollow"
+redirects	
+0	
+source	"/text-case-converter/(.*)"
+destination	"/text-case-converter"
+permanent	true
+1	
+source	"/text-case"
+destination	"/text-case-converter"
+permanent	true
+rewrites	
+0	
+source	"/(.*)"
+destination	"/index.html"
