@@ -386,8 +386,8 @@ export default function Extension() {
               <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
                 <img
                   src={
-                    /* @vite-ignore */ new URL(
-                      "@assets/extension-analyze-tab.png",
+                    new URL(
+                      "/images/extension-analyze-tab.png",
                       import.meta.url,
                     ).href
                   }
@@ -404,8 +404,8 @@ export default function Extension() {
               <div className="order-1 flex justify-center lg:justify-start">
                 <img
                   src={
-                    /* @vite-ignore */ new URL(
-                      "@assets/extension-keywords-tab.png",
+                    new URL(
+                      "/images/extension-keywords-tab.png",
                       import.meta.url,
                     ).href
                   }
@@ -484,8 +484,8 @@ export default function Extension() {
               <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
                 <img
                   src={
-                    /* @vite-ignore */ new URL(
-                      "@assets/extension-advanced-tab.png",
+                    new URL(
+                      "/images/extension-advanced-tab.png",
                       import.meta.url,
                     ).href
                   }
@@ -502,7 +502,7 @@ export default function Extension() {
               <div className="order-1 flex justify-center lg:justify-start">
                 <img
                   src={
-                    /* @vite-ignore */ new URL("@assets/extension-tools-tab.png", import.meta.url)
+                    new URL("/images/extension-tools-tab.png", import.meta.url)
                       .href
                   }
                   alt="Extension Tools Tab showing text transformation tools"
@@ -585,8 +585,8 @@ export default function Extension() {
               <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
                 <img
                   src={
-                    /* @vite-ignore */ new URL(
-                      "@assets/extension-history-tab.png",
+                    new URL(
+                      "/images/extension-history-tab.png",
                       import.meta.url,
                     ).href
                   }

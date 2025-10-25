@@ -30,11 +30,6 @@
       "source": "/text-case-converter/(.*)",
       "destination": "/text-case-converter",
       "permanent": true
-    },
-    {
-      "source": "/text-case",
-      "destination": "/text-case-converter",
-      "permanent": true
     }
   ],
   "rewrites": [

@@ -9,7 +9,11 @@ import {
   FaHashtag,
   FaPenFancy,
   FaTextHeight,
-  FaBookReader
+  FaBookReader,
+  FaFont,
+  FaListOl,
+  FaParagraph,
+  FaAlignLeft
 } from 'react-icons/fa';
 
 interface RelatedToolsSidebarProps {
@@ -118,6 +122,46 @@ export default function RelatedToolsSidebar({ currentTool, limit = 5 }: RelatedT
       iconColor: "text-red-600 dark:text-red-400",
       bgColor: "bg-red-100 dark:bg-red-900/30",
       testId: "link-text-case-converter",
+      category: "utility"
+    },
+    {
+      href: "/letter-counter",
+      name: "Letter Counter",
+      description: "Letter Counter",
+      icon: FaFont,
+      iconColor: "text-red-600 dark:text-red-400",
+      bgColor: "bg-red-100 dark:bg-red-900/30",
+      testId: "link-word-generator",
+      category: "utility"
+    },
+    {
+      href: "/sentence-counter",
+      name: "Sentence Counter",
+      description: "Sentence Counter",
+      icon: FaListOl,
+      iconColor: "text-red-600 dark:text-red-400",
+      bgColor: "bg-red-100 dark:bg-red-900/30",
+      testId: "link-word-generator",
+      category: "utility"
+    },
+    {
+      href: "/paragraph-counter",
+      name: "Paragraph Counter",
+      description: "Paragraph Counter",
+      icon: FaParagraph,
+      iconColor: "text-red-600 dark:text-red-400",
+      bgColor: "bg-red-100 dark:bg-red-900/30",
+      testId: "link-word-generator",
+      category: "utility"
+    },
+    {
+      href: "/line-counter",
+      name: "Line Counter",
+      description: "Line Counter",
+      icon: FaAlignLeft,
+      iconColor: "text-red-600 dark:text-red-400",
+      bgColor: "bg-red-100 dark:bg-red-900/30",
+      testId: "link-word-generator",
       category: "utility"
     }
   ];

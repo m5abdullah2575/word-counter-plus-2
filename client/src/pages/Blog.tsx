@@ -154,7 +154,7 @@ export default function Blog() {
                     ))}
                   </div>
                   <h2 className="text-2xl font-bold text-foreground mb-3 hover:text-primary transition-colors">
-                    <Link href={`/blog/${post.slug}?from=page-${currentPage}`}>
+                    <Link href={`/blog/${post.slug}`}>
                       <span>{post.title}</span>
                     </Link>
                   </h2>
@@ -176,7 +176,7 @@ export default function Blog() {
                     <span>{post.readTime}</span>
                   </div>
                   
-                  <Link href={`/blog/${post.slug}?from=page-${currentPage}`}>
+                  <Link href={`/blog/${post.slug}`}>
                     <span className="inline-flex items-center text-primary hover:text-primary/80 font-medium">
                       Read More
                       <FaArrowRight className="ml-2" aria-label="Right Arrow Icon" />
