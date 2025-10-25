@@ -35,7 +35,7 @@ localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 34011
+localPort = 5005
 externalPort = 8000
 
 [[ports]]
@@ -96,5 +96,5 @@ externalPort = 6000
 
 [deployment]
 deploymentTarget = "autoscale"
-run = ["node", "dist/index.js"]
-build = ["bash", "-c", "npm run build && node build-server.js && npx tsx generate-sitemap.js"]
+run = ["npm", "run", "start"]
+build = ["npm", "run", "build"]
