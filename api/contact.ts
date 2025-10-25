@@ -1,16 +1,22 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
-import { contactMessages, insertContactMessageSchema } from '../shared/schema';
+import { contactMessages, insertContactMessageSchema, type InsertContactMessage } from '../shared/schema';
 import { Resend } from 'resend';
 
 const { Pool } = pg;
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+let pool: pg.Pool | null = null;
 
-const db = drizzle(pool);
+function getPool() {
+  if (!pool) {
+    pool = new Pool({
+      connectionString: process.env.DATABASE_URL,
+    });
+  }
+  return pool;
+}
+
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -19,11 +25,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
+    const db = drizzle(getPool());
     const validatedData = insertContactMessageSchema.parse(req.body);
     
     const [newMessage] = await db
       .insert(contactMessages)
-      .values(validatedData)
+      .values(validatedData as InsertContactMessage)
       .returning();
 
     if (resend && process.env.CONTACT_EMAIL) {
