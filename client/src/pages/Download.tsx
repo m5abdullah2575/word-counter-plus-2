@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
+import jsPDF from 'jspdf';
 import { 
   FaDownload, 
   FaFileAlt, 
@@ -17,35 +18,25 @@ import {
   FaArrowLeft,
   FaPrint,
   FaShare,
-  FaCopy,
   FaEdit,
-  FaHistory,
-  FaTrash,
   FaFileWord,
-  FaClock,
   FaTools,
   FaShieldAlt,
-  FaChartBar
+  FaChartBar,
+  FaGoogleDrive,
+  FaDropbox,
+  FaCloud
 } from 'react-icons/fa';
+import { SiBox } from 'react-icons/si';
 import { useToast } from '@/hooks/use-toast';
 import { 
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-
-interface DownloadHistoryItem {
-  filename: string;
-  fileType: string;
-  fileSize: string;
-  timestamp: number;
-  id: string;
-}
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Download() {
   const [, setLocation] = useLocation();
@@ -61,8 +52,6 @@ export default function Download() {
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [customFilename, setCustomFilename] = useState('');
   const [isEditingFilename, setIsEditingFilename] = useState(false);
-  const [downloadHistory, setDownloadHistory] = useState<DownloadHistoryItem[]>([]);
-  const [showClearHistoryDialog, setShowClearHistoryDialog] = useState(false);
   const [activeTab, setActiveTab] = useState('download');
 
   useEffect(() => {
@@ -80,16 +69,6 @@ export default function Download() {
           description: "Failed to load download data.",
           variant: "destructive"
         });
-      }
-    }
-
-    // Load download history
-    const history = localStorage.getItem('downloadHistory');
-    if (history) {
-      try {
-        setDownloadHistory(JSON.parse(history));
-      } catch (error) {
-        console.error('Error loading history:', error);
       }
     }
   }, [toast]);
@@ -132,13 +111,12 @@ export default function Download() {
     return { words, characters, charactersNoSpaces, lines, paragraphs, sentences };
   };
 
-  const handleDownload = async () => {
+  const handleDownload = async (format?: string) => {
     if (!fileData) return;
 
     setDownloading(true);
     setDownloadProgress(0);
 
-    // Simulate download progress
     const progressInterval = setInterval(() => {
       setDownloadProgress(prev => {
         if (prev >= 90) {
@@ -149,47 +127,102 @@ export default function Download() {
       });
     }, 100);
 
-    // Ensure filename has correct extension
-    let finalFilename = customFilename || fileData.filename;
-    
-    // If the filename doesn't have an extension, add the original file type
-    if (!finalFilename.includes('.')) {
-      finalFilename = `${finalFilename}.${fileData.fileType}`;
-    }
-    
-    const blob = new Blob([fileData.content], { type: fileData.mimeType });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = finalFilename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    try {
+      let finalFilename = customFilename || fileData.filename;
+      
+      if (format === 'pdf') {
+        // Generate actual PDF using jsPDF
+        if (!finalFilename.toLowerCase().endsWith('.pdf')) {
+          finalFilename = finalFilename.replace(/\.[^.]+$/, '') + '.pdf';
+        }
+        
+        const pdf = new jsPDF();
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const margin = 15;
+        const maxLineWidth = pageWidth - (margin * 2);
+        
+        // Add title
+        pdf.setFontSize(16);
+        pdf.text(finalFilename.replace('.pdf', ''), margin, margin);
+        
+        // Add content
+        pdf.setFontSize(11);
+        const lines = pdf.splitTextToSize(fileData.content, maxLineWidth);
+        let yPosition = margin + 10;
+        
+        for (let i = 0; i < lines.length; i++) {
+          if (yPosition > pageHeight - margin) {
+            pdf.addPage();
+            yPosition = margin;
+          }
+          pdf.text(lines[i], margin, yPosition);
+          yPosition += 6;
+        }
+        
+        pdf.save(finalFilename);
+      } else if (format === 'txt') {
+        if (!finalFilename.toLowerCase().endsWith('.txt')) {
+          finalFilename = finalFilename.replace(/\.[^.]+$/, '') + '.txt';
+        }
+        const blob = new Blob([fileData.content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = finalFilename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } else if (format === 'csv') {
+        if (!finalFilename.toLowerCase().endsWith('.csv')) {
+          finalFilename = finalFilename.replace(/\.[^.]+$/, '') + '.csv';
+        }
+        const blob = new Blob([fileData.content], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = finalFilename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } else {
+        // Original format
+        if (!finalFilename.includes('.')) {
+          finalFilename = `${finalFilename}.${fileData.fileType}`;
+        }
+        const blob = new Blob([fileData.content], { type: fileData.mimeType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = finalFilename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
 
-    setDownloadProgress(100);
-    setTimeout(() => {
+      setDownloadProgress(100);
+      setTimeout(() => {
+        setDownloading(false);
+        setDownloaded(true);
+
+        toast({
+          title: "Download Complete",
+          description: `${finalFilename} has been downloaded successfully.`,
+        });
+      }, 500);
+    } catch (error) {
+      clearInterval(progressInterval);
       setDownloading(false);
-      setDownloaded(true);
-      
-      // Add to history
-      const historyItem: DownloadHistoryItem = {
-        filename: finalFilename,
-        fileType: fileData.fileType,
-        fileSize: getFileSize(),
-        timestamp: Date.now(),
-        id: Date.now().toString()
-      };
-      
-      const newHistory = [historyItem, ...downloadHistory].slice(0, 10);
-      setDownloadHistory(newHistory);
-      localStorage.setItem('downloadHistory', JSON.stringify(newHistory));
-
+      console.error('Download error:', error);
       toast({
-        title: "Download Complete",
-        description: `${finalFilename} has been downloaded successfully.`,
+        title: "Download Failed",
+        description: "There was an error generating your file. Please try again.",
+        variant: "destructive"
       });
-    }, 500);
+    }
   };
 
   const handlePrint = () => {
@@ -226,17 +259,6 @@ export default function Download() {
     });
   };
 
-  const handleCopyContent = () => {
-    if (!fileData) return;
-    
-    navigator.clipboard.writeText(fileData.content).then(() => {
-      toast({
-        title: "Copied!",
-        description: "File content copied to clipboard.",
-      });
-    });
-  };
-
   const handleShare = () => {
     if (!fileData) return;
 
@@ -257,35 +279,11 @@ export default function Download() {
     }
   };
 
-  const clearHistory = () => {
-    setDownloadHistory([]);
-    localStorage.removeItem('downloadHistory');
-    setShowClearHistoryDialog(false);
+  const handleCloudSave = (service: string) => {
     toast({
-      title: "History Cleared",
-      description: "Download history has been cleared.",
+      title: `Save to ${service}`,
+      description: `${service} integration is being set up. Please connect your account to save files.`,
     });
-  };
-
-  const removeHistoryItem = (id: string) => {
-    const newHistory = downloadHistory.filter(item => item.id !== id);
-    setDownloadHistory(newHistory);
-    localStorage.setItem('downloadHistory', JSON.stringify(newHistory));
-  };
-
-  const formatDate = (timestamp: number) => {
-    const date = new Date(timestamp);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
-
-    if (diffMins < 1) return 'Just now';
-    if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
-    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
-    if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
-    return date.toLocaleDateString();
   };
 
   const getRelatedTools = () => {
@@ -344,7 +342,7 @@ export default function Download() {
         </Button>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:w-auto lg:inline-grid">
+          <TabsList className="grid w-full grid-cols-2 lg:w-auto lg:inline-grid">
             <TabsTrigger value="download" className="gap-2" data-testid="tab-download">
               <FaDownload className="w-4 h-4" />
               <span>Download</span>
@@ -352,10 +350,6 @@ export default function Download() {
             <TabsTrigger value="analytics" className="gap-2" data-testid="tab-analytics">
               <FaChartBar className="w-4 h-4" />
               <span>Analytics</span>
-            </TabsTrigger>
-            <TabsTrigger value="history" className="gap-2" data-testid="tab-history">
-              <FaHistory className="w-4 h-4" />
-              <span>History</span>
             </TabsTrigger>
           </TabsList>
 
@@ -370,7 +364,7 @@ export default function Download() {
                     Download Your File
                   </CardTitle>
                   <CardDescription>
-                    Your file is ready. Choose your preferred format and download options below.
+                    Your file is ready. Download, print, or save to cloud storage.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="pt-6">
@@ -452,8 +446,9 @@ export default function Download() {
                       </div>
                     )}
 
-                    {/* Download Button */}
-                    <div className="w-full max-w-md">
+                    {/* Download Options */}
+                    <div className="w-full max-w-md space-y-3">
+                      {/* Primary Download Button */}
                       <Button
                         onClick={() => handleDownload()}
                         size="lg"
@@ -462,14 +457,86 @@ export default function Download() {
                         data-testid="button-download-file"
                       >
                         <FaDownload className="mr-2" />
-                        {downloading ? 'Downloading...' : 'Download Now'}
+                        {downloading ? 'Downloading...' : 'Download File'}
                       </Button>
+
+                      {/* Format Options */}
+                      <div className="grid grid-cols-3 gap-2">
+                        <Button
+                          onClick={() => handleDownload('pdf')}
+                          variant="outline"
+                          disabled={downloading}
+                          data-testid="button-download-pdf"
+                          className="flex-col h-auto py-3"
+                        >
+                          <FaFilePdf className="w-5 h-5 mb-1 text-red-500" />
+                          <span className="text-xs">PDF</span>
+                        </Button>
+                        <Button
+                          onClick={() => handleDownload('txt')}
+                          variant="outline"
+                          disabled={downloading}
+                          data-testid="button-download-txt"
+                          className="flex-col h-auto py-3"
+                        >
+                          <FaFileAlt className="w-5 h-5 mb-1 text-blue-500" />
+                          <span className="text-xs">TXT</span>
+                        </Button>
+                        <Button
+                          onClick={() => handleDownload('csv')}
+                          variant="outline"
+                          disabled={downloading}
+                          data-testid="button-download-csv"
+                          className="flex-col h-auto py-3"
+                        >
+                          <FaFileCsv className="w-5 h-5 mb-1 text-green-500" />
+                          <span className="text-xs">CSV</span>
+                        </Button>
+                      </div>
+
+                      {/* Save to Cloud */}
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="secondary"
+                            className="w-full"
+                            data-testid="button-save-cloud"
+                          >
+                            <FaCloud className="mr-2" />
+                            Save to Cloud Storage
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-56">
+                          <DropdownMenuLabel>Choose a service</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem onClick={() => handleCloudSave('Google Drive')} data-testid="cloud-google-drive">
+                            <FaGoogleDrive className="mr-2 w-4 h-4" />
+                            Google Drive
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleCloudSave('Dropbox')} data-testid="cloud-dropbox">
+                            <FaDropbox className="mr-2 w-4 h-4" />
+                            Dropbox
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleCloudSave('OneDrive')} data-testid="cloud-onedrive">
+                            <FaCloud className="mr-2 w-4 h-4" />
+                            OneDrive
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleCloudSave('Box')} data-testid="cloud-box">
+                            <SiBox className="mr-2 w-4 h-4" />
+                            Box
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleCloudSave('iCloud')} data-testid="cloud-icloud">
+                            <FaCloud className="mr-2 w-4 h-4" />
+                            iCloud Drive
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
 
                     <Separator />
 
                     {/* Action Buttons */}
-                    <div className="w-full max-w-md grid grid-cols-3 gap-2">
+                    <div className="w-full max-w-md grid grid-cols-2 gap-2">
                       <Button
                         onClick={handlePrint}
                         variant="outline"
@@ -478,15 +545,6 @@ export default function Download() {
                       >
                         <FaPrint className="w-5 h-5 mb-1" />
                         <span className="text-xs">Print</span>
-                      </Button>
-                      <Button
-                        onClick={handleCopyContent}
-                        variant="outline"
-                        className="flex-col h-auto py-3"
-                        data-testid="button-copy"
-                      >
-                        <FaCopy className="w-5 h-5 mb-1" />
-                        <span className="text-xs">Copy</span>
                       </Button>
                       <Button
                         onClick={handleShare}
@@ -499,18 +557,41 @@ export default function Download() {
                       </Button>
                     </div>
 
-                    {/* File Preview */}
+                    {/* File Preview - iLovePDF Style */}
                     <div className="w-full">
-                      <Card className="bg-muted/30">
-                        <CardHeader className="pb-3">
-                          <CardTitle className="text-sm font-semibold">File Preview</CardTitle>
+                      <Card className="border-2 shadow-md">
+                        <CardHeader className="bg-muted/30 border-b">
+                          <div className="flex items-center justify-between">
+                            <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                              <FaFileAlt className="w-4 h-4 text-primary" />
+                              Document Preview
+                            </CardTitle>
+                            <Badge variant="outline" className="text-xs">
+                              {getFileSize()}
+                            </Badge>
+                          </div>
                         </CardHeader>
-                        <CardContent>
-                          <div className="max-h-64 overflow-y-auto text-sm text-muted-foreground font-mono bg-background p-4 rounded border" data-testid="text-file-preview">
-                            {fileData.content.substring(0, 1000)}
-                            {fileData.content.length > 1000 && (
-                              <span className="text-primary">... (truncated)</span>
-                            )}
+                        <CardContent className="pt-4">
+                          <div className="bg-white dark:bg-gray-900 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-6">
+                            <div className="max-h-96 overflow-y-auto">
+                              <div className="prose prose-sm dark:prose-invert max-w-none">
+                                <pre className="whitespace-pre-wrap break-words text-sm font-mono bg-gray-50 dark:bg-gray-800 p-4 rounded" data-testid="text-file-preview">
+{fileData.content}
+                                </pre>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <FaFileAlt className="w-3 h-3" />
+                              {analytics?.lines.toLocaleString()} lines
+                            </span>
+                            <span>
+                              {analytics?.characters.toLocaleString()} characters
+                            </span>
+                            <span>
+                              {analytics?.words.toLocaleString()} words
+                            </span>
                           </div>
                         </CardContent>
                       </Card>
@@ -690,113 +771,8 @@ export default function Download() {
               </CardContent>
             </Card>
           </TabsContent>
-
-          {/* History Tab */}
-          <TabsContent value="history" className="space-y-6">
-            <Card className="shadow-lg">
-              <CardHeader className="border-b">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-2xl font-bold flex items-center gap-2">
-                      <FaHistory className="text-primary" />
-                      Download History
-                    </CardTitle>
-                    <CardDescription>
-                      Your recent downloads (last 10)
-                    </CardDescription>
-                  </div>
-                  {downloadHistory.length > 0 && (
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => setShowClearHistoryDialog(true)}
-                      data-testid="button-clear-history"
-                    >
-                      <FaTrash className="mr-2" />
-                      Clear All
-                    </Button>
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent className="pt-6">
-                {downloadHistory.length === 0 ? (
-                  <div className="text-center py-12">
-                    <FaClock className="w-16 h-16 mx-auto text-muted-foreground/30 mb-4" />
-                    <h3 className="text-lg font-semibold mb-2">No Download History</h3>
-                    <p className="text-muted-foreground">
-                      Your download history will appear here
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {downloadHistory.map((item) => (
-                      <Card key={item.id} className="bg-muted/30">
-                        <CardContent className="pt-4">
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="flex items-start gap-3 flex-1 min-w-0">
-                              {item.fileType === 'pdf' && <FaFilePdf className="w-8 h-8 text-red-500 flex-shrink-0 mt-1" />}
-                              {item.fileType === 'csv' && <FaFileCsv className="w-8 h-8 text-green-500 flex-shrink-0 mt-1" />}
-                              {(item.fileType === 'txt' || item.fileType === 'text') && <FaFileAlt className="w-8 h-8 text-blue-500 flex-shrink-0 mt-1" />}
-                              {item.fileType === 'docx' && <FaFileWord className="w-8 h-8 text-blue-600 flex-shrink-0 mt-1" />}
-                              {!['pdf', 'csv', 'txt', 'text', 'docx'].includes(item.fileType) && <FaFileAlt className="w-8 h-8 text-gray-500 flex-shrink-0 mt-1" />}
-                              
-                              <div className="flex-1 min-w-0">
-                                <p className="font-semibold truncate" data-testid={`history-filename-${item.id}`}>
-                                  {item.filename}
-                                </p>
-                                <div className="flex flex-wrap gap-2 mt-1">
-                                  <Badge variant="outline" className="text-xs">
-                                    {item.fileSize}
-                                  </Badge>
-                                  <Badge variant="outline" className="text-xs uppercase">
-                                    {item.fileType}
-                                  </Badge>
-                                  <span className="text-xs text-muted-foreground flex items-center gap-1">
-                                    <FaClock className="w-3 h-3" />
-                                    {formatDate(item.timestamp)}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                            
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => removeHistoryItem(item.id)}
-                              className="flex-shrink-0"
-                              data-testid={`button-delete-history-${item.id}`}
-                            >
-                              <FaTrash className="w-4 h-4 text-destructive" />
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
         </Tabs>
       </div>
-
-      {/* Clear History Dialog */}
-      <AlertDialog open={showClearHistoryDialog} onOpenChange={setShowClearHistoryDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Clear Download History?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will permanently delete all download history records. This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel data-testid="button-cancel-clear">Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={clearHistory} data-testid="button-confirm-clear">
-              Clear History
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 }
