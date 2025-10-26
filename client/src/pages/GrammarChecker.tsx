@@ -29,6 +29,7 @@ import { Link } from 'wouter';
 import useFileUpload from '@/hooks/useFileUpload';
 import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 import { UploadButton } from '@/components/ui/upload-button';
+import { prepareDownload } from '@/lib/downloadHelper';
 
 interface GrammarError {
   message: string;
@@ -241,19 +242,11 @@ export default function GrammarChecker() {
 
   const downloadCorrected = () => {
     const textToDownload = correctedText || text;
-    const blob = new Blob([textToDownload], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'grammar-checked-text.txt';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    
-    toast({
-      title: "File Downloaded",
-      description: "Corrected text has been downloaded.",
+    prepareDownload({
+      content: textToDownload,
+      filename: 'grammar-checked-text.txt',
+      fileType: 'txt',
+      mimeType: 'text/plain'
     });
   };
 

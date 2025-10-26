@@ -32,6 +32,7 @@ import {
 import useFileUpload from '@/hooks/useFileUpload';
 import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 import { UploadButton } from '@/components/ui/upload-button';
+import { prepareDownload } from '@/lib/downloadHelper';
 
 interface PlagiarismMatch {
   text: string;
@@ -359,13 +360,12 @@ ORIGINAL TEXT
 ${text}
     `.trim();
 
-    const blob = new Blob([report], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `plagiarism-report-${Date.now()}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
+    prepareDownload({
+      content: report,
+      filename: `plagiarism-report-${Date.now()}.txt`,
+      fileType: 'txt',
+      mimeType: 'text/plain'
+    });
 
     toast({
       title: "Report Downloaded",

@@ -20,6 +20,7 @@ import {
   FaFont,
   FaCog
 } from 'react-icons/fa';
+import { prepareDownload } from '@/lib/downloadHelper';
 
 // Comprehensive word lists by category
 const WORD_LISTS = {
@@ -294,19 +295,11 @@ export default function RandomWordGenerator() {
   };
 
   const downloadWords = () => {
-    const blob = new Blob([formattedOutput], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `random-words-${Date.now()}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    
-    toast({
-      title: "File Downloaded",
-      description: "Your random words have been downloaded.",
+    prepareDownload({
+      content: formattedOutput,
+      filename: `random-words-${Date.now()}.txt`,
+      fileType: 'txt',
+      mimeType: 'text/plain'
     });
   };
 

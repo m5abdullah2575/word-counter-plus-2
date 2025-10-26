@@ -44,6 +44,7 @@ const Extension = lazy(() => import("@/pages/Extension"));
 const HelpUs = lazy(() => import("@/pages/HelpUs"));
 const LoadingDemo = lazy(() => import("@/pages/LoadingDemo"));
 const Admin = lazy(() => import("@/pages/Admin"));
+const Download = lazy(() => import("@/pages/Download"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -94,6 +95,7 @@ function Router() {
             <Route path="/help-us" component={HelpUs} />
             <Route path="/loading-demo" component={LoadingDemo} />
             <Route path="/admin" component={Admin} />
+            <Route path="/download" component={Download} />
           </>
         )}
         
@@ -131,6 +133,7 @@ function Router() {
             <Route path="/help-us" component={HelpUs} />
             <Route path="/loading-demo" component={LoadingDemo} />
             <Route path="/admin" component={Admin} />
+            <Route path="/download" component={Download} />
           </>
         )}
         

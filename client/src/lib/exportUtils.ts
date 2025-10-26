@@ -1,4 +1,5 @@
 import { TextStats, ReadabilityStats, KeywordAnalysis } from './textAnalysis';
+import { prepareDownload } from './downloadHelper';
 
 export interface ExportData {
   text: string;
@@ -24,7 +25,12 @@ export function exportCSV(data: ExportData): void {
     ['Speaking Time (minutes)', data.readability.speakingTime.toString()]
   ].map(row => row.join(',')).join('\n');
 
-  downloadFile(csvContent, 'word-analysis.csv', 'text/csv');
+  prepareDownload({
+    content: csvContent,
+    filename: 'word-analysis.csv',
+    fileType: 'csv',
+    mimeType: 'text/csv'
+  });
 }
 
 export function exportTXT(data: ExportData): void {
@@ -52,7 +58,12 @@ ${data.keywords.single.slice(0, 5).map(k => `${k.keyword}: ${k.count} (${k.perce
 === ORIGINAL TEXT ===
 ${data.text}`;
 
-  downloadFile(txtContent, 'word-analysis.txt', 'text/plain');
+  prepareDownload({
+    content: txtContent,
+    filename: 'word-analysis.txt',
+    fileType: 'txt',
+    mimeType: 'text/plain'
+  });
 }
 
 export function exportPDF(data: ExportData): void {

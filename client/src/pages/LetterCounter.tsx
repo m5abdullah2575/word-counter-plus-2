@@ -19,6 +19,7 @@ import {
 import useFileUpload from '@/hooks/useFileUpload';
 import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 import { UploadButton } from '@/components/ui/upload-button';
+import { prepareDownload } from '@/lib/downloadHelper';
 
 export default function LetterCounter() {
   const [text, setText] = useState('');
@@ -140,14 +141,12 @@ Text:
 ${text}
 `;
     
-    const blob = new Blob([exportData], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'letter-analysis.txt';
-    a.click();
-    URL.revokeObjectURL(url);
-    toast({ title: "Analysis exported successfully" });
+    prepareDownload({
+      content: exportData,
+      filename: 'letter-analysis.txt',
+      fileType: 'txt',
+      mimeType: 'text/plain'
+    });
   };
 
   return (

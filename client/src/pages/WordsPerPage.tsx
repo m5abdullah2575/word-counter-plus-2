@@ -32,6 +32,7 @@ import {
   FaRuler,
   FaCompressAlt
 } from 'react-icons/fa';
+import { prepareDownload } from '@/lib/downloadHelper';
 
 // Font multipliers (base: Times New Roman = 1.0)
 const FONT_MULTIPLIERS: Record<string, number> = {
@@ -384,19 +385,11 @@ Avg Word Length: ${statistics.avgWordLength} characters
 ${quickReference.map(ref => `${ref.words.toLocaleString()} words = ${ref.pages} pages`).join('\n')}
 `;
 
-    const blob = new Blob([report], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `words-per-page-report-${Date.now()}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-
-    toast({
-      title: "Report Downloaded",
-      description: "Calculation report has been downloaded.",
+    prepareDownload({
+      content: report,
+      filename: `words-per-page-report-${Date.now()}.txt`,
+      fileType: 'txt',
+      mimeType: 'text/plain'
     });
   };
 

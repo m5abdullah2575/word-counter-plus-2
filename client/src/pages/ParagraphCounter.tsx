@@ -18,6 +18,7 @@ import {
 import useFileUpload from '@/hooks/useFileUpload';
 import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 import { UploadButton } from '@/components/ui/upload-button';
+import { prepareDownload } from '@/lib/downloadHelper';
 
 export default function ParagraphCounter() {
   const [text, setText] = useState('');
@@ -127,14 +128,12 @@ ${p.text}
 `).join('\n---\n')}
 `;
     
-    const blob = new Blob([data], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'paragraph-analysis.txt';
-    a.click();
-    URL.revokeObjectURL(url);
-    toast({ title: "Analysis exported successfully" });
+    prepareDownload({
+      content: data,
+      filename: 'paragraph-analysis.txt',
+      fileType: 'txt',
+      mimeType: 'text/plain'
+    });
   };
 
   return (

@@ -38,6 +38,7 @@ import { Link } from 'wouter';
 import useFileUpload from '@/hooks/useFileUpload';
 import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 import { UploadButton } from '@/components/ui/upload-button';
+import { prepareDownload } from '@/lib/downloadHelper';
 
 export default function CharacterCounter() {
   const [text, setText] = useState('');
@@ -367,19 +368,11 @@ export default function CharacterCounter() {
   };
 
   const downloadText = () => {
-    const blob = new Blob([text], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'character-count-text.txt';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    
-    toast({
-      title: "File Downloaded",
-      description: "Your text has been downloaded as a TXT file.",
+    prepareDownload({
+      content: text,
+      filename: 'character-count-text.txt',
+      fileType: 'txt',
+      mimeType: 'text/plain'
     });
   };
 

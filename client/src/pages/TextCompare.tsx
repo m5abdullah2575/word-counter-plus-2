@@ -28,6 +28,7 @@ import { Link } from 'wouter';
 import useFileUpload from '@/hooks/useFileUpload';
 import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 import { UploadButton } from '@/components/ui/upload-button';
+import { prepareDownload } from '@/lib/downloadHelper';
 
 interface DiffResult {
   type: 'equal' | 'insert' | 'delete' | 'replace';
@@ -255,19 +256,11 @@ export default function TextCompare() {
       return d.value;
     }).join('');
 
-    const blob = new Blob([diffText], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'text-comparison.txt';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    
-    toast({
-      title: "File Downloaded",
-      description: "Comparison result has been downloaded.",
+    prepareDownload({
+      content: diffText,
+      filename: 'text-comparison.txt',
+      fileType: 'txt',
+      mimeType: 'text/plain'
     });
   };
 
