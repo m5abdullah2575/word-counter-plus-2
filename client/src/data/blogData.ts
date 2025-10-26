@@ -547,7 +547,7 @@ A: Yes! Since all processing happens locally on your device, the extension works
     readTime: "8 min read",
     tags: ["Opera Extension", "Product Launch", "Writing Tools", "Privacy", "Productivity"],
     slug: "opera-extension-available-announcement",
-    image: "/images/Extension_launch_success_celebration_4a935d94.png"
+    image: "/images/Opera_extension_launch_celebration_d3ba31f3.png"
   },
   {
     id: "1",
