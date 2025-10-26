@@ -44,92 +44,95 @@ export default function Extension() {
               Install our powerful browser extension and analyze any text on any webpage with a simple right-click. Available now for Chrome, Firefox, Opera, and other browsers!
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 max-w-6xl mx-auto mb-6 px-2 sm:px-0">
               {/* Chrome Extension Available */}
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border border-green-200 dark:border-green-800 rounded-lg p-4 sm:p-6">
-                <div className="flex items-start gap-3 text-left">
-                  <FaCheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 dark:text-green-500 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-sm sm:text-base">
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border border-green-200 dark:border-green-800 rounded-lg p-4 sm:p-5 flex flex-col">
+                <div className="flex items-start gap-2 sm:gap-3 text-left mb-4">
+                  <FaCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 dark:text-green-500 flex-shrink-0 mt-1" />
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-foreground mb-2 text-sm sm:text-base leading-snug">
                       Chrome Extension Published!
                     </h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground mb-3">
-                      Our Chrome extension has been successfully published and is now available for download. Click the button below to install it from the official Chrome Web Store.
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Successfully published on Chrome Web Store. Install now for instant text analysis.
                     </p>
-                    <Button
-                      asChild
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground w-full"
-                      data-testid="button-install-chrome-extension"
-                    >
-                      <a
-                        href="https://chromewebstore.google.com/detail/djjfaiahpklmijflpfmpoamhbjcoimdi"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <FaChrome className="w-4 h-4 mr-2" />
-                        Install from Chrome Web Store
-                      </a>
-                    </Button>
                   </div>
                 </div>
+                <Button
+                  asChild
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground w-full mt-auto text-xs sm:text-sm py-2 sm:py-2.5"
+                  data-testid="button-install-chrome-extension"
+                >
+                  <a
+                    href="https://chromewebstore.google.com/detail/djjfaiahpklmijflpfmpoamhbjcoimdi"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center"
+                  >
+                    <FaChrome className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2 flex-shrink-0" />
+                    <span className="whitespace-nowrap overflow-hidden text-ellipsis">Install from Chrome Store</span>
+                  </a>
+                </Button>
               </div>
 
               {/* Firefox Extension Available */}
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border border-green-200 dark:border-green-800 rounded-lg p-4 sm:p-6">
-                <div className="flex items-start gap-3 text-left">
-                  <FaCheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 dark:text-green-500 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-sm sm:text-base">
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border border-green-200 dark:border-green-800 rounded-lg p-4 sm:p-5 flex flex-col">
+                <div className="flex items-start gap-2 sm:gap-3 text-left mb-4">
+                  <FaCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 dark:text-green-500 flex-shrink-0 mt-1" />
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-foreground mb-2 text-sm sm:text-base leading-snug">
                       Firefox Extension Published!
                     </h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground mb-3">
-                      Our Firefox extension has been successfully published and is now available for download. Click the button below to install it from the official Firefox Add-ons store.
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Successfully published on Firefox Add-ons. Install now for instant text analysis.
                     </p>
-                    <Button
-                      asChild
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground w-full"
-                      data-testid="button-install-firefox-extension"
-                    >
-                      <a
-                        href="https://addons.mozilla.org/addon/word-counter-plus-app/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <FaFirefox className="w-4 h-4 mr-2" />
-                        Install from Firefox Add-ons
-                      </a>
-                    </Button>
                   </div>
                 </div>
+                <Button
+                  asChild
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground w-full mt-auto text-xs sm:text-sm py-2 sm:py-2.5"
+                  data-testid="button-install-firefox-extension"
+                >
+                  <a
+                    href="https://addons.mozilla.org/addon/word-counter-plus-app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center"
+                  >
+                    <FaFirefox className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2 flex-shrink-0" />
+                    <span className="whitespace-nowrap overflow-hidden text-ellipsis">Install from Firefox Add-ons</span>
+                  </a>
+                </Button>
               </div>
 
               {/* Opera Extension Available */}
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border border-green-200 dark:border-green-800 rounded-lg p-4 sm:p-6">
-                <div className="flex items-start gap-3 text-left">
-                  <FaCheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 dark:text-green-500 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-sm sm:text-base">
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border border-green-200 dark:border-green-800 rounded-lg p-4 sm:p-5 flex flex-col sm:col-span-2 lg:col-span-1">
+                <div className="flex items-start gap-2 sm:gap-3 text-left mb-4">
+                  <FaCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 dark:text-green-500 flex-shrink-0 mt-1" />
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-foreground mb-2 text-sm sm:text-base leading-snug">
                       Opera Extension Published!
                     </h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground mb-3">
-                      Our Opera extension is available via Chrome Web Store compatibility. Opera users can install Chrome extensions seamlessly.
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Available via Chrome Web Store. Opera users can install seamlessly.
                     </p>
-                    <Button
-                      asChild
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground w-full"
-                      data-testid="button-install-opera-extension"
-                    >
-                      <a
-                        href="https://chromewebstore.google.com/detail/djjfaiahpklmijflpfmpoamhbjcoimdi"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <SiOpera className="w-4 h-4 mr-2" />
-                        Install from Chrome Web Store
-                      </a>
-                    </Button>
                   </div>
                 </div>
+                <Button
+                  asChild
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground w-full mt-auto text-xs sm:text-sm py-2 sm:py-2.5"
+                  data-testid="button-install-opera-extension"
+                >
+                  <a
+                    href="https://chromewebstore.google.com/detail/djjfaiahpklmijflpfmpoamhbjcoimdi"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center"
+                  >
+                    <SiOpera className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2 flex-shrink-0" />
+                    <span className="whitespace-nowrap overflow-hidden text-ellipsis">Install from Chrome Store</span>
+                  </a>
+                </Button>
               </div>
             </div>
 
