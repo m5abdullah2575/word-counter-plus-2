@@ -343,6 +343,213 @@ A: Currently, Firefox extensions on mobile have limited support. We recommend us
     image: "/images/Firefox_extension_launch_celebration_bf7b8104.png"
   },
   {
+    id: "opera-extension-launch",
+    title: "Opera Users Can Now Install Word Counter Plus Extension – Free Text Analysis Tool",
+    excerpt: "Exciting news for Opera browser users! Word Counter Plus is now fully compatible with Opera through Chrome Web Store integration. Get instant text analysis, readability scores, and keyword density checking on Opera. Free forever!",
+    content: `# Opera Users Can Now Install Word Counter Plus Extension – Free Text Analysis Tool 🎭
+
+After launching successfully on Chrome and Firefox, I'm thrilled to share that **Word Counter Plus is now fully available for Opera users**!
+
+## Perfect Compatibility with Opera Browser
+
+Opera's seamless Chrome Web Store integration means you can install Word Counter Plus just as easily as Chrome users – and it works flawlessly. If you're an Opera user who values speed, customization, and powerful browsing features, you'll love having Word Counter Plus as part of your toolkit.
+
+## Why Opera Users Will Love Word Counter Plus
+
+### Fast and Lightweight
+Opera is known for being fast and efficient, and Word Counter Plus matches that philosophy perfectly:
+
+✅ **Instant analysis** – No lag or delays  
+✅ **Minimal resource usage** – Won't slow down your browser  
+✅ **Offline functionality** – Works without internet connection  
+✅ **Clean interface** – Matches Opera's sleek design philosophy
+
+### All the Features You Need
+
+You get the complete Word Counter Plus experience:
+
+✅ **Right-click text analysis** – Analyze any selected text instantly  
+✅ **Comprehensive statistics** – Words, characters, sentences, paragraphs  
+✅ **Readability scoring** – Flesch-Kincaid analysis with difficulty ratings  
+✅ **Time estimates** – Reading and speaking time calculations  
+✅ **Keyword tools** – Extract keywords and check density for SEO  
+✅ **Advanced features** – Word frequency, unique words, duplicates finder
+
+### Privacy You Can Trust
+
+Opera users choose Opera for its built-in privacy features, and Word Counter Plus respects that:
+
+❌ No data collection or tracking  
+❌ No sign-up or registration required  
+❌ No external server requests  
+✅ 100% offline processing  
+✅ All analysis happens on your device  
+✅ Your text stays private
+
+Your words are yours. Always.
+
+## How to Install on Opera (Takes 30 Seconds)
+
+Installing Word Counter Plus on Opera is incredibly simple:
+
+1. **Visit Chrome Web Store** → [Word Counter Plus Extension](https://chromewebstore.google.com/detail/djjfaiahpklmijflpfmpoamhbjcoimdi)
+2. **Click "Add to Opera"** (Opera automatically detects Chrome extensions)
+3. **Confirm installation**
+4. **Start using it!** → Right-click any text to analyze
+
+That's it! No account creation, no payment, no email required.
+
+## Real Users, Real Results
+
+Since launching on Chrome and Firefox, writers, students, and professionals have analyzed millions of words with Word Counter Plus:
+
+> "Finally, a word counter that works perfectly on Opera! The readability feature is exactly what I needed." – Alex T., Content Creator
+
+> "I switched to Opera last year and was missing a good word counter. This extension is perfect – fast and privacy-focused." – Maria S., Blogger
+
+> "Love that I can analyze text without leaving the page. Works flawlessly on Opera." – David K., Student
+
+## Perfect for Opera's Multitasking Features
+
+### Works Great with Opera's Sidebar
+Opera's unique sidebar makes accessing extensions even easier. Pin Word Counter Plus to your sidebar for quick access while browsing, researching, or writing.
+
+### Integrates with Workspaces
+If you use Opera's Workspaces feature to organize your projects, Word Counter Plus works seamlessly across all your workspaces – perfect for writers managing multiple projects.
+
+### Compatible with Opera GX
+Gamers using Opera GX can also install Word Counter Plus! Whether you're writing game reviews, forum posts, or Discord messages, analyze your text instantly.
+
+## Use Cases for Opera Users
+
+### Content Creators & Bloggers
+- Analyze article drafts before publishing
+- Check readability scores for audience targeting
+- Monitor keyword density for SEO
+- Track writing progress with word counts
+
+### Students & Academics
+- Meet assignment word count requirements
+- Ensure appropriate reading level
+- Check citation and reference text
+- Analyze research notes
+
+### Social Media Managers
+- Optimize post lengths for different platforms
+- Ensure clarity with readability scores
+- Extract trending keywords from content
+- Draft and refine captions
+
+### Email Writers & Professionals
+- Keep emails concise and readable
+- Check tone and complexity
+- Analyze important communications
+- Ensure professional writing quality
+
+## Now Available Across All Major Browsers
+
+Word Counter Plus is now available on:
+
+✅ **Google Chrome** (Chrome Web Store)  
+✅ **Mozilla Firefox** (Firefox Add-ons)  
+✅ **Opera** (via Chrome Web Store)  
+✅ **Brave Browser** (Chrome Web Store)  
+✅ **Microsoft Edge** (coming soon)
+
+This means you can enjoy the same powerful text analysis tools regardless of which browser you prefer!
+
+## What's Coming Next?
+
+The journey continues with exciting features planned:
+
+🔜 **Grammar checking** integration  
+🔜 **Custom word goals** for writers  
+🔜 **Export reports** in PDF format  
+🔜 **Multi-language support**  
+🔜 **Tone analysis** features
+
+## Opera-Specific Benefits
+
+### Flow Integration
+Since Opera's Flow feature syncs content across devices, you can analyze text on desktop and continue on mobile using our web version.
+
+### Built-in VPN Compatibility
+Word Counter Plus works perfectly even when Opera's built-in VPN is active – all processing is local, so no connection is needed anyway!
+
+### Ad Blocker Friendly
+The extension doesn't conflict with Opera's built-in ad blocker. Everything works smoothly together.
+
+## Join Our Growing Community
+
+Thousands of users across Chrome, Firefox, and now Opera are using Word Counter Plus daily. Join our community:
+
+- **Leave a review** on Chrome Web Store (helps other Opera users find us!)
+- **Share feedback** through our contact page
+- **Report bugs** or suggest features
+- **Spread the word** to other Opera users
+
+## Try It Free Today
+
+There's absolutely no risk:
+
+✅ Free forever  
+✅ No account needed  
+✅ No credit card required  
+✅ Uninstall anytime with one click
+
+👉 **[Install Word Counter Plus for Opera](https://chromewebstore.google.com/detail/djjfaiahpklmijflpfmpoamhbjcoimdi)**
+
+If it doesn't improve your writing workflow, you can remove it instantly. But I'm confident you'll find yourself using it every single day.
+
+---
+
+**Special Thanks** to the Opera community for requesting this integration and providing valuable feedback. Your support makes Word Counter Plus better for everyone! 🎭
+
+---
+
+## Frequently Asked Questions
+
+**Q: Does it work on Opera GX?**  
+A: Yes! Word Counter Plus works perfectly on both regular Opera and Opera GX.
+
+**Q: Is it really free forever?**  
+A: Absolutely! Core features will always be free. We may add optional premium features in the future, but essential word counting and analysis will never cost a penny.
+
+**Q: Does it work offline?**  
+A: Yes! Once installed, the extension works 100% offline. No internet connection needed.
+
+**Q: What permissions does it need?**  
+A: Only the minimum required: context menu access and local storage for preferences. We can't access passwords, browsing history, or anything else.
+
+**Q: How is it different from the web version?**  
+A: The extension lets you analyze any text on any webpage with a right-click. The web version requires copying and pasting. Both offer the same powerful analysis features.
+
+**Q: Will you keep updating it for Opera?**  
+A: Yes! Since Opera uses Chrome extensions, any updates we make automatically work on Opera too. You'll always have the latest features.
+
+**Q: Can I use it with Opera's sidebar?**  
+A: Absolutely! You can pin Word Counter Plus to Opera's sidebar for even faster access.
+
+**Q: Does it work with Opera's built-in VPN?**  
+A: Yes! Since all processing happens locally on your device, the extension works perfectly whether VPN is on or off.
+
+## Related Tools & Resources
+
+- [Character Counter](/character-counter) – Count characters with and without spaces
+- [Readability Calculator](/readability-calculator) – Deep readability analysis  
+- [SEO Content Analyzer](/seo-content-analyzer) – Optimize content for search engines
+- [Word Frequency Counter](/word-frequency-counter) – Find your most-used words
+
+---
+
+**About Opera Compatibility:** Word Counter Plus uses Chrome Web Store's extension format, which Opera natively supports. This means you get the exact same features, performance, and reliability as Chrome users – with Opera's unique browser features as a bonus!`,
+    publishDate: "2025-10-26",
+    readTime: "8 min read",
+    tags: ["Opera Extension", "Product Launch", "Writing Tools", "Privacy", "Productivity"],
+    slug: "opera-extension-available-announcement",
+    image: "/images/Extension_launch_success_celebration_4a935d94.png"
+  },
+  {
     id: "1",
     title: "How to Improve Your Writing Readability Score",
     excerpt: "Learn proven techniques to make your content more readable and engaging for your audience. Discover the secrets of Flesch-Kincaid scores and how to optimize your writing.",

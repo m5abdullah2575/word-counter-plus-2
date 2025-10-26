@@ -14,15 +14,16 @@ import {
   FaEdge,
   FaHourglass,
 } from "react-icons/fa";
+import { SiOpera } from "react-icons/si";
 import useSEO from "@/hooks/useSEO";
 
 export default function Extension() {
   useSEO({
     title: "Browser Extension - Word Counter Plus | Analyze Text Anywhere",
     description:
-      "Word Counter Plus browser extension coming soon for Chrome, Edge, Brave, and Firefox. Analyze any text on any webpage instantly with right-click context menu integration.",
+      "Word Counter Plus browser extension now available for Chrome, Firefox, Opera, and other browsers. Analyze any text on any webpage instantly with right-click context menu integration.",
     keywords:
-      "word counter extension, browser extension, chrome extension, firefox extension, text analysis, word count plugin, browser plugin",
+      "word counter extension, browser extension, chrome extension, firefox extension, opera extension, text analysis, word count plugin, browser plugin",
     canonical: "https://wordcounterplusapp.com/extension",
   });
 
@@ -40,10 +41,10 @@ export default function Extension() {
               Analyze Text Anywhere on the Web
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
-              Install our powerful browser extension and analyze any text on any webpage with a simple right-click. Available now for Chrome, Firefox, and other browsers!
+              Install our powerful browser extension and analyze any text on any webpage with a simple right-click. Available now for Chrome, Firefox, Opera, and other browsers!
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto mb-6">
               {/* Chrome Extension Available */}
               <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border border-green-200 dark:border-green-800 rounded-lg p-4 sm:p-6">
                 <div className="flex items-start gap-3 text-left">
@@ -96,6 +97,35 @@ export default function Extension() {
                       >
                         <FaFirefox className="w-4 h-4 mr-2" />
                         Install from Firefox Add-ons
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Opera Extension Available */}
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border border-green-200 dark:border-green-800 rounded-lg p-4 sm:p-6">
+                <div className="flex items-start gap-3 text-left">
+                  <FaCheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 dark:text-green-500 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold text-foreground mb-1 text-sm sm:text-base">
+                      Opera Extension Published!
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground mb-3">
+                      Our Opera extension is available via Chrome Web Store compatibility. Opera users can install Chrome extensions seamlessly.
+                    </p>
+                    <Button
+                      asChild
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground w-full"
+                      data-testid="button-install-opera-extension"
+                    >
+                      <a
+                        href="https://chromewebstore.google.com/detail/djjfaiahpklmijflpfmpoamhbjcoimdi"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <SiOpera className="w-4 h-4 mr-2" />
+                        Install from Chrome Web Store
                       </a>
                     </Button>
                   </div>
