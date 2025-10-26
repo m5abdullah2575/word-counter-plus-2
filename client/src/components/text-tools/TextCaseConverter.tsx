@@ -4,6 +4,7 @@ import { FaEraser, FaPaste, FaDownload, FaUpload, FaCheckCircle, FaBolt, FaBook,
 import useFileUpload from '@/hooks/useFileUpload';
 import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 import { UploadButton } from '@/components/ui/upload-button';
+import { prepareDownload } from '@/lib/downloadHelper';
 
 export const textCaseConverters = {
   uppercase: (text: string) => text.toUpperCase(),
@@ -363,18 +364,16 @@ export default function TextCaseConverter() {
       return;
     }
 
-    const element = document.createElement('a');
-    const file = new Blob([text], { type: 'text/plain' });
-    element.href = URL.createObjectURL(file);
-    
     const caseName = activeCase 
       ? caseOptions.find(opt => opt.key === activeCase)?.name || 'converted'
       : 'text';
     
-    element.download = `${caseName.toLowerCase().replace(/\s+/g, '-')}-text.txt`;
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+    prepareDownload({
+      content: text,
+      filename: `${caseName.toLowerCase().replace(/\s+/g, '-')}-text.txt`,
+      fileType: 'txt',
+      mimeType: 'text/plain'
+    });
     
     toast({
       title: "Download Started",

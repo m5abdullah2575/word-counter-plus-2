@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { useTextAnalysisOptimized as useTextAnalysis } from '@/hooks/useTextAnalysisOptimized';
 import StatsCard from './StatsCard';
 import KeywordTable from './KeywordTable';
-import ExportButtons from './ExportButtons';
 import { useToast } from '@/hooks/use-toast';
+import { prepareDownload } from '@/lib/downloadHelper';
+import { FaDownload } from 'react-icons/fa';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { lazy, Suspense } from 'react';
 
@@ -208,6 +209,15 @@ export default function WordCounterTool() {
     toast({
       title: "Lines Sorted",
       description: "Text lines have been sorted alphabetically.",
+    });
+  };
+
+  const downloadText = () => {
+    prepareDownload({
+      content: text,
+      filename: 'word-counter-text.txt',
+      fileType: 'txt',
+      mimeType: 'text/plain'
     });
   };
 
@@ -432,6 +442,14 @@ export default function WordCounterTool() {
                 >
                   <FaCopy className="inline mr-1" />
                   Copy
+                </button>
+                <button 
+                  onClick={downloadText}
+                  className="px-2 sm:px-3 py-1.5 rounded text-xs sm:text-sm transition-colors bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                  data-testid="button-download-text"
+                >
+                  <FaDownload className="inline mr-1" />
+                  Download
                 </button>
                 <button 
                   onClick={convertToUppercase}
@@ -666,11 +684,6 @@ export default function WordCounterTool() {
           </div>
           )}
 
-          {/* Export & Share Options */}
-          <div className="bg-card rounded-lg p-3 sm:p-6 shadow-sm border border-border">
-            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4">Export & Share</h3>
-            <ExportButtons text={text} stats={stats} readability={readability} keywords={keywords} />
-          </div>
 
           {/* Related Tools - Mobile Only (appears after results) */}
           <div className="lg:hidden min-h-[400px]">

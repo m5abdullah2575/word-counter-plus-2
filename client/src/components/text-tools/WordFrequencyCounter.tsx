@@ -20,6 +20,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, PieCha
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 import { UploadButton } from '@/components/ui/upload-button';
+import { prepareDownload } from '@/lib/downloadHelper';
 
 type SortDirection = 'asc' | 'desc';
 type SortField = 'word' | 'frequency';
@@ -288,15 +289,12 @@ export default function WordFrequencyCounter() {
       const csvRows = filteredFrequencies.map(item => `${item.word},${item.frequency},${item.density.toFixed(2)}`).join('\n');
       const csvContent = csvHeader + csvRows;
 
-      const blob = new Blob([csvContent], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `word-frequency-${viewMode}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      prepareDownload({
+        content: csvContent,
+        filename: `word-frequency-${viewMode}.csv`,
+        fileType: 'csv',
+        mimeType: 'text/csv'
+      });
 
       toast({
         title: "CSV Downloaded",
@@ -315,15 +313,12 @@ export default function WordFrequencyCounter() {
         frequencies: filteredFrequencies
       };
 
-      const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `word-frequency-${viewMode}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      prepareDownload({
+        content: JSON.stringify(jsonData, null, 2),
+        filename: `word-frequency-${viewMode}.json`,
+        fileType: 'txt',
+        mimeType: 'application/json'
+      });
 
       toast({
         title: "JSON Downloaded",
