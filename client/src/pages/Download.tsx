@@ -556,46 +556,6 @@ export default function Download() {
                         <span className="text-xs">Share</span>
                       </Button>
                     </div>
-
-                    {/* File Preview - iLovePDF Style */}
-                    <div className="w-full">
-                      <Card className="border-2 shadow-md">
-                        <CardHeader className="bg-muted/30 border-b">
-                          <div className="flex items-center justify-between">
-                            <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                              <FaFileAlt className="w-4 h-4 text-primary" />
-                              Document Preview
-                            </CardTitle>
-                            <Badge variant="outline" className="text-xs">
-                              {getFileSize()}
-                            </Badge>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="pt-4">
-                          <div className="bg-white dark:bg-gray-900 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-6">
-                            <div className="max-h-96 overflow-y-auto">
-                              <div className="prose prose-sm dark:prose-invert max-w-none">
-                                <pre className="whitespace-pre-wrap break-words text-sm font-mono bg-gray-50 dark:bg-gray-800 p-4 rounded" data-testid="text-file-preview">
-{fileData.content}
-                                </pre>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <FaFileAlt className="w-3 h-3" />
-                              {analytics?.lines.toLocaleString()} lines
-                            </span>
-                            <span>
-                              {analytics?.characters.toLocaleString()} characters
-                            </span>
-                            <span>
-                              {analytics?.words.toLocaleString()} words
-                            </span>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
                   </div>
                 </CardContent>
               </Card>
