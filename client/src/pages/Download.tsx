@@ -53,6 +53,12 @@ export default function Download() {
   const [customFilename, setCustomFilename] = useState('');
   const [isEditingFilename, setIsEditingFilename] = useState(false);
   const [activeTab, setActiveTab] = useState('download');
+  const [cloudStatus, setCloudStatus] = useState<{
+    googleDrive: boolean;
+    dropbox: boolean;
+    box: boolean;
+    onedrive: boolean;
+  } | null>(null);
 
   useEffect(() => {
     const storedData = sessionStorage.getItem('downloadData');
@@ -71,6 +77,11 @@ export default function Download() {
         });
       }
     }
+
+    fetch('/api/cloud-storage/status')
+      .then(res => res.json())
+      .then(status => setCloudStatus(status))
+      .catch(err => console.error('Failed to fetch cloud status:', err));
   }, [toast]);
 
   const getFileIcon = () => {
@@ -279,11 +290,65 @@ export default function Download() {
     }
   };
 
-  const handleCloudSave = (service: string) => {
-    toast({
-      title: `Save to ${service}`,
-      description: `${service} integration is being set up. Please connect your account to save files.`,
-    });
+  const handleCloudSave = async (service: string) => {
+    if (!fileData) return;
+
+    const serviceMap: { [key: string]: string } = {
+      'Google Drive': 'google-drive',
+      'Dropbox': 'dropbox',
+      'OneDrive': 'onedrive',
+      'Box': 'box',
+      'iCloud': 'icloud'
+    };
+
+    const endpoint = serviceMap[service];
+    
+    if (service === 'iCloud') {
+      toast({
+        title: "iCloud Not Available",
+        description: "iCloud integration is not supported in web browsers. Please download the file and upload manually to iCloud.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/cloud-storage/${endpoint}/upload`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          filename: customFilename || fileData.filename,
+          content: fileData.content,
+          mimeType: fileData.mimeType
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.needsSetup) {
+        toast({
+          title: `${service} Not Connected`,
+          description: `Please set up ${service} integration first. Check the integrations panel to connect your account.`,
+          variant: "destructive"
+        });
+      } else if (result.success) {
+        toast({
+          title: "Upload Successful",
+          description: result.message,
+        });
+      } else {
+        throw new Error(result.message || 'Upload failed');
+      }
+    } catch (error: any) {
+      console.error(`${service} upload error:`, error);
+      toast({
+        title: "Upload Failed",
+        description: error.message || `Failed to upload to ${service}. Please try again.`,
+        variant: "destructive"
+      });
+    }
   };
 
   const getRelatedTools = () => {
@@ -506,28 +571,51 @@ export default function Download() {
                             Save to Cloud Storage
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-56">
+                        <DropdownMenuContent className="w-64">
                           <DropdownMenuLabel>Choose a service</DropdownMenuLabel>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem onClick={() => handleCloudSave('Google Drive')} data-testid="cloud-google-drive">
                             <FaGoogleDrive className="mr-2 w-4 h-4" />
-                            Google Drive
+                            <span className="flex-1">Google Drive</span>
+                            {cloudStatus?.googleDrive && (
+                              <Badge variant="outline" className="ml-2 text-xs bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300">
+                                Connected
+                              </Badge>
+                            )}
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleCloudSave('Dropbox')} data-testid="cloud-dropbox">
                             <FaDropbox className="mr-2 w-4 h-4" />
-                            Dropbox
+                            <span className="flex-1">Dropbox</span>
+                            {cloudStatus?.dropbox && (
+                              <Badge variant="outline" className="ml-2 text-xs bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300">
+                                Connected
+                              </Badge>
+                            )}
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleCloudSave('OneDrive')} data-testid="cloud-onedrive">
                             <FaCloud className="mr-2 w-4 h-4" />
-                            OneDrive
+                            <span className="flex-1">OneDrive</span>
+                            {cloudStatus?.onedrive && (
+                              <Badge variant="outline" className="ml-2 text-xs bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300">
+                                Connected
+                              </Badge>
+                            )}
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleCloudSave('Box')} data-testid="cloud-box">
                             <SiBox className="mr-2 w-4 h-4" />
-                            Box
+                            <span className="flex-1">Box</span>
+                            {cloudStatus?.box && (
+                              <Badge variant="outline" className="ml-2 text-xs bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300">
+                                Connected
+                              </Badge>
+                            )}
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleCloudSave('iCloud')} data-testid="cloud-icloud">
                             <FaCloud className="mr-2 w-4 h-4" />
-                            iCloud Drive
+                            <span className="flex-1">iCloud Drive</span>
+                            <Badge variant="outline" className="ml-2 text-xs bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                              Not Available
+                            </Badge>
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>

@@ -39,6 +39,23 @@ The application is built with a modern full-stack architecture optimized for per
 -   **Google AdSense**: For monetization.
 -   **Google Search Console**: For SEO monitoring.
 -   **Font Awesome**: Icon library.
+-   **jsPDF**: PDF generation for document exports.
+
+## Cloud Storage Integration
+The application now supports direct file uploads to multiple cloud storage providers through the download page:
+-   **Google Drive**: Upload files directly using Google Drive API v3
+-   **Dropbox**: Save files to Dropbox using Dropbox API v2
+-   **OneDrive**: Upload to Microsoft OneDrive using Microsoft Graph API
+-   **Box**: Store files in Box using Box API v2.0
+
+**Backend API Routes** (`server/routes.ts`):
+-   `/api/cloud-storage/status` - Check which cloud services are connected
+-   `/api/cloud-storage/google-drive/upload` - Upload files to Google Drive
+-   `/api/cloud-storage/dropbox/upload` - Upload files to Dropbox
+-   `/api/cloud-storage/onedrive/upload` - Upload files to OneDrive
+-   `/api/cloud-storage/box/upload` - Upload files to Box
+
+**Integration Setup**: Cloud storage integrations use Replit's connector system. Users must connect their accounts through the Replit integrations panel before they can upload files to cloud storage services. The Download page automatically detects connection status and displays visual badges indicating which services are available.
 
 ## Deployment Configuration
 The application supports both local development and production deployment to Vercel:

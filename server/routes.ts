@@ -461,6 +461,218 @@ Sitemap: ${SITE_URL}/sitemap.xml
     }
   });
 
+  // Cloud storage connection helper
+  async function getCloudConnection(connectorName: string) {
+    const hostname = process.env.REPLIT_CONNECTORS_HOSTNAME;
+    const xReplitToken = process.env.REPL_IDENTITY 
+      ? 'repl ' + process.env.REPL_IDENTITY 
+      : process.env.WEB_REPL_RENEWAL 
+      ? 'depl ' + process.env.WEB_REPL_RENEWAL 
+      : null;
+
+    if (!xReplitToken || !hostname) {
+      return null;
+    }
+
+    try {
+      const response = await fetch(
+        `https://${hostname}/api/v2/connection?include_secrets=true&connector_names=${connectorName}`,
+        {
+          headers: {
+            'Accept': 'application/json',
+            'X_REPLIT_TOKEN': xReplitToken
+          }
+        }
+      );
+      const data = await response.json();
+      return data.items?.[0] || null;
+    } catch (error) {
+      console.error(`Error fetching ${connectorName} connection:`, error);
+      return null;
+    }
+  }
+
+  // Check cloud storage connections
+  app.get('/api/cloud-storage/status', async (req, res) => {
+    try {
+      const [googleDrive, dropbox, box, onedrive] = await Promise.all([
+        getCloudConnection('google-drive'),
+        getCloudConnection('dropbox'),
+        getCloudConnection('box'),
+        getCloudConnection('onedrive')
+      ]);
+
+      res.json({
+        googleDrive: !!googleDrive,
+        dropbox: !!dropbox,
+        box: !!box,
+        onedrive: !!onedrive
+      });
+    } catch (error: any) {
+      res.status(500).json({ error: 'Failed to check connections', details: error.message });
+    }
+  });
+
+  // Upload to Google Drive
+  app.post('/api/cloud-storage/google-drive/upload', async (req, res) => {
+    try {
+      const connection = await getCloudConnection('google-drive');
+      if (!connection) {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Google Drive not connected',
+          needsSetup: true 
+        });
+      }
+
+      const { filename, content, mimeType } = req.body;
+      const accessToken = connection.settings?.access_token || connection.settings?.oauth?.credentials?.access_token;
+
+      const metadata = {
+        name: filename,
+        mimeType: mimeType || 'text/plain'
+      };
+
+      const formData = new FormData();
+      formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+      formData.append('file', new Blob([content], { type: mimeType || 'text/plain' }));
+
+      const uploadResponse = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        },
+        body: formData
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error('Failed to upload to Google Drive');
+      }
+
+      const result = await uploadResponse.json();
+      res.json({ success: true, fileId: result.id, message: 'File uploaded to Google Drive successfully!' });
+    } catch (error: any) {
+      console.error('Google Drive upload error:', error);
+      res.status(500).json({ success: false, message: 'Failed to upload to Google Drive', error: error.message });
+    }
+  });
+
+  // Upload to Dropbox
+  app.post('/api/cloud-storage/dropbox/upload', async (req, res) => {
+    try {
+      const connection = await getCloudConnection('dropbox');
+      if (!connection) {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Dropbox not connected',
+          needsSetup: true 
+        });
+      }
+
+      const { filename, content } = req.body;
+      const accessToken = connection.settings?.access_token || connection.settings?.oauth?.credentials?.access_token;
+
+      const uploadResponse = await fetch('https://content.dropboxapi.com/2/files/upload', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/octet-stream',
+          'Dropbox-API-Arg': JSON.stringify({
+            path: `/${filename}`,
+            mode: 'add',
+            autorename: true
+          })
+        },
+        body: content
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error('Failed to upload to Dropbox');
+      }
+
+      const result = await uploadResponse.json();
+      res.json({ success: true, message: 'File uploaded to Dropbox successfully!', path: result.path_display });
+    } catch (error: any) {
+      console.error('Dropbox upload error:', error);
+      res.status(500).json({ success: false, message: 'Failed to upload to Dropbox', error: error.message });
+    }
+  });
+
+  // Upload to Box
+  app.post('/api/cloud-storage/box/upload', async (req, res) => {
+    try {
+      const connection = await getCloudConnection('box');
+      if (!connection) {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Box not connected',
+          needsSetup: true 
+        });
+      }
+
+      const { filename, content, mimeType } = req.body;
+      const accessToken = connection.settings?.access_token || connection.settings?.oauth?.credentials?.access_token;
+
+      const formData = new FormData();
+      formData.append('attributes', new Blob([JSON.stringify({ name: filename, parent: { id: '0' } })], { type: 'application/json' }));
+      formData.append('file', new Blob([content], { type: mimeType || 'text/plain' }));
+
+      const uploadResponse = await fetch('https://upload.box.com/api/2.0/files/content', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        },
+        body: formData
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error('Failed to upload to Box');
+      }
+
+      const result = await uploadResponse.json();
+      res.json({ success: true, message: 'File uploaded to Box successfully!', fileId: result.entries?.[0]?.id });
+    } catch (error: any) {
+      console.error('Box upload error:', error);
+      res.status(500).json({ success: false, message: 'Failed to upload to Box', error: error.message });
+    }
+  });
+
+  // Upload to OneDrive
+  app.post('/api/cloud-storage/onedrive/upload', async (req, res) => {
+    try {
+      const connection = await getCloudConnection('onedrive');
+      if (!connection) {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'OneDrive not connected',
+          needsSetup: true 
+        });
+      }
+
+      const { filename, content, mimeType } = req.body;
+      const accessToken = connection.settings?.access_token || connection.settings?.oauth?.credentials?.access_token;
+
+      const uploadResponse = await fetch(`https://graph.microsoft.com/v1.0/me/drive/root:/${filename}:/content`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': mimeType || 'text/plain'
+        },
+        body: content
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error('Failed to upload to OneDrive');
+      }
+
+      const result = await uploadResponse.json();
+      res.json({ success: true, message: 'File uploaded to OneDrive successfully!', fileId: result.id });
+    } catch (error: any) {
+      console.error('OneDrive upload error:', error);
+      res.status(500).json({ success: false, message: 'Failed to upload to OneDrive', error: error.message });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;
