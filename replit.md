@@ -42,20 +42,33 @@ The application is built with a modern full-stack architecture optimized for per
 -   **jsPDF**: PDF generation for document exports.
 
 ## Cloud Storage Integration
-The application now supports direct file uploads to multiple cloud storage providers through the download page:
--   **Google Drive**: Upload files directly using Google Drive API v3
--   **Dropbox**: Save files to Dropbox using Dropbox API v2
--   **OneDrive**: Upload to Microsoft OneDrive using Microsoft Graph API
--   **Box**: Store files in Box using Box API v2.0
+The application supports direct file uploads to multiple cloud storage providers through the download page using client-side OAuth authentication:
+-   **Google Drive**: Upload files directly using Google Drive API v3 with OAuth 2.0
+-   **Dropbox**: Save files to Dropbox using Dropbox Saver API
+-   **OneDrive**: Upload to Microsoft OneDrive using Microsoft Graph API with OAuth 2.0
+-   **Box**: Store files in Box using Box API v2.0 with OAuth 2.0
 
-**Backend API Routes** (`server/routes.ts`):
--   `/api/cloud-storage/status` - Check which cloud services are connected
--   `/api/cloud-storage/google-drive/upload` - Upload files to Google Drive
--   `/api/cloud-storage/dropbox/upload` - Upload files to Dropbox
--   `/api/cloud-storage/onedrive/upload` - Upload files to OneDrive
--   `/api/cloud-storage/box/upload` - Upload files to Box
+**How It Works**:
+1. User clicks on their preferred cloud storage service
+2. OAuth popup window opens for user authentication
+3. User logs in to their cloud storage account (temporary session)
+4. File uploads directly from browser to cloud storage
+5. User is automatically signed out after upload
+6. No credentials stored - connection closes when user leaves
 
-**Integration Setup**: Cloud storage integrations use Replit's connector system. Users must connect their accounts through the Replit integrations panel before they can upload files to cloud storage services. The Download page automatically detects connection status and displays visual badges indicating which services are available.
+**Required Environment Variables** (see `CLOUD_STORAGE_SETUP.md` for setup guide):
+-   `VITE_GOOGLE_CLIENT_ID` - Google OAuth Client ID
+-   `VITE_GOOGLE_API_KEY` - Google API Key
+-   `VITE_DROPBOX_APP_KEY` - Dropbox App Key
+-   `VITE_ONEDRIVE_CLIENT_ID` - Microsoft Azure App Client ID
+-   `VITE_BOX_CLIENT_ID` - Box OAuth Client ID
+
+**Security Features**:
+- All authentication happens client-side via OAuth 2.0
+- Access tokens are temporary and stored only in memory
+- Users are automatically signed out after each upload
+- No server-side credential storage
+- Each session requires fresh authentication
 
 ## Deployment Configuration
 The application supports both local development and production deployment to Vercel:

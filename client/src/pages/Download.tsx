@@ -53,12 +53,6 @@ export default function Download() {
   const [customFilename, setCustomFilename] = useState('');
   const [isEditingFilename, setIsEditingFilename] = useState(false);
   const [activeTab, setActiveTab] = useState('download');
-  const [cloudStatus, setCloudStatus] = useState<{
-    googleDrive: boolean;
-    dropbox: boolean;
-    box: boolean;
-    onedrive: boolean;
-  } | null>(null);
 
   useEffect(() => {
     const storedData = sessionStorage.getItem('downloadData');
@@ -77,11 +71,6 @@ export default function Download() {
         });
       }
     }
-
-    fetch('/api/cloud-storage/status')
-      .then(res => res.json())
-      .then(status => setCloudStatus(status))
-      .catch(err => console.error('Failed to fetch cloud status:', err));
   }, [toast]);
 
   const getFileIcon = () => {
@@ -293,49 +282,278 @@ export default function Download() {
   const handleCloudSave = async (service: string) => {
     if (!fileData) return;
 
-    const serviceMap: { [key: string]: string } = {
-      'Google Drive': 'google-drive',
-      'Dropbox': 'dropbox',
-      'OneDrive': 'onedrive',
-      'Box': 'box'
-    };
+    const blob = new Blob([fileData.content], { type: fileData.mimeType });
+    const file = new File([blob], customFilename || fileData.filename, { type: fileData.mimeType });
 
-    const endpoint = serviceMap[service];
+    if (service === 'Google Drive') {
+      await handleGoogleDriveUpload(file);
+    } else if (service === 'Dropbox') {
+      await handleDropboxUpload(file);
+    } else if (service === 'OneDrive') {
+      await handleOneDriveUpload(file);
+    } else if (service === 'Box') {
+      await handleBoxUpload(file);
+    }
+  };
+
+  const handleGoogleDriveUpload = async (file: File) => {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '1234567890-abcdefghijklmnopqrstuvwxyz.apps.googleusercontent.com';
+    const apiKey = import.meta.env.VITE_GOOGLE_API_KEY || 'AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
+    
+    toast({
+      title: "Google Drive Upload",
+      description: "Opening Google Drive authentication window...",
+    });
 
     try {
-      const response = await fetch(`/api/cloud-storage/${endpoint}/upload`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          filename: customFilename || fileData.filename,
-          content: fileData.content,
-          mimeType: fileData.mimeType
-        }),
-      });
+      const script = document.createElement('script');
+      script.src = 'https://apis.google.com/js/api.js';
+      script.onload = () => {
+        (window as any).gapi.load('client:auth2:picker', async () => {
+          await (window as any).gapi.client.init({
+            apiKey: apiKey,
+            clientId: clientId,
+            discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
+            scope: 'https://www.googleapis.com/auth/drive.file'
+          });
 
-      const result = await response.json();
+          const authInstance = (window as any).gapi.auth2.getAuthInstance();
+          await authInstance.signIn();
+          
+          const accessToken = authInstance.currentUser.get().getAuthResponse().access_token;
+          
+          const metadata = {
+            name: file.name,
+            mimeType: file.type
+          };
 
-      if (result.needsSetup) {
-        toast({
-          title: `${service} Not Connected`,
-          description: `Please set up ${service} integration first. Check the integrations panel to connect your account.`,
-          variant: "destructive"
+          const form = new FormData();
+          form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+          form.append('file', file);
+
+          const response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${accessToken}`
+            },
+            body: form
+          });
+
+          if (response.ok) {
+            toast({
+              title: "Upload Successful",
+              description: "File uploaded to Google Drive successfully!",
+            });
+            authInstance.signOut();
+          } else {
+            throw new Error('Upload failed');
+          }
         });
-      } else if (result.success) {
-        toast({
-          title: "Upload Successful",
-          description: result.message,
-        });
-      } else {
-        throw new Error(result.message || 'Upload failed');
-      }
+      };
+      document.body.appendChild(script);
     } catch (error: any) {
-      console.error(`${service} upload error:`, error);
       toast({
         title: "Upload Failed",
-        description: error.message || `Failed to upload to ${service}. Please try again.`,
+        description: error.message || "Failed to upload to Google Drive. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDropboxUpload = async (file: File) => {
+    toast({
+      title: "Dropbox Upload",
+      description: "Opening Dropbox file saver...",
+    });
+
+    try {
+      const script = document.createElement('script');
+      script.src = 'https://www.dropbox.com/static/api/2/dropins.js';
+      script.id = 'dropboxjs';
+      script.setAttribute('data-app-key', import.meta.env.VITE_DROPBOX_APP_KEY || 'your_dropbox_app_key');
+      
+      script.onload = () => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const content = e.target?.result;
+          (window as any).Dropbox.save(content, file.name, {
+            success: () => {
+              toast({
+                title: "Upload Successful",
+                description: "File saved to Dropbox successfully!",
+              });
+            },
+            error: (error: any) => {
+              toast({
+                title: "Upload Failed",
+                description: "Failed to save to Dropbox. Please try again.",
+                variant: "destructive"
+              });
+            }
+          });
+        };
+        reader.readAsDataURL(file);
+      };
+      
+      document.body.appendChild(script);
+    } catch (error: any) {
+      toast({
+        title: "Upload Failed",
+        description: error.message || "Failed to upload to Dropbox. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleOneDriveUpload = async (file: File) => {
+    const clientId = import.meta.env.VITE_ONEDRIVE_CLIENT_ID || 'your_onedrive_client_id';
+    
+    toast({
+      title: "OneDrive Upload",
+      description: "Opening OneDrive authentication window...",
+    });
+
+    try {
+      const redirectUri = encodeURIComponent(window.location.origin + '/download');
+      const scope = encodeURIComponent('files.readwrite');
+      const authUrl = `https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}&scope=${scope}`;
+      
+      const authWindow = window.open(authUrl, 'OneDrive Auth', 'width=600,height=700');
+      
+      const checkAuth = setInterval(() => {
+        try {
+          if (authWindow?.location.hash) {
+            const hash = authWindow.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            const accessToken = params.get('access_token');
+            
+            if (accessToken) {
+              clearInterval(checkAuth);
+              authWindow.close();
+              
+              uploadToOneDrive(file, accessToken);
+            }
+          }
+        } catch (e) {
+        }
+      }, 500);
+
+      setTimeout(() => {
+        clearInterval(checkAuth);
+        if (authWindow && !authWindow.closed) {
+          authWindow.close();
+        }
+      }, 60000);
+    } catch (error: any) {
+      toast({
+        title: "Upload Failed",
+        description: error.message || "Failed to upload to OneDrive. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const uploadToOneDrive = async (file: File, accessToken: string) => {
+    try {
+      const response = await fetch(`https://graph.microsoft.com/v1.0/me/drive/root:/${file.name}:/content`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': file.type
+        },
+        body: file
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Upload Successful",
+          description: "File uploaded to OneDrive successfully!",
+        });
+      } else {
+        throw new Error('Upload failed');
+      }
+    } catch (error: any) {
+      toast({
+        title: "Upload Failed",
+        description: error.message || "Failed to upload to OneDrive. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleBoxUpload = async (file: File) => {
+    const clientId = import.meta.env.VITE_BOX_CLIENT_ID || 'your_box_client_id';
+    
+    toast({
+      title: "Box Upload",
+      description: "Opening Box authentication window...",
+    });
+
+    try {
+      const redirectUri = encodeURIComponent(window.location.origin + '/download');
+      const authUrl = `https://account.box.com/api/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}`;
+      
+      const authWindow = window.open(authUrl, 'Box Auth', 'width=600,height=700');
+      
+      const checkAuth = setInterval(() => {
+        try {
+          if (authWindow?.location.hash) {
+            const hash = authWindow.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            const accessToken = params.get('access_token');
+            
+            if (accessToken) {
+              clearInterval(checkAuth);
+              authWindow.close();
+              
+              uploadToBox(file, accessToken);
+            }
+          }
+        } catch (e) {
+        }
+      }, 500);
+
+      setTimeout(() => {
+        clearInterval(checkAuth);
+        if (authWindow && !authWindow.closed) {
+          authWindow.close();
+        }
+      }, 60000);
+    } catch (error: any) {
+      toast({
+        title: "Upload Failed",
+        description: error.message || "Failed to upload to Box. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const uploadToBox = async (file: File, accessToken: string) => {
+    try {
+      const formData = new FormData();
+      formData.append('attributes', JSON.stringify({ name: file.name, parent: { id: '0' } }));
+      formData.append('file', file);
+
+      const response = await fetch('https://upload.box.com/api/2.0/files/content', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        },
+        body: formData
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Upload Successful",
+          description: "File uploaded to Box successfully!",
+        });
+      } else {
+        throw new Error('Upload failed');
+      }
+    } catch (error: any) {
+      toast({
+        title: "Upload Failed",
+        description: error.message || "Failed to upload to Box. Please try again.",
         variant: "destructive"
       });
     }
@@ -561,44 +779,24 @@ export default function Download() {
                             Save to Cloud Storage
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-64">
+                        <DropdownMenuContent className="w-56">
                           <DropdownMenuLabel>Choose a service</DropdownMenuLabel>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem onClick={() => handleCloudSave('Google Drive')} data-testid="cloud-google-drive">
-                            <FaGoogleDrive className="mr-2 w-4 h-4" />
-                            <span className="flex-1">Google Drive</span>
-                            {cloudStatus?.googleDrive && (
-                              <Badge variant="outline" className="ml-2 text-xs bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300">
-                                Connected
-                              </Badge>
-                            )}
+                            <FaGoogleDrive className="mr-2 w-4 h-4 text-blue-600" />
+                            Google Drive
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleCloudSave('Dropbox')} data-testid="cloud-dropbox">
-                            <FaDropbox className="mr-2 w-4 h-4" />
-                            <span className="flex-1">Dropbox</span>
-                            {cloudStatus?.dropbox && (
-                              <Badge variant="outline" className="ml-2 text-xs bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300">
-                                Connected
-                              </Badge>
-                            )}
+                            <FaDropbox className="mr-2 w-4 h-4 text-blue-500" />
+                            Dropbox
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleCloudSave('OneDrive')} data-testid="cloud-onedrive">
-                            <FaCloud className="mr-2 w-4 h-4" />
-                            <span className="flex-1">OneDrive</span>
-                            {cloudStatus?.onedrive && (
-                              <Badge variant="outline" className="ml-2 text-xs bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300">
-                                Connected
-                              </Badge>
-                            )}
+                            <FaCloud className="mr-2 w-4 h-4 text-blue-700" />
+                            OneDrive
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleCloudSave('Box')} data-testid="cloud-box">
-                            <SiBox className="mr-2 w-4 h-4" />
-                            <span className="flex-1">Box</span>
-                            {cloudStatus?.box && (
-                              <Badge variant="outline" className="ml-2 text-xs bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300">
-                                Connected
-                              </Badge>
-                            )}
+                            <SiBox className="mr-2 w-4 h-4 text-blue-800" />
+                            Box
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
