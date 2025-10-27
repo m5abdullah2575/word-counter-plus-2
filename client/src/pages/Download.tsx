@@ -297,20 +297,10 @@ export default function Download() {
       'Google Drive': 'google-drive',
       'Dropbox': 'dropbox',
       'OneDrive': 'onedrive',
-      'Box': 'box',
-      'iCloud': 'icloud'
+      'Box': 'box'
     };
 
     const endpoint = serviceMap[service];
-    
-    if (service === 'iCloud') {
-      toast({
-        title: "iCloud Not Available",
-        description: "iCloud integration is not supported in web browsers. Please download the file and upload manually to iCloud.",
-        variant: "destructive"
-      });
-      return;
-    }
 
     try {
       const response = await fetch(`/api/cloud-storage/${endpoint}/upload`, {
@@ -609,13 +599,6 @@ export default function Download() {
                                 Connected
                               </Badge>
                             )}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleCloudSave('iCloud')} data-testid="cloud-icloud">
-                            <FaCloud className="mr-2 w-4 h-4" />
-                            <span className="flex-1">iCloud Drive</span>
-                            <Badge variant="outline" className="ml-2 text-xs bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
-                              Not Available
-                            </Badge>
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
