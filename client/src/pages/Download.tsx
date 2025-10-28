@@ -1,30 +1,28 @@
 import { useEffect, useState } from 'react';
-import { useLocation, Link } from 'wouter';
+import { useLocation } from 'wouter';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Progress } from '@/components/ui/progress';
 import jsPDF from 'jspdf';
 import { 
-  Download as DownloadIcon, 
-  FileText, 
-  File, 
-  FileSpreadsheet, 
-  CheckCircle2, 
-  ArrowLeft,
-  Printer,
-  Share2,
-  Edit3,
-  FileType,
-  Shield,
-  BarChart3,
-  Cloud,
-  Sparkles,
-  FileCheck,
-  Zap
-} from 'lucide-react';
-import { FaGoogleDrive, FaDropbox } from 'react-icons/fa';
+  FaDownload, 
+  FaFileAlt, 
+  FaFilePdf, 
+  FaFileCsv, 
+  FaCheckCircle, 
+  FaArrowLeft,
+  FaPrint,
+  FaShare,
+  FaEdit,
+  FaFileWord,
+  FaGoogleDrive,
+  FaDropbox,
+  FaCloud
+} from 'react-icons/fa';
 import { SiBox } from 'react-icons/si';
 import { useToast } from '@/hooks/use-toast';
 import { 
@@ -47,9 +45,9 @@ export default function Download() {
   } | null>(null);
   const [downloaded, setDownloaded] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState(0);
   const [customFilename, setCustomFilename] = useState('');
   const [isEditingFilename, setIsEditingFilename] = useState(false);
-  const [showAnalytics, setShowAnalytics] = useState(false);
 
   useEffect(() => {
     const storedData = sessionStorage.getItem('downloadData');
@@ -71,18 +69,18 @@ export default function Download() {
   }, [toast]);
 
   const getFileIcon = () => {
-    if (!fileData) return <FileText className="w-16 h-16 text-primary" />;
+    if (!fileData) return <FaFileAlt className="w-16 h-16 text-primary" />;
     
     switch (fileData.fileType) {
       case 'pdf':
-        return <File className="w-16 h-16 text-red-500" />;
+        return <FaFilePdf className="w-16 h-16 text-primary" />;
       case 'csv':
-        return <FileSpreadsheet className="w-16 h-16 text-green-500" />;
+        return <FaFileCsv className="w-16 h-16 text-primary" />;
       case 'docx':
-        return <FileType className="w-16 h-16 text-blue-600" />;
+        return <FaFileWord className="w-16 h-16 text-primary" />;
       case 'txt':
       default:
-        return <FileText className="w-16 h-16 text-blue-500" />;
+        return <FaFileAlt className="w-16 h-16 text-primary" />;
     }
   };
 
@@ -112,6 +110,17 @@ export default function Download() {
     if (!fileData) return;
 
     setDownloading(true);
+    setDownloadProgress(0);
+
+    const progressInterval = setInterval(() => {
+      setDownloadProgress(prev => {
+        if (prev >= 90) {
+          clearInterval(progressInterval);
+          return 90;
+        }
+        return prev + 10;
+      });
+    }, 100);
 
     try {
       let finalFilename = customFilename || fileData.filename;
@@ -185,6 +194,7 @@ export default function Download() {
         URL.revokeObjectURL(url);
       }
 
+      setDownloadProgress(100);
       setTimeout(() => {
         setDownloading(false);
         setDownloaded(true);
@@ -195,6 +205,7 @@ export default function Download() {
         });
       }, 500);
     } catch (error) {
+      clearInterval(progressInterval);
       setDownloading(false);
       console.error('Download error:', error);
       toast({
@@ -543,303 +554,311 @@ export default function Download() {
 
   if (!fileData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 py-12">
+      <div className="min-h-screen bg-background py-12">
         <div className="container mx-auto px-4 max-w-2xl">
-          <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-800 p-12">
-            <div className="flex flex-col items-center space-y-6 text-center">
-              <div className="p-6 bg-gradient-to-br from-primary/20 to-primary/5 rounded-full">
-                <FileText className="w-20 h-20 text-primary" />
+          <Card className="shadow-sm border">
+            <CardContent className="pt-12 pb-12 text-center">
+              <div className="flex flex-col items-center space-y-4">
+                <FaFileAlt className="w-20 h-20 text-muted-foreground" />
+                <h2 className="text-2xl font-bold">No File to Download</h2>
+                <p className="text-muted-foreground max-w-md">
+                  No download data found. Please use one of our tools to generate a file first.
+                </p>
+                <Button
+                  onClick={() => setLocation('/')}
+                  size="lg"
+                  className="mt-4"
+                  data-testid="button-go-home"
+                >
+                  <FaArrowLeft className="mr-2" />
+                  Back to Tools
+                </Button>
               </div>
-              <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
-                No File Available
-              </h2>
-              <p className="text-muted-foreground max-w-md text-lg">
-                Generate a file using one of our tools to get started with downloading.
-              </p>
-              <Button
-                onClick={() => setLocation('/')}
-                size="lg"
-                className="mt-6 shadow-lg hover:shadow-xl transition-all"
-                data-testid="button-go-home"
-              >
-                <ArrowLeft className="mr-2 w-5 h-5" />
-                Back to Tools
-              </Button>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-950 dark:via-blue-950 dark:to-indigo-950 py-8">
-      <div className="container mx-auto px-4 max-w-7xl">
+    <div className="min-h-screen bg-background py-8">
+      <div className="container mx-auto px-4 max-w-6xl">
         <Button
           onClick={() => setLocation('/')}
           variant="ghost"
-          className="mb-8 hover:bg-white/50 dark:hover:bg-gray-900/50"
+          className="mb-6"
           data-testid="button-back-home"
         >
-          <ArrowLeft className="mr-2 w-4 h-4" />
+          <FaArrowLeft className="mr-2" />
           Back to Home
         </Button>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
-              <div className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 p-8">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-3 bg-white/20 backdrop-blur-sm rounded-2xl">
-                      {getFileIcon()}
-                    </div>
-                    <div>
-                      <Badge className="bg-white/20 text-white border-white/30 backdrop-blur-sm">
-                        {fileData.fileType.toUpperCase()}
-                      </Badge>
-                    </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <Card className="shadow-sm border">
+              <CardHeader className="border-b">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-2xl font-bold flex items-center gap-2">
+                      <FaDownload className="text-primary" />
+                      Download Your File
+                    </CardTitle>
+                    <CardDescription className="mt-2">
+                      Your file is ready. Download, print, or save to cloud storage.
+                    </CardDescription>
                   </div>
                   {downloaded && (
-                    <div className="flex items-center space-x-2 bg-green-500/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                      <CheckCircle2 className="w-5 h-5 text-white" />
-                      <span className="text-white font-medium">Downloaded</span>
-                    </div>
+                    <Badge className="bg-primary/10 text-primary border-primary/20">
+                      <FaCheckCircle className="mr-1" />
+                      Downloaded
+                    </Badge>
                   )}
                 </div>
-                
-                <div className="space-y-3">
-                  {isEditingFilename ? (
-                    <div className="flex gap-2">
-                      <Input
-                        value={customFilename}
-                        onChange={(e) => setCustomFilename(e.target.value)}
-                        className="bg-white/20 backdrop-blur-sm border-white/30 text-white placeholder:text-white/60"
-                        data-testid="input-filename"
-                      />
-                      <Button
-                        onClick={() => setIsEditingFilename(false)}
-                        variant="secondary"
-                        size="icon"
-                        className="bg-white/20 hover:bg-white/30 backdrop-blur-sm"
-                        data-testid="button-save-filename"
-                      >
-                        <CheckCircle2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-between">
-                      <h1 className="text-3xl font-bold text-white truncate">
-                        {customFilename || fileData.filename}
-                      </h1>
-                      <Button
-                        onClick={() => setIsEditingFilename(true)}
-                        variant="ghost"
-                        size="icon"
-                        className="text-white hover:bg-white/20"
-                        data-testid="button-edit-filename"
-                      >
-                        <Edit3 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  )}
-                  <p className="text-white/80 text-lg">{getFileSize()}</p>
-                </div>
-              </div>
+              </CardHeader>
+              <CardContent className="pt-6 space-y-6">
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="p-6 bg-muted/40 rounded-lg">
+                    {getFileIcon()}
+                  </div>
 
-              <div className="p-8 space-y-6">
-                <div>
-                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                    <Zap className="w-5 h-5 text-primary" />
-                    Quick Actions
-                  </h3>
+                  <div className="text-center space-y-2 w-full">
+                    {isEditingFilename ? (
+                      <div className="space-y-2">
+                        <Label htmlFor="filename">Filename</Label>
+                        <div className="flex gap-2 max-w-md mx-auto">
+                          <Input
+                            id="filename"
+                            value={customFilename}
+                            onChange={(e) => setCustomFilename(e.target.value)}
+                            className="flex-1"
+                            data-testid="input-filename"
+                          />
+                          <Button
+                            onClick={() => setIsEditingFilename(false)}
+                            variant="outline"
+                            size="icon"
+                            data-testid="button-save-filename"
+                          >
+                            <FaCheckCircle className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center gap-2">
+                        <h3 className="text-xl font-semibold" data-testid="text-filename">
+                          {customFilename || fileData.filename}
+                        </h3>
+                        <Button
+                          onClick={() => setIsEditingFilename(true)}
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8"
+                          data-testid="button-edit-filename"
+                        >
+                          <FaEdit className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    )}
+                    <div className="flex items-center justify-center gap-3">
+                      <Badge variant="outline">{fileData.fileType.toUpperCase()}</Badge>
+                      <span className="text-sm text-muted-foreground">{getFileSize()}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {downloading && (
+                  <div className="space-y-2">
+                    <Progress value={downloadProgress} className="w-full" />
+                    <p className="text-sm text-center text-muted-foreground">
+                      Preparing download... {downloadProgress}%
+                    </p>
+                  </div>
+                )}
+
+                <Separator />
+
+                <div className="space-y-4">
+                  <h4 className="font-semibold">Download Options</h4>
                   <div className="grid grid-cols-2 gap-3">
                     <Button
                       onClick={() => handleDownload()}
                       disabled={downloading}
-                      size="lg"
-                      className="bg-gradient-to-r from-primary to-purple-500 hover:from-primary/90 hover:to-purple-600 shadow-lg"
+                      className="w-full"
                       data-testid="button-download-original"
                     >
-                      <DownloadIcon className="mr-2 w-5 h-5" />
-                      {downloading ? 'Downloading...' : 'Download'}
+                      <FaDownload className="mr-2" />
+                      Download Original
                     </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" className="w-full" data-testid="button-export-as">
+                          <FaFileAlt className="mr-2" />
+                          Export As
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuLabel>Export Format</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={() => handleDownload('pdf')} data-testid="button-download-pdf">
+                          <FaFilePdf className="mr-2 text-primary" />
+                          PDF Document
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDownload('txt')} data-testid="button-download-txt">
+                          <FaFileAlt className="mr-2 text-primary" />
+                          Text File
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDownload('csv')} data-testid="button-download-csv">
+                          <FaFileCsv className="mr-2 text-primary" />
+                          CSV File
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+
+                <Separator />
+
+                <div className="space-y-4">
+                  <h4 className="font-semibold">Additional Actions</h4>
+                  <div className="grid grid-cols-2 gap-3">
                     <Button
                       onClick={handlePrint}
                       variant="outline"
-                      size="lg"
-                      className="border-2"
+                      className="w-full"
                       data-testid="button-print"
                     >
-                      <Printer className="mr-2 w-5 h-5" />
+                      <FaPrint className="mr-2" />
                       Print
                     </Button>
-                  </div>
-                </div>
-
-                <Separator />
-
-                <div>
-                  <h3 className="text-lg font-semibold mb-4">Export Formats</h3>
-                  <div className="grid grid-cols-3 gap-3">
                     <Button
-                      onClick={() => handleDownload('pdf')}
+                      onClick={handleShare}
                       variant="outline"
-                      className="flex-col h-auto py-4"
-                      data-testid="button-download-pdf"
+                      className="w-full"
+                      data-testid="button-share"
                     >
-                      <File className="w-6 h-6 mb-2 text-red-500" />
-                      <span className="text-sm">PDF</span>
-                    </Button>
-                    <Button
-                      onClick={() => handleDownload('txt')}
-                      variant="outline"
-                      className="flex-col h-auto py-4"
-                      data-testid="button-download-txt"
-                    >
-                      <FileText className="w-6 h-6 mb-2 text-blue-500" />
-                      <span className="text-sm">TXT</span>
-                    </Button>
-                    <Button
-                      onClick={() => handleDownload('csv')}
-                      variant="outline"
-                      className="flex-col h-auto py-4"
-                      data-testid="button-download-csv"
-                    >
-                      <FileSpreadsheet className="w-6 h-6 mb-2 text-green-500" />
-                      <span className="text-sm">CSV</span>
+                      <FaShare className="mr-2" />
+                      Share
                     </Button>
                   </div>
                 </div>
 
                 <Separator />
 
-                <div>
-                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                    <Cloud className="w-5 h-5 text-primary" />
-                    Cloud Storage
-                  </h3>
+                <div className="space-y-4">
+                  <h4 className="font-semibold">Save to Cloud</h4>
                   <div className="grid grid-cols-2 gap-3">
                     <Button
                       onClick={() => handleCloudSave('Google Drive')}
                       variant="outline"
-                      className="justify-start"
+                      className="w-full justify-start"
                       data-testid="button-save-google-drive"
                     >
-                      <FaGoogleDrive className="mr-2 w-5 h-5 text-blue-500" />
+                      <FaGoogleDrive className="mr-2 text-primary" />
                       Google Drive
                     </Button>
                     <Button
                       onClick={() => handleCloudSave('Dropbox')}
                       variant="outline"
-                      className="justify-start"
+                      className="w-full justify-start"
                       data-testid="button-save-dropbox"
                     >
-                      <FaDropbox className="mr-2 w-5 h-5 text-blue-600" />
+                      <FaDropbox className="mr-2 text-primary" />
                       Dropbox
                     </Button>
                     <Button
                       onClick={() => handleCloudSave('OneDrive')}
                       variant="outline"
-                      className="justify-start"
+                      className="w-full justify-start"
                       data-testid="button-save-onedrive"
                     >
-                      <Cloud className="mr-2 w-5 h-5 text-blue-400" />
+                      <FaCloud className="mr-2 text-primary" />
                       OneDrive
                     </Button>
                     <Button
                       onClick={() => handleCloudSave('Box')}
                       variant="outline"
-                      className="justify-start"
+                      className="w-full justify-start"
                       data-testid="button-save-box"
                     >
-                      <SiBox className="mr-2 w-5 h-5 text-blue-700" />
+                      <SiBox className="mr-2 text-primary" />
                       Box
                     </Button>
                   </div>
                 </div>
-
-                <Separator />
-
-                <Button
-                  onClick={handleShare}
-                  variant="outline"
-                  className="w-full border-2"
-                  data-testid="button-share"
-                >
-                  <Share2 className="mr-2 w-5 h-5" />
-                  Share File
-                </Button>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
 
           <div className="space-y-6">
-            <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
-              <div className="bg-gradient-to-r from-green-500 to-emerald-500 p-6">
-                <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                  <BarChart3 className="w-6 h-6" />
-                  File Analytics
-                </h3>
-              </div>
-              
-              {analytics && (
-                <div className="p-6 space-y-4">
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 rounded-2xl p-5 border border-blue-200 dark:border-blue-800">
-                    <p className="text-sm font-medium text-muted-foreground mb-1">Words</p>
-                    <p className="text-4xl font-bold text-blue-600 dark:text-blue-400" data-testid="stat-words">
-                      {analytics.words.toLocaleString()}
-                    </p>
-                  </div>
-
-                  <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900 rounded-2xl p-5 border border-purple-200 dark:border-purple-800">
-                    <p className="text-sm font-medium text-muted-foreground mb-1">Characters</p>
-                    <p className="text-4xl font-bold text-purple-600 dark:text-purple-400" data-testid="stat-characters">
-                      {analytics.characters.toLocaleString()}
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-950 dark:to-pink-900 rounded-2xl p-4 border border-pink-200 dark:border-pink-800">
-                      <p className="text-xs font-medium text-muted-foreground mb-1">Lines</p>
-                      <p className="text-2xl font-bold text-pink-600 dark:text-pink-400" data-testid="stat-lines">
-                        {analytics.lines.toLocaleString()}
-                      </p>
+            <Card className="shadow-sm border">
+              <CardHeader className="border-b">
+                <CardTitle className="text-lg font-semibold">File Analytics</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-6">
+                {analytics && (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
+                      <span className="text-sm text-muted-foreground">Words</span>
+                      <span className="text-lg font-bold text-foreground" data-testid="stat-words">
+                        {analytics.words.toLocaleString()}
+                      </span>
                     </div>
 
-                    <div className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950 dark:to-orange-900 rounded-2xl p-4 border border-orange-200 dark:border-orange-800">
-                      <p className="text-xs font-medium text-muted-foreground mb-1">Paragraphs</p>
-                      <p className="text-2xl font-bold text-orange-600 dark:text-orange-400" data-testid="stat-paragraphs">
+                    <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
+                      <span className="text-sm text-muted-foreground">Characters</span>
+                      <span className="text-lg font-bold text-foreground" data-testid="stat-characters">
+                        {analytics.characters.toLocaleString()}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
+                      <span className="text-sm text-muted-foreground">Characters (no spaces)</span>
+                      <span className="text-lg font-bold text-foreground" data-testid="stat-characters-no-spaces">
+                        {analytics.charactersNoSpaces.toLocaleString()}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
+                      <span className="text-sm text-muted-foreground">Sentences</span>
+                      <span className="text-lg font-bold text-foreground" data-testid="stat-sentences">
+                        {analytics.sentences.toLocaleString()}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
+                      <span className="text-sm text-muted-foreground">Paragraphs</span>
+                      <span className="text-lg font-bold text-foreground" data-testid="stat-paragraphs">
                         {analytics.paragraphs.toLocaleString()}
-                      </p>
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
+                      <span className="text-sm text-muted-foreground">Lines</span>
+                      <span className="text-lg font-bold text-foreground" data-testid="stat-lines">
+                        {analytics.lines.toLocaleString()}
+                      </span>
+                    </div>
+
+                    <Separator />
+
+                    <div className="flex items-center justify-between p-3 bg-primary/10 rounded-lg border border-primary/20">
+                      <span className="text-sm font-medium text-foreground">Reading Time</span>
+                      <span className="text-lg font-bold text-primary" data-testid="stat-reading-time">
+                        {Math.ceil(analytics.words / 200)} min
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 bg-primary/10 rounded-lg border border-primary/20">
+                      <span className="text-sm font-medium text-foreground">Avg. Word Length</span>
+                      <span className="text-lg font-bold text-primary" data-testid="stat-avg-word-length">
+                        {analytics.words > 0 ? (analytics.charactersNoSpaces / analytics.words).toFixed(1) : '0'}
+                      </span>
                     </div>
                   </div>
-
-                  <div className="bg-gradient-to-br from-teal-50 to-teal-100 dark:from-teal-950 dark:to-teal-900 rounded-2xl p-5 border border-teal-200 dark:border-teal-800">
-                    <p className="text-sm font-medium text-muted-foreground mb-1">Reading Time</p>
-                    <p className="text-3xl font-bold text-teal-600 dark:text-teal-400" data-testid="stat-reading-time">
-                      {Math.ceil(analytics.words / 200)} min
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950 dark:to-yellow-950 rounded-3xl shadow-xl border border-amber-200 dark:border-amber-800 p-6">
-              <div className="flex items-start gap-3">
-                <div className="p-2 bg-amber-500/20 rounded-lg">
-                  <Sparkles className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-amber-900 dark:text-amber-100 mb-1">
-                    Pro Tip
-                  </h4>
-                  <p className="text-sm text-amber-700 dark:text-amber-300">
-                    Save your file to cloud storage for easy access across all your devices.
-                  </p>
-                </div>
-              </div>
-            </div>
+                )}
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
