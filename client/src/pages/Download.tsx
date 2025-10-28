@@ -556,38 +556,38 @@ export default function Download() {
   }
 
   return (
-    <div className="min-h-screen bg-background py-6">
-      <div className="container mx-auto px-4 max-w-4xl">
+    <div className="min-h-screen bg-background py-4 sm:py-6">
+      <div className="container mx-auto px-3 sm:px-4 max-w-6xl">
         <Button
           onClick={() => setLocation('/')}
           variant="ghost"
-          className="mb-4"
+          className="mb-3 sm:mb-4 min-h-[44px] sm:min-h-[40px]"
           data-testid="button-back-home"
         >
           <FaArrowLeft className="mr-2" />
           Back
         </Button>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             <Card className="shadow-sm border">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-xl font-bold flex items-center gap-2">
-                    <FaDownload className="text-primary" />
+              <CardHeader className="pb-3 sm:pb-4">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <CardTitle className="text-lg sm:text-xl font-bold flex items-center gap-2">
+                    <FaDownload className="text-primary h-4 w-4 sm:h-5 sm:w-5" />
                     Your File is Ready
                   </CardTitle>
                   {downloaded && (
-                    <Badge className="bg-primary/10 text-primary border-primary/20">
+                    <Badge className="bg-primary/10 text-primary border-primary/20 text-xs">
                       <FaCheckCircle className="mr-1 h-3 w-3" />
                       Downloaded
                     </Badge>
                   )}
                 </div>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-muted/40 rounded-lg">
+              <CardContent className="space-y-3 sm:space-y-4">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="p-2 sm:p-3 bg-muted/40 rounded-lg flex-shrink-0">
                     {getFileIcon()}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -596,13 +596,14 @@ export default function Download() {
                         <Input
                           value={customFilename}
                           onChange={(e) => setCustomFilename(e.target.value)}
-                          className="flex-1"
+                          className="flex-1 text-sm"
                           data-testid="input-filename"
                         />
                         <Button
                           onClick={() => setIsEditingFilename(false)}
                           variant="outline"
                           size="icon"
+                          className="flex-shrink-0 min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-[36px]"
                           data-testid="button-save-filename"
                         >
                           <FaCheckCircle className="w-4 h-4" />
@@ -610,14 +611,14 @@ export default function Download() {
                       </div>
                     ) : (
                       <div className="flex items-center gap-2">
-                        <h3 className="text-lg font-semibold truncate" data-testid="text-filename">
+                        <h3 className="text-base sm:text-lg font-semibold truncate" data-testid="text-filename">
                           {(customFilename || fileData.filename).replace(/\.(txt|pdf|csv|docx)$/i, '')}
                         </h3>
                         <Button
                           onClick={() => setIsEditingFilename(true)}
                           variant="ghost"
                           size="icon"
-                          className="h-7 w-7"
+                          className="min-h-[44px] min-w-[44px] sm:min-h-[32px] sm:min-w-[32px] flex-shrink-0"
                           data-testid="button-edit-filename"
                         >
                           <FaEdit className="w-3 h-3" />
@@ -645,34 +646,32 @@ export default function Download() {
                     onClick={() => handleDownload('pdf')}
                     disabled={downloading}
                     variant="outline"
-                    size="sm"
-                    className="w-full"
+                    className="w-full text-xs sm:text-sm min-h-[44px] sm:min-h-[36px]"
                     data-testid="button-download-pdf"
                   >
-                    <FaFilePdf className="mr-1.5 text-primary h-4 w-4" />
-                    PDF
+                    <FaFilePdf className="mr-1 sm:mr-1.5 text-primary h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span className="hidden xs:inline">PDF</span>
+                    <span className="xs:hidden">PDF</span>
                   </Button>
                   <Button
                     onClick={() => handleDownload('txt')}
                     disabled={downloading}
                     variant="outline"
-                    size="sm"
-                    className="w-full"
+                    className="w-full text-xs sm:text-sm min-h-[44px] sm:min-h-[36px]"
                     data-testid="button-download-txt"
                   >
-                    <FaFileAlt className="mr-1.5 text-primary h-4 w-4" />
-                    TXT
+                    <FaFileAlt className="mr-1 sm:mr-1.5 text-primary h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span>TXT</span>
                   </Button>
                   <Button
                     onClick={() => handleDownload('csv')}
                     disabled={downloading}
                     variant="outline"
-                    size="sm"
-                    className="w-full"
+                    className="w-full text-xs sm:text-sm min-h-[44px] sm:min-h-[36px]"
                     data-testid="button-download-csv"
                   >
-                    <FaFileCsv className="mr-1.5 text-primary h-4 w-4" />
-                    CSV
+                    <FaFileCsv className="mr-1 sm:mr-1.5 text-primary h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span>CSV</span>
                   </Button>
                 </div>
 
@@ -680,69 +679,63 @@ export default function Download() {
                   <Button
                     onClick={handlePrint}
                     variant="outline"
-                    size="sm"
-                    className="w-full"
+                    className="w-full text-xs sm:text-sm min-h-[44px] sm:min-h-[36px]"
                     data-testid="button-print"
                   >
-                    <FaPrint className="mr-1.5 h-4 w-4" />
-                    Print
+                    <FaPrint className="mr-1 sm:mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span>Print</span>
                   </Button>
                   <Button
                     onClick={() => handleDownload()}
                     variant="default"
-                    size="sm"
-                    className="w-full"
+                    className="w-full text-xs sm:text-sm min-h-[44px] sm:min-h-[36px]"
                     data-testid="button-download-default"
                   >
-                    <FaDownload className="mr-1.5 h-4 w-4" />
-                    Download
+                    <FaDownload className="mr-1 sm:mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span>Download</span>
                   </Button>
                 </div>
 
                 <Separator />
 
-                <div className="space-y-2">
+                <div className="space-y-2 sm:space-y-3">
                   <h4 className="font-semibold text-sm">Save to Cloud</h4>
                   <div className="grid grid-cols-2 gap-2">
                     <Button
                       onClick={() => handleCloudSave('Google Drive')}
                       variant="outline"
-                      size="sm"
-                      className="w-full justify-start text-xs"
+                      className="w-full justify-start text-xs px-2 sm:px-3 min-h-[44px] sm:min-h-[36px]"
                       data-testid="button-save-google-drive"
                     >
-                      <FaGoogleDrive className="mr-1.5 text-primary h-3.5 w-3.5" />
-                      Google Drive
+                      <FaGoogleDrive className="mr-1 sm:mr-1.5 text-primary h-3.5 w-3.5 flex-shrink-0" />
+                      <span className="truncate">Google Drive</span>
                     </Button>
                     <Button
                       onClick={() => handleCloudSave('Dropbox')}
                       variant="outline"
-                      size="sm"
-                      className="w-full justify-start text-xs"
+                      className="w-full justify-start text-xs px-2 sm:px-3 min-h-[44px] sm:min-h-[36px]"
                       data-testid="button-save-dropbox"
                     >
-                      <FaDropbox className="mr-1.5 text-primary h-3.5 w-3.5" />
-                      Dropbox
+                      <FaDropbox className="mr-1 sm:mr-1.5 text-primary h-3.5 w-3.5 flex-shrink-0" />
+                      <span className="truncate">Dropbox</span>
                     </Button>
                     <Button
                       onClick={() => handleCloudSave('OneDrive')}
                       variant="outline"
-                      size="sm"
-                      className="w-full justify-start text-xs"
+                      className="w-full justify-start text-xs px-2 sm:px-3 min-h-[44px] sm:min-h-[36px]"
                       data-testid="button-save-onedrive"
                     >
-                      <FaCloud className="mr-1.5 text-primary h-3.5 w-3.5" />
-                      OneDrive
+                      <FaCloud className="mr-1 sm:mr-1.5 text-primary h-3.5 w-3.5 flex-shrink-0" />
+                      <span className="truncate">OneDrive</span>
                     </Button>
                     <Button
                       onClick={() => handleCloudSave('Box')}
                       variant="outline"
-                      size="sm"
-                      className="w-full justify-start text-xs"
+                      className="w-full justify-start text-xs px-2 sm:px-3 min-h-[44px] sm:min-h-[36px]"
                       data-testid="button-save-box"
                     >
-                      <SiBox className="mr-1.5 text-primary h-3.5 w-3.5" />
-                      Box
+                      <SiBox className="mr-1 sm:mr-1.5 text-primary h-3.5 w-3.5 flex-shrink-0" />
+                      <span className="truncate">Box</span>
                     </Button>
                   </div>
                 </div>
@@ -750,40 +743,40 @@ export default function Download() {
             </Card>
 
             <Card className="shadow-sm border">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-lg font-semibold">Share Word Counter Plus</CardTitle>
-                <CardDescription className="text-sm">
+              <CardHeader className="pb-3 sm:pb-4">
+                <CardTitle className="text-base sm:text-lg font-semibold">Share Word Counter Plus</CardTitle>
+                <CardDescription className="text-xs sm:text-sm">
                   Help others discover our free text analysis tools
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
                   <Button
                     onClick={() => handleSocialShare('facebook')}
                     variant="outline"
-                    className="w-full"
+                    className="w-full text-xs sm:text-sm min-h-[44px] sm:min-h-[36px]"
                     data-testid="button-share-facebook"
                   >
-                    <FaFacebook className="mr-2 h-5 w-5 text-blue-600" />
-                    Facebook
+                    <FaFacebook className="mr-1.5 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+                    <span>Facebook</span>
                   </Button>
                   <Button
                     onClick={() => handleSocialShare('twitter')}
                     variant="outline"
-                    className="w-full"
+                    className="w-full text-xs sm:text-sm min-h-[44px] sm:min-h-[36px]"
                     data-testid="button-share-twitter"
                   >
-                    <FaTwitter className="mr-2 h-5 w-5 text-sky-500" />
-                    Twitter
+                    <FaTwitter className="mr-1.5 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5 text-sky-500" />
+                    <span>Twitter</span>
                   </Button>
                   <Button
                     onClick={() => handleSocialShare('linkedin')}
                     variant="outline"
-                    className="w-full"
+                    className="w-full text-xs sm:text-sm min-h-[44px] sm:min-h-[36px]"
                     data-testid="button-share-linkedin"
                   >
-                    <FaLinkedin className="mr-2 h-5 w-5 text-blue-700" />
-                    LinkedIn
+                    <FaLinkedin className="mr-1.5 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5 text-blue-700" />
+                    <span>LinkedIn</span>
                   </Button>
                 </div>
               </CardContent>
@@ -793,9 +786,9 @@ export default function Download() {
           <div className="lg:col-span-1">
             {relatedTools.length > 0 && (
               <Card className="shadow-sm border">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-lg font-semibold">Related Tools</CardTitle>
-                  <CardDescription className="text-sm">
+                <CardHeader className="pb-3 sm:pb-4">
+                  <CardTitle className="text-base sm:text-lg font-semibold">Related Tools</CardTitle>
+                  <CardDescription className="text-xs sm:text-sm">
                     Explore more text analysis tools
                   </CardDescription>
                 </CardHeader>
@@ -808,17 +801,19 @@ export default function Download() {
                         href={tool.href}
                         data-testid={`link-related-tool-${tool.id}`}
                       >
-                        <div className="flex items-start gap-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors cursor-pointer group">
-                          <div className="p-2 bg-primary/10 rounded-md group-hover:bg-primary/20 transition-colors">
-                            <IconComponent className="h-4 w-4 text-primary" />
+                        <div className="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg border hover:bg-muted/50 transition-colors cursor-pointer group min-h-[44px]">
+                          <div className="p-1.5 sm:p-2 bg-primary/10 rounded-md group-hover:bg-primary/20 transition-colors flex-shrink-0">
+                            <IconComponent className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-medium text-sm group-hover:text-primary transition-colors">
-                              {tool.title}
-                            </h4>
-                            <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
-                              {tool.description}
-                            </p>
+                          <div className="flex-1 min-w-0 flex items-center sm:items-start">
+                            <div className="flex-1">
+                              <h4 className="font-medium text-xs sm:text-sm group-hover:text-primary transition-colors">
+                                {tool.title}
+                              </h4>
+                              <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5 hidden sm:block">
+                                {tool.description}
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </Link>
