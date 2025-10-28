@@ -3,6 +3,7 @@ export interface DownloadData {
   filename: string;
   fileType: 'txt' | 'pdf' | 'csv';
   mimeType: string;
+  sourceToolId?: string;
 }
 
 export function prepareDownload(data: DownloadData): void {

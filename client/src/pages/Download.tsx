@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
@@ -16,23 +15,18 @@ import {
   FaCheckCircle, 
   FaArrowLeft,
   FaPrint,
-  FaShare,
   FaEdit,
-  FaFileWord,
   FaGoogleDrive,
   FaDropbox,
-  FaCloud
+  FaCloud,
+  FaFacebook,
+  FaTwitter,
+  FaLinkedin
 } from 'react-icons/fa';
 import { SiBox } from 'react-icons/si';
 import { useToast } from '@/hooks/use-toast';
-import { 
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { getRelatedTools } from '@/lib/relatedTools';
+import type { Tool } from '@/data/toolsConfig';
 
 export default function Download() {
   const [, setLocation] = useLocation();
@@ -42,12 +36,14 @@ export default function Download() {
     filename: string;
     fileType: string;
     mimeType: string;
+    sourceToolId?: string;
   } | null>(null);
   const [downloaded, setDownloaded] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [customFilename, setCustomFilename] = useState('');
   const [isEditingFilename, setIsEditingFilename] = useState(false);
+  const [relatedTools, setRelatedTools] = useState<Tool[]>([]);
 
   useEffect(() => {
     const storedData = sessionStorage.getItem('downloadData');
@@ -57,6 +53,11 @@ export default function Download() {
         const data = JSON.parse(storedData);
         setFileData(data);
         setCustomFilename(data.filename);
+        
+        if (data.sourceToolId) {
+          const tools = getRelatedTools(data.sourceToolId, 4);
+          setRelatedTools(tools);
+        }
       } catch (error) {
         console.error('Error parsing download data:', error);
         toast({
@@ -69,21 +70,7 @@ export default function Download() {
   }, [toast]);
 
   const getFileIcon = () => {
-    // Previous type-specific icons (commented out)
-    // if (!fileData) return <FaFileAlt className="w-16 h-16 text-primary" />;
-    // switch (fileData.fileType) {
-    //   case 'pdf':
-    //     return <FaFilePdf className="w-16 h-16 text-primary" />;
-    //   case 'csv':
-    //     return <FaFileCsv className="w-16 h-16 text-primary" />;
-    //   case 'docx':
-    //     return <FaFileWord className="w-16 h-16 text-primary" />;
-    //   case 'txt':
-    //   default:
-    //     return <FaFileAlt className="w-16 h-16 text-primary" />;
-    // }
-    
-    return <FaFileAlt className="w-20 h-20 text-primary" />;
+    return <FaFileAlt className="w-12 h-12 text-primary" />;
   };
 
   const getFileSize = () => {
@@ -92,20 +79,6 @@ export default function Download() {
     if (bytes < 1024) return bytes + ' B';
     if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
     return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
-  };
-
-  const getFileAnalytics = () => {
-    if (!fileData) return null;
-    
-    const content = fileData.content;
-    const words = content.trim().split(/\s+/).filter(w => w.length > 0).length;
-    const characters = content.length;
-    const charactersNoSpaces = content.replace(/\s/g, '').length;
-    const lines = content.split('\n').length;
-    const paragraphs = content.split(/\n\n+/).filter(p => p.trim().length > 0).length;
-    const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
-
-    return { words, characters, charactersNoSpaces, lines, paragraphs, sentences };
   };
 
   const handleDownload = async (format?: string) => {
@@ -250,26 +223,6 @@ export default function Download() {
       title: "Print Dialog Opened",
       description: "Your document is ready to print.",
     });
-  };
-
-  const handleShare = () => {
-    if (!fileData) return;
-
-    if (navigator.share) {
-      navigator.share({
-        title: fileData.filename,
-        text: fileData.content.substring(0, 200) + '...',
-      }).catch(err => console.error('Error sharing:', err));
-    } else {
-      toast({
-        title: "Share via Email",
-        description: "Opening your email client...",
-      });
-      
-      const subject = encodeURIComponent(`Check out this file: ${fileData.filename}`);
-      const body = encodeURIComponent(fileData.content.substring(0, 500) + '\n\n...');
-      window.location.href = `mailto:?subject=${subject}&body=${body}`;
-    }
   };
 
   const handleCloudSave = async (service: string) => {
@@ -552,7 +505,26 @@ export default function Download() {
     }
   };
 
-  const analytics = getFileAnalytics();
+  const handleSocialShare = (platform: 'facebook' | 'twitter' | 'linkedin') => {
+    const siteUrl = window.location.origin;
+    const shareText = 'Check out Word Counter Plus - Free text analysis tools for writers!';
+    
+    let shareUrl = '';
+    
+    switch (platform) {
+      case 'facebook':
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(siteUrl)}`;
+        break;
+      case 'twitter':
+        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(siteUrl)}&text=${encodeURIComponent(shareText)}`;
+        break;
+      case 'linkedin':
+        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(siteUrl)}`;
+        break;
+    }
+    
+    window.open(shareUrl, '_blank', 'width=600,height=400');
+  };
 
   if (!fileData) {
     return (
@@ -584,208 +556,278 @@ export default function Download() {
   }
 
   return (
-    <div className="min-h-screen bg-background py-8">
-      <div className="container mx-auto px-4 max-w-6xl">
+    <div className="min-h-screen bg-background py-6">
+      <div className="container mx-auto px-4 max-w-4xl">
         <Button
           onClick={() => setLocation('/')}
           variant="ghost"
-          className="mb-6"
+          className="mb-4"
           data-testid="button-back-home"
         >
           <FaArrowLeft className="mr-2" />
-          Back to Home
+          Back
         </Button>
 
-        <div className="max-w-4xl mx-auto">
-          <Card className="shadow-sm border">
-              <CardHeader className="border-b">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            <Card className="shadow-sm border">
+              <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-2xl font-bold flex items-center gap-2">
-                      <FaDownload className="text-primary" />
-                      Download Your File
-                    </CardTitle>
-                    <CardDescription className="mt-2">
-                      Your file is ready. Download, print, or save to cloud storage.
-                    </CardDescription>
-                  </div>
+                  <CardTitle className="text-xl font-bold flex items-center gap-2">
+                    <FaDownload className="text-primary" />
+                    Your File is Ready
+                  </CardTitle>
                   {downloaded && (
                     <Badge className="bg-primary/10 text-primary border-primary/20">
-                      <FaCheckCircle className="mr-1" />
+                      <FaCheckCircle className="mr-1 h-3 w-3" />
                       Downloaded
                     </Badge>
                   )}
                 </div>
               </CardHeader>
-              <CardContent className="pt-6 space-y-6">
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="p-6 bg-muted/40 rounded-lg">
+              <CardContent className="space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-muted/40 rounded-lg">
                     {getFileIcon()}
                   </div>
-
-                  <div className="text-center space-y-2 w-full">
+                  <div className="flex-1 min-w-0">
                     {isEditingFilename ? (
-                      <div className="space-y-2">
-                        <Label htmlFor="filename">Filename</Label>
-                        <div className="flex gap-2 max-w-md mx-auto">
-                          <Input
-                            id="filename"
-                            value={customFilename}
-                            onChange={(e) => setCustomFilename(e.target.value)}
-                            className="flex-1"
-                            data-testid="input-filename"
-                          />
-                          <Button
-                            onClick={() => setIsEditingFilename(false)}
-                            variant="outline"
-                            size="icon"
-                            data-testid="button-save-filename"
-                          >
-                            <FaCheckCircle className="w-4 h-4" />
-                          </Button>
-                        </div>
+                      <div className="flex gap-2">
+                        <Input
+                          value={customFilename}
+                          onChange={(e) => setCustomFilename(e.target.value)}
+                          className="flex-1"
+                          data-testid="input-filename"
+                        />
+                        <Button
+                          onClick={() => setIsEditingFilename(false)}
+                          variant="outline"
+                          size="icon"
+                          data-testid="button-save-filename"
+                        >
+                          <FaCheckCircle className="w-4 h-4" />
+                        </Button>
                       </div>
                     ) : (
-                      <div className="flex items-center justify-center gap-2">
-                        <h3 className="text-xl font-semibold" data-testid="text-filename">
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-lg font-semibold truncate" data-testid="text-filename">
                           {(customFilename || fileData.filename).replace(/\.(txt|pdf|csv|docx)$/i, '')}
                         </h3>
                         <Button
                           onClick={() => setIsEditingFilename(true)}
                           variant="ghost"
                           size="icon"
-                          className="h-8 w-8"
+                          className="h-7 w-7"
                           data-testid="button-edit-filename"
                         >
                           <FaEdit className="w-3 h-3" />
                         </Button>
                       </div>
                     )}
-                    <div className="flex items-center justify-center gap-3">
-                      <Badge variant="outline">{fileData.fileType.toUpperCase()}</Badge>
-                      <span className="text-sm text-muted-foreground">{getFileSize()}</span>
+                    <div className="flex items-center gap-2 mt-1">
+                      <Badge variant="outline" className="text-xs">{fileData.fileType.toUpperCase()}</Badge>
+                      <span className="text-xs text-muted-foreground">{getFileSize()}</span>
                     </div>
                   </div>
                 </div>
 
                 {downloading && (
                   <div className="space-y-2">
-                    <Progress value={downloadProgress} className="w-full" />
-                    <p className="text-sm text-center text-muted-foreground">
-                      Preparing download... {downloadProgress}%
+                    <Progress value={downloadProgress} className="w-full h-2" />
+                    <p className="text-xs text-center text-muted-foreground">
+                      Preparing... {downloadProgress}%
                     </p>
                   </div>
                 )}
 
-                <Separator />
+                <div className="grid grid-cols-3 gap-2">
+                  <Button
+                    onClick={() => handleDownload('pdf')}
+                    disabled={downloading}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                    data-testid="button-download-pdf"
+                  >
+                    <FaFilePdf className="mr-1.5 text-primary h-4 w-4" />
+                    PDF
+                  </Button>
+                  <Button
+                    onClick={() => handleDownload('txt')}
+                    disabled={downloading}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                    data-testid="button-download-txt"
+                  >
+                    <FaFileAlt className="mr-1.5 text-primary h-4 w-4" />
+                    TXT
+                  </Button>
+                  <Button
+                    onClick={() => handleDownload('csv')}
+                    disabled={downloading}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                    data-testid="button-download-csv"
+                  >
+                    <FaFileCsv className="mr-1.5 text-primary h-4 w-4" />
+                    CSV
+                  </Button>
+                </div>
 
-                <div className="space-y-4">
-                  <h4 className="font-semibold">Download Options</h4>
-                  <div className="grid grid-cols-3 gap-3">
-                    <Button
-                      onClick={() => handleDownload('pdf')}
-                      disabled={downloading}
-                      variant="outline"
-                      className="w-full"
-                      data-testid="button-download-pdf"
-                    >
-                      <FaFilePdf className="mr-2 text-primary" />
-                      PDF
-                    </Button>
-                    <Button
-                      onClick={() => handleDownload('txt')}
-                      disabled={downloading}
-                      variant="outline"
-                      className="w-full"
-                      data-testid="button-download-txt"
-                    >
-                      <FaFileAlt className="mr-2 text-primary" />
-                      TXT
-                    </Button>
-                    <Button
-                      onClick={() => handleDownload('csv')}
-                      disabled={downloading}
-                      variant="outline"
-                      className="w-full"
-                      data-testid="button-download-csv"
-                    >
-                      <FaFileCsv className="mr-2 text-primary" />
-                      CSV
-                    </Button>
-                  </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button
+                    onClick={handlePrint}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                    data-testid="button-print"
+                  >
+                    <FaPrint className="mr-1.5 h-4 w-4" />
+                    Print
+                  </Button>
+                  <Button
+                    onClick={() => handleDownload()}
+                    variant="default"
+                    size="sm"
+                    className="w-full"
+                    data-testid="button-download-default"
+                  >
+                    <FaDownload className="mr-1.5 h-4 w-4" />
+                    Download
+                  </Button>
                 </div>
 
                 <Separator />
 
-                <div className="space-y-4">
-                  <h4 className="font-semibold">Additional Actions</h4>
-                  <div className="grid grid-cols-2 gap-3">
-                    <Button
-                      onClick={handlePrint}
-                      variant="outline"
-                      className="w-full"
-                      data-testid="button-print"
-                    >
-                      <FaPrint className="mr-2" />
-                      Print
-                    </Button>
-                    <Button
-                      onClick={handleShare}
-                      variant="outline"
-                      className="w-full"
-                      data-testid="button-share"
-                    >
-                      <FaShare className="mr-2" />
-                      Share
-                    </Button>
-                  </div>
-                </div>
-
-                <Separator />
-
-                <div className="space-y-4">
-                  <h4 className="font-semibold">Save to Cloud</h4>
-                  <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <h4 className="font-semibold text-sm">Save to Cloud</h4>
+                  <div className="grid grid-cols-2 gap-2">
                     <Button
                       onClick={() => handleCloudSave('Google Drive')}
                       variant="outline"
-                      className="w-full justify-start"
+                      size="sm"
+                      className="w-full justify-start text-xs"
                       data-testid="button-save-google-drive"
                     >
-                      <FaGoogleDrive className="mr-2 text-primary" />
+                      <FaGoogleDrive className="mr-1.5 text-primary h-3.5 w-3.5" />
                       Google Drive
                     </Button>
                     <Button
                       onClick={() => handleCloudSave('Dropbox')}
                       variant="outline"
-                      className="w-full justify-start"
+                      size="sm"
+                      className="w-full justify-start text-xs"
                       data-testid="button-save-dropbox"
                     >
-                      <FaDropbox className="mr-2 text-primary" />
+                      <FaDropbox className="mr-1.5 text-primary h-3.5 w-3.5" />
                       Dropbox
                     </Button>
                     <Button
                       onClick={() => handleCloudSave('OneDrive')}
                       variant="outline"
-                      className="w-full justify-start"
+                      size="sm"
+                      className="w-full justify-start text-xs"
                       data-testid="button-save-onedrive"
                     >
-                      <FaCloud className="mr-2 text-primary" />
+                      <FaCloud className="mr-1.5 text-primary h-3.5 w-3.5" />
                       OneDrive
                     </Button>
                     <Button
                       onClick={() => handleCloudSave('Box')}
                       variant="outline"
-                      className="w-full justify-start"
+                      size="sm"
+                      className="w-full justify-start text-xs"
                       data-testid="button-save-box"
                     >
-                      <SiBox className="mr-2 text-primary" />
+                      <SiBox className="mr-1.5 text-primary h-3.5 w-3.5" />
                       Box
                     </Button>
                   </div>
                 </div>
               </CardContent>
             </Card>
+
+            <Card className="shadow-sm border">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold">Share Word Counter Plus</CardTitle>
+                <CardDescription className="text-sm">
+                  Help others discover our free text analysis tools
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-3 gap-3">
+                  <Button
+                    onClick={() => handleSocialShare('facebook')}
+                    variant="outline"
+                    className="w-full"
+                    data-testid="button-share-facebook"
+                  >
+                    <FaFacebook className="mr-2 h-5 w-5 text-blue-600" />
+                    Facebook
+                  </Button>
+                  <Button
+                    onClick={() => handleSocialShare('twitter')}
+                    variant="outline"
+                    className="w-full"
+                    data-testid="button-share-twitter"
+                  >
+                    <FaTwitter className="mr-2 h-5 w-5 text-sky-500" />
+                    Twitter
+                  </Button>
+                  <Button
+                    onClick={() => handleSocialShare('linkedin')}
+                    variant="outline"
+                    className="w-full"
+                    data-testid="button-share-linkedin"
+                  >
+                    <FaLinkedin className="mr-2 h-5 w-5 text-blue-700" />
+                    LinkedIn
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="lg:col-span-1">
+            {relatedTools.length > 0 && (
+              <Card className="shadow-sm border">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg font-semibold">Related Tools</CardTitle>
+                  <CardDescription className="text-sm">
+                    Explore more text analysis tools
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  {relatedTools.map((tool) => {
+                    const IconComponent = tool.icon;
+                    return (
+                      <Link
+                        key={tool.id}
+                        href={tool.href}
+                        data-testid={`link-related-tool-${tool.id}`}
+                      >
+                        <div className="flex items-start gap-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors cursor-pointer group">
+                          <div className="p-2 bg-primary/10 rounded-md group-hover:bg-primary/20 transition-colors">
+                            <IconComponent className="h-4 w-4 text-primary" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-medium text-sm group-hover:text-primary transition-colors">
+                              {tool.title}
+                            </h4>
+                            <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
+                              {tool.description}
+                            </p>
+                          </div>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </CardContent>
+              </Card>
+            )}
+          </div>
         </div>
       </div>
     </div>
