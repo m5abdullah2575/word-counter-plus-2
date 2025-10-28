@@ -69,19 +69,21 @@ export default function Download() {
   }, [toast]);
 
   const getFileIcon = () => {
-    if (!fileData) return <FaFileAlt className="w-16 h-16 text-primary" />;
+    // Previous type-specific icons (commented out)
+    // if (!fileData) return <FaFileAlt className="w-16 h-16 text-primary" />;
+    // switch (fileData.fileType) {
+    //   case 'pdf':
+    //     return <FaFilePdf className="w-16 h-16 text-primary" />;
+    //   case 'csv':
+    //     return <FaFileCsv className="w-16 h-16 text-primary" />;
+    //   case 'docx':
+    //     return <FaFileWord className="w-16 h-16 text-primary" />;
+    //   case 'txt':
+    //   default:
+    //     return <FaFileAlt className="w-16 h-16 text-primary" />;
+    // }
     
-    switch (fileData.fileType) {
-      case 'pdf':
-        return <FaFilePdf className="w-16 h-16 text-primary" />;
-      case 'csv':
-        return <FaFileCsv className="w-16 h-16 text-primary" />;
-      case 'docx':
-        return <FaFileWord className="w-16 h-16 text-primary" />;
-      case 'txt':
-      default:
-        return <FaFileAlt className="w-16 h-16 text-primary" />;
-    }
+    return <FaFileAlt className="w-20 h-20 text-primary" />;
   };
 
   const getFileSize = () => {
@@ -646,7 +648,7 @@ export default function Download() {
                     ) : (
                       <div className="flex items-center justify-center gap-2">
                         <h3 className="text-xl font-semibold" data-testid="text-filename">
-                          {customFilename || fileData.filename}
+                          {(customFilename || fileData.filename).replace(/\.(txt|pdf|csv|docx)$/i, '')}
                         </h3>
                         <Button
                           onClick={() => setIsEditingFilename(true)}
