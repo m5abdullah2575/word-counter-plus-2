@@ -594,9 +594,8 @@ export default function Download() {
           Back to Home
         </Button>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <Card className="shadow-sm border">
+        <div className="max-w-4xl mx-auto">
+          <Card className="shadow-sm border">
               <CardHeader className="border-b">
                 <div className="flex items-center justify-between">
                   <div>
@@ -680,40 +679,37 @@ export default function Download() {
 
                 <div className="space-y-4">
                   <h4 className="font-semibold">Download Options</h4>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-3 gap-3">
                     <Button
-                      onClick={() => handleDownload()}
+                      onClick={() => handleDownload('pdf')}
                       disabled={downloading}
+                      variant="outline"
                       className="w-full"
-                      data-testid="button-download-original"
+                      data-testid="button-download-pdf"
                     >
-                      <FaDownload className="mr-2" />
-                      Download Original
+                      <FaFilePdf className="mr-2 text-primary" />
+                      PDF
                     </Button>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="w-full" data-testid="button-export-as">
-                          <FaFileAlt className="mr-2" />
-                          Export As
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuLabel>Export Format</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={() => handleDownload('pdf')} data-testid="button-download-pdf">
-                          <FaFilePdf className="mr-2 text-primary" />
-                          PDF Document
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleDownload('txt')} data-testid="button-download-txt">
-                          <FaFileAlt className="mr-2 text-primary" />
-                          Text File
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleDownload('csv')} data-testid="button-download-csv">
-                          <FaFileCsv className="mr-2 text-primary" />
-                          CSV File
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <Button
+                      onClick={() => handleDownload('txt')}
+                      disabled={downloading}
+                      variant="outline"
+                      className="w-full"
+                      data-testid="button-download-txt"
+                    >
+                      <FaFileAlt className="mr-2 text-primary" />
+                      TXT
+                    </Button>
+                    <Button
+                      onClick={() => handleDownload('csv')}
+                      disabled={downloading}
+                      variant="outline"
+                      className="w-full"
+                      data-testid="button-download-csv"
+                    >
+                      <FaFileCsv className="mr-2 text-primary" />
+                      CSV
+                    </Button>
                   </div>
                 </div>
 
@@ -788,78 +784,6 @@ export default function Download() {
                 </div>
               </CardContent>
             </Card>
-          </div>
-
-          <div className="space-y-6">
-            <Card className="shadow-sm border">
-              <CardHeader className="border-b">
-                <CardTitle className="text-lg font-semibold">File Analytics</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-6">
-                {analytics && (
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
-                      <span className="text-sm text-muted-foreground">Words</span>
-                      <span className="text-lg font-bold text-foreground" data-testid="stat-words">
-                        {analytics.words.toLocaleString()}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
-                      <span className="text-sm text-muted-foreground">Characters</span>
-                      <span className="text-lg font-bold text-foreground" data-testid="stat-characters">
-                        {analytics.characters.toLocaleString()}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
-                      <span className="text-sm text-muted-foreground">Characters (no spaces)</span>
-                      <span className="text-lg font-bold text-foreground" data-testid="stat-characters-no-spaces">
-                        {analytics.charactersNoSpaces.toLocaleString()}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
-                      <span className="text-sm text-muted-foreground">Sentences</span>
-                      <span className="text-lg font-bold text-foreground" data-testid="stat-sentences">
-                        {analytics.sentences.toLocaleString()}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
-                      <span className="text-sm text-muted-foreground">Paragraphs</span>
-                      <span className="text-lg font-bold text-foreground" data-testid="stat-paragraphs">
-                        {analytics.paragraphs.toLocaleString()}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
-                      <span className="text-sm text-muted-foreground">Lines</span>
-                      <span className="text-lg font-bold text-foreground" data-testid="stat-lines">
-                        {analytics.lines.toLocaleString()}
-                      </span>
-                    </div>
-
-                    <Separator />
-
-                    <div className="flex items-center justify-between p-3 bg-primary/10 rounded-lg border border-primary/20">
-                      <span className="text-sm font-medium text-foreground">Reading Time</span>
-                      <span className="text-lg font-bold text-primary" data-testid="stat-reading-time">
-                        {Math.ceil(analytics.words / 200)} min
-                      </span>
-                    </div>
-
-                    <div className="flex items-center justify-between p-3 bg-primary/10 rounded-lg border border-primary/20">
-                      <span className="text-sm font-medium text-foreground">Avg. Word Length</span>
-                      <span className="text-lg font-bold text-primary" data-testid="stat-avg-word-length">
-                        {analytics.words > 0 ? (analytics.charactersNoSpaces / analytics.words).toFixed(1) : '0'}
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
         </div>
       </div>
     </div>
