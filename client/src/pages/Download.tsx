@@ -119,24 +119,109 @@ export default function Download() {
         const pdf = new jsPDF();
         const pageWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
-        const margin = 15;
+        const margin = 20;
         const maxLineWidth = pageWidth - (margin * 2);
         
-        pdf.setFontSize(16);
-        pdf.text(customFilename || fileData.filename.replace(/\.(txt|pdf|csv|docx)$/i, ''), margin, margin);
+        const brandColor = { r: 220, g: 38, b: 38 };
+        const lightGray = { r: 248, g: 248, b: 248 };
+        const darkGray = { r: 60, g: 60, b: 60 };
+        const borderGray = { r: 230, g: 230, b: 230 };
         
-        pdf.setFontSize(11);
-        const lines = pdf.splitTextToSize(fileData.content, maxLineWidth);
-        let yPosition = margin + 10;
-        
-        for (let i = 0; i < lines.length; i++) {
-          if (yPosition > pageHeight - margin) {
-            pdf.addPage();
-            yPosition = margin;
+        const addHeader = (pageNum: number) => {
+          pdf.setFillColor(brandColor.r, brandColor.g, brandColor.b);
+          pdf.rect(0, 0, pageWidth, 35, 'F');
+          
+          pdf.setDrawColor(180, 25, 25);
+          pdf.setLineWidth(2);
+          pdf.line(0, 35, pageWidth, 35);
+          
+          pdf.setTextColor(255, 255, 255);
+          pdf.setFontSize(24);
+          pdf.setFont("helvetica", "bold");
+          pdf.text("Word Counter Plus", margin, 15);
+          
+          pdf.setFontSize(10);
+          pdf.setFont("helvetica", "normal");
+          pdf.text("Professional Text Analysis Tool", margin, 25);
+          
+          if (pageNum > 1) {
+            pdf.setFontSize(9);
+            pdf.text(`Page ${pageNum}`, pageWidth - margin, 20, { align: 'right' });
           }
-          pdf.text(lines[i], margin, yPosition);
-          yPosition += 6;
-        }
+        };
+        
+        const addFooter = (pageNum: number) => {
+          const footerY = pageHeight - 25;
+          
+          pdf.setDrawColor(brandColor.r, brandColor.g, brandColor.b);
+          pdf.setLineWidth(1.5);
+          pdf.line(margin, footerY, pageWidth - margin, footerY);
+          
+          pdf.setFillColor(lightGray.r, lightGray.g, lightGray.b);
+          pdf.rect(0, footerY + 2, pageWidth, 23, 'F');
+          
+          pdf.setTextColor(darkGray.r, darkGray.g, darkGray.b);
+          pdf.setFontSize(9);
+          pdf.setFont("helvetica", "bold");
+          pdf.text("Word Counter Plus", margin, footerY + 10);
+          
+          pdf.setFont("helvetica", "normal");
+          pdf.setFontSize(8);
+          pdf.setTextColor(100, 100, 100);
+          pdf.text("www.wordcounterplus.com", margin, footerY + 16);
+          
+          pdf.setTextColor(brandColor.r, brandColor.g, brandColor.b);
+          pdf.setFont("helvetica", "bold");
+          pdf.text(`Page ${pageNum}`, pageWidth - margin, footerY + 10, { align: 'right' });
+          
+          pdf.setFont("helvetica", "normal");
+          pdf.setTextColor(100, 100, 100);
+          const date = new Date().toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          });
+          pdf.text(date, pageWidth - margin, footerY + 16, { align: 'right' });
+        };
+
+        let yPosition = 50;
+        let pageNum = 1;
+        
+        addHeader(pageNum);
+        
+        pdf.setFillColor(brandColor.r, brandColor.g, brandColor.b);
+        pdf.roundedRect(margin - 3, yPosition - 8, maxLineWidth + 6, 20, 3, 3, 'F');
+        
+        pdf.setTextColor(255, 255, 255);
+        pdf.setFontSize(22);
+        pdf.setFont("helvetica", "bold");
+        pdf.text("WORD COUNTER ANALYSIS REPORT", pageWidth / 2, yPosition + 2, { align: 'center' });
+        
+        yPosition += 25;
+        
+        pdf.setFillColor(255, 255, 255);
+        pdf.setDrawColor(borderGray.r, borderGray.g, borderGray.b);
+        pdf.setLineWidth(0.5);
+        
+        pdf.setTextColor(darkGray.r, darkGray.g, darkGray.b);
+        pdf.setFontSize(10);
+        pdf.setFont("helvetica", "normal");
+        
+        const lines = pdf.splitTextToSize(fileData.content, maxLineWidth - 4);
+        
+        lines.forEach((line: string) => {
+          if (yPosition > pageHeight - 40) {
+            addFooter(pageNum);
+            pdf.addPage();
+            pageNum++;
+            addHeader(pageNum);
+            yPosition = 50;
+          }
+          pdf.text(line, margin + 2, yPosition);
+          yPosition += 5.5;
+        });
+        
+        addFooter(pageNum);
         
         pdf.save(finalFilename);
       } else if (selectedFormat === 'txt') {
