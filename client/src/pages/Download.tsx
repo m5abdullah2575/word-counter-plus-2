@@ -14,7 +14,6 @@ import {
   FaFileCsv, 
   FaCheckCircle, 
   FaArrowLeft,
-  FaPrint,
   FaEdit,
   FaGoogleDrive,
   FaDropbox,
@@ -28,6 +27,8 @@ import { useToast } from '@/hooks/use-toast';
 import { getRelatedTools } from '@/lib/relatedTools';
 import type { Tool } from '@/data/toolsConfig';
 
+type FileFormat = 'pdf' | 'txt' | 'csv';
+
 export default function Download() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
@@ -38,6 +39,7 @@ export default function Download() {
     mimeType: string;
     sourceToolId?: string;
   } | null>(null);
+  const [selectedFormat, setSelectedFormat] = useState<FileFormat | null>(null);
   const [downloaded, setDownloaded] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0);
@@ -52,7 +54,7 @@ export default function Download() {
       try {
         const data = JSON.parse(storedData);
         setFileData(data);
-        setCustomFilename(data.filename);
+        setCustomFilename(data.filename.replace(/\.(txt|pdf|csv|docx)$/i, ''));
         
         if (data.sourceToolId) {
           const tools = getRelatedTools(data.sourceToolId, 4);
@@ -70,7 +72,9 @@ export default function Download() {
   }, [toast]);
 
   const getFileIcon = () => {
-    return <FaFileAlt className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-primary" />;
+    if (selectedFormat === 'pdf') return <FaFilePdf className="w-12 h-12 text-primary" />;
+    if (selectedFormat === 'csv') return <FaFileCsv className="w-12 h-12 text-primary" />;
+    return <FaFileAlt className="w-12 h-12 text-primary" />;
   };
 
   const getFileSize = () => {
@@ -81,8 +85,17 @@ export default function Download() {
     return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
   };
 
-  const handleDownload = async (format?: string) => {
+  const handleDownload = async () => {
     if (!fileData) return;
+
+    if (!selectedFormat) {
+      toast({
+        title: "Format Required",
+        description: "Please choose a file format/extension before downloading.",
+        variant: "destructive"
+      });
+      return;
+    }
 
     setDownloading(true);
     setDownloadProgress(0);
@@ -98,12 +111,10 @@ export default function Download() {
     }, 100);
 
     try {
-      let finalFilename = customFilename || fileData.filename;
+      let finalFilename = customFilename || fileData.filename.replace(/\.(txt|pdf|csv|docx)$/i, '');
       
-      if (format === 'pdf') {
-        if (!finalFilename.toLowerCase().endsWith('.pdf')) {
-          finalFilename = finalFilename.replace(/\.[^.]+$/, '') + '.pdf';
-        }
+      if (selectedFormat === 'pdf') {
+        finalFilename = finalFilename + '.pdf';
         
         const pdf = new jsPDF();
         const pageWidth = pdf.internal.pageSize.getWidth();
@@ -112,7 +123,7 @@ export default function Download() {
         const maxLineWidth = pageWidth - (margin * 2);
         
         pdf.setFontSize(16);
-        pdf.text(finalFilename.replace('.pdf', ''), margin, margin);
+        pdf.text(customFilename || fileData.filename.replace(/\.(txt|pdf|csv|docx)$/i, ''), margin, margin);
         
         pdf.setFontSize(11);
         const lines = pdf.splitTextToSize(fileData.content, maxLineWidth);
@@ -128,10 +139,8 @@ export default function Download() {
         }
         
         pdf.save(finalFilename);
-      } else if (format === 'txt') {
-        if (!finalFilename.toLowerCase().endsWith('.txt')) {
-          finalFilename = finalFilename.replace(/\.[^.]+$/, '') + '.txt';
-        }
+      } else if (selectedFormat === 'txt') {
+        finalFilename = finalFilename + '.txt';
         const blob = new Blob([fileData.content], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -141,24 +150,9 @@ export default function Download() {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-      } else if (format === 'csv') {
-        if (!finalFilename.toLowerCase().endsWith('.csv')) {
-          finalFilename = finalFilename.replace(/\.[^.]+$/, '') + '.csv';
-        }
+      } else if (selectedFormat === 'csv') {
+        finalFilename = finalFilename + '.csv';
         const blob = new Blob([fileData.content], { type: 'text/csv' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = finalFilename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      } else {
-        if (!finalFilename.includes('.')) {
-          finalFilename = `${finalFilename}.${fileData.fileType}`;
-        }
-        const blob = new Blob([fileData.content], { type: fileData.mimeType });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -191,45 +185,21 @@ export default function Download() {
     }
   };
 
-  const handlePrint = () => {
-    if (!fileData) return;
-    
-    const printWindow = window.open('', '_blank');
-    if (printWindow) {
-      printWindow.document.write(`
-        <html>
-          <head>
-            <title>${fileData.filename}</title>
-            <style>
-              body { font-family: Arial, sans-serif; padding: 20px; }
-              pre { white-space: pre-wrap; word-wrap: break-word; }
-            </style>
-          </head>
-          <body>
-            <h2>${fileData.filename}</h2>
-            <pre>${fileData.content}</pre>
-            <script>
-              window.onload = function() {
-                window.print();
-              }
-            </script>
-          </body>
-        </html>
-      `);
-      printWindow.document.close();
-    }
-    
-    toast({
-      title: "Print Dialog Opened",
-      description: "Your document is ready to print.",
-    });
-  };
-
   const handleCloudSave = async (service: string) => {
     if (!fileData) return;
 
+    if (!selectedFormat) {
+      toast({
+        title: "Format Required",
+        description: "Please choose a file format/extension before saving to cloud.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    let finalFilename = (customFilename || fileData.filename.replace(/\.(txt|pdf|csv|docx)$/i, '')) + `.${selectedFormat}`;
     const blob = new Blob([fileData.content], { type: fileData.mimeType });
-    const file = new (File as any)([blob], customFilename || fileData.filename, { type: fileData.mimeType });
+    const file = new (File as any)([blob], finalFilename, { type: fileData.mimeType });
 
     if (service === 'Google Drive') {
       await handleGoogleDriveUpload(file);
@@ -587,7 +557,7 @@ export default function Download() {
                   )}
                 </div>
               </CardHeader>
-              <CardContent className="space-y-4 sm:space-y-5 px-4 sm:px-6">
+              <CardContent className="space-y-5 sm:space-y-6 px-4 sm:px-6">
                 <div className="flex items-start gap-3 sm:gap-4">
                   <div className="p-2 sm:p-3 bg-muted/40 rounded-lg flex-shrink-0">
                     {getFileIcon()}
@@ -614,7 +584,7 @@ export default function Download() {
                     ) : (
                       <div className="flex items-center gap-2">
                         <h3 className="text-base sm:text-lg md:text-xl font-semibold truncate" data-testid="text-filename">
-                          {(customFilename || fileData.filename).replace(/\.(txt|pdf|csv|docx)$/i, '')}
+                          {customFilename}
                         </h3>
                         <Button
                           onClick={() => setIsEditingFilename(true)}
@@ -628,9 +598,53 @@ export default function Download() {
                       </div>
                     )}
                     <div className="flex items-center gap-2 mt-1.5">
-                      <Badge variant="outline" className="text-xs sm:text-sm">{fileData.fileType.toUpperCase()}</Badge>
+                      {selectedFormat && <Badge variant="outline" className="text-xs sm:text-sm">{selectedFormat.toUpperCase()}</Badge>}
                       <span className="text-xs sm:text-sm text-muted-foreground">{getFileSize()}</span>
                     </div>
+                  </div>
+                </div>
+
+                <Separator />
+
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-sm sm:text-base">Export As</h4>
+                  <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                    <button
+                      onClick={() => setSelectedFormat('pdf')}
+                      className={`p-3 sm:p-4 rounded-lg border-2 transition-all min-h-[80px] sm:min-h-[90px] flex flex-col items-center justify-center gap-2 ${
+                        selectedFormat === 'pdf' 
+                          ? 'border-primary bg-primary/10' 
+                          : 'border-border hover:border-primary/50 hover:bg-muted/50'
+                      }`}
+                      data-testid="button-format-pdf"
+                    >
+                      <FaFilePdf className={`h-6 w-6 sm:h-8 sm:w-8 ${selectedFormat === 'pdf' ? 'text-primary' : 'text-muted-foreground'}`} />
+                      <span className={`text-xs sm:text-sm font-medium ${selectedFormat === 'pdf' ? 'text-primary' : 'text-foreground'}`}>PDF</span>
+                    </button>
+                    <button
+                      onClick={() => setSelectedFormat('txt')}
+                      className={`p-3 sm:p-4 rounded-lg border-2 transition-all min-h-[80px] sm:min-h-[90px] flex flex-col items-center justify-center gap-2 ${
+                        selectedFormat === 'txt' 
+                          ? 'border-primary bg-primary/10' 
+                          : 'border-border hover:border-primary/50 hover:bg-muted/50'
+                      }`}
+                      data-testid="button-format-txt"
+                    >
+                      <FaFileAlt className={`h-6 w-6 sm:h-8 sm:w-8 ${selectedFormat === 'txt' ? 'text-primary' : 'text-muted-foreground'}`} />
+                      <span className={`text-xs sm:text-sm font-medium ${selectedFormat === 'txt' ? 'text-primary' : 'text-foreground'}`}>TXT</span>
+                    </button>
+                    <button
+                      onClick={() => setSelectedFormat('csv')}
+                      className={`p-3 sm:p-4 rounded-lg border-2 transition-all min-h-[80px] sm:min-h-[90px] flex flex-col items-center justify-center gap-2 ${
+                        selectedFormat === 'csv' 
+                          ? 'border-primary bg-primary/10' 
+                          : 'border-border hover:border-primary/50 hover:bg-muted/50'
+                      }`}
+                      data-testid="button-format-csv"
+                    >
+                      <FaFileCsv className={`h-6 w-6 sm:h-8 sm:w-8 ${selectedFormat === 'csv' ? 'text-primary' : 'text-muted-foreground'}`} />
+                      <span className={`text-xs sm:text-sm font-medium ${selectedFormat === 'csv' ? 'text-primary' : 'text-foreground'}`}>CSV</span>
+                    </button>
                   </div>
                 </div>
 
@@ -643,65 +657,22 @@ export default function Download() {
                   </div>
                 )}
 
-                <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                  <Button
-                    onClick={() => handleDownload('pdf')}
-                    disabled={downloading}
-                    variant="outline"
-                    className="w-full text-xs sm:text-sm min-h-[48px] sm:min-h-[44px] flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 py-2"
-                    data-testid="button-download-pdf"
-                  >
-                    <FaFilePdf className="text-primary h-5 w-5 sm:h-4 sm:w-4" />
-                    <span>PDF</span>
-                  </Button>
-                  <Button
-                    onClick={() => handleDownload('txt')}
-                    disabled={downloading}
-                    variant="outline"
-                    className="w-full text-xs sm:text-sm min-h-[48px] sm:min-h-[44px] flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 py-2"
-                    data-testid="button-download-txt"
-                  >
-                    <FaFileAlt className="text-primary h-5 w-5 sm:h-4 sm:w-4" />
-                    <span>TXT</span>
-                  </Button>
-                  <Button
-                    onClick={() => handleDownload('csv')}
-                    disabled={downloading}
-                    variant="outline"
-                    className="w-full text-xs sm:text-sm min-h-[48px] sm:min-h-[44px] flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 py-2"
-                    data-testid="button-download-csv"
-                  >
-                    <FaFileCsv className="text-primary h-5 w-5 sm:h-4 sm:w-4" />
-                    <span>CSV</span>
-                  </Button>
-                </div>
+                <Button
+                  onClick={handleDownload}
+                  disabled={downloading}
+                  size="lg"
+                  className="w-full text-sm sm:text-base min-h-[48px] sm:min-h-[44px]"
+                  data-testid="button-download"
+                >
+                  <FaDownload className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                  <span>Download</span>
+                </Button>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-                  <Button
-                    onClick={handlePrint}
-                    variant="outline"
-                    className="w-full text-sm sm:text-base min-h-[48px] sm:min-h-[44px]"
-                    data-testid="button-print"
-                  >
-                    <FaPrint className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                    <span>Print</span>
-                  </Button>
-                  <Button
-                    onClick={() => handleDownload()}
-                    variant="default"
-                    className="w-full text-sm sm:text-base min-h-[48px] sm:min-h-[44px]"
-                    data-testid="button-download-default"
-                  >
-                    <FaDownload className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                    <span>Download</span>
-                  </Button>
-                </div>
-
-                <Separator className="my-4" />
+                <Separator />
 
                 <div className="space-y-3 sm:space-y-4">
                   <h4 className="font-semibold text-sm sm:text-base">Save to Cloud</h4>
-                  <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 sm:gap-3">
+                  <div className="grid grid-cols-2 gap-2 sm:gap-3">
                     <Button
                       onClick={() => handleCloudSave('Google Drive')}
                       variant="outline"
