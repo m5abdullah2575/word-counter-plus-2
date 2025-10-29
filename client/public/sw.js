@@ -1,7 +1,7 @@
 // Ultra-fast service worker for aggressive caching
-const CACHE_NAME = 'wordcounter-v1';
-const STATIC_CACHE = 'wordcounter-static-v1';
-const DYNAMIC_CACHE = 'wordcounter-dynamic-v1';
+const CACHE_NAME = 'wordcounter-v2';
+const STATIC_CACHE = 'wordcounter-static-v2';
+const DYNAMIC_CACHE = 'wordcounter-dynamic-v2';
 
 // Critical resources to cache immediately
 const STATIC_ASSETS = [
