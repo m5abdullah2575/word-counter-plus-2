@@ -555,6 +555,8 @@ export default function Download() {
     );
   }
 
+  const hasRelatedTools = relatedTools.length > 0;
+
   return (
     <div className="min-h-screen bg-background py-4 sm:py-6 md:py-8">
       <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
@@ -568,8 +570,8 @@ export default function Download() {
           <span className="text-sm sm:text-base">Back</span>
         </Button>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
+        <div className={`grid grid-cols-1 gap-4 sm:gap-6 ${hasRelatedTools ? 'lg:grid-cols-3' : ''}`}>
+          <div className={`space-y-4 sm:space-y-6 ${hasRelatedTools ? 'lg:col-span-2' : ''}`}>
             <Card className="shadow-sm border">
               <CardHeader className="pb-4 sm:pb-6 px-4 sm:px-6">
                 <div className="flex items-start sm:items-center justify-between flex-col sm:flex-row gap-3">
@@ -782,8 +784,8 @@ export default function Download() {
             </Card>
           </div>
 
-          <div className="lg:col-span-1">
-            {relatedTools.length > 0 && (
+          {hasRelatedTools && (
+            <div className="lg:col-span-1">
               <Card className="shadow-sm border">
                 <CardHeader className="pb-4 sm:pb-6 px-4 sm:px-6">
                   <CardTitle className="text-base sm:text-lg md:text-xl font-semibold">Related Tools</CardTitle>
@@ -818,8 +820,8 @@ export default function Download() {
                   })}
                 </CardContent>
               </Card>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
