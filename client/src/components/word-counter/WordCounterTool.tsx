@@ -504,26 +504,6 @@ ${new Date().toLocaleString()}
               <h3 className="text-sm sm:text-base font-medium text-foreground mb-3">Quick Actions</h3>
               <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2">
                 <button 
-                  onClick={copyToClipboard}
-                  className={`px-2 sm:px-3 py-1.5 rounded text-xs sm:text-sm transition-colors ${
-                    activeAction === 'copy' 
-                      ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
-                      : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-                  }`}
-                  data-testid="button-copy-text"
-                >
-                  <FaCopy className="inline mr-1" />
-                  Copy
-                </button>
-                <button 
-                  onClick={downloadText}
-                  className="px-2 sm:px-3 py-1.5 rounded text-xs sm:text-sm transition-colors bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                  data-testid="button-download-text"
-                >
-                  <FaDownload className="inline mr-1" />
-                  Download
-                </button>
-                <button 
                   onClick={convertToUppercase}
                   className={`px-2 sm:px-3 py-1.5 rounded text-xs sm:text-sm transition-colors ${
                     activeAction === 'uppercase' 
@@ -584,6 +564,14 @@ ${new Date().toLocaleString()}
                   <span className="hidden sm:inline">Sort Lines</span>
                   <span className="sm:hidden">Sort</span>
                 </button>
+                <Link 
+                  href="/text-case-convert"
+                  className="px-2 sm:px-3 py-1.5 rounded text-xs sm:text-sm transition-colors bg-primary text-primary-foreground hover:bg-primary/90 text-center"
+                  data-testid="link-text-case-converter"
+                >
+                  <span className="hidden sm:inline">More Text Case Options →</span>
+                  <span className="sm:hidden">More Cases →</span>
+                </Link>
               </div>
             </div>
           )}
