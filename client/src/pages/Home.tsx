@@ -251,9 +251,9 @@ export default function Home() {
                   <div className="flex items-center justify-between text-xs text-muted-foreground">
                     <span data-testid={`text-read-time-${post.id}`}>{post.readTime}</span>
                     <Link href={`/blog/${post.slug}`}>
-                      <span className="text-primary hover:text-primary/80 font-medium inline-flex items-center" data-testid={`link-read-more-${post.id}`}>
+                      <span className="text-primary hover:text-primary/80 font-medium inline-flex items-center" data-testid={`link-read-more-${post.id}`} aria-label={`Read more about ${post.title}`}>
                         Read More
-                        <FaArrowRight className="ml-1 text-xs" />
+                        <FaArrowRight className="ml-1 text-xs" aria-hidden="true" />
                       </span>
                     </Link>
                   </div>
