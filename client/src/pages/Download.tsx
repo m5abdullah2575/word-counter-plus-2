@@ -155,7 +155,7 @@ export default function Download() {
           pdf.setTextColor(255, 255, 255);
           pdf.setFontSize(20);
           pdf.setFont("helvetica", "bold");
-          pdf.text("📊 Word Counter Plus", margin, 20);
+          pdf.text("Word Counter Plus", margin, 20);
           if (pageNum > 1) {
             pdf.setFontSize(10);
             pdf.text(`Page ${pageNum}`, pageWidth - margin, 20, { align: 'right' });
@@ -169,7 +169,7 @@ export default function Download() {
           pdf.line(margin, footerY, pageWidth - margin, footerY);
           pdf.setTextColor(100, 100, 100);
           pdf.setFontSize(8);
-          pdf.text("www.wordcounterplus.com", margin, footerY + 8);
+          pdf.text("www.wordcounterplusapp.com", margin, footerY + 8);
           pdf.text(`Page ${pageNum}`, pageWidth - margin, footerY + 8, { align: 'right' });
         };
         
@@ -233,23 +233,16 @@ export default function Download() {
         
         addHeader(pageNum);
         
-        pdf.setFillColor(220, 38, 38);
-        pdf.roundedRect(margin, yPosition, maxWidth, 18, 3, 3, 'F');
-        pdf.setTextColor(255, 255, 255);
-        pdf.setFontSize(16);
-        pdf.setFont("helvetica", "bold");
-        pdf.text("Text Analysis Report", pageWidth / 2, yPosition + 12, { align: 'center' });
-        yPosition += 25;
         
         pdf.setFontSize(9);
         pdf.setTextColor(120, 120, 120);
         pdf.text(`Generated: ${new Date().toLocaleString()}`, pageWidth / 2, yPosition, { align: 'center' });
         yPosition += 10;
         
-        if (sections.stats.length > 0) addSection("Statistics", sections.stats, "📈", true);
-        if (sections.readability.length > 0) addSection("Reading Metrics", sections.readability, "📖");
-        if (sections.readabilityScores.length > 0) addSection("Readability Score", sections.readabilityScores, "🎯");
-        if (sections.keywords.length > 0) addSection("Top Keywords", sections.keywords, "🔑");
+        if (sections.stats.length > 0) addSection("Statistics", sections.stats, "", true);
+        if (sections.readability.length > 0) addSection("Reading Metrics", sections.readability, "");
+        if (sections.readabilityScores.length > 0) addSection("Readability Score", sections.readabilityScores, "");
+        if (sections.keywords.length > 0) addSection("Top Keywords", sections.keywords, "");
         
         if (sections.originalText.trim()) {
           if (yPosition > pageHeight - 60) {
@@ -265,7 +258,7 @@ export default function Download() {
           pdf.setTextColor(220, 38, 38);
           pdf.setFontSize(12);
           pdf.setFont("helvetica", "bold");
-          pdf.text("📝 Original Text", margin + 3, yPosition + 7);
+          pdf.text("Original Text", margin + 3, yPosition + 7);
           yPosition += 15;
           
           pdf.setFillColor(255, 255, 255);
