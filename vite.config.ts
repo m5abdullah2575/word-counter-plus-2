@@ -56,9 +56,13 @@ export default defineConfig({
   build: {
     outDir: r("dist/public"),
     emptyOutDir: true,
-    target: "esnext", // ✅ modern browsers only
-    cssCodeSplit: true,
+    target: "esnext",
+    cssCodeSplit: false,
+    cssMinify: 'lightningcss',
     sourcemap: false,
+    modulePreload: {
+      polyfill: false,
+    },
     rollupOptions: {
       output: {
         manualChunks: (id) => {
