@@ -335,6 +335,22 @@ export default function TextCaseConverter() {
     }
   };
 
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast({
+        title: "Text Copied",
+        description: "Text has been copied to clipboard.",
+      });
+    } catch (error) {
+      toast({
+        title: "Copy Failed",
+        description: "Unable to copy text to clipboard.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const convertText = (caseKey: keyof typeof textCaseConverters, caseName: string) => {
     if (!originalText.trim()) {
       toast({
@@ -427,37 +443,8 @@ export default function TextCaseConverter() {
                         isLoading={isUploading}
                         size="sm"
                         className="flex-1 sm:flex-none"
-                        data-testid="button-upload-text"
+                        data-testid="button-upload"
                       />
-                      <button 
-                        onClick={pasteText}
-                        className="flex-1 sm:flex-none px-3 py-1.5 bg-muted hover:bg-muted/80 rounded text-sm transition-colors"
-                        data-testid="button-paste-text"
-                        title="Paste text from clipboard"
-                      >
-                        <FaPaste className="inline mr-1" aria-hidden="true" />
-                        Paste
-                      </button>
-                      <button 
-                        onClick={downloadText}
-                        disabled={!text}
-                        className="flex-1 sm:flex-none px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                        data-testid="button-download-text"
-                        title="Download text as TXT file"
-                      >
-                        <FaDownload className="inline mr-1" aria-hidden="true" />
-                        <span className="hidden sm:inline">Download</span>
-                        <span className="sm:hidden">Download</span>
-                      </button>
-                      <button 
-                        onClick={clearText}
-                        className="flex-1 sm:flex-none px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 transition-colors"
-                        data-testid="button-clear-text"
-                        title="Clear all text"
-                      >
-                        <FaEraser className="inline mr-1" aria-hidden="true" />
-                        Clear
-                      </button>
                     </div>
                   </div>
                   
@@ -470,6 +457,37 @@ export default function TextCaseConverter() {
                     onChange={handleTextChange}
                     data-testid="input-text-converter"
                   />
+
+                  {/* Action Buttons */}
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <button 
+                      onClick={copyToClipboard}
+                      disabled={!text}
+                      className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      data-testid="button-copy"
+                    >
+                      <FaPenFancy className="inline mr-1" aria-hidden="true" />
+                      Copy
+                    </button>
+                    <button 
+                      onClick={clearText}
+                      disabled={!text}
+                      className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      data-testid="button-clear"
+                    >
+                      <FaEraser className="inline mr-1" aria-hidden="true" />
+                      Clear
+                    </button>
+                    <button 
+                      onClick={downloadText}
+                      disabled={!text}
+                      className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      data-testid="button-export"
+                    >
+                      <FaDownload className="inline mr-1" aria-hidden="true" />
+                      Export
+                    </button>
+                  </div>
                   
                   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-3 gap-2">
                     <div className="text-xs sm:text-sm text-muted-foreground w-full sm:w-auto overflow-x-auto" data-testid="text-stats">

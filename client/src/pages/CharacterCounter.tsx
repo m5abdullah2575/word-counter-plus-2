@@ -437,18 +437,10 @@ export default function CharacterCounter() {
                   <UploadButton 
                     onClick={triggerFileUpload}
                     isLoading={isUploading}
+                    size="sm"
+                    className="flex-1 sm:flex-none"
+                    data-testid="button-upload"
                   />
-                  {/* Paste Button */}
-                  <button 
-                    onClick={pasteText}
-                    className="flex-1 sm:flex-none px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 transition-colors"
-                    data-testid="button-paste-text"
-                    title="Paste text from clipboard"
-                  >
-                    <FaCopy className="inline mr-1" aria-hidden="true" />
-                    <span className="hidden sm:inline">Paste</span>
-                    <span className="sm:hidden">Paste</span>
-                  </button>
                 </div>
               </div>
               
@@ -462,43 +454,36 @@ export default function CharacterCounter() {
               />
             </div>
             
-            <div className="flex justify-between mt-4">
-              <div className="flex gap-2">
-                <button 
-                  onClick={copyToClipboard}
-                  disabled={!text}
-                  className="px-3 py-1.5 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  data-testid="button-copy-text"
-                  title="Copy text to clipboard"
-                >
-                  <FaCopy className="inline mr-1" aria-hidden="true" />
-                  <span className="hidden sm:inline">Copy</span>
-                  <span className="sm:hidden">Copy</span>
-                </button>
-                
-                <button 
-                  onClick={downloadText}
-                  disabled={!text}
-                  className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  data-testid="button-download-text"
-                  title="Download text as TXT file"
-                >
-                  <FaDownload className="inline mr-1" aria-hidden="true" />
-                  <span className="hidden sm:inline">Download</span>
-                  <span className="sm:hidden">Download</span>
-                </button>
-              </div>
-              
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button 
+                onClick={copyToClipboard}
+                disabled={!text}
+                className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                data-testid="button-copy"
+                title="Copy text to clipboard"
+              >
+                <FaCopy className="inline mr-1" aria-hidden="true" />
+                Copy
+              </button>
               <button 
                 onClick={clearText}
                 disabled={!text}
-                className="px-3 py-1.5 bg-destructive text-destructive-foreground rounded text-sm hover:bg-destructive/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                data-testid="button-clear-text"
+                className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                data-testid="button-clear"
                 title="Clear all text"
               >
                 <FaEraser className="inline mr-1" aria-hidden="true" />
-                <span className="hidden sm:inline">Clear</span>
-                <span className="sm:hidden">Clear</span>
+                Clear
+              </button>
+              <button 
+                onClick={downloadText}
+                disabled={!text}
+                className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                data-testid="button-export"
+                title="Download text as TXT file"
+              >
+                <FaDownload className="inline mr-1" aria-hidden="true" />
+                Export
               </button>
             </div>
           </div>
