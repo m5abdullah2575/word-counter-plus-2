@@ -19,9 +19,7 @@ export default defineConfig({
     }),
     runtimeErrorOverlay(),
     ...(process.env.NODE_ENV !== "production" && process.env.REPL_ID !== undefined
-      ? [
-          (await import("@replit/vite-plugin-cartographer")).cartographer(),
-        ]
+      ? []
       : []),
     // Image optimization - only in production
     ...(process.env.NODE_ENV === "production"
