@@ -8,5 +8,6 @@ export interface DownloadData {
 
 export function prepareDownload(data: DownloadData): void {
   sessionStorage.setItem('downloadData', JSON.stringify(data));
-  window.location.href = '/download';
+  window.history.pushState({}, '', '/download');
+  window.dispatchEvent(new PopStateEvent('popstate'));
 }
