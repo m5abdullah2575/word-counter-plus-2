@@ -416,7 +416,8 @@
         </div>
       </noscript>
     </div>
-    <script type="module" src="/src/main.tsx" fetchpriority="high"></script>
+    <link rel="modulepreload" href="/src/main.tsx">
+    <script type="module" src="/src/main.tsx"></script>
     
     <!-- Performance optimizations and monitoring -->
     <script>

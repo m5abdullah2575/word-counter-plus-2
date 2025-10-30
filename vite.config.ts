@@ -7,6 +7,7 @@ import autoprefixer from "autoprefixer";
 import cssnano from "cssnano";
 import viteImagemin from "vite-plugin-imagemin";
 import webp from "imagemin-webp";
+import purgecss from "@fullhuman/postcss-purgecss";
 
 // Small helper to resolve paths
 const r = (...segments: string[]) => path.resolve(process.cwd(), ...segments);
@@ -57,7 +58,7 @@ export default defineConfig({
     outDir: r("dist/public"),
     emptyOutDir: true,
     target: "esnext",
-    cssCodeSplit: false,
+    cssCodeSplit: true,
     cssMinify: 'lightningcss',
     sourcemap: false,
     modulePreload: {
@@ -66,15 +67,15 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          if (id.includes("react") || id.includes("react-dom")) return "vendor";
-          if (id.includes("wouter")) return "routing";
-          if (id.includes("@tanstack/react-query")) return "query";
-          if (id.includes("@radix-ui") && (id.includes("slot") || id.includes("primitive"))) return "ui-core";
-          if (id.includes("jspdf") || id.includes("html2canvas") || id.includes("recharts") || id.includes("framer-motion")) return null;
-          if (id.includes("lucide-react")) return "icons";
-          if (id.includes("clsx") || id.includes("tailwind-merge")) return "utils";
-          if (id.includes("react-hook-form") || id.includes("@hookform/resolvers") || id.includes("zod")) return "form";
-          if (id.includes("@radix-ui") || id.includes("input-otp") || id.includes("react-day-picker") || id.includes("embla-carousel")) return null;
+          if (id.includes("node_modules")) {
+            if (id.includes("react") || id.includes("react-dom") || id.includes("scheduler")) return "react-vendor";
+            if (id.includes("@radix-ui")) return "radix-ui";
+            if (id.includes("lucide-react")) return "icons";
+            if (id.includes("framer-motion")) return "animation";
+            if (id.includes("recharts") || id.includes("d3-")) return "charts";
+            if (id.includes("jspdf") || id.includes("mammoth") || id.includes("docxtemplater")) return "document-tools";
+            return "vendor";
+          }
         },
         chunkFileNames: "js/[name]-[hash].js",
         entryFileNames: "js/[name]-[hash].js",
@@ -97,13 +98,22 @@ export default defineConfig({
         drop_console: process.env.NODE_ENV === "production",
         drop_debugger: true,
         pure_funcs: ["console.log", "console.info", "console.debug", "console.trace"],
-        passes: 2,
+        passes: 3,
+        ecma: 2020,
+        module: true,
+        unsafe_arrows: true,
+        unsafe_methods: true,
+        unsafe_proto: true,
+        keep_fargs: false,
       },
-      mangle: true, // ✅ modern, no safari10 legacy fix
+      mangle: { 
+        toplevel: true,
+        safari10: false,
+      },
       format: { comments: false },
     },
     reportCompressedSize: true,
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 500,
   },
 
   server: {
@@ -131,6 +141,19 @@ export default defineConfig({
         autoprefixer,
         ...(process.env.NODE_ENV === "production"
           ? [
+              purgecss({
+                content: [
+                  "./client/index.html",
+                  "./client/src/**/*.{js,jsx,ts,tsx}",
+                  "./shared/**/*.{js,jsx,ts,tsx}",
+                ],
+                defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
+                safelist: {
+                  standard: [/^lucide-/, /^radix-/, /^data-/, /^aria-/],
+                  deep: [/dark$/],
+                  greedy: [/^Toaster/, /^Toast/, /^scroll-/, /^aspect-/],
+                },
+              }),
               cssnano({
                 preset: [
                   "default",
@@ -139,6 +162,7 @@ export default defineConfig({
                     normalizeWhitespace: true,
                     mergeLonghand: true,
                     mergeRules: true,
+                    cssDeclarationSorter: true,
                   },
                 ],
               }),
