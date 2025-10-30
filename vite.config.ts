@@ -58,11 +58,14 @@ export default defineConfig({
     outDir: r("dist/public"),
     emptyOutDir: true,
     target: "esnext",
-    cssCodeSplit: true,
+    cssCodeSplit: false,
     cssMinify: 'lightningcss',
     sourcemap: false,
     modulePreload: {
       polyfill: false,
+      resolveDependencies: (filename, deps) => {
+        return deps.filter(dep => !dep.includes('node_modules'));
+      },
     },
     rollupOptions: {
       output: {
