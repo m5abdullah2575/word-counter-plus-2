@@ -7,7 +7,6 @@ import autoprefixer from "autoprefixer";
 import cssnano from "cssnano";
 import viteImagemin from "vite-plugin-imagemin";
 import webp from "imagemin-webp";
-import purgecss from "@fullhuman/postcss-purgecss";
 
 // Small helper to resolve paths
 const r = (...segments: string[]) => path.resolve(process.cwd(), ...segments);
@@ -153,19 +152,6 @@ export default defineConfig({
         autoprefixer,
         ...(process.env.NODE_ENV === "production"
           ? [
-              purgecss({
-                content: [
-                  "./client/index.html",
-                  "./client/src/**/*.{js,jsx,ts,tsx}",
-                  "./shared/**/*.{js,jsx,ts,tsx}",
-                ],
-                defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
-                safelist: {
-                  standard: [/^lucide-/, /^radix-/, /^data-/, /^aria-/],
-                  deep: [/dark$/],
-                  greedy: [/^Toaster/, /^Toast/, /^scroll-/, /^aspect-/],
-                },
-              }),
               cssnano({
                 preset: [
                   "default",
