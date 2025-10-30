@@ -35,8 +35,9 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
                   data-testid="link-social-twitter"
+                  aria-label="Follow us on X (Twitter)"
                 >
-                  <SiX className="w-4 h-4" />
+                  <SiX className="w-4 h-4" aria-hidden="true" />
                 </a>
                 <a
                   href="https://www.facebook.com/profile.php?id=61581983827941"
@@ -44,8 +45,9 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
                   data-testid="link-social-facebook"
+                  aria-label="Follow us on Facebook"
                 >
-                  <Facebook className="w-4 h-4" />
+                  <Facebook className="w-4 h-4" aria-hidden="true" />
                 </a>
                 <a
                   href="https://www.linkedin.com/company/word-counter-plus-app"
@@ -53,8 +55,9 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
                   data-testid="link-social-linkedin"
+                  aria-label="Follow us on LinkedIn"
                 >
-                  <Linkedin className="w-4 h-4" />
+                  <Linkedin className="w-4 h-4" aria-hidden="true" />
                 </a>
               </div>
             </div>
