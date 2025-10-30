@@ -95,7 +95,7 @@ export function exportPDF(data: ExportData): void {
         doc.setLineWidth(2);
         doc.line(0, 35, pageWidth, 35);
         
-        doc.setTextColor(255, 255, 255);
+        doc.setTextColor(0,0, 0);
         doc.setFontSize(24);
         doc.setFont("helvetica", "bold");
         doc.text("Word Counter Plus", margin, 15);
@@ -128,7 +128,7 @@ export function exportPDF(data: ExportData): void {
         doc.setFont("helvetica", "normal");
         doc.setFontSize(8);
         doc.setTextColor(100, 100, 100);
-        doc.text("www.wordcounterplus.com", margin, footerY + 16);
+        doc.text("www.wordcounterplusapp.com", margin, footerY + 16);
         
         doc.setTextColor(brandColor.r, brandColor.g, brandColor.b);
         doc.setFont("helvetica", "bold");
@@ -262,7 +262,7 @@ export function exportPDF(data: ExportData): void {
         `Pages (est.): ${Math.ceil(data.stats.wordCount / 250) || 1}`,
         `Average Word Length: ${data.stats.avgWordLength} characters`,
       ];
-      addSection("📊 STATISTICS", basicStats, true);
+      addSection("STATISTICS", basicStats, true);
       
       const readabilityStats = [
         `Reading Time: ${data.readability.readingTime} min`,
@@ -271,18 +271,18 @@ export function exportPDF(data: ExportData): void {
         `Longest Word: ${data.stats.longestWord}`,
         `Shortest Word: ${data.stats.shortestWord}`,
       ];
-      addSection("📖 READING METRICS", readabilityStats);
+      addSection("READING METRICS", readabilityStats);
       
       const readabilityScore = [
         `Flesch Reading Ease: ${data.readability.score} (${data.readability.level})`,
       ];
-      addSection("📈 READABILITY SCORES", readabilityScore);
+      addSection("READABILITY SCORES", readabilityScore);
       
       const keywords = data.keywords.single.slice(0, 10).map((k, i) => 
         `${i + 1}. ${k.keyword} (${k.count} times)`
       );
       if (keywords.length > 0) {
-        addSection("🔑 TOP KEYWORDS", keywords);
+        addSection("TOP KEYWORDS", keywords);
       }
       
       if (yPosition > pageHeight - 90) {
@@ -303,7 +303,7 @@ export function exportPDF(data: ExportData): void {
       doc.setTextColor(brandColor.r, brandColor.g, brandColor.b);
       doc.setFontSize(14);
       doc.setFont("helvetica", "bold");
-      doc.text("📄 ORIGINAL TEXT", margin + 2, yPosition + 8);
+      doc.text("ORIGINAL TEXT", margin + 2, yPosition + 8);
       yPosition += 20;
       
       doc.setFillColor(255, 255, 255);
