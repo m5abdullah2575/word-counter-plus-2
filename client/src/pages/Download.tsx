@@ -163,10 +163,10 @@ export default function Download() {
           pdf.rect(0, 0, pageWidth, 30, 'F');
           
           pdf.setFillColor(255, 255, 255);
-          pdf.circle(margin + 6, 15, 7, 'F');
+          pdf.circle(margin + 7, 15, 7, 'F');
           
           try {
-            pdf.addImage(logoImg, 'PNG', margin + 2, 11, 8, 8);
+            pdf.addImage(logoImg, 'PNG', margin + 3, 11, 8, 8);
           } catch (e) {
             console.log('Logo not loaded');
           }
@@ -174,10 +174,10 @@ export default function Download() {
           pdf.setTextColor(255, 255, 255);
           pdf.setFontSize(18);
           pdf.setFont("helvetica", "bold");
-          pdf.text("Word Counter Plus", margin + 16, 19);
+          pdf.text("Word Counter Plus", margin + 17, 18.5);
           if (pageNum > 1) {
             pdf.setFontSize(10);
-            pdf.text(`Page ${pageNum}`, pageWidth - margin, 19, { align: 'right' });
+            pdf.text(`Page ${pageNum}`, pageWidth - margin, 18.5, { align: 'right' });
           }
         };
         
