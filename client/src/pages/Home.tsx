@@ -40,9 +40,9 @@ export default function Home() {
       </main>
 
       {/* SEO-Optimized Blog Content - Humanized and Optimized */}
-      <section className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8">
+      <section className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 min-h-[800px]">
         <div className="max-w-6xl mx-auto">
-          <div className="bg-card rounded-lg p-4 sm:p-6 md:p-8 shadow-sm border border-border">
+          <div className="bg-card rounded-lg p-4 sm:p-6 md:p-8 shadow-sm border border-border min-h-[700px]">
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-4 sm:mb-6">Why Word Counter Plus? The Ultimate Text Analysis Tool That Will Transform Your Writing</h2>
             
             <div className="prose prose-sm sm:prose-base max-w-none dark:prose-invert">
@@ -197,7 +197,7 @@ export default function Home() {
       </section>
 
       {/* Featured Blog Posts Section */}
-      <section className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8">
+      <section className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 min-h-[600px]">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground flex items-center" data-testid="heading-featured-blogs">
@@ -214,13 +214,15 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {blogPosts.slice(0, 6).map((post) => (
-              <article key={post.id} className="bg-card rounded-lg overflow-hidden border border-border hover:shadow-lg transition-shadow" data-testid={`card-blog-${post.id}`}>
+              <article key={post.id} className="bg-card rounded-lg overflow-hidden border border-border hover:shadow-lg transition-shadow min-h-[400px]" data-testid={`card-blog-${post.id}`}>
                 {post.image && (
                   <Link href={`/blog/${post.slug}`}>
                     <div className="aspect-video overflow-hidden">
                       <OptimizedImage
                         src={post.image}
                         alt={post.title}
+                        width={640}
+                        height={360}
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                         loading="lazy"
                         data-testid={`img-blog-${post.id}`}

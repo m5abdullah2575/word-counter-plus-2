@@ -354,7 +354,7 @@ ${new Date().toLocaleString()}
   return (
     <main className="min-h-screen bg-background">
       {/* Centered Container with Max Width */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 min-h-[500px]">
         <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
           {/* Tool Header */}
           <div className="text-center mb-4 sm:mb-8">
