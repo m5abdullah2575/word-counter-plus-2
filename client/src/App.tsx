@@ -4,12 +4,13 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/hooks/useTheme";
-import Header from "@/components/layout/Header";
-import ScrollRestoration from "@/components/layout/ScrollToTop";
-import Footer from "@/components/layout/Footer";
-import Home from "@/pages/Home";
 import { OptimizedLoader } from '@/components/ui/optimized-loader';
 import { lazy, Suspense, useEffect } from "react";
+
+const Header = lazy(() => import("@/components/layout/Header"));
+const Footer = lazy(() => import("@/components/layout/Footer"));
+const ScrollRestoration = lazy(() => import("@/components/layout/ScrollToTop"));
+const Home = lazy(() => import("@/pages/Home"));
 import { isMainHost, isCaseHost } from "@/lib/site";
 
 // Lazy load non-critical pages
@@ -165,18 +166,23 @@ function BackwardCompatibilityHandler() {
 }
 
 function App() {
-
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <TooltipProvider>
           <BackwardCompatibilityHandler />
-          <div className="min-h-screen bg-background text-foreground">
-            <Header />
-            <ScrollRestoration /> 
-            <Router />
-            <Footer />
-          </div>
+          <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-background">
+              <OptimizedLoader />
+            </div>
+          }>
+            <div className="min-h-screen bg-background text-foreground">
+              <Header />
+              <ScrollRestoration /> 
+              <Router />
+              <Footer />
+            </div>
+          </Suspense>
           <Toaster />
         </TooltipProvider>
       </ThemeProvider>

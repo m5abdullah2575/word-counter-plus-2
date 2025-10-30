@@ -71,13 +71,21 @@ export default defineConfig({
       output: {
         manualChunks: (id) => {
           if (id.includes("node_modules")) {
-            if (id.includes("react") || id.includes("react-dom") || id.includes("scheduler")) return "react-vendor";
-            if (id.includes("@radix-ui")) return "radix-ui";
+            if (id.includes("react/") || id.includes("react-dom/")) return "react-core";
+            if (id.includes("scheduler")) return "react-core";
+            if (id.includes("@radix-ui/react-dialog") || id.includes("@radix-ui/react-dropdown")) return "radix-overlay";
+            if (id.includes("@radix-ui/react-toast") || id.includes("@radix-ui/react-tooltip")) return "radix-feedback";
+            if (id.includes("@radix-ui/react-select") || id.includes("@radix-ui/react-tabs")) return "radix-controls";
+            if (id.includes("@radix-ui")) return "radix-base";
             if (id.includes("lucide-react")) return "icons";
             if (id.includes("framer-motion")) return "animation";
             if (id.includes("recharts") || id.includes("d3-")) return "charts";
-            if (id.includes("jspdf") || id.includes("mammoth") || id.includes("docxtemplater")) return "document-tools";
-            return "vendor";
+            if (id.includes("jspdf")) return "pdf";
+            if (id.includes("mammoth") || id.includes("docxtemplater") || id.includes("pizzip")) return "doc-parser";
+            if (id.includes("@tanstack/react-query")) return "query";
+            if (id.includes("wouter")) return "router";
+            if (id.includes("zod") || id.includes("@hookform")) return "forms";
+            return "vendor-misc";
           }
         },
         chunkFileNames: "js/[name]-[hash].js",
@@ -129,10 +137,11 @@ export default defineConfig({
   },
 
   optimizeDeps: {
-    include: ["react", "react-dom", "wouter", "@tanstack/react-query"],
+    include: ["react", "react-dom/client", "wouter", "@tanstack/react-query"],
     exclude: ["@replit/vite-plugin-cartographer"],
     esbuildOptions: {
-      target: "esnext", // ✅ force modern deps
+      target: "esnext",
+      treeShaking: true,
     },
   },
 
