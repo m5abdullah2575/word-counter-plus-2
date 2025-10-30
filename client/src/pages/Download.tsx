@@ -945,10 +945,10 @@ export default function Download() {
 
                 <div className="space-y-3">
                   <h4 className="font-semibold text-sm sm:text-base">Export As</h4>
-                  <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                  <div className="flex gap-2">
                     <button
                       onClick={() => setSelectedFormat('pdf')}
-                      className={`p-2 rounded-lg border-2 transition-all h-[50px] flex flex-col items-center justify-center gap-1 ${
+                      className={`flex-1 px-4 py-2.5 rounded-lg border-2 transition-all flex items-center justify-center gap-2 ${
                         selectedFormat === 'pdf' 
                           ? 'border-primary bg-primary/10' 
                           : 'border-border hover:border-primary/50 hover:bg-muted/50'
@@ -956,11 +956,11 @@ export default function Download() {
                       data-testid="button-format-pdf"
                     >
                       <FaFilePdf className={`h-4 w-4 ${selectedFormat === 'pdf' ? 'text-primary' : 'text-muted-foreground'}`} />
-                      <span className={`text-xs font-medium ${selectedFormat === 'pdf' ? 'text-primary' : 'text-foreground'}`}>PDF</span>
+                      <span className={`text-sm font-medium ${selectedFormat === 'pdf' ? 'text-primary' : 'text-foreground'}`}>PDF</span>
                     </button>
                     <button
                       onClick={() => setSelectedFormat('txt')}
-                      className={`p-2 rounded-lg border-2 transition-all h-[50px] flex flex-col items-center justify-center gap-1 ${
+                      className={`flex-1 px-4 py-2.5 rounded-lg border-2 transition-all flex items-center justify-center gap-2 ${
                         selectedFormat === 'txt' 
                           ? 'border-primary bg-primary/10' 
                           : 'border-border hover:border-primary/50 hover:bg-muted/50'
@@ -968,11 +968,11 @@ export default function Download() {
                       data-testid="button-format-txt"
                     >
                       <FaFileAlt className={`h-4 w-4 ${selectedFormat === 'txt' ? 'text-primary' : 'text-muted-foreground'}`} />
-                      <span className={`text-xs font-medium ${selectedFormat === 'txt' ? 'text-primary' : 'text-foreground'}`}>TXT</span>
+                      <span className={`text-sm font-medium ${selectedFormat === 'txt' ? 'text-primary' : 'text-foreground'}`}>TXT</span>
                     </button>
                     <button
                       onClick={() => setSelectedFormat('csv')}
-                      className={`p-2 rounded-lg border-2 transition-all h-[50px] flex flex-col items-center justify-center gap-1 ${
+                      className={`flex-1 px-4 py-2.5 rounded-lg border-2 transition-all flex items-center justify-center gap-2 ${
                         selectedFormat === 'csv' 
                           ? 'border-primary bg-primary/10' 
                           : 'border-border hover:border-primary/50 hover:bg-muted/50'
@@ -980,7 +980,7 @@ export default function Download() {
                       data-testid="button-format-csv"
                     >
                       <FaFileCsv className={`h-4 w-4 ${selectedFormat === 'csv' ? 'text-primary' : 'text-muted-foreground'}`} />
-                      <span className={`text-xs font-medium ${selectedFormat === 'csv' ? 'text-primary' : 'text-foreground'}`}>CSV</span>
+                      <span className={`text-sm font-medium ${selectedFormat === 'csv' ? 'text-primary' : 'text-foreground'}`}>CSV</span>
                     </button>
                   </div>
                 </div>
