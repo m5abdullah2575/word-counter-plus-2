@@ -1,9 +1,5 @@
-node_modules
-.git
 .replit
 .local
-.env
-.env.local
 *.log
 logs
 tmp
