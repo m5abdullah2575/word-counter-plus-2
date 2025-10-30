@@ -151,13 +151,27 @@ export default function Download() {
         
         const sections = parseContent(fileData.content);
         
+        const logoImg = new Image();
+        logoImg.src = '/word-counter-plus-logo.png';
+        await new Promise((resolve) => {
+          logoImg.onload = resolve;
+          logoImg.onerror = resolve;
+        });
+        
         const addHeader = (pageNum: number) => {
           pdf.setFillColor(220, 38, 38);
           pdf.rect(0, 0, pageWidth, 30, 'F');
+          
+          try {
+            pdf.addImage(logoImg, 'PNG', margin, 8, 14, 14);
+          } catch (e) {
+            console.log('Logo not loaded');
+          }
+          
           pdf.setTextColor(255, 255, 255);
           pdf.setFontSize(20);
           pdf.setFont("helvetica", "bold");
-          pdf.text("Word Counter Plus", margin, 20);
+          pdf.text("Word Counter Plus", margin + 18, 20);
           if (pageNum > 1) {
             pdf.setFontSize(10);
             pdf.text(`Page ${pageNum}`, pageWidth - margin, 20, { align: 'right' });
