@@ -1,0 +1,31 @@
+
+Find in logs
+⌘F
+Running build in Washington, D.C., USA (East) – iad1
+Build machine configuration: 2 cores, 8 GB
+Cloning github.com/m5abdullah2575/word-counter-plus-2 (Branch: main, Commit: 1ec5c47)
+Cloning completed: 23.753s
+Found .vercelignore
+Removed 288 ignored files defined in .vercelignore
+  /.git/logs/HEAD
+  /.git/logs/refs/heads/master
+  /.local/state/replit/agent/.agent_state_348168d5f87b3e9df8877099e1942518b3c54506.bin
+  /.local/state/replit/agent/.agent_state_5075de72108cdb05be06b746b8c264dbdf10f7fa.bin
+  /.local/state/replit/agent/.agent_state_694cae9a90bc02c1e3475fa285f0a4307271b5da.bin
+  /.local/state/replit/agent/.agent_state_main.bin
+  /.local/state/replit/agent/.latest.json
+  /.local/state/replit/agent/repl_state.bin
+  /.replit
+  /ADSENSE_AUDIT_REPORT.md
+Restored build cache from previous deployment (FRezAuQ7ZpJHniHJXKYMYXQ8YsEQ)
+Running "vercel build"
+Vercel CLI 48.6.7
+Running "install" command: `npm install`...
+npm warn deprecated stable@0.1.8: Modern JS already guarantees Array#sort() is a stable sort, so this library is deprecated. See the compatibility table on MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#browser_compatibility
+npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated uuid@3.4.0: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated source-map@0.8.0-beta.0: The work that was done in this beta branch won't be included in future versions
