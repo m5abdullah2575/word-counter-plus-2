@@ -39,7 +39,7 @@ export default function Download() {
     mimeType: string;
     sourceToolId?: string;
   } | null>(null);
-  const [selectedFormat, setSelectedFormat] = useState<FileFormat | null>(null);
+  const [selectedFormat, setSelectedFormat] = useState<FileFormat | null>('pdf');
   const [downloaded, setDownloaded] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0);
@@ -948,38 +948,38 @@ export default function Download() {
                   <div className="grid grid-cols-3 gap-2 sm:gap-3">
                     <button
                       onClick={() => setSelectedFormat('pdf')}
-                      className={`p-3 sm:p-4 rounded-lg border-2 transition-all min-h-[80px] sm:min-h-[90px] flex flex-col items-center justify-center gap-2 ${
+                      className={`p-2 sm:p-3 rounded-lg border-2 transition-all min-h-[60px] sm:min-h-[70px] flex flex-col items-center justify-center gap-1.5 ${
                         selectedFormat === 'pdf' 
                           ? 'border-primary bg-primary/10' 
                           : 'border-border hover:border-primary/50 hover:bg-muted/50'
                       }`}
                       data-testid="button-format-pdf"
                     >
-                      <FaFilePdf className={`h-6 w-6 sm:h-8 sm:w-8 ${selectedFormat === 'pdf' ? 'text-primary' : 'text-muted-foreground'}`} />
+                      <FaFilePdf className={`h-5 w-5 sm:h-6 sm:w-6 ${selectedFormat === 'pdf' ? 'text-primary' : 'text-muted-foreground'}`} />
                       <span className={`text-xs sm:text-sm font-medium ${selectedFormat === 'pdf' ? 'text-primary' : 'text-foreground'}`}>PDF</span>
                     </button>
                     <button
                       onClick={() => setSelectedFormat('txt')}
-                      className={`p-3 sm:p-4 rounded-lg border-2 transition-all min-h-[80px] sm:min-h-[90px] flex flex-col items-center justify-center gap-2 ${
+                      className={`p-2 sm:p-3 rounded-lg border-2 transition-all min-h-[60px] sm:min-h-[70px] flex flex-col items-center justify-center gap-1.5 ${
                         selectedFormat === 'txt' 
                           ? 'border-primary bg-primary/10' 
                           : 'border-border hover:border-primary/50 hover:bg-muted/50'
                       }`}
                       data-testid="button-format-txt"
                     >
-                      <FaFileAlt className={`h-6 w-6 sm:h-8 sm:w-8 ${selectedFormat === 'txt' ? 'text-primary' : 'text-muted-foreground'}`} />
+                      <FaFileAlt className={`h-5 w-5 sm:h-6 sm:w-6 ${selectedFormat === 'txt' ? 'text-primary' : 'text-muted-foreground'}`} />
                       <span className={`text-xs sm:text-sm font-medium ${selectedFormat === 'txt' ? 'text-primary' : 'text-foreground'}`}>TXT</span>
                     </button>
                     <button
                       onClick={() => setSelectedFormat('csv')}
-                      className={`p-3 sm:p-4 rounded-lg border-2 transition-all min-h-[80px] sm:min-h-[90px] flex flex-col items-center justify-center gap-2 ${
+                      className={`p-2 sm:p-3 rounded-lg border-2 transition-all min-h-[60px] sm:min-h-[70px] flex flex-col items-center justify-center gap-1.5 ${
                         selectedFormat === 'csv' 
                           ? 'border-primary bg-primary/10' 
                           : 'border-border hover:border-primary/50 hover:bg-muted/50'
                       }`}
                       data-testid="button-format-csv"
                     >
-                      <FaFileCsv className={`h-6 w-6 sm:h-8 sm:w-8 ${selectedFormat === 'csv' ? 'text-primary' : 'text-muted-foreground'}`} />
+                      <FaFileCsv className={`h-5 w-5 sm:h-6 sm:w-6 ${selectedFormat === 'csv' ? 'text-primary' : 'text-muted-foreground'}`} />
                       <span className={`text-xs sm:text-sm font-medium ${selectedFormat === 'csv' ? 'text-primary' : 'text-foreground'}`}>CSV</span>
                     </button>
                   </div>
