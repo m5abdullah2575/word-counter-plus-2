@@ -382,17 +382,10 @@ ${new Date().toLocaleString()}
                   <UploadButton 
                     onClick={triggerFileUpload}
                     isLoading={isUploading}
+                    size="sm"
+                    className="flex-1 sm:flex-none"
+                    data-testid="button-upload"
                   />
-                  {/* Clear Button */}
-                  <button 
-                    onClick={clearText}
-                    className="flex-1 sm:flex-none px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 transition-colors"
-                    data-testid="button-clear-text"
-                    aria-label="Clear all text"
-                  >
-                    <FaTrash className="inline mr-1" aria-hidden="true" />
-                    Clear
-                  </button>
                 </div>
               </div>
             </div>
@@ -431,6 +424,36 @@ ${new Date().toLocaleString()}
               </div>
             )}
 
+            {/* Action Buttons */}
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button 
+                onClick={copyToClipboard}
+                disabled={!text}
+                className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                data-testid="button-copy"
+              >
+                <FaCopy className="inline mr-1" aria-hidden="true" />
+                Copy
+              </button>
+              <button 
+                onClick={clearText}
+                disabled={!text}
+                className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                data-testid="button-clear"
+              >
+                <FaEraser className="inline mr-1" aria-hidden="true" />
+                Clear
+              </button>
+              <button 
+                onClick={downloadText}
+                disabled={!text}
+                className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                data-testid="button-export"
+              >
+                <FaDownload className="inline mr-1" aria-hidden="true" />
+                Export
+              </button>
+            </div>
 
             {/* Word Limit Tracker */}
             <div className="mt-4">
