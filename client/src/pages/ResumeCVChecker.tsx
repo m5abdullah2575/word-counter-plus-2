@@ -8,13 +8,16 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Upload, FileText, Award, TrendingUp, CheckCircle, AlertCircle, Briefcase, Target, DollarSign, AlertTriangle, Sparkles, BookOpen } from 'lucide-react';
-import { FaBriefcase, FaCheckCircle, FaFileAlt, FaTrophy, FaBullseye, FaLightbulb, FaDollarSign, FaExclamationTriangle, FaBolt, FaGraduationCap, FaPenFancy, FaUserTie, FaChartLine } from 'react-icons/fa';
+import { FaBriefcase, FaCheckCircle, FaFileAlt, FaTrophy, FaBullseye, FaLightbulb, FaDollarSign, FaExclamationTriangle, FaBolt, FaGraduationCap, FaPenFancy, FaUserTie, FaChartLine, FaCopy, FaEraser, FaDownload } from 'react-icons/fa';
 import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
+import { prepareDownload } from '@/lib/downloadHelper';
+import { useToast } from '@/hooks/use-toast';
 
 export default function ResumeCVChecker() {
   const [text, setText] = useState('');
   const [industry, setIndustry] = useState('general');
   const [seniorityLevel, setSeniorityLevel] = useState<'entry' | 'mid' | 'senior' | 'auto'>('auto');
+  const { toast } = useToast();
 
   const resumeSchema = {
     "@context": "https://schema.org",
@@ -330,7 +333,7 @@ export default function ResumeCVChecker() {
                   </CardDescription>
                 </div>
                 <div className="flex gap-2 w-full sm:w-auto">
-                  <Button variant="secondary" size="sm" className="w-full sm:w-auto h-9 sm:h-9" asChild data-testid="button-upload-resume">
+                  <Button variant="default" size="sm" className="w-full sm:w-auto h-9 sm:h-9 bg-primary text-primary-foreground hover:bg-primary/80" asChild data-testid="button-upload-resume">
                     <label className="cursor-pointer">
                       <Upload className="h-4 w-4 mr-2" />
                       <span className="text-sm sm:text-base">Upload</span>
@@ -390,35 +393,46 @@ export default function ResumeCVChecker() {
                 />
 
                 {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <Button 
-                    variant="secondary" 
-                    size="default"
-                    className="w-full sm:w-auto h-10 sm:h-10 text-sm sm:text-base"
-                    onClick={() => {
-                      navigator.clipboard.writeText(text);
+                <div className="flex flex-wrap gap-2">
+                  <button 
+                    onClick={async () => {
+                      try {
+                        await navigator.clipboard.writeText(text);
+                        toast({
+                          title: "Text Copied",
+                          description: "Resume text has been copied to clipboard.",
+                        });
+                      } catch (error) {
+                        toast({
+                          title: "Copy Failed",
+                          description: "Unable to copy text to clipboard.",
+                          variant: "destructive",
+                        });
+                      }
                     }}
                     disabled={!text}
+                    className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     data-testid="button-copy-resume"
                   >
-                    <FileText className="h-4 w-4 mr-2" />
+                    <FaCopy className="inline mr-1" aria-hidden="true" />
                     Copy
-                  </Button>
-                  <Button 
-                    variant="secondary" 
-                    size="default"
-                    className="w-full sm:w-auto h-10 sm:h-10 text-sm sm:text-base"
-                    onClick={() => setText('')}
+                  </button>
+                  <button 
+                    onClick={() => {
+                      setText('');
+                      toast({
+                        title: "Text Cleared",
+                        description: "Resume text has been cleared.",
+                      });
+                    }}
                     disabled={!text}
+                    className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     data-testid="button-clear-resume"
                   >
-                    <FileText className="h-4 w-4 mr-2" />
+                    <FaEraser className="inline mr-1" aria-hidden="true" />
                     Clear
-                  </Button>
-                  <Button 
-                    variant="secondary" 
-                    size="default"
-                    className="w-full sm:w-auto h-10 sm:h-10 text-sm sm:text-base"
+                  </button>
+                  <button 
                     onClick={() => {
                       const formattedReport = `
 ================================================================================
@@ -445,6 +459,18 @@ Skills Found: ${analysis?.skills?.slice(0, 10).join(', ') || 'None detected'}
 Action Verbs Used: ${analysis?.actionVerbs?.length || 0}
 Quantifiable Achievements: ${analysis?.achievements?.length || 0}
 
+BUZZWORDS DETECTED:
+------------------
+${analysis?.buzzwords?.join(', ') || 'None detected'}
+
+ACTION VERBS USED:
+------------------
+${analysis?.actionVerbs?.slice(0, 15).join(', ') || 'None detected'}
+
+IMPROVEMENT SUGGESTIONS:
+-----------------------
+${analysis?.suggestions?.map((s, i) => `${i + 1}. ${s}`).join('\n') || 'No suggestions - your resume looks great!'}
+
 ================================================================================
 ORIGINAL TEXT:
 ================================================================================
@@ -452,24 +478,25 @@ ORIGINAL TEXT:
 ${text}
 
 ================================================================================
-Generated by Word Counter Plus
+Generated by Word Counter Plus - Resume Analyzer
 ${new Date().toLocaleString()}
 ================================================================================
 `;
-                      const blob = new Blob([formattedReport], { type: 'text/plain' });
-                      const url = URL.createObjectURL(blob);
-                      const a = document.createElement('a');
-                      a.href = url;
-                      a.download = 'resume-analysis.txt';
-                      a.click();
-                      URL.revokeObjectURL(url);
+                      prepareDownload({
+                        content: formattedReport,
+                        filename: 'resume-analysis.txt',
+                        fileType: 'txt',
+                        mimeType: 'text/plain',
+                        sourceToolId: 'resume-analyzer'
+                      });
                     }}
                     disabled={!text}
+                    className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     data-testid="button-export-resume"
                   >
-                    <FileText className="h-4 w-4 mr-2" />
+                    <FaDownload className="inline mr-1" aria-hidden="true" />
                     Export
-                  </Button>
+                  </button>
                 </div>
               </div>
 
