@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Upload, FileText, Award, TrendingUp, CheckCircle, AlertCircle, Briefcase, Target, DollarSign, AlertTriangle, Sparkles, BookOpen } from 'lucide-react';
 import { FaBriefcase, FaCheckCircle, FaFileAlt, FaTrophy, FaBullseye, FaLightbulb, FaDollarSign, FaExclamationTriangle, FaBolt, FaGraduationCap, FaPenFancy, FaUserTie, FaChartLine } from 'react-icons/fa';
 import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
@@ -13,7 +14,7 @@ import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 export default function ResumeCVChecker() {
   const [text, setText] = useState('');
   const [industry, setIndustry] = useState('general');
-  const [seniorityLevel, setSeniorityLevel] = useState<'entry' | 'mid' | 'senior' | ''>('');
+  const [seniorityLevel, setSeniorityLevel] = useState<'entry' | 'mid' | 'senior' | 'auto'>('auto');
 
   const resumeSchema = {
     "@context": "https://schema.org",
@@ -187,7 +188,7 @@ export default function ResumeCVChecker() {
       general: { entry: [45000, 65000], mid: [65000, 95000], senior: [95000, 150000] }
     };
 
-    const currentSeniority = seniorityLevel || detectedSeniority || 'mid';
+    const currentSeniority = (seniorityLevel !== 'auto' ? seniorityLevel : detectedSeniority) || 'mid';
     const salaryRange = salaryRanges[industry as keyof typeof salaryRanges]?.[currentSeniority] || salaryRanges.general[currentSeniority];
     
     // Adjust salary based on skills count
@@ -343,39 +344,38 @@ export default function ResumeCVChecker() {
               {/* Industry & Seniority Selection */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <div className="space-y-2">
-                  <label className="text-sm sm:text-base font-medium">Industry:</label>
-                  <div className="flex flex-wrap gap-2">
-                    {['general', 'tech', 'finance', 'marketing', 'healthcare'].map((ind) => (
-                      <Button
-                        key={ind}
-                        variant={industry === ind ? 'default' : 'outline'}
-                        size="default"
-                        className="text-sm sm:text-base h-9 sm:h-10"
-                        onClick={() => setIndustry(ind)}
-                        data-testid={`button-industry-${ind}`}
-                      >
-                        {ind.charAt(0).toUpperCase() + ind.slice(1)}
-                      </Button>
-                    ))}
-                  </div>
+                  <label htmlFor="industry-select" className="text-sm sm:text-base font-medium text-foreground">
+                    Industry
+                  </label>
+                  <Select value={industry} onValueChange={setIndustry}>
+                    <SelectTrigger id="industry-select" className="w-full h-10 sm:h-11" data-testid="select-industry">
+                      <SelectValue placeholder="Select industry" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="general">General</SelectItem>
+                      <SelectItem value="tech">Technology</SelectItem>
+                      <SelectItem value="finance">Finance</SelectItem>
+                      <SelectItem value="marketing">Marketing</SelectItem>
+                      <SelectItem value="healthcare">Healthcare</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 
                 <div className="space-y-2">
-                  <label className="text-sm sm:text-base font-medium">Seniority Level:</label>
-                  <div className="flex flex-wrap gap-2">
-                    {[{ value: '', label: 'Auto' }, { value: 'entry', label: 'Entry' }, { value: 'mid', label: 'Mid' }, { value: 'senior', label: 'Senior' }].map((level) => (
-                      <Button
-                        key={level.value}
-                        variant={seniorityLevel === level.value ? 'default' : 'outline'}
-                        size="default"
-                        className="text-sm sm:text-base h-9 sm:h-10"
-                        onClick={() => setSeniorityLevel(level.value as any)}
-                        data-testid={`button-seniority-${level.value || 'auto'}`}
-                      >
-                        {level.label}
-                      </Button>
-                    ))}
-                  </div>
+                  <label htmlFor="seniority-select" className="text-sm sm:text-base font-medium text-foreground">
+                    Seniority Level
+                  </label>
+                  <Select value={seniorityLevel} onValueChange={(value: string) => setSeniorityLevel(value as 'entry' | 'mid' | 'senior' | 'auto')}>
+                    <SelectTrigger id="seniority-select" className="w-full h-10 sm:h-11" data-testid="select-seniority">
+                      <SelectValue placeholder="Select seniority level" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="auto">Auto-detect</SelectItem>
+                      <SelectItem value="entry">Entry Level</SelectItem>
+                      <SelectItem value="mid">Mid Level</SelectItem>
+                      <SelectItem value="senior">Senior Level</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 
@@ -471,7 +471,7 @@ export default function ResumeCVChecker() {
                         <DollarSign className="h-5 w-5" />
                         Estimated Salary Range
                       </CardTitle>
-                      <CardDescription>Based on {industry} industry, {analysis.detectedSeniority || seniorityLevel || 'mid'} level, and {analysis.skills.length} skills</CardDescription>
+                      <CardDescription>Based on {industry} industry, {seniorityLevel !== 'auto' ? seniorityLevel : analysis.detectedSeniority || 'mid'} level, and {analysis.skills.length} skills</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="flex items-baseline gap-2">
