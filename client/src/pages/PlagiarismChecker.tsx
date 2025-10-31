@@ -327,42 +327,35 @@ export default function PlagiarismChecker() {
   const handleExport = () => {
     if (!result) return;
 
-    const report = `
-PLAGIARISM CHECKER REPORT
-========================
+    const report = `PLAGIARISM CHECKER ANALYSIS REPORT
 Generated: ${result.analyzedAt.toLocaleString()}
-Scan Type: ${result.scanType.toUpperCase()}
 
-SUMMARY
--------
+STATISTICS:
 Overall Originality Score: ${result.overallScore}%
 Unique Content: ${result.uniqueContent}%
 Plagiarized Content: ${result.plagiarizedContent}%
 Word Count: ${result.wordCount}
 Character Count: ${result.characterCount}
+Scan Type: ${result.scanType.toUpperCase()}
+Total Matches Found: ${result.matches.length}
 
-MATCHES FOUND (${result.matches.length})
---------------
-${result.matches.map((match, idx) => `
-${idx + 1}. "${match.text}"
-   - Similarity: ${match.percentage}%
-   - Type: ${match.type}
-   - Source: ${match.source}
-   - URL: ${match.url}
-`).join('\n')}
+PLAGIARISM ANALYSIS:
+${result.matches.map((match, idx) => `Match ${idx + 1}: "${match.text}"
+Similarity: ${match.percentage}%
+Type: ${match.type}
+Source: ${match.source}
+URL: ${match.url}`).join('\n\n')}
 
-SUGGESTIONS
------------
-${result.suggestions.map((s, idx) => `${idx + 1}. ${s}`).join('\n')}
+SUGGESTIONS:
+${result.suggestions.join('\n')}
 
-ORIGINAL TEXT
--------------
+ORIGINAL TEXT:
 ${text}
-    `.trim();
+`.trim();
 
     prepareDownload({
       content: report,
-      filename: `plagiarism-report-${Date.now()}.txt`,
+      filename: `plagiarism-analysis-${Date.now()}.txt`,
       fileType: 'txt',
       mimeType: 'text/plain'
     });

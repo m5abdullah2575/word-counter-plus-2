@@ -356,38 +356,36 @@ export default function WordsPerPage() {
     const report = `WORDS PER PAGE CALCULATION REPORT
 Generated: ${new Date().toLocaleString()}
 
-=== INPUT ===
+STATISTICS:
 Mode: ${mode === 'words-to-pages' ? 'Words to Pages' : 'Pages to Words'}
-${mode === 'words-to-pages' ? `Words: ${calculatedWords.toLocaleString()}` : `Pages: ${pageCount}`}
+${mode === 'words-to-pages' ? `Input Words: ${calculatedWords.toLocaleString()}` : `Input Pages: ${pageCount}`}
+${mode === 'words-to-pages' ? `Calculated Pages: ${calculatedPages.toFixed(2)}` : `Calculated Words: ${calculatedWords.toLocaleString()}`}
+Words Per Page: ${wordsPerPageCalculation}
+Total Words: ${statistics.words.toLocaleString()}
+Characters (with spaces): ${statistics.characters.toLocaleString()}
+Characters (without spaces): ${statistics.charactersNoSpaces.toLocaleString()}
+Sentences: ${statistics.sentences}
+Paragraphs: ${statistics.paragraphs}
+Average Word Length: ${statistics.avgWordLength} characters
 
-=== SETTINGS ===
+READING METRICS:
+Reading Time: ${readingTime}
+Speaking Time: ${speakingTime}
+
+FORMATTING SETTINGS:
 Font: ${font}
 Font Size: ${fontSize}pt
 Line Spacing: ${spacing}
 Paper Size: ${PAPER_SIZES[paperSize].label}
 Margins: ${margins}"
 
-=== RESULTS ===
-${mode === 'words-to-pages' ? `Pages: ${calculatedPages.toFixed(2)}` : `Words: ${calculatedWords.toLocaleString()}`}
-Words Per Page: ${wordsPerPageCalculation}
-Reading Time: ${readingTime}
-Speaking Time: ${speakingTime}
-
-=== STATISTICS ===
-Total Words: ${statistics.words.toLocaleString()}
-Characters: ${statistics.characters.toLocaleString()}
-Characters (no spaces): ${statistics.charactersNoSpaces.toLocaleString()}
-Sentences: ${statistics.sentences}
-Paragraphs: ${statistics.paragraphs}
-Avg Word Length: ${statistics.avgWordLength} characters
-
-=== QUICK REFERENCE ===
+QUICK REFERENCE:
 ${quickReference.map(ref => `${ref.words.toLocaleString()} words = ${ref.pages} pages`).join('\n')}
 `;
 
     prepareDownload({
       content: report,
-      filename: `words-per-page-report-${Date.now()}.txt`,
+      filename: `words-per-page-analysis-${Date.now()}.txt`,
       fileType: 'txt',
       mimeType: 'text/plain'
     });
