@@ -151,6 +151,9 @@ export default function Download() {
         
         const sections = parseContent(fileData.content);
         
+        // Check if content is structured (Word Counter format) or generic
+        const isStructuredContent = sections.stats.length > 0 || sections.readability.length > 0 || sections.readabilityScores.length > 0 || sections.keywords.length > 0;
+        
         const logoImg = new Image();
         logoImg.src = '/word-counter-plus-logo.png';
         await new Promise((resolve) => {
@@ -258,34 +261,57 @@ export default function Download() {
         pdf.text(`Generated: ${new Date().toLocaleString()}`, pageWidth / 2, yPosition, { align: 'center' });
         yPosition += 10;
         
-        if (sections.stats.length > 0) addSection("Statistics", sections.stats, "", true);
-        if (sections.readability.length > 0) addSection("Reading Metrics", sections.readability, "");
-        if (sections.readabilityScores.length > 0) addSection("Readability Score", sections.readabilityScores, "");
-        if (sections.keywords.length > 0) addSection("Top Keywords", sections.keywords, "");
-        
-        if (sections.originalText.trim()) {
-          if (yPosition > pageHeight - 60) {
-            addFooter(pageNum);
-            pdf.addPage();
-            pageNum++;
-            addHeader(pageNum);
-            yPosition = 40;
+        // Handle structured content (Word Counter format)
+        if (isStructuredContent) {
+          if (sections.stats.length > 0) addSection("Statistics", sections.stats, "", true);
+          if (sections.readability.length > 0) addSection("Reading Metrics", sections.readability, "");
+          if (sections.readabilityScores.length > 0) addSection("Readability Score", sections.readabilityScores, "");
+          if (sections.keywords.length > 0) addSection("Top Keywords", sections.keywords, "");
+          
+          if (sections.originalText.trim()) {
+            if (yPosition > pageHeight - 60) {
+              addFooter(pageNum);
+              pdf.addPage();
+              pageNum++;
+              addHeader(pageNum);
+              yPosition = 40;
+            }
+            
+            pdf.setFillColor(248, 248, 250);
+            pdf.roundedRect(margin, yPosition, maxWidth, 10, 2, 2, 'F');
+            pdf.setTextColor(220, 38, 38);
+            pdf.setFontSize(12);
+            pdf.setFont("helvetica", "bold");
+            pdf.text("Original Text", margin + 3, yPosition + 7);
+            yPosition += 15;
+            
+            yPosition += 5;
+            
+            pdf.setTextColor(40, 40, 40);
+            pdf.setFontSize(9);
+            pdf.setFont("helvetica", "normal");
+            const textLines = pdf.splitTextToSize(sections.originalText.trim(), maxWidth - 6);
+            
+            textLines.forEach((line: string) => {
+              if (yPosition > pageHeight - 25) {
+                addFooter(pageNum);
+                pdf.addPage();
+                pageNum++;
+                addHeader(pageNum);
+                yPosition = 40;
+              }
+              pdf.text(line, margin + 3, yPosition);
+              yPosition += 5;
+            });
           }
-          
-          pdf.setFillColor(248, 248, 250);
-          pdf.roundedRect(margin, yPosition, maxWidth, 10, 2, 2, 'F');
-          pdf.setTextColor(220, 38, 38);
-          pdf.setFontSize(12);
-          pdf.setFont("helvetica", "bold");
-          pdf.text("Original Text", margin + 3, yPosition + 7);
-          yPosition += 15;
-          
+        } else {
+          // Handle generic content (from other tools)
           yPosition += 5;
           
           pdf.setTextColor(40, 40, 40);
-          pdf.setFontSize(9);
+          pdf.setFontSize(10);
           pdf.setFont("helvetica", "normal");
-          const textLines = pdf.splitTextToSize(sections.originalText.trim(), maxWidth - 6);
+          const textLines = pdf.splitTextToSize(fileData.content.trim(), maxWidth - 6);
           
           textLines.forEach((line: string) => {
             if (yPosition > pageHeight - 25) {
@@ -333,57 +359,63 @@ export default function Download() {
         };
         
         const sections = parseContent(fileData.content);
+        const isStructuredContent = sections.stats.length > 0 || sections.readability.length > 0 || sections.readabilityScores.length > 0 || sections.keywords.length > 0;
         
         let txtContent = '═══════════════════════════════════════════════════════════\n';
         txtContent += '                   WORD COUNTER PLUS                      \n';
         txtContent += '═══════════════════════════════════════════════════════════\n\n';
         txtContent += `Generated: ${new Date().toLocaleString()}\n\n`;
         
-        if (sections.stats.length > 0) {
-          txtContent += '───────────────────────────────────────────────────────────\n';
-          txtContent += '  STATISTICS\n';
-          txtContent += '───────────────────────────────────────────────────────────\n';
-          sections.stats.forEach((item: string) => {
-            txtContent += `  ${item}\n`;
-          });
-          txtContent += '\n';
-        }
-        
-        if (sections.readability.length > 0) {
-          txtContent += '───────────────────────────────────────────────────────────\n';
-          txtContent += '  READING METRICS\n';
-          txtContent += '───────────────────────────────────────────────────────────\n';
-          sections.readability.forEach((item: string) => {
-            txtContent += `  ${item}\n`;
-          });
-          txtContent += '\n';
-        }
-        
-        if (sections.readabilityScores.length > 0) {
-          txtContent += '───────────────────────────────────────────────────────────\n';
-          txtContent += '  READABILITY SCORE\n';
-          txtContent += '───────────────────────────────────────────────────────────\n';
-          sections.readabilityScores.forEach((item: string) => {
-            txtContent += `  ${item}\n`;
-          });
-          txtContent += '\n';
-        }
-        
-        if (sections.keywords.length > 0) {
-          txtContent += '───────────────────────────────────────────────────────────\n';
-          txtContent += '  TOP KEYWORDS\n';
-          txtContent += '───────────────────────────────────────────────────────────\n';
-          sections.keywords.forEach((item: string) => {
-            txtContent += `  ${item}\n`;
-          });
-          txtContent += '\n';
-        }
-        
-        if (sections.originalText.trim()) {
-          txtContent += '───────────────────────────────────────────────────────────\n';
-          txtContent += '  ORIGINAL TEXT\n';
-          txtContent += '───────────────────────────────────────────────────────────\n';
-          txtContent += sections.originalText.trim() + '\n\n';
+        if (isStructuredContent) {
+          if (sections.stats.length > 0) {
+            txtContent += '───────────────────────────────────────────────────────────\n';
+            txtContent += '  STATISTICS\n';
+            txtContent += '───────────────────────────────────────────────────────────\n';
+            sections.stats.forEach((item: string) => {
+              txtContent += `  ${item}\n`;
+            });
+            txtContent += '\n';
+          }
+          
+          if (sections.readability.length > 0) {
+            txtContent += '───────────────────────────────────────────────────────────\n';
+            txtContent += '  READING METRICS\n';
+            txtContent += '───────────────────────────────────────────────────────────\n';
+            sections.readability.forEach((item: string) => {
+              txtContent += `  ${item}\n`;
+            });
+            txtContent += '\n';
+          }
+          
+          if (sections.readabilityScores.length > 0) {
+            txtContent += '───────────────────────────────────────────────────────────\n';
+            txtContent += '  READABILITY SCORE\n';
+            txtContent += '───────────────────────────────────────────────────────────\n';
+            sections.readabilityScores.forEach((item: string) => {
+              txtContent += `  ${item}\n`;
+            });
+            txtContent += '\n';
+          }
+          
+          if (sections.keywords.length > 0) {
+            txtContent += '───────────────────────────────────────────────────────────\n';
+            txtContent += '  TOP KEYWORDS\n';
+            txtContent += '───────────────────────────────────────────────────────────\n';
+            sections.keywords.forEach((item: string) => {
+              txtContent += `  ${item}\n`;
+            });
+            txtContent += '\n';
+          }
+          
+          if (sections.originalText.trim()) {
+            txtContent += '───────────────────────────────────────────────────────────\n';
+            txtContent += '  ORIGINAL TEXT\n';
+            txtContent += '───────────────────────────────────────────────────────────\n';
+            txtContent += sections.originalText.trim() + '\n\n';
+          }
+        } else {
+          // Handle generic content
+          txtContent += fileData.content.trim() + '\n\n';
         }
         
         txtContent += '═══════════════════════════════════════════════════════════\n';
@@ -430,61 +462,68 @@ export default function Download() {
         };
         
         const sections = parseContent(fileData.content);
+        const isStructuredContent = sections.stats.length > 0 || sections.readability.length > 0 || sections.readabilityScores.length > 0 || sections.keywords.length > 0;
         
         let csvContent = 'Word Counter Plus - Analysis Report\n';
         csvContent += `Generated,${new Date().toLocaleString()}\n\n`;
         
-        if (sections.stats.length > 0) {
-          csvContent += 'STATISTICS\n';
-          csvContent += 'Metric,Value\n';
-          sections.stats.forEach((item: string) => {
-            const parts = item.split(':');
-            if (parts.length === 2) {
-              csvContent += `"${parts[0].trim()}","${parts[1].trim()}"\n`;
-            }
-          });
-          csvContent += '\n';
-        }
-        
-        if (sections.readability.length > 0) {
-          csvContent += 'READING METRICS\n';
-          csvContent += 'Metric,Value\n';
-          sections.readability.forEach((item: string) => {
-            const parts = item.split(':');
-            if (parts.length === 2) {
-              csvContent += `"${parts[0].trim()}","${parts[1].trim()}"\n`;
-            }
-          });
-          csvContent += '\n';
-        }
-        
-        if (sections.readabilityScores.length > 0) {
-          csvContent += 'READABILITY SCORE\n';
-          csvContent += 'Metric,Value\n';
-          sections.readabilityScores.forEach((item: string) => {
-            const parts = item.split(':');
-            if (parts.length === 2) {
-              csvContent += `"${parts[0].trim()}","${parts[1].trim()}"\n`;
-            }
-          });
-          csvContent += '\n';
-        }
-        
-        if (sections.keywords.length > 0) {
-          csvContent += 'TOP KEYWORDS\n';
-          csvContent += 'Keyword,Frequency\n';
-          sections.keywords.forEach((item: string) => {
-            const parts = item.split('-');
-            if (parts.length === 2) {
-              csvContent += `"${parts[0].trim()}","${parts[1].trim()}"\n`;
-            }
-          });
-          csvContent += '\n';
-        }
-        
-        if (sections.originalText.trim()) {
-          csvContent += 'ORIGINAL TEXT\n';
-          csvContent += `"${sections.originalText.trim().replace(/"/g, '""')}"\n\n`;
+        if (isStructuredContent) {
+          if (sections.stats.length > 0) {
+            csvContent += 'STATISTICS\n';
+            csvContent += 'Metric,Value\n';
+            sections.stats.forEach((item: string) => {
+              const parts = item.split(':');
+              if (parts.length === 2) {
+                csvContent += `"${parts[0].trim()}","${parts[1].trim()}"\n`;
+              }
+            });
+            csvContent += '\n';
+          }
+          
+          if (sections.readability.length > 0) {
+            csvContent += 'READING METRICS\n';
+            csvContent += 'Metric,Value\n';
+            sections.readability.forEach((item: string) => {
+              const parts = item.split(':');
+              if (parts.length === 2) {
+                csvContent += `"${parts[0].trim()}","${parts[1].trim()}"\n`;
+              }
+            });
+            csvContent += '\n';
+          }
+          
+          if (sections.readabilityScores.length > 0) {
+            csvContent += 'READABILITY SCORE\n';
+            csvContent += 'Metric,Value\n';
+            sections.readabilityScores.forEach((item: string) => {
+              const parts = item.split(':');
+              if (parts.length === 2) {
+                csvContent += `"${parts[0].trim()}","${parts[1].trim()}"\n`;
+              }
+            });
+            csvContent += '\n';
+          }
+          
+          if (sections.keywords.length > 0) {
+            csvContent += 'TOP KEYWORDS\n';
+            csvContent += 'Keyword,Frequency\n';
+            sections.keywords.forEach((item: string) => {
+              const parts = item.split('-');
+              if (parts.length === 2) {
+                csvContent += `"${parts[0].trim()}","${parts[1].trim()}"\n`;
+              }
+            });
+            csvContent += '\n';
+          }
+          
+          if (sections.originalText.trim()) {
+            csvContent += 'ORIGINAL TEXT\n';
+            csvContent += `"${sections.originalText.trim().replace(/"/g, '""')}"\n\n`;
+          }
+        } else {
+          // Handle generic content
+          csvContent += 'Content\n';
+          csvContent += `"${fileData.content.trim().replace(/"/g, '""')}"\n\n`;
         }
         
         csvContent += 'Source,www.wordcounterplusapp.com\n';
