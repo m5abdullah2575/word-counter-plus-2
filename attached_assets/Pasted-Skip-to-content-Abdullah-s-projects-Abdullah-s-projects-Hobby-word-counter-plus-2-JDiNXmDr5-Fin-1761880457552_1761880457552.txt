@@ -1,0 +1,110 @@
+Skip to content
+Abdullah's projects
+Abdullah's projects
+
+Hobby
+
+word-counter-plus-2
+
+JDiNXmDr5
+
+
+Find…
+F
+
+Deployment Details
+Build Failed (timed out)
+Your build exceeded the 45 minute limit. Enable Enhanced Builds to increase machine size and reduce build times.
+
+Created
+abdullah9077071-5871 Avatar
+abdullah9077071-5871
+2h ago
+Status
+Error
+Latest
+Duration
+45m 28s
+60m ago
+Environment
+Production
+Domains
+word-counter-plus-2-git-main-abdullahs-projects-0c5e8b2e.vercel.app
+word-counter-plus-2-82fjgmjk3-abdullahs-projects-0c5e8b2e.vercel.app
+Source
+main
+d62223c
+Update project build configuration and optimize output
+
+Deployment Settings
+3 Recommendations
+Provisioning Integrations
+Build Logs
+45m 29s
+1 line selected
+Find in logs
+⌘F
+../dist/public/assets/LineCounter-CgdxVMj3.js                  20.60 kB │ gzip:   5.56 kB
+../dist/public/assets/ParagraphCounter-BdMKCmhc.js             21.00 kB │ gzip:   5.68 kB
+../dist/public/assets/LetterCounter-P052gXdi.js                21.88 kB │ gzip:   5.83 kB
+../dist/public/assets/purify.es-CyIDeO0B.js                    22.49 kB │ gzip:   8.48 kB
+../dist/public/assets/WordCounterTool-DnTBfn7F.js              26.42 kB │ gzip:   7.21 kB
+../dist/public/assets/TextCaseConverter-Dl7Lu5kA.js            27.92 kB │ gzip:   6.87 kB
+../dist/public/assets/Extension-DuxP9-ck.js                    30.56 kB │ gzip:   4.49 kB
+../dist/public/assets/FAQ-pGq76ofL.js                          31.15 kB │ gzip:  10.43 kB
+../dist/public/assets/TextCompare-BCKlL72u.js                  31.80 kB │ gzip:   8.03 kB
+../dist/public/assets/GrammarChecker-CciNIk31.js               32.80 kB │ gzip:   8.63 kB
+../dist/public/assets/SpeechToText-BR_L2bpy.js                 34.06 kB │ gzip:   9.15 kB
+../dist/public/assets/ReadabilityCalculator-CTUwYZr4.js        34.81 kB │ gzip:   8.77 kB
+../dist/public/assets/select-B_8xkkT6.js                       36.16 kB │ gzip:  12.33 kB
+../dist/public/assets/RandomWordGenerator-DYGN15Lq.js          36.47 kB │ gzip:  10.83 kB
+../dist/public/assets/PlagiarismChecker-CMsveZUN.js            37.25 kB │ gzip:  10.00 kB
+../dist/public/assets/ResumeCVChecker-CngfezCT.js              41.09 kB │ gzip:  11.54 kB
+../dist/public/assets/CharacterCounter-Xi_BGVC4.js             42.33 kB │ gzip:  10.06 kB
+../dist/public/assets/WordsPerPage-D-gb3LyC.js                 42.38 kB │ gzip:   9.86 kB
+../dist/public/assets/SEOContentAnalyzer-D1TIYXsx.js           42.54 kB │ gzip:  11.05 kB
+../dist/public/assets/WordFrequencyCounter-Dtfy3_C8.js         73.62 kB │ gzip:  20.11 kB
+../dist/public/assets/index.es-VqJyFE_H.js                    111.37 kB │ gzip:  33.59 kB
+../dist/public/assets/html2canvas.esm-BzmDOhfD.js             198.23 kB │ gzip:  45.72 kB
+../dist/public/assets/index-D1NsWfcg.js                       319.76 kB │ gzip: 104.82 kB
+../dist/public/assets/generateCategoricalChart-DcmP3quB.js    371.83 kB │ gzip:  99.39 kB
+../dist/public/assets/Download-tcRyKBAy.js                    404.26 kB │ gzip: 126.69 kB
+../dist/public/assets/optimized-image-BlZk8Z_O.js             573.12 kB │ gzip: 162.84 kB
+../dist/public/assets/upload-button-BjGOf1qe.js               852.91 kB │ gzip: 229.33 kB
+✓ built in 41.06s
+Deployment Summary
+Deployment Checks
+Assigning Custom Domains
+Runtime Logs
+
+View and debug runtime logs & errors
+
+Observability
+
+Monitor app health & performance
+
+Speed Insights
+
+Not Enabled
+Performance metrics from real users
+
+Web Analytics
+
+Not Enabled
+Analyze visitors & traffic in real-time
+
+Home
+Docs
+Guides
+Academy
+Help
+Contact
+All systems normal.
+
+Select a display theme:
+
+system
+
+light
+
+dark
