@@ -6,9 +6,7 @@ import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
 import cssnano from "cssnano";
 import viteImagemin from "vite-plugin-imagemin";
-import webp from "imagemin-webp";
 
-// Small helper to resolve paths
 const r = (...segments: string[]) => path.resolve(process.cwd(), ...segments);
 
 export default defineConfig({
@@ -19,10 +17,9 @@ export default defineConfig({
     runtimeErrorOverlay(),
     ...(process.env.NODE_ENV !== "production" && process.env.REPL_ID !== undefined
       ? [
-        (await import("@replit/vite-plugin-cartographer")).cartographer(),
-      ]
+          (await import("@replit/vite-plugin-cartographer")).cartographer(),
+        ]
       : []),
-    // Image optimization - only in production
     ...(process.env.NODE_ENV === "production"
       ? [
           viteImagemin({
@@ -46,8 +43,6 @@ export default defineConfig({
       "@": r("client", "src"),
       "@shared": r("shared"),
       "@assets": r("attached_assets"),
-      "react": path.resolve("./node_modules/react"),
-      "react-dom": path.resolve("./node_modules/react-dom"),
     },
   },
 
@@ -58,44 +53,8 @@ export default defineConfig({
     emptyOutDir: true,
     target: "esnext",
     cssCodeSplit: false,
-    cssMinify: 'lightningcss',
     sourcemap: false,
-    modulePreload: {
-      polyfill: false,
-      resolveDependencies: (filename, deps) => {
-        return deps.filter(dep => !dep.includes('node_modules'));
-      },
-    },
     rollupOptions: {
-      output: {
-        manualChunks: (id) => {
-          if (id.includes("node_modules")) {
-            if (id.includes("react/") || id.includes("react-dom/")) return "react-core";
-            if (id.includes("scheduler")) return "react-core";
-            if (id.includes("@radix-ui/react-dialog") || id.includes("@radix-ui/react-dropdown")) return "radix-overlay";
-            if (id.includes("@radix-ui/react-toast") || id.includes("@radix-ui/react-tooltip")) return "radix-feedback";
-            if (id.includes("@radix-ui/react-select") || id.includes("@radix-ui/react-tabs")) return "radix-controls";
-            if (id.includes("@radix-ui")) return "radix-base";
-            if (id.includes("lucide-react")) return "icons";
-            if (id.includes("framer-motion")) return "animation";
-            if (id.includes("recharts") || id.includes("d3-")) return "charts";
-            if (id.includes("jspdf")) return "pdf";
-            if (id.includes("mammoth") || id.includes("docxtemplater") || id.includes("pizzip")) return "doc-parser";
-            if (id.includes("@tanstack/react-query")) return "query";
-            if (id.includes("wouter")) return "router";
-            if (id.includes("zod") || id.includes("@hookform")) return "forms";
-            return "vendor-misc";
-          }
-        },
-        chunkFileNames: "js/[name]-[hash].js",
-        entryFileNames: "js/[name]-[hash].js",
-        assetFileNames: (assetInfo) => {
-          if (/\.(png|jpe?g|gif|svg|webp|ico)$/i.test(assetInfo.name || "")) return `images/[name]-[hash][extname]`;
-          if (/\.css$/i.test(assetInfo.name || "")) return `css/[name]-[hash][extname]`;
-          if (/\.(woff2?|eot|ttf|otf)$/i.test(assetInfo.name || "")) return `fonts/[name]-[hash][extname]`;
-          return `assets/[name]-[hash][extname]`;
-        },
-      },
       treeshake: {
         moduleSideEffects: false,
         propertyReadSideEffects: false,
@@ -108,22 +67,13 @@ export default defineConfig({
         drop_console: process.env.NODE_ENV === "production",
         drop_debugger: true,
         pure_funcs: ["console.log", "console.info", "console.debug", "console.trace"],
-        passes: 3,
-        ecma: 2020,
-        module: true,
-        unsafe_arrows: true,
-        unsafe_methods: true,
-        unsafe_proto: true,
-        keep_fargs: false,
+        passes: 2,
       },
-      mangle: { 
-        toplevel: true,
-        safari10: false,
-      },
+      mangle: true,
       format: { comments: false },
     },
     reportCompressedSize: true,
-    chunkSizeWarningLimit: 500,
+    chunkSizeWarningLimit: 1000,
   },
 
   server: {
@@ -136,11 +86,10 @@ export default defineConfig({
   },
 
   optimizeDeps: {
-    include: ["react", "react-dom/client", "wouter", "@tanstack/react-query"],
+    include: ["react", "react/jsx-runtime", "react-dom/client", "wouter", "@tanstack/react-query"],
     exclude: ["@replit/vite-plugin-cartographer"],
     esbuildOptions: {
       target: "esnext",
-      treeShaking: true,
     },
   },
 
@@ -160,7 +109,6 @@ export default defineConfig({
                     normalizeWhitespace: true,
                     mergeLonghand: true,
                     mergeRules: true,
-                    cssDeclarationSorter: true,
                   },
                 ],
               }),
