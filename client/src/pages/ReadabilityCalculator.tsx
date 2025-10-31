@@ -338,7 +338,7 @@ https://wordcounterplusapp.com/readability-calculator
                 <button 
                   onClick={copyToClipboard}
                   disabled={!text}
-                  className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-xs sm:text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
+                  className="px-2 sm:px-3 py-2 bg-secondary text-secondary-foreground rounded text-xs sm:text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
                   data-testid="button-copy-text"
                   title="Copy text to clipboard"
                 >
@@ -346,24 +346,24 @@ https://wordcounterplusapp.com/readability-calculator
                   <span>Copy</span>
                 </button>
                 <button 
-                  onClick={downloadReport}
-                  disabled={!text}
-                  className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-xs sm:text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
-                  data-testid="button-download-report"
-                  title="Download readability report"
-                >
-                  <FaDownload className="text-sm" />
-                  <span>Report</span>
-                </button>
-                <button 
                   onClick={clearText}
                   disabled={!text}
-                  className="px-2 sm:px-3 py-2 bg-destructive text-destructive-foreground rounded text-xs sm:text-sm hover:bg-destructive/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
+                  className="px-2 sm:px-3 py-2 bg-secondary text-secondary-foreground rounded text-xs sm:text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
                   data-testid="button-clear-text"
                   title="Clear all text"
                 >
                   <FaEraser className="text-sm" />
                   <span>Clear</span>
+                </button>
+                <button 
+                  onClick={downloadReport}
+                  disabled={!text}
+                  className="px-2 sm:px-3 py-2 bg-secondary text-secondary-foreground rounded text-xs sm:text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
+                  data-testid="button-download-report"
+                  title="Download readability report"
+                >
+                  <FaDownload className="text-sm" />
+                  <span>Export</span>
                 </button>
               </div>
             </CardContent>
