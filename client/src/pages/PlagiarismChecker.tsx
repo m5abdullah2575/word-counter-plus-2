@@ -467,28 +467,43 @@ ${text}
               {/* Text Input Card */}
               <Card data-testid="card-text-input">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                    <FaFileAlt className="text-primary text-sm sm:text-base" />
-                    Enter Your Text
-                  </CardTitle>
-                  <CardDescription className="text-xs sm:text-sm">
-                    Paste or type your content to check for plagiarism
-                  </CardDescription>
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <div>
+                      <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                        <FaFileAlt className="text-primary text-sm sm:text-base" />
+                        Enter Your Text
+                      </CardTitle>
+                      <CardDescription className="text-xs sm:text-sm">
+                        Paste or type your content to check for plagiarism
+                      </CardDescription>
+                    </div>
+                    <div className="flex gap-2 w-full sm:w-auto">
+                      <UploadButton
+                        onClick={triggerFileUpload}
+                        isLoading={isUploading || isScanning}
+                        variant="secondary"
+                        size="sm"
+                        fullText="Upload File"
+                        data-testid="button-upload"
+                      />
+                    </div>
+                  </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <UploadButton
-                      onClick={triggerFileUpload}
-                      isLoading={isUploading || isScanning}
-                      variant="secondary"
-                      size="sm"
-                      fullText="Upload File"
-                      data-testid="button-upload"
-                    />
+                  <Textarea
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    placeholder="Start typing or paste your text here to analyze it for plagiarism..."
+                    className="min-h-[250px] sm:min-h-[300px] md:min-h-[400px] text-sm sm:text-base font-mono"
+                    data-testid="textarea-input"
+                  />
+
+                  {/* Action Buttons */}
+                  <div className="flex flex-wrap gap-2">
                     <Button
                       onClick={handleCopy}
                       disabled={!text}
-                      variant="outline"
+                      variant="secondary"
                       size="sm"
                       data-testid="button-copy"
                       className="text-xs sm:text-sm"
@@ -499,7 +514,7 @@ ${text}
                     <Button
                       onClick={handleClear}
                       disabled={!text && !result}
-                      variant="outline"
+                      variant="secondary"
                       size="sm"
                       data-testid="button-clear"
                       className="text-xs sm:text-sm"
@@ -507,15 +522,18 @@ ${text}
                       <FaEraser className="mr-1 sm:mr-2 text-xs sm:text-sm" />
                       Clear
                     </Button>
+                    <Button
+                      onClick={handleExport}
+                      disabled={!result}
+                      variant="secondary"
+                      size="sm"
+                      data-testid="button-export"
+                      className="text-xs sm:text-sm"
+                    >
+                      <FaDownload className="mr-1 sm:mr-2 text-xs sm:text-sm" />
+                      Export
+                    </Button>
                   </div>
-
-                  <Textarea
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    placeholder="Start typing or paste your text here to analyze it for plagiarism..."
-                    className="min-h-[250px] sm:min-h-[300px] md:min-h-[400px] text-sm sm:text-base font-mono"
-                    data-testid="textarea-input"
-                  />
 
                   {/* Scan Type Selection */}
                   <div className="space-y-3">

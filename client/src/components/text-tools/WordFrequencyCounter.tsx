@@ -394,16 +394,6 @@ export default function WordFrequencyCounter() {
                     className="flex-1 sm:flex-none h-8 sm:h-9 text-xs sm:text-sm"
                     data-testid="button-upload-text"
                   />
-                  <Button 
-                    onClick={clearText}
-                    variant="secondary"
-                    size="sm"
-                    className="flex-1 sm:flex-none h-8 sm:h-9 text-xs sm:text-sm"
-                    data-testid="button-clear-text"
-                  >
-                    <FaEraser className="mr-1 text-xs sm:text-sm" />
-                    Clear
-                  </Button>
                 </div>
               </div>
             </CardHeader>
@@ -435,6 +425,49 @@ export default function WordFrequencyCounter() {
                 className="w-full h-40 sm:h-48 md:h-64 p-2.5 sm:p-3 md:p-4 resize-none text-xs sm:text-sm md:text-base"
                 data-testid="textarea-text-input"
               />
+
+              {/* Action Buttons */}
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Button 
+                  onClick={() => {
+                    navigator.clipboard.writeText(text);
+                    toast({
+                      title: "Text Copied",
+                      description: "Text has been copied to clipboard.",
+                    });
+                  }}
+                  disabled={!text}
+                  variant="secondary"
+                  size="sm"
+                  className="text-xs sm:text-sm"
+                  data-testid="button-copy"
+                >
+                  <FaUpload className="mr-1 text-xs sm:text-sm" />
+                  Copy
+                </Button>
+                <Button 
+                  onClick={clearText}
+                  disabled={!text}
+                  variant="secondary"
+                  size="sm"
+                  className="text-xs sm:text-sm"
+                  data-testid="button-clear"
+                >
+                  <FaEraser className="mr-1 text-xs sm:text-sm" />
+                  Clear
+                </Button>
+                <Button 
+                  onClick={() => downloadResults('csv')}
+                  disabled={!text}
+                  variant="secondary"
+                  size="sm"
+                  className="text-xs sm:text-sm"
+                  data-testid="button-export"
+                >
+                  <FaDownload className="mr-1 text-xs sm:text-sm" />
+                  Export
+                </Button>
+              </div>
               
               {highlightedWord && (
                 <div 

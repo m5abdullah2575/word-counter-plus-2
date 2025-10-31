@@ -321,10 +321,23 @@ export default function ResumeCVChecker() {
               {/* Main Card */}
               <Card className="shadow-lg border-2">
             <CardHeader>
-              <CardTitle>Paste Your Resume</CardTitle>
-              <CardDescription>
-                Get comprehensive analysis with quantifiable achievement detection and salary estimation
-              </CardDescription>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <div>
+                  <CardTitle>Paste Your Resume</CardTitle>
+                  <CardDescription>
+                    Get comprehensive analysis with quantifiable achievement detection and salary estimation
+                  </CardDescription>
+                </div>
+                <div className="flex gap-2 w-full sm:w-auto">
+                  <Button variant="secondary" size="sm" className="w-full sm:w-auto h-9 sm:h-9" asChild data-testid="button-upload-resume">
+                    <label className="cursor-pointer">
+                      <Upload className="h-4 w-4 mr-2" />
+                      <span className="text-sm sm:text-base">Upload</span>
+                      <input type="file" accept=".txt" onChange={handleFileUpload} className="hidden" />
+                    </label>
+                  </Button>
+                </div>
+              </div>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Industry & Seniority Selection */}
@@ -368,25 +381,6 @@ export default function ResumeCVChecker() {
 
               {/* Text Input */}
               <div className="space-y-2">
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <Button variant="outline" size="default" className="w-full sm:w-auto h-10 sm:h-10" asChild data-testid="button-upload-resume">
-                    <label className="cursor-pointer">
-                      <Upload className="h-4 w-4 mr-2" />
-                      <span className="text-sm sm:text-base">Upload Text</span>
-                      <input type="file" accept=".txt" onChange={handleFileUpload} className="hidden" />
-                    </label>
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="default"
-                    className="w-full sm:w-auto h-10 sm:h-10 text-sm sm:text-base"
-                    onClick={() => setText('')}
-                    data-testid="button-clear-resume"
-                  >
-                    <FileText className="h-4 w-4 mr-2" />
-                    Clear
-                  </Button>
-                </div>
                 <Textarea
                   value={text}
                   onChange={(e) => setText(e.target.value)}
@@ -394,6 +388,53 @@ export default function ResumeCVChecker() {
                   className="min-h-[300px] font-mono text-sm"
                   data-testid="textarea-resume-input"
                 />
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Button 
+                    variant="secondary" 
+                    size="default"
+                    className="w-full sm:w-auto h-10 sm:h-10 text-sm sm:text-base"
+                    onClick={() => {
+                      navigator.clipboard.writeText(text);
+                    }}
+                    disabled={!text}
+                    data-testid="button-copy-resume"
+                  >
+                    <FileText className="h-4 w-4 mr-2" />
+                    Copy
+                  </Button>
+                  <Button 
+                    variant="secondary" 
+                    size="default"
+                    className="w-full sm:w-auto h-10 sm:h-10 text-sm sm:text-base"
+                    onClick={() => setText('')}
+                    disabled={!text}
+                    data-testid="button-clear-resume"
+                  >
+                    <FileText className="h-4 w-4 mr-2" />
+                    Clear
+                  </Button>
+                  <Button 
+                    variant="secondary" 
+                    size="default"
+                    className="w-full sm:w-auto h-10 sm:h-10 text-sm sm:text-base"
+                    onClick={() => {
+                      const report = `Resume Analysis Report\n\nStrength Score: ${analysis?.strengthScore}%\nSalary Range: ${analysis ? formatSalary(analysis.salaryRange[0]) : ''} - ${analysis ? formatSalary(analysis.salaryRange[1]) : ''}`;
+                      const blob = new Blob([report], { type: 'text/plain' });
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.download = 'resume-analysis.txt';
+                      a.click();
+                    }}
+                    disabled={!text}
+                    data-testid="button-export-resume"
+                  >
+                    <FileText className="h-4 w-4 mr-2" />
+                    Export
+                  </Button>
+                </div>
               </div>
 
               {/* Analysis Results */}
