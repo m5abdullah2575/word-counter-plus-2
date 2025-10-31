@@ -353,7 +353,7 @@ export default function GrammarChecker() {
                 <Card className="bg-card border border-border">
                   <CardHeader className="pb-3 sm:pb-4">
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                      <CardTitle className="text-base sm:text-lg md:text-xl">Your Text</CardTitle>
+                      <CardTitle className="text-base sm:text-lg md:text-xl">Enter Your Text</CardTitle>
                       <UploadButton 
                         onClick={triggerFileUpload}
                         isLoading={isUploading}
@@ -377,6 +377,39 @@ export default function GrammarChecker() {
                       className="w-full min-h-[16rem] h-64 sm:h-80 p-3 sm:p-4 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-y transition-all text-sm sm:text-base"
                       data-testid="textarea-grammar-input"
                     />
+                    
+                    <div className="grid grid-cols-3 gap-2">
+                      <button 
+                        onClick={copyCorrected}
+                        disabled={!text}
+                        className="px-2 sm:px-3 py-2 bg-secondary text-secondary-foreground rounded text-xs sm:text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
+                        data-testid="button-copy-text"
+                        title="Copy text to clipboard"
+                      >
+                        <FaCopy className="text-sm" />
+                        <span>Copy</span>
+                      </button>
+                      <button 
+                        onClick={clearAll}
+                        disabled={!text && !result}
+                        className="px-2 sm:px-3 py-2 bg-secondary text-secondary-foreground rounded text-xs sm:text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
+                        data-testid="button-clear-text"
+                        title="Clear all text"
+                      >
+                        <FaEraser className="text-sm" />
+                        <span>Clear</span>
+                      </button>
+                      <button 
+                        onClick={downloadCorrected}
+                        disabled={!text}
+                        className="px-2 sm:px-3 py-2 bg-secondary text-secondary-foreground rounded text-xs sm:text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
+                        data-testid="button-export-text"
+                        title="Download text"
+                      >
+                        <FaDownload className="text-sm" />
+                        <span>Export</span>
+                      </button>
+                    </div>
                   </CardContent>
                 </Card>
 
@@ -400,56 +433,27 @@ export default function GrammarChecker() {
                 </Card>
               </div>
 
-              {/* Action Buttons */}
+              {/* Check Grammar Button */}
               <Card className="bg-card border border-border">
                 <CardContent className="p-4">
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
-                    <Button
-                      onClick={checkGrammar}
-                      disabled={!text.trim() || isChecking}
-                      className="w-full col-span-2 sm:col-span-1"
-                      data-testid="button-check-grammar"
-                    >
-                      {isChecking ? (
-                        <>
-                          <FaSync className="mr-1 sm:mr-2 animate-spin" />
-                          <span className="text-xs sm:text-sm">Checking...</span>
-                        </>
-                      ) : (
-                        <>
-                          <FaSpellCheck className="mr-1 sm:mr-2" />
-                          <span className="text-xs sm:text-sm">Check</span>
-                        </>
-                      )}
-                    </Button>
-                    <button 
-                      onClick={copyCorrected}
-                      disabled={!result}
-                      className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 sm:gap-2"
-                      data-testid="button-copy-corrected"
-                    >
-                      <FaCopy />
-                      <span className="hidden sm:inline">Copy</span>
-                    </button>
-                    <button 
-                      onClick={downloadCorrected}
-                      disabled={!result}
-                      className="px-2 sm:px-3 py-2 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 sm:gap-2"
-                      data-testid="button-download-corrected"
-                    >
-                      <FaDownload />
-                      <span className="hidden sm:inline">Download</span>
-                    </button>
-                    <button 
-                      onClick={clearAll}
-                      disabled={!text && !result}
-                      className="px-2 sm:px-3 py-2 bg-destructive text-destructive-foreground rounded text-sm hover:bg-destructive/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 sm:gap-2 col-span-2 sm:col-span-1"
-                      data-testid="button-clear-all"
-                    >
-                      <FaEraser />
-                      <span className="hidden xs:inline sm:inline">Clear All</span>
-                    </button>
-                  </div>
+                  <Button
+                    onClick={checkGrammar}
+                    disabled={!text.trim() || isChecking}
+                    className="w-full"
+                    data-testid="button-check-grammar"
+                  >
+                    {isChecking ? (
+                      <>
+                        <FaSync className="mr-1 sm:mr-2 animate-spin" />
+                        <span className="text-xs sm:text-sm">Checking...</span>
+                      </>
+                    ) : (
+                      <>
+                        <FaSpellCheck className="mr-1 sm:mr-2" />
+                        <span className="text-xs sm:text-sm">Check Grammar</span>
+                      </>
+                    )}
+                  </Button>
                 </CardContent>
               </Card>
 

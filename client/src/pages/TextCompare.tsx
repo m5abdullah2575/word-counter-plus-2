@@ -399,7 +399,7 @@ export default function TextCompare() {
                   {stats.words1} words, {stats.chars1} characters
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-4">
                 <Textarea
                   placeholder="Paste your first text here..."
                   value={text1}
@@ -410,6 +410,63 @@ export default function TextCompare() {
                   className="w-full min-h-[16rem] h-64 sm:h-80 p-3 sm:p-4 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-y transition-all text-sm sm:text-base"
                   data-testid="textarea-text1"
                 />
+                
+                <div className="grid grid-cols-3 gap-2">
+                  <button 
+                    onClick={async () => {
+                      try {
+                        await navigator.clipboard.writeText(text1);
+                        toast({
+                          title: "Text Copied",
+                          description: "Original text copied to clipboard.",
+                        });
+                      } catch (error) {
+                        toast({
+                          title: "Copy Failed",
+                          description: "Unable to copy to clipboard.",
+                          variant: "destructive",
+                        });
+                      }
+                    }}
+                    disabled={!text1}
+                    className="px-2 sm:px-3 py-2 bg-secondary text-secondary-foreground rounded text-xs sm:text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
+                    data-testid="button-copy-text1"
+                    title="Copy text to clipboard"
+                  >
+                    <FaCopy className="text-sm" />
+                    <span>Copy</span>
+                  </button>
+                  <button 
+                    onClick={() => {
+                      setText1('');
+                      setDiffResult([]);
+                    }}
+                    disabled={!text1}
+                    className="px-2 sm:px-3 py-2 bg-secondary text-secondary-foreground rounded text-xs sm:text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
+                    data-testid="button-clear-text1"
+                    title="Clear text"
+                  >
+                    <FaEraser className="text-sm" />
+                    <span>Clear</span>
+                  </button>
+                  <button 
+                    onClick={() => {
+                      prepareDownload({
+                        content: text1,
+                        filename: 'original-text.txt',
+                        fileType: 'txt',
+                        mimeType: 'text/plain'
+                      });
+                    }}
+                    disabled={!text1}
+                    className="px-2 sm:px-3 py-2 bg-secondary text-secondary-foreground rounded text-xs sm:text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
+                    data-testid="button-export-text1"
+                    title="Download text"
+                  >
+                    <FaDownload className="text-sm" />
+                    <span>Export</span>
+                  </button>
+                </div>
               </CardContent>
             </Card>
 
@@ -429,7 +486,7 @@ export default function TextCompare() {
                   {stats.words2} words, {stats.chars2} characters
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-4">
                 <Textarea
                   placeholder="Paste your second text here..."
                   value={text2}
@@ -440,22 +497,79 @@ export default function TextCompare() {
                   className="w-full min-h-[16rem] h-64 sm:h-80 p-3 sm:p-4 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-y transition-all text-sm sm:text-base"
                   data-testid="textarea-text2"
                 />
+                
+                <div className="grid grid-cols-3 gap-2">
+                  <button 
+                    onClick={async () => {
+                      try {
+                        await navigator.clipboard.writeText(text2);
+                        toast({
+                          title: "Text Copied",
+                          description: "Modified text copied to clipboard.",
+                        });
+                      } catch (error) {
+                        toast({
+                          title: "Copy Failed",
+                          description: "Unable to copy to clipboard.",
+                          variant: "destructive",
+                        });
+                      }
+                    }}
+                    disabled={!text2}
+                    className="px-2 sm:px-3 py-2 bg-secondary text-secondary-foreground rounded text-xs sm:text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
+                    data-testid="button-copy-text2"
+                    title="Copy text to clipboard"
+                  >
+                    <FaCopy className="text-sm" />
+                    <span>Copy</span>
+                  </button>
+                  <button 
+                    onClick={() => {
+                      setText2('');
+                      setDiffResult([]);
+                    }}
+                    disabled={!text2}
+                    className="px-2 sm:px-3 py-2 bg-secondary text-secondary-foreground rounded text-xs sm:text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
+                    data-testid="button-clear-text2"
+                    title="Clear text"
+                  >
+                    <FaEraser className="text-sm" />
+                    <span>Clear</span>
+                  </button>
+                  <button 
+                    onClick={() => {
+                      prepareDownload({
+                        content: text2,
+                        filename: 'modified-text.txt',
+                        fileType: 'txt',
+                        mimeType: 'text/plain'
+                      });
+                    }}
+                    disabled={!text2}
+                    className="px-2 sm:px-3 py-2 bg-secondary text-secondary-foreground rounded text-xs sm:text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
+                    data-testid="button-export-text2"
+                    title="Download text"
+                  >
+                    <FaDownload className="text-sm" />
+                    <span>Export</span>
+                  </button>
+                </div>
               </CardContent>
             </Card>
           </div>
 
-          {/* Action Buttons */}
+          {/* Compare Actions */}
           <Card className="bg-card border border-border">
             <CardContent className="p-4">
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-3">
                 <Button
                   onClick={compareTexts}
                   disabled={!text1 && !text2}
-                  className="w-full col-span-2 sm:col-span-1"
+                  className="w-full col-span-2 sm:col-span-2"
                   data-testid="button-compare"
                 >
                   <FaEquals className="mr-1 sm:mr-2" />
-                  <span className="hidden xs:inline sm:inline">Compare</span>
+                  <span>Compare</span>
                 </Button>
                 <button 
                   onClick={swapTexts}
@@ -464,7 +578,7 @@ export default function TextCompare() {
                   data-testid="button-swap"
                 >
                   <FaExchangeAlt />
-                  <span className="hidden sm:inline">Swap</span>
+                  <span>Swap</span>
                 </button>
                 <button 
                   onClick={copyDiff}
@@ -473,7 +587,7 @@ export default function TextCompare() {
                   data-testid="button-copy-diff"
                 >
                   <FaCopy />
-                  <span className="hidden sm:inline">Copy</span>
+                  <span>Copy</span>
                 </button>
                 <button 
                   onClick={downloadDiff}
@@ -482,16 +596,7 @@ export default function TextCompare() {
                   data-testid="button-download-diff"
                 >
                   <FaDownload />
-                  <span className="hidden sm:inline">Download</span>
-                </button>
-                <button 
-                  onClick={clearAll}
-                  disabled={!text1 && !text2 && diffResult.length === 0}
-                  className="px-2 sm:px-3 py-2 bg-destructive text-destructive-foreground rounded text-sm hover:bg-destructive/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 sm:gap-2 col-span-2 sm:col-span-1"
-                  data-testid="button-clear-all"
-                >
-                  <FaEraser />
-                  <span className="hidden xs:inline sm:inline">Clear All</span>
+                  <span>Download</span>
                 </button>
               </div>
             </CardContent>
