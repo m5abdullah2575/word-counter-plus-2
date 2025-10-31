@@ -334,36 +334,36 @@ https://wordcounterplusapp.com/readability-calculator
                 data-testid="textarea-readability-text"
               />
               
-              <div className="grid grid-cols-3 gap-2">
+              <div className="flex flex-wrap gap-2">
                 <button 
                   onClick={copyToClipboard}
                   disabled={!text}
-                  className="px-2 sm:px-3 py-2 bg-secondary text-secondary-foreground rounded text-xs sm:text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
+                  className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   data-testid="button-copy-text"
                   title="Copy text to clipboard"
                 >
-                  <FaCopy className="text-sm" />
-                  <span>Copy</span>
+                  <FaCopy className="inline mr-1" />
+                  Copy
                 </button>
                 <button 
                   onClick={clearText}
                   disabled={!text}
-                  className="px-2 sm:px-3 py-2 bg-secondary text-secondary-foreground rounded text-xs sm:text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
+                  className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   data-testid="button-clear-text"
                   title="Clear all text"
                 >
-                  <FaEraser className="text-sm" />
-                  <span>Clear</span>
+                  <FaEraser className="inline mr-1" />
+                  Clear
                 </button>
                 <button 
                   onClick={downloadReport}
                   disabled={!text}
-                  className="px-2 sm:px-3 py-2 bg-secondary text-secondary-foreground rounded text-xs sm:text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
+                  className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded text-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   data-testid="button-download-report"
                   title="Download readability report"
                 >
-                  <FaDownload className="text-sm" />
-                  <span>Export</span>
+                  <FaDownload className="inline mr-1" />
+                  Export
                 </button>
               </div>
             </CardContent>
