@@ -21,9 +21,9 @@ export default function Extension() {
   useSEO({
     title: "Browser Extension - Word Counter Plus | Analyze Text Anywhere",
     description:
-      "Word Counter Plus browser extension now available for Chrome, Firefox, Opera, and other browsers. Analyze any text on any webpage instantly with right-click context menu integration.",
+      "Word Counter Plus browser extension now available for Chrome, Firefox, Edge, Opera, and other browsers. Analyze any text on any webpage instantly with right-click context menu integration.",
     keywords:
-      "word counter extension, browser extension, chrome extension, firefox extension, opera extension, text analysis, word count plugin, browser plugin",
+      "word counter extension, browser extension, chrome extension, firefox extension, edge extension, opera extension, text analysis, word count plugin, browser plugin",
     canonical: "https://wordcounterplusapp.com/extension",
   });
 
@@ -35,13 +35,13 @@ export default function Extension() {
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-600 dark:text-green-500 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full mb-4 sm:mb-6">
               <FaCheckCircle className="w-3 h-3 sm:w-4 sm:h-4" />
-              <span className="text-xs sm:text-sm font-medium">Now Available on Chrome Web Store!</span>
+              <span className="text-xs sm:text-sm font-medium">Now Available on Chrome, Firefox & Edge!</span>
             </div>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 text-foreground px-2">
               Analyze Text Anywhere on the Web
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
-              Install our powerful browser extension and analyze any text on any webpage with a simple right-click. Available now for Chrome, Firefox, Opera, and other browsers!
+              Install our powerful browser extension and analyze any text on any webpage with a simple right-click. Available now for Chrome, Firefox, Edge, Opera, and other browsers!
             </p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 max-w-6xl mx-auto mb-6 px-2 sm:px-0">
@@ -105,6 +105,36 @@ export default function Extension() {
                 </Button>
               </div>
 
+              {/* Edge Extension Available */}
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border border-green-200 dark:border-green-800 rounded-lg p-4 sm:p-5 flex flex-col">
+                <div className="flex items-start gap-2 sm:gap-3 text-left mb-4">
+                  <FaCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 dark:text-green-500 flex-shrink-0 mt-1" />
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-foreground mb-2 text-sm sm:text-base leading-snug">
+                      Edge Extension Published!
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Successfully published on Microsoft Edge Add-ons. Install now for instant text analysis.
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  asChild
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground w-full mt-auto text-xs sm:text-sm py-2 sm:py-2.5"
+                  data-testid="button-install-edge-extension"
+                >
+                  <a
+                    href="https://microsoftedge.microsoft.com/addons/detail/YOUR_EDGE_EXTENSION_ID_HERE"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center"
+                  >
+                    <FaEdge className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2 flex-shrink-0" />
+                    <span className="whitespace-nowrap overflow-hidden text-ellipsis">Install from Edge Add-ons</span>
+                  </a>
+                </Button>
+              </div>
+
               {/* Opera Extension Available */}
               <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border border-green-200 dark:border-green-800 rounded-lg p-4 sm:p-5 flex flex-col sm:col-span-2 lg:col-span-1">
                 <div className="flex items-start gap-2 sm:gap-3 text-left mb-4">
@@ -135,10 +165,6 @@ export default function Extension() {
                 </Button>
               </div>
             </div>
-
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              Edge version coming soon
-            </p>
           </div>
         </div>
       </section>
@@ -244,7 +270,7 @@ export default function Extension() {
             Available on Official Browser Stores
           </h2>
           <p className="text-center text-muted-foreground mb-6 sm:mb-8 md:mb-12 max-w-3xl mx-auto text-sm sm:text-base px-4">
-            Install Word Counter Plus extension from your browser's official store. Now available for Chrome, Chromium-based browsers, and Firefox, with Edge version coming soon.
+            Install Word Counter Plus extension from your browser's official store. Now available for Chrome, Firefox, Microsoft Edge, and all Chromium-based browsers.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 max-w-6xl mx-auto">
@@ -325,7 +351,7 @@ export default function Extension() {
             </Card>
 
             {/* Microsoft Edge Add-ons */}
-            <Card className="p-4 sm:p-6 hover:shadow-xl transition-all border-border opacity-75">
+            <Card className="p-4 sm:p-6 hover:shadow-xl transition-all border-primary/20 border-2 bg-gradient-to-br from-green-50/50 to-emerald-50/50 dark:from-green-950/10 dark:to-emerald-950/10">
               <div className="flex flex-col items-center text-center mb-4 sm:mb-6">
                 <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-3 sm:mb-4">
                   <FaEdge className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
@@ -336,30 +362,36 @@ export default function Extension() {
                 <p className="text-xs sm:text-sm text-muted-foreground mb-3">
                   Microsoft Edge extension store
                 </p>
-                <div className="inline-flex items-center gap-2 bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 px-3 py-1 rounded-full text-xs sm:text-sm">
-                  <FaHourglass className="w-3 h-3" />
-                  Under Review
+                <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-600 dark:text-green-500 px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
+                  <FaCheckCircle className="w-3 h-3" />
+                  Available Now!
                 </div>
               </div>
 
               <div className="text-center text-xs sm:text-sm text-muted-foreground mb-4">
-                Expected to be available within 3-7 business days
+                Successfully published • Version 1.0.1
               </div>
 
               <Button
-                className="w-full bg-muted hover:bg-muted text-muted-foreground cursor-not-allowed"
-                disabled
-                data-testid="button-edge-coming-soon"
+                asChild
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                data-testid="button-install-edge"
               >
-                <FaEdge className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
-                Coming Soon
+                <a
+                  href="https://microsoftedge.microsoft.com/addons/detail/YOUR_EDGE_EXTENSION_ID_HERE"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaDownload className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+                  Install Extension
+                </a>
               </Button>
             </Card>
           </div>
 
           <div className="mt-6 sm:mt-8 text-center">
             <p className="text-xs sm:text-sm text-muted-foreground bg-muted/50 inline-block px-4 sm:px-6 py-2 sm:py-3 rounded-lg">
-              ✓ Chrome & Firefox: Available Now &nbsp;|&nbsp; ✓ Safe and secure &nbsp;|&nbsp; ✓ Privacy-focused
+              ✓ Chrome, Firefox & Edge: Available Now &nbsp;|&nbsp; ✓ Safe and secure &nbsp;|&nbsp; ✓ Privacy-focused
             </p>
           </div>
         </div>
