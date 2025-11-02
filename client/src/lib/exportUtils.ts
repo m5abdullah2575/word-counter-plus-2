@@ -393,11 +393,9 @@ export interface TextCompareData {
 export function exportTextComparePDF(data: TextCompareData): void {
   Promise.all([
     import("jspdf"),
-    import("html2canvas"),
   ])
-    .then(([jsPDFModule, html2canvasModule]) => {
+    .then(([jsPDFModule]) => {
       const jsPDF = jsPDFModule.default;
-      const html2canvas = html2canvasModule.default;
 
       const doc = new jsPDF();
       
@@ -557,9 +555,8 @@ export function exportTextComparePDF(data: TextCompareData): void {
               doc.rect(margin - 3, bgY, maxWidth + 6, lineHeight + 2, 'F');
             }
             
-            doc.setTextColor(brandColor.r, brandColor.g, brandColor.b);
-            doc.setFontSize(8);
-            doc.text("●", xPos, yPosition);
+            doc.setFillColor(brandColor.r, brandColor.g, brandColor.b);
+            doc.circle(xPos + 1, yPosition - 1.5, 1, 'F');
             
             doc.setTextColor(darkGray.r, darkGray.g, darkGray.b);
             doc.setFontSize(10);
@@ -581,9 +578,8 @@ export function exportTextComparePDF(data: TextCompareData): void {
               doc.rect(margin - 3, yPosition - 5, maxWidth + 6, lineHeight + 2, 'F');
             }
             
-            doc.setTextColor(brandColor.r, brandColor.g, brandColor.b);
-            doc.setFontSize(8);
-            doc.text("●", margin + 2, yPosition);
+            doc.setFillColor(brandColor.r, brandColor.g, brandColor.b);
+            doc.circle(margin + 3, yPosition - 1.5, 1, 'F');
             
             doc.setTextColor(darkGray.r, darkGray.g, darkGray.b);
             doc.setFontSize(10);
@@ -602,17 +598,17 @@ export function exportTextComparePDF(data: TextCompareData): void {
         `Replacements: ${data.changes}`,
         `Matching Segments: ${data.diffResult.filter(r => r.type === 'equal').length}`,
       ];
-      addSection("COMPARISON SUMMARY", comparisonStats, true);
+      addSection("Comparison Summary", comparisonStats, true);
       
       const textStats = [
-        `Original Text - Words: ${data.words1}`,
-        `Original Text - Characters: ${data.chars1}`,
-        `Modified Text - Words: ${data.words2}`,
-        `Modified Text - Characters: ${data.chars2}`,
+        `Original Words: ${data.words1}`,
+        `Original Characters: ${data.chars1}`,
+        `Modified Words: ${data.words2}`,
+        `Modified Characters: ${data.chars2}`,
         `Word Difference: ${data.words2 - data.words1 >= 0 ? '+' : ''}${data.words2 - data.words1}`,
         `Character Difference: ${data.chars2 - data.chars1 >= 0 ? '+' : ''}${data.chars2 - data.chars1}`,
       ];
-      addSection("TEXT STATISTICS", textStats, true);
+      addSection("Text Statistics", textStats, true);
       
       if (yPosition > pageHeight - 90) {
         addFooter(pageNum);
@@ -632,7 +628,7 @@ export function exportTextComparePDF(data: TextCompareData): void {
       doc.setTextColor(brandColor.r, brandColor.g, brandColor.b);
       doc.setFontSize(14);
       doc.setFont("helvetica", "bold");
-      doc.text("DETAILED COMPARISON", margin + 2, yPosition + 8);
+      doc.text("Detailed Comparison", margin + 2, yPosition + 8);
       yPosition += 20;
       
       doc.setFillColor(255, 255, 255);
