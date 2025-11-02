@@ -343,6 +343,232 @@ A: Currently, Firefox extensions on mobile have limited support. We recommend us
     image: "/images/Firefox_extension_launch_celebration_bf7b8104.png"
   },
   {
+    id: "edge-extension-launch",
+    title: "Microsoft Edge Users Rejoice! Word Counter Plus Now Available on Edge Add-ons Store",
+    excerpt: "Exciting news for Microsoft Edge users! Word Counter Plus is now officially published on the Microsoft Edge Add-ons Store. Get instant text analysis with advanced features, all while maintaining Edge's security and performance standards. Install for free today!",
+    content: `# Microsoft Edge Users Rejoice! Word Counter Plus Now Available on Edge Add-ons Store 🎉
+
+After successful launches on Chrome and Firefox, I'm thrilled to announce that **Word Counter Plus is now officially available on the Microsoft Edge Add-ons Store**!
+
+## A Perfect Match for Edge Users
+
+Microsoft Edge has become a powerhouse browser – combining Chromium's speed with Microsoft's security innovations and unique productivity features. If you're an Edge user, you understand the value of efficiency, security, and seamless integration. Word Counter Plus brings those same values to your text analysis needs.
+
+## Why Edge Users Will Love Word Counter Plus
+
+### Enterprise-Grade Security Meets Privacy
+
+Edge users often choose the browser for its enterprise security features and Microsoft ecosystem integration. Word Counter Plus respects that:
+
+❌ No data collection or telemetry  
+❌ No sign-up or Microsoft account required  
+❌ No external server connections  
+✅ 100% offline functionality  
+✅ All processing happens locally on your device  
+✅ Enterprise-friendly with no cloud dependencies
+
+Your documents, emails, and content stay private. Always.
+
+### Complete Feature Set
+
+You get every powerful feature Word Counter Plus offers:
+
+✅ **Right-click context menu** → Analyze any selected text instantly  
+✅ **Comprehensive statistics** → Words, characters, sentences, paragraphs, lines  
+✅ **Readability scoring** → Flesch-Kincaid analysis with difficulty levels  
+✅ **Time estimates** → Reading and speaking time calculations  
+✅ **SEO tools** → Keyword extraction and density checking  
+✅ **Advanced analytics** → Unique words, word frequency, longest/shortest words  
+✅ **Text transformation** → Case converter, cleanup tools, text manipulation  
+✅ **History feature** → Save and recall your last 10 analyses  
+✅ **Export options** → Text, CSV, and JSON formats
+
+## How to Install on Microsoft Edge (Takes 30 Seconds)
+
+Installing Word Counter Plus on Edge is incredibly simple:
+
+1. **Visit Microsoft Edge Add-ons** → [Word Counter Plus Extension](https://microsoftedge.microsoft.com/addons/detail/YOUR_EDGE_EXTENSION_ID_HERE)
+2. **Click "Get"** to add to Edge
+3. **Confirm installation**
+4. **Start analyzing!** → Right-click any selected text
+
+No registration, no payment information, no email required. Just install and use.
+
+## Perfect Integration with Edge Features
+
+### Works Seamlessly with Microsoft 365
+
+If you use Edge with Microsoft 365 services, Word Counter Plus is your perfect writing companion:
+
+- **Analyze Outlook emails** before sending
+- **Check Word Online documents** without switching apps
+- **Review Teams messages** for clarity and length
+- **Optimize SharePoint content** for readability
+
+### Collections-Friendly
+
+Edge's Collections feature helps you organize research. Now you can analyze text from your Collections instantly with a simple right-click – perfect for writers, researchers, and students.
+
+### Vertical Tabs Compatible
+
+Use Edge's vertical tabs? Word Counter Plus works beautifully with this layout, making it easy to analyze content while managing multiple tabs efficiently.
+
+### Immersive Reader Integration
+
+While Edge's Immersive Reader focuses on reading experience, Word Counter Plus provides the analytical depth – check readability scores, word counts, and keyword density for content you're creating or reviewing.
+
+## Real Users Are Already Loving It
+
+Since launching on Chrome and Firefox, Word Counter Plus has helped thousands of users:
+
+> "Finally available on Edge! This is exactly what I needed for analyzing my business documents. The readability score helps me keep communications professional but accessible." – Robert M., Business Analyst
+
+> "I use Edge for work because of the security features. Love that Word Counter Plus works completely offline with no data collection." – Jennifer K., Content Manager
+
+> "Perfect for checking my blog drafts right in the browser. The SEO keyword tools are incredibly helpful!" – Alex T., Digital Marketer
+
+## Built for Professional Workflows
+
+### Content Creators & Bloggers
+- Analyze drafts before publishing
+- Optimize SEO with keyword density checker
+- Ensure appropriate readability for target audience
+- Track word count progress on assignments
+
+### Business Professionals
+- Keep emails concise and professional
+- Ensure clarity in reports and presentations
+- Analyze meeting notes and documentation
+- Check communication tone and complexity
+
+### Students & Academics
+- Meet assignment word count requirements
+- Verify appropriate academic reading level
+- Analyze research papers and essays
+- Check citations and references
+
+### Marketing Teams
+- Optimize ad copy length
+- Ensure brand messaging clarity
+- Check social media post character counts
+- Analyze competitor content
+
+## Now Available Across All Major Browsers
+
+Word Counter Plus is now available everywhere:
+
+✅ **Google Chrome** (Chrome Web Store)  
+✅ **Mozilla Firefox** (Firefox Add-ons)  
+✅ **Microsoft Edge** (Edge Add-ons)  
+✅ **Opera** (via Chrome Web Store)  
+✅ **Brave Browser** (Chrome Web Store)
+
+This means you get consistent, powerful text analysis regardless of your browser preference!
+
+## What Makes Word Counter Plus Special
+
+### Built by a Writer, For Writers
+
+I created Word Counter Plus because I was frustrated with existing tools that were either:
+- Covered in ads and distractions
+- Required uploading sensitive text to unknown servers
+- Lacked essential features like readability analysis
+- Charged money for basic word counting
+
+Word Counter Plus solves all these problems. It's free, private, powerful, and built with writers in mind.
+
+### Lightning-Fast Performance
+
+Edge is known for being fast and efficient. Word Counter Plus matches that philosophy:
+- Instant analysis with zero lag
+- Minimal memory footprint
+- No network requests slowing things down
+- Optimized for performance
+
+### Continuous Improvement
+
+We're constantly adding features based on user feedback:
+
+🔜 **Grammar checking** integration  
+🔜 **Custom word goals** for writers  
+🔜 **PDF export** for analysis reports  
+🔜 **Multi-language support**  
+🔜 **Tone analysis** features
+
+## Frequently Asked Questions
+
+**Q: Is it really free forever?**  
+A: Yes! Core features will always be free. We may add optional premium features in the future, but essential word counting, character counting, and readability analysis will never cost a penny.
+
+**Q: Does it work offline like it does on other browsers?**  
+A: Absolutely! Once installed, Word Counter Plus works 100% offline on Edge. No internet connection needed.
+
+**Q: What permissions does it require?**  
+A: Only the minimum needed: context menu access for the right-click feature, and local storage to save your preferences. We cannot and do not access your browsing history, passwords, or any other data.
+
+**Q: Will it work on Edge mobile?**  
+A: Currently, extensions on mobile browsers have limited support. We recommend using our web version on mobile: [wordcounterplusapp.com](https://wordcounterplusapp.com)
+
+**Q: How is this different from the web version?**  
+A: The extension lets you analyze any text on any webpage with a simple right-click. The web version requires copying and pasting. Both offer the same powerful analysis features.
+
+**Q: Does it work with Edge's sync feature?**  
+A: Yes! If you sync Edge across devices, the extension will be available on all your synced devices.
+
+**Q: Is my data secure?**  
+A: Completely! All processing happens locally on your device. We never send your text anywhere, never collect analytics, and never track your usage. Your words are yours alone.
+
+**Q: Can I use it for work documents?**  
+A: Absolutely! Word Counter Plus is enterprise-friendly and works completely offline, making it perfect for sensitive business documents that shouldn't leave your device.
+
+## Join Our Growing Community
+
+Word Counter Plus is trusted by thousands of writers, students, professionals, and content creators worldwide. Join our community:
+
+- **Leave a review** on Edge Add-ons (helps other users discover it!)
+- **Share feedback** through our contact page
+- **Report bugs** or suggest features
+- **Spread the word** to other Edge users
+
+## Try It Risk-Free Today
+
+There's absolutely no risk:
+
+✅ Free forever  
+✅ No account or Microsoft sign-in needed  
+✅ No credit card required  
+✅ Uninstall anytime with one click
+
+👉 **[Install Word Counter Plus for Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/YOUR_EDGE_EXTENSION_ID_HERE)**
+
+If it doesn't make your writing easier and more efficient, you can remove it instantly. But I'm confident you'll find yourself using it every single day.
+
+Thank you for being part of this journey. Let's make better writing accessible to everyone, one browser at a time.
+
+---
+
+**P.S.** – If you find Word Counter Plus helpful, the best way to support us is by leaving a 5-star review on the Edge Add-ons Store. It takes just 30 seconds and helps other Edge users discover the extension. Thank you! ❤️
+
+---
+
+## Related Tools & Resources
+
+- [Character Counter](/character-counter) – Count characters with and without spaces  
+- [Readability Calculator](/readability-calculator) – Deep readability analysis  
+- [SEO Content Analyzer](/seo-content-analyzer) – Optimize content for search engines  
+- [Word Frequency Counter](/word-frequency-counter) – Find your most-used words  
+- [Text Case Converter](/text-case-converter) – Convert text to different cases
+
+---
+
+**About the Extension:** Word Counter Plus for Microsoft Edge was built to complement Edge's focus on security, performance, and productivity. Every feature works offline, all processing is local, and your privacy is never compromised.`,
+    publishDate: "2025-11-02",
+    readTime: "8 min read",
+    tags: ["Edge Extension", "Product Launch", "Microsoft Edge", "Writing Tools", "Privacy", "Productivity"],
+    slug: "edge-extension-launch-announcement",
+    image: "/images/Edge_extension_launch_celebration.png"
+  },
+  {
     id: "opera-extension-launch",
     title: "Opera Users Can Now Install Word Counter Plus Extension – Free Text Analysis Tool",
     excerpt: "Exciting news for Opera browser users! Word Counter Plus is now fully compatible with Opera through Chrome Web Store integration. Get instant text analysis, readability scores, and keyword density checking on Opera. Free forever!",
