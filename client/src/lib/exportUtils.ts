@@ -420,26 +420,14 @@ export function exportTextComparePDF(data: TextCompareData): void {
         doc.setLineWidth(2);
         doc.line(0, 35, pageWidth, 35);
         
-        doc.setFillColor(255, 255, 255);
-        doc.circle(margin + 3.5, 17, 3.5, 'F');
-        
-        doc.setFillColor(brandColor.r, brandColor.g, brandColor.b);
-        const logoX = margin + 2.5;
-        const logoY = 14;
-        doc.moveTo(logoX, logoY);
-        doc.lineTo(logoX + 2, logoY + 6);
-        doc.lineTo(logoX + 1, logoY + 6.5);
-        doc.lineTo(logoX - 1, logoY + 0.5);
-        doc.fill();
-        
-        doc.setTextColor(255, 255, 255);
+        doc.setTextColor(0, 0, 0);
         doc.setFontSize(24);
         doc.setFont("helvetica", "bold");
-        doc.text("Word Counter Plus", margin + 12, 15);
+        doc.text("Word Counter Plus", margin, 15);
         
         doc.setFontSize(10);
         doc.setFont("helvetica", "normal");
-        doc.text("Professional Text Comparison Tool", margin + 12, 25);
+        doc.text("Professional Text Analysis Tool", margin, 25);
         
         if (pageNum > 1) {
           doc.setFontSize(9);
@@ -499,7 +487,7 @@ export function exportTextComparePDF(data: TextCompareData): void {
         second: '2-digit',
         hour12: true
       });
-      doc.text(`Generated: ${timestamp}`, pageWidth / 2, yPosition + 5, { align: 'center' });
+      doc.text(`Generated: ${timestamp}`, pageWidth / 2, yPosition, { align: 'center' });
       yPosition += 15;
       
       doc.setDrawColor(borderGray.r, borderGray.g, borderGray.b);
@@ -557,8 +545,9 @@ export function exportTextComparePDF(data: TextCompareData): void {
               doc.rect(margin - 3, bgY, maxWidth + 6, lineHeight + 2, 'F');
             }
             
-            doc.setFillColor(brandColor.r, brandColor.g, brandColor.b);
-            doc.circle(xPos + 1, yPosition - 1.5, 1, 'F');
+            doc.setTextColor(brandColor.r, brandColor.g, brandColor.b);
+            doc.setFontSize(8);
+            doc.text("●", xPos, yPosition);
             
             doc.setTextColor(darkGray.r, darkGray.g, darkGray.b);
             doc.setFontSize(10);
@@ -580,8 +569,9 @@ export function exportTextComparePDF(data: TextCompareData): void {
               doc.rect(margin - 3, yPosition - 5, maxWidth + 6, lineHeight + 2, 'F');
             }
             
-            doc.setFillColor(brandColor.r, brandColor.g, brandColor.b);
-            doc.circle(margin + 3, yPosition - 1.5, 1, 'F');
+            doc.setTextColor(brandColor.r, brandColor.g, brandColor.b);
+            doc.setFontSize(8);
+            doc.text("●", margin + 2, yPosition);
             
             doc.setTextColor(darkGray.r, darkGray.g, darkGray.b);
             doc.setFontSize(10);
@@ -600,7 +590,7 @@ export function exportTextComparePDF(data: TextCompareData): void {
         `Replacements: ${data.changes}`,
         `Matching Segments: ${data.diffResult.filter(r => r.type === 'equal').length}`,
       ];
-      addSection("Comparison Summary", comparisonStats, true);
+      addSection("COMPARISON SUMMARY", comparisonStats, true);
       
       const textStats = [
         `Original Words: ${data.words1}`,
@@ -610,7 +600,7 @@ export function exportTextComparePDF(data: TextCompareData): void {
         `Word Difference: ${data.words2 - data.words1 >= 0 ? '+' : ''}${data.words2 - data.words1}`,
         `Character Difference: ${data.chars2 - data.chars1 >= 0 ? '+' : ''}${data.chars2 - data.chars1}`,
       ];
-      addSection("Text Statistics", textStats, true);
+      addSection("TEXT STATISTICS", textStats, true);
       
       if (yPosition > pageHeight - 90) {
         addFooter(pageNum);
@@ -630,87 +620,58 @@ export function exportTextComparePDF(data: TextCompareData): void {
       doc.setTextColor(brandColor.r, brandColor.g, brandColor.b);
       doc.setFontSize(14);
       doc.setFont("helvetica", "bold");
-      doc.text("Detailed Comparison", margin + 2, yPosition + 8);
+      doc.text("DETAILED COMPARISON", margin + 2, yPosition + 8);
       yPosition += 20;
+      
+      const textBoxStartY = yPosition;
+      let comparisonText = '';
+      
+      data.diffResult.forEach((diff) => {
+        let prefix = '';
+        let displayText = '';
+        
+        if (diff.type === 'equal') {
+          displayText = diff.value;
+        } else if (diff.type === 'insert') {
+          displayText = diff.value;
+          prefix = '+ ';
+        } else if (diff.type === 'delete') {
+          displayText = diff.value;
+          prefix = '- ';
+        } else if (diff.type === 'replace') {
+          displayText = `${diff.oldValue} → ${diff.newValue}`;
+          prefix = '~ ';
+        }
+        
+        comparisonText += prefix + displayText;
+      });
+      
+      const textLines = doc.splitTextToSize(comparisonText, maxWidth - 8);
+      const textBoxHeight = Math.min(textLines.length * 5 + 10, pageHeight - yPosition - 35);
       
       doc.setFillColor(255, 255, 255);
       doc.setDrawColor(borderGray.r, borderGray.g, borderGray.b);
       doc.setLineWidth(0.5);
+      doc.roundedRect(margin - 3, textBoxStartY - 5, maxWidth + 6, textBoxHeight, 2, 2, 'FD');
       
-      const legendY = yPosition;
-      doc.setFontSize(9);
-      doc.setFont("helvetica", "bold");
       doc.setTextColor(darkGray.r, darkGray.g, darkGray.b);
-      doc.text("Legend:", margin, legendY);
-      
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(8);
-      
-      doc.setFillColor(greenColor.r, greenColor.g, greenColor.b);
-      doc.rect(margin + 15, legendY - 3, 8, 4, 'F');
-      doc.setTextColor(greenColor.r, greenColor.g, greenColor.b);
-      doc.text("Added", margin + 25, legendY);
-      
-      doc.setFillColor(redColor.r, redColor.g, redColor.b);
-      doc.rect(margin + 45, legendY - 3, 8, 4, 'F');
-      doc.setTextColor(redColor.r, redColor.g, redColor.b);
-      doc.text("Deleted", margin + 55, legendY);
-      
-      doc.setFillColor(yellowColor.r, yellowColor.g, yellowColor.b);
-      doc.rect(margin + 75, legendY - 3, 8, 4, 'F');
-      doc.setTextColor(yellowColor.r, yellowColor.g, yellowColor.b);
-      doc.text("Changed", margin + 85, legendY);
-      
-      yPosition += 10;
-      
       doc.setFontSize(9);
       doc.setFont("helvetica", "normal");
       
-      data.diffResult.forEach((diff) => {
+      textLines.forEach((line: string) => {
         if (yPosition > pageHeight - 40) {
           addFooter(pageNum);
           doc.addPage();
           pageNum++;
           addHeader(pageNum);
           yPosition = 50;
+          
+          doc.setFillColor(255, 255, 255);
+          doc.setDrawColor(borderGray.r, borderGray.g, borderGray.b);
+          doc.roundedRect(margin - 3, yPosition - 5, maxWidth + 6, pageHeight - yPosition - 30, 2, 2, 'FD');
         }
-        
-        let displayText = '';
-        let textColor = darkGray;
-        let prefix = '';
-        
-        if (diff.type === 'equal') {
-          displayText = diff.value;
-          textColor = darkGray;
-        } else if (diff.type === 'insert') {
-          displayText = diff.value;
-          textColor = greenColor;
-          prefix = '+ ';
-        } else if (diff.type === 'delete') {
-          displayText = diff.value;
-          textColor = redColor;
-          prefix = '- ';
-        } else if (diff.type === 'replace') {
-          displayText = `${diff.oldValue} → ${diff.newValue}`;
-          textColor = yellowColor;
-          prefix = '~ ';
-        }
-        
-        doc.setTextColor(textColor.r, textColor.g, textColor.b);
-        const fullText = prefix + displayText;
-        const wrappedLines = doc.splitTextToSize(fullText, maxWidth - 4);
-        
-        wrappedLines.forEach((line: string) => {
-          if (yPosition > pageHeight - 40) {
-            addFooter(pageNum);
-            doc.addPage();
-            pageNum++;
-            addHeader(pageNum);
-            yPosition = 50;
-          }
-          doc.text(line, margin + 2, yPosition);
-          yPosition += 5;
-        });
+        doc.text(line, margin + 2, yPosition);
+        yPosition += 5;
       });
       
       addFooter(pageNum);
