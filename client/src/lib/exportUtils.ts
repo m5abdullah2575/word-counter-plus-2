@@ -420,14 +420,26 @@ export function exportTextComparePDF(data: TextCompareData): void {
         doc.setLineWidth(2);
         doc.line(0, 35, pageWidth, 35);
         
+        doc.setFillColor(255, 255, 255);
+        doc.circle(margin + 3.5, 17, 3.5, 'F');
+        
+        doc.setFillColor(brandColor.r, brandColor.g, brandColor.b);
+        const logoX = margin + 2.5;
+        const logoY = 14;
+        doc.moveTo(logoX, logoY);
+        doc.lineTo(logoX + 2, logoY + 6);
+        doc.lineTo(logoX + 1, logoY + 6.5);
+        doc.lineTo(logoX - 1, logoY + 0.5);
+        doc.fill();
+        
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(24);
         doc.setFont("helvetica", "bold");
-        doc.text("Word Counter Plus", margin, 15);
+        doc.text("Word Counter Plus", margin + 12, 15);
         
         doc.setFontSize(10);
         doc.setFont("helvetica", "normal");
-        doc.text("Professional Text Comparison Tool", margin, 25);
+        doc.text("Professional Text Comparison Tool", margin + 12, 25);
         
         if (pageNum > 1) {
           doc.setFontSize(9);
@@ -474,16 +486,6 @@ export function exportTextComparePDF(data: TextCompareData): void {
       let pageNum = 1;
       
       addHeader(pageNum);
-      
-      doc.setFillColor(brandColor.r, brandColor.g, brandColor.b);
-      doc.roundedRect(margin - 3, yPosition - 8, maxWidth + 6, 20, 3, 3, 'F');
-      
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(22);
-      doc.setFont("helvetica", "bold");
-      doc.text("TEXT COMPARISON REPORT", pageWidth / 2, yPosition + 2, { align: 'center' });
-      
-      yPosition += 20;
       
       doc.setTextColor(100, 100, 100);
       doc.setFontSize(9);
