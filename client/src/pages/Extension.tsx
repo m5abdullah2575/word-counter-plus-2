@@ -124,7 +124,7 @@ export default function Extension() {
                   data-testid="button-install-edge-extension"
                 >
                   <a
-                    href="https://microsoftedge.microsoft.com/addons/detail/YOUR_EDGE_EXTENSION_ID_HERE"
+                    href="https://microsoftedge.microsoft.com/addons/detail/word-counter-plus/mmiahndaehcmckhclkijlpfjpkbibhhm"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center"
@@ -378,7 +378,7 @@ export default function Extension() {
                 data-testid="button-install-edge"
               >
                 <a
-                  href="https://microsoftedge.microsoft.com/addons/detail/YOUR_EDGE_EXTENSION_ID_HERE"
+                  href="https://microsoftedge.microsoft.com/addons/detail/word-counter-plus/mmiahndaehcmckhclkijlpfjpkbibhhm"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

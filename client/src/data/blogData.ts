@@ -387,7 +387,7 @@ You get every powerful feature Word Counter Plus offers:
 
 Installing Word Counter Plus on Edge is incredibly simple:
 
-1. **Visit Microsoft Edge Add-ons** → [Word Counter Plus Extension](https://microsoftedge.microsoft.com/addons/detail/YOUR_EDGE_EXTENSION_ID_HERE)
+1. **Visit Microsoft Edge Add-ons** → [Word Counter Plus Extension](https://microsoftedge.microsoft.com/addons/detail/word-counter-plus/mmiahndaehcmckhclkijlpfjpkbibhhm)
 2. **Click "Get"** to add to Edge
 3. **Confirm installation**
 4. **Start analyzing!** → Right-click any selected text
@@ -539,7 +539,7 @@ There's absolutely no risk:
 ✅ No credit card required  
 ✅ Uninstall anytime with one click
 
-👉 **[Install Word Counter Plus for Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/YOUR_EDGE_EXTENSION_ID_HERE)**
+👉 **[Install Word Counter Plus for Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/word-counter-plus/mmiahndaehcmckhclkijlpfjpkbibhhm)**
 
 If it doesn't make your writing easier and more efficient, you can remove it instantly. But I'm confident you'll find yourself using it every single day.
 
