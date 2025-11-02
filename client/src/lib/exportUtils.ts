@@ -371,3 +371,356 @@ Reading Time: ${readability.readingTime} minutes`;
   }
 }
 
+export interface TextCompareData {
+  text1: string;
+  text2: string;
+  additions: number;
+  deletions: number;
+  changes: number;
+  similarity: number;
+  chars1: number;
+  chars2: number;
+  words1: number;
+  words2: number;
+  diffResult: Array<{
+    type: 'equal' | 'insert' | 'delete' | 'replace';
+    value: string;
+    oldValue?: string;
+    newValue?: string;
+  }>;
+}
+
+export function exportTextComparePDF(data: TextCompareData): void {
+  Promise.all([
+    import("jspdf"),
+    import("html2canvas"),
+  ])
+    .then(([jsPDFModule, html2canvasModule]) => {
+      const jsPDF = jsPDFModule.default;
+      const html2canvas = html2canvasModule.default;
+
+      const doc = new jsPDF();
+      
+      const pageWidth = doc.internal.pageSize.width;
+      const pageHeight = doc.internal.pageSize.height;
+      const margin = 20;
+      const maxWidth = pageWidth - 2 * margin;
+      
+      const brandColor = { r: 220, g: 38, b: 38 };
+      const lightGray = { r: 248, g: 248, b: 248 };
+      const darkGray = { r: 60, g: 60, b: 60 };
+      const borderGray = { r: 230, g: 230, b: 230 };
+      const greenColor = { r: 34, g: 197, b: 94 };
+      const redColor = { r: 239, g: 68, b: 68 };
+      const yellowColor = { r: 234, g: 179, b: 8 };
+      
+      const addHeader = (pageNum: number) => {
+        doc.setFillColor(brandColor.r, brandColor.g, brandColor.b);
+        doc.rect(0, 0, pageWidth, 35, 'F');
+        
+        doc.setDrawColor(180, 25, 25);
+        doc.setLineWidth(2);
+        doc.line(0, 35, pageWidth, 35);
+        
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(24);
+        doc.setFont("helvetica", "bold");
+        doc.text("Word Counter Plus", margin, 15);
+        
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        doc.text("Professional Text Comparison Tool", margin, 25);
+        
+        if (pageNum > 1) {
+          doc.setFontSize(9);
+          doc.text(`Page ${pageNum}`, pageWidth - margin, 20, { align: 'right' });
+        }
+      };
+      
+      const addFooter = (pageNum: number) => {
+        const footerY = pageHeight - 25;
+        
+        doc.setDrawColor(brandColor.r, brandColor.g, brandColor.b);
+        doc.setLineWidth(1.5);
+        doc.line(margin, footerY, pageWidth - margin, footerY);
+        
+        doc.setFillColor(lightGray.r, lightGray.g, lightGray.b);
+        doc.rect(0, footerY + 2, pageWidth, 23, 'F');
+        
+        doc.setTextColor(darkGray.r, darkGray.g, darkGray.b);
+        doc.setFontSize(9);
+        doc.setFont("helvetica", "bold");
+        doc.text("Word Counter Plus", margin, footerY + 10);
+        
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8);
+        doc.setTextColor(100, 100, 100);
+        doc.text("www.wordcounterplusapp.com", margin, footerY + 16);
+        
+        doc.setTextColor(brandColor.r, brandColor.g, brandColor.b);
+        doc.setFont("helvetica", "bold");
+        doc.text(`Page ${pageNum}`, pageWidth - margin, footerY + 10, { align: 'right' });
+        
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(100, 100, 100);
+        const date = new Date().toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        });
+        doc.text(date, pageWidth - margin, footerY + 16, { align: 'right' });
+      };
+
+      let yPosition = 50;
+      const lineHeight = 7;
+      let pageNum = 1;
+      
+      addHeader(pageNum);
+      
+      doc.setFillColor(brandColor.r, brandColor.g, brandColor.b);
+      doc.roundedRect(margin - 3, yPosition - 8, maxWidth + 6, 20, 3, 3, 'F');
+      
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(22);
+      doc.setFont("helvetica", "bold");
+      doc.text("TEXT COMPARISON REPORT", pageWidth / 2, yPosition + 2, { align: 'center' });
+      
+      yPosition += 20;
+      
+      doc.setTextColor(100, 100, 100);
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "normal");
+      const timestamp = new Date().toLocaleString('en-US', { 
+        month: 'numeric', 
+        day: 'numeric', 
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      });
+      doc.text(`Generated: ${timestamp}`, pageWidth / 2, yPosition + 5, { align: 'center' });
+      yPosition += 15;
+      
+      doc.setDrawColor(borderGray.r, borderGray.g, borderGray.b);
+      doc.setLineWidth(0.5);
+      
+      const addSection = (title: string, items: string[], twoColumn = false) => {
+        if (yPosition > pageHeight - 50) {
+          addFooter(pageNum);
+          doc.addPage();
+          pageNum++;
+          addHeader(pageNum);
+          yPosition = 50;
+        }
+        
+        doc.setFillColor(lightGray.r, lightGray.g, lightGray.b);
+        doc.roundedRect(margin - 3, yPosition, maxWidth + 6, 12, 2, 2, 'F');
+        
+        doc.setDrawColor(brandColor.r, brandColor.g, brandColor.b);
+        doc.setLineWidth(0.8);
+        doc.line(margin - 3, yPosition + 12, pageWidth - margin + 3, yPosition + 12);
+        
+        doc.setTextColor(brandColor.r, brandColor.g, brandColor.b);
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "bold");
+        doc.text(title, margin + 2, yPosition + 8);
+        yPosition += 18;
+        
+        doc.setTextColor(darkGray.r, darkGray.g, darkGray.b);
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        
+        if (twoColumn) {
+          const colWidth = (maxWidth - 15) / 2;
+          let rowCount = 0;
+          items.forEach((item, index) => {
+            const col = index % 2;
+            const xPos = margin + (col * (colWidth + 15));
+            
+            if (col === 0 && index > 0) {
+              yPosition += lineHeight + 2;
+              rowCount++;
+            }
+            
+            if (yPosition > pageHeight - 50) {
+              addFooter(pageNum);
+              doc.addPage();
+              pageNum++;
+              addHeader(pageNum);
+              yPosition = 50;
+            }
+            
+            const bgY = yPosition - 5;
+            if (rowCount % 2 === 0) {
+              doc.setFillColor(252, 252, 252);
+              doc.rect(margin - 3, bgY, maxWidth + 6, lineHeight + 2, 'F');
+            }
+            
+            doc.setTextColor(brandColor.r, brandColor.g, brandColor.b);
+            doc.setFontSize(8);
+            doc.text("●", xPos, yPosition);
+            
+            doc.setTextColor(darkGray.r, darkGray.g, darkGray.b);
+            doc.setFontSize(10);
+            doc.text(item, xPos + 4, yPosition);
+          });
+          yPosition += lineHeight + 8;
+        } else {
+          items.forEach((item, index) => {
+            if (yPosition > pageHeight - 50) {
+              addFooter(pageNum);
+              doc.addPage();
+              pageNum++;
+              addHeader(pageNum);
+              yPosition = 50;
+            }
+            
+            if (index % 2 === 0) {
+              doc.setFillColor(252, 252, 252);
+              doc.rect(margin - 3, yPosition - 5, maxWidth + 6, lineHeight + 2, 'F');
+            }
+            
+            doc.setTextColor(brandColor.r, brandColor.g, brandColor.b);
+            doc.setFontSize(8);
+            doc.text("●", margin + 2, yPosition);
+            
+            doc.setTextColor(darkGray.r, darkGray.g, darkGray.b);
+            doc.setFontSize(10);
+            doc.text(item, margin + 6, yPosition);
+            yPosition += lineHeight + 2;
+          });
+          yPosition += 5;
+        }
+      };
+      
+      const comparisonStats = [
+        `Similarity Score: ${data.similarity}%`,
+        `Total Changes: ${data.additions + data.deletions + data.changes}`,
+        `Additions: ${data.additions}`,
+        `Deletions: ${data.deletions}`,
+        `Replacements: ${data.changes}`,
+        `Matching Segments: ${data.diffResult.filter(r => r.type === 'equal').length}`,
+      ];
+      addSection("COMPARISON SUMMARY", comparisonStats, true);
+      
+      const textStats = [
+        `Original Text - Words: ${data.words1}`,
+        `Original Text - Characters: ${data.chars1}`,
+        `Modified Text - Words: ${data.words2}`,
+        `Modified Text - Characters: ${data.chars2}`,
+        `Word Difference: ${data.words2 - data.words1 >= 0 ? '+' : ''}${data.words2 - data.words1}`,
+        `Character Difference: ${data.chars2 - data.chars1 >= 0 ? '+' : ''}${data.chars2 - data.chars1}`,
+      ];
+      addSection("TEXT STATISTICS", textStats, true);
+      
+      if (yPosition > pageHeight - 90) {
+        addFooter(pageNum);
+        doc.addPage();
+        pageNum++;
+        addHeader(pageNum);
+        yPosition = 50;
+      }
+      
+      doc.setFillColor(lightGray.r, lightGray.g, lightGray.b);
+      doc.roundedRect(margin - 3, yPosition, maxWidth + 6, 12, 2, 2, 'F');
+      
+      doc.setDrawColor(brandColor.r, brandColor.g, brandColor.b);
+      doc.setLineWidth(0.8);
+      doc.line(margin - 3, yPosition + 12, pageWidth - margin + 3, yPosition + 12);
+      
+      doc.setTextColor(brandColor.r, brandColor.g, brandColor.b);
+      doc.setFontSize(14);
+      doc.setFont("helvetica", "bold");
+      doc.text("DETAILED COMPARISON", margin + 2, yPosition + 8);
+      yPosition += 20;
+      
+      doc.setFillColor(255, 255, 255);
+      doc.setDrawColor(borderGray.r, borderGray.g, borderGray.b);
+      doc.setLineWidth(0.5);
+      
+      const legendY = yPosition;
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(darkGray.r, darkGray.g, darkGray.b);
+      doc.text("Legend:", margin, legendY);
+      
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8);
+      
+      doc.setFillColor(greenColor.r, greenColor.g, greenColor.b);
+      doc.rect(margin + 15, legendY - 3, 8, 4, 'F');
+      doc.setTextColor(greenColor.r, greenColor.g, greenColor.b);
+      doc.text("Added", margin + 25, legendY);
+      
+      doc.setFillColor(redColor.r, redColor.g, redColor.b);
+      doc.rect(margin + 45, legendY - 3, 8, 4, 'F');
+      doc.setTextColor(redColor.r, redColor.g, redColor.b);
+      doc.text("Deleted", margin + 55, legendY);
+      
+      doc.setFillColor(yellowColor.r, yellowColor.g, yellowColor.b);
+      doc.rect(margin + 75, legendY - 3, 8, 4, 'F');
+      doc.setTextColor(yellowColor.r, yellowColor.g, yellowColor.b);
+      doc.text("Changed", margin + 85, legendY);
+      
+      yPosition += 10;
+      
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "normal");
+      
+      data.diffResult.forEach((diff) => {
+        if (yPosition > pageHeight - 40) {
+          addFooter(pageNum);
+          doc.addPage();
+          pageNum++;
+          addHeader(pageNum);
+          yPosition = 50;
+        }
+        
+        let displayText = '';
+        let textColor = darkGray;
+        let prefix = '';
+        
+        if (diff.type === 'equal') {
+          displayText = diff.value;
+          textColor = darkGray;
+        } else if (diff.type === 'insert') {
+          displayText = diff.value;
+          textColor = greenColor;
+          prefix = '+ ';
+        } else if (diff.type === 'delete') {
+          displayText = diff.value;
+          textColor = redColor;
+          prefix = '- ';
+        } else if (diff.type === 'replace') {
+          displayText = `${diff.oldValue} → ${diff.newValue}`;
+          textColor = yellowColor;
+          prefix = '~ ';
+        }
+        
+        doc.setTextColor(textColor.r, textColor.g, textColor.b);
+        const fullText = prefix + displayText;
+        const wrappedLines = doc.splitTextToSize(fullText, maxWidth - 4);
+        
+        wrappedLines.forEach((line: string) => {
+          if (yPosition > pageHeight - 40) {
+            addFooter(pageNum);
+            doc.addPage();
+            pageNum++;
+            addHeader(pageNum);
+            yPosition = 50;
+          }
+          doc.text(line, margin + 2, yPosition);
+          yPosition += 5;
+        });
+      });
+      
+      addFooter(pageNum);
+      
+      doc.save("text-comparison.pdf");
+    })
+    .catch(() => {
+      alert("Unable to generate PDF. Please try the TXT export option.");
+    });
+}
+

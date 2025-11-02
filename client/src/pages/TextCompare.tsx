@@ -29,6 +29,7 @@ import useFileUpload from '@/hooks/useFileUpload';
 import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 import { UploadButton } from '@/components/ui/upload-button';
 import { prepareDownload } from '@/lib/downloadHelper';
+import { exportTextComparePDF } from '@/lib/exportUtils';
 
 interface DiffResult {
   type: 'equal' | 'insert' | 'delete' | 'replace';
@@ -249,18 +250,23 @@ export default function TextCompare() {
   };
 
   const downloadDiff = () => {
-    const diffText = diffResult.map(d => {
-      if (d.type === 'insert') return `+ ${d.value}`;
-      if (d.type === 'delete') return `- ${d.value}`;
-      if (d.type === 'replace') return `~ ${d.oldValue} → ${d.newValue}`;
-      return d.value;
-    }).join('');
-
-    prepareDownload({
-      content: diffText,
-      filename: 'text-comparison.txt',
-      fileType: 'txt',
-      mimeType: 'text/plain'
+    exportTextComparePDF({
+      text1,
+      text2,
+      additions: stats.additions,
+      deletions: stats.deletions,
+      changes: stats.changes,
+      similarity,
+      chars1: stats.chars1,
+      chars2: stats.chars2,
+      words1: stats.words1,
+      words2: stats.words2,
+      diffResult
+    });
+    
+    toast({
+      title: "PDF Generated",
+      description: "Professional comparison report has been downloaded.",
     });
   };
 
