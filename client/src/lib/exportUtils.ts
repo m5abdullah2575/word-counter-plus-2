@@ -71,7 +71,7 @@ export function exportPDF(data: ExportData): void {
     import("jspdf"),
     import("html2canvas"),
   ])
-    .then(([jsPDFModule, html2canvasModule]) => {
+    .then(async ([jsPDFModule, html2canvasModule]) => {
       const jsPDF = jsPDFModule.default;
       const html2canvas = html2canvasModule.default;
 
@@ -87,72 +87,49 @@ export function exportPDF(data: ExportData): void {
       const darkGray = { r: 60, g: 60, b: 60 };
       const borderGray = { r: 230, g: 230, b: 230 };
       
+      const logoImg = new Image();
+      logoImg.src = '/word-counter-plus-logo.png';
+      await new Promise((resolve) => {
+        logoImg.onload = resolve;
+        logoImg.onerror = resolve;
+      });
+      
       const addHeader = (pageNum: number) => {
         doc.setFillColor(brandColor.r, brandColor.g, brandColor.b);
-        doc.rect(0, 0, pageWidth, 35, 'F');
-        
-        doc.setDrawColor(180, 25, 25);
-        doc.setLineWidth(2);
-        doc.line(0, 35, pageWidth, 35);
+        doc.rect(0, 0, pageWidth, 30, 'F');
         
         doc.setFillColor(255, 255, 255);
-        doc.circle(margin + 3.5, 17, 3.5, 'F');
+        doc.circle(margin + 7, 15, 7, 'F');
         
-        doc.setFillColor(brandColor.r, brandColor.g, brandColor.b);
-        const logoX = margin + 2.5;
-        const logoY = 14;
-        doc.moveTo(logoX, logoY);
-        doc.lineTo(logoX + 2, logoY + 6);
-        doc.lineTo(logoX + 1, logoY + 6.5);
-        doc.lineTo(logoX - 1, logoY + 0.5);
-        doc.fill();
+        try {
+          doc.addImage(logoImg, 'PNG', margin + 3, 11, 8, 8);
+        } catch (e) {
+          console.log('Logo not loaded');
+        }
         
         doc.setTextColor(255, 255, 255);
-        doc.setFontSize(24);
+        doc.setFontSize(18);
         doc.setFont("helvetica", "bold");
-        doc.text("Word Counter Plus", margin + 12, 15);
+        doc.text("Word Counter Plus", margin + 17, 18.5);
         
         if (pageNum > 1) {
-          doc.setFontSize(9);
-          doc.text(`Page ${pageNum}`, pageWidth - margin, 20, { align: 'right' });
+          doc.setFontSize(10);
+          doc.text(`Page ${pageNum}`, pageWidth - margin, 18.5, { align: 'right' });
         }
       };
       
       const addFooter = (pageNum: number) => {
-        const footerY = pageHeight - 25;
-        
+        const footerY = pageHeight - 15;
         doc.setDrawColor(brandColor.r, brandColor.g, brandColor.b);
-        doc.setLineWidth(1.5);
+        doc.setLineWidth(1);
         doc.line(margin, footerY, pageWidth - margin, footerY);
-        
-        doc.setFillColor(lightGray.r, lightGray.g, lightGray.b);
-        doc.rect(0, footerY + 2, pageWidth, 23, 'F');
-        
-        doc.setTextColor(darkGray.r, darkGray.g, darkGray.b);
-        doc.setFontSize(9);
-        doc.setFont("helvetica", "bold");
-        doc.text("Word Counter Plus", margin, footerY + 10);
-        
-        doc.setFont("helvetica", "normal");
+        doc.setTextColor(100, 100, 100);
         doc.setFontSize(8);
-        doc.setTextColor(100, 100, 100);
-        doc.text("www.wordcounterplusapp.com", margin, footerY + 16);
-        
-        doc.setTextColor(brandColor.r, brandColor.g, brandColor.b);
-        doc.setFont("helvetica", "bold");
-        doc.text(`Page ${pageNum}`, pageWidth - margin, footerY + 10, { align: 'right' });
-        
-        doc.setFont("helvetica", "normal");
-        doc.setTextColor(100, 100, 100);
-        const date = new Date().toLocaleDateString('en-US', { 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric' 
-        });
-        doc.text(date, pageWidth - margin, footerY + 16, { align: 'right' });
+        doc.text("www.wordcounterplusapp.com", margin, footerY + 8);
+        doc.text(`Page ${pageNum}`, pageWidth - margin, footerY + 8, { align: 'right' });
       };
 
-      let yPosition = 50;
+      let yPosition = 40;
       const lineHeight = 7;
       let pageNum = 1;
       
@@ -177,7 +154,7 @@ export function exportPDF(data: ExportData): void {
           doc.addPage();
           pageNum++;
           addHeader(pageNum);
-          yPosition = 50;
+          yPosition = 40;
         }
         
         doc.setFillColor(lightGray.r, lightGray.g, lightGray.b);
@@ -214,7 +191,7 @@ export function exportPDF(data: ExportData): void {
               doc.addPage();
               pageNum++;
               addHeader(pageNum);
-              yPosition = 50;
+              yPosition = 40;
             }
             
             const bgY = yPosition - 5;
@@ -239,7 +216,7 @@ export function exportPDF(data: ExportData): void {
               doc.addPage();
               pageNum++;
               addHeader(pageNum);
-              yPosition = 50;
+              yPosition = 40;
             }
             
             if (index % 2 === 0) {
@@ -334,7 +311,7 @@ export function exportPDF(data: ExportData): void {
           doc.addPage();
           pageNum++;
           addHeader(pageNum);
-          yPosition = 50;
+          yPosition = 40;
           
           doc.setFillColor(255, 255, 255);
           doc.setDrawColor(borderGray.r, borderGray.g, borderGray.b);
@@ -402,7 +379,7 @@ export function exportTextComparePDF(data: TextCompareData): void {
   Promise.all([
     import("jspdf"),
   ])
-    .then(([jsPDFModule]) => {
+    .then(async ([jsPDFModule]) => {
       const jsPDF = jsPDFModule.default;
 
       const doc = new jsPDF();
@@ -420,72 +397,49 @@ export function exportTextComparePDF(data: TextCompareData): void {
       const redColor = { r: 239, g: 68, b: 68 };
       const yellowColor = { r: 234, g: 179, b: 8 };
       
+      const logoImg = new Image();
+      logoImg.src = '/word-counter-plus-logo.png';
+      await new Promise((resolve) => {
+        logoImg.onload = resolve;
+        logoImg.onerror = resolve;
+      });
+      
       const addHeader = (pageNum: number) => {
         doc.setFillColor(brandColor.r, brandColor.g, brandColor.b);
-        doc.rect(0, 0, pageWidth, 35, 'F');
-        
-        doc.setDrawColor(180, 25, 25);
-        doc.setLineWidth(2);
-        doc.line(0, 35, pageWidth, 35);
+        doc.rect(0, 0, pageWidth, 30, 'F');
         
         doc.setFillColor(255, 255, 255);
-        doc.circle(margin + 3.5, 17, 3.5, 'F');
+        doc.circle(margin + 7, 15, 7, 'F');
         
-        doc.setFillColor(brandColor.r, brandColor.g, brandColor.b);
-        const logoX = margin + 2.5;
-        const logoY = 14;
-        doc.moveTo(logoX, logoY);
-        doc.lineTo(logoX + 2, logoY + 6);
-        doc.lineTo(logoX + 1, logoY + 6.5);
-        doc.lineTo(logoX - 1, logoY + 0.5);
-        doc.fill();
+        try {
+          doc.addImage(logoImg, 'PNG', margin + 3, 11, 8, 8);
+        } catch (e) {
+          console.log('Logo not loaded');
+        }
         
         doc.setTextColor(255, 255, 255);
-        doc.setFontSize(24);
+        doc.setFontSize(18);
         doc.setFont("helvetica", "bold");
-        doc.text("Word Counter Plus", margin + 12, 15);
+        doc.text("Word Counter Plus", margin + 17, 18.5);
         
         if (pageNum > 1) {
-          doc.setFontSize(9);
-          doc.text(`Page ${pageNum}`, pageWidth - margin, 20, { align: 'right' });
+          doc.setFontSize(10);
+          doc.text(`Page ${pageNum}`, pageWidth - margin, 18.5, { align: 'right' });
         }
       };
       
       const addFooter = (pageNum: number) => {
-        const footerY = pageHeight - 25;
-        
+        const footerY = pageHeight - 15;
         doc.setDrawColor(brandColor.r, brandColor.g, brandColor.b);
-        doc.setLineWidth(1.5);
+        doc.setLineWidth(1);
         doc.line(margin, footerY, pageWidth - margin, footerY);
-        
-        doc.setFillColor(lightGray.r, lightGray.g, lightGray.b);
-        doc.rect(0, footerY + 2, pageWidth, 23, 'F');
-        
-        doc.setTextColor(darkGray.r, darkGray.g, darkGray.b);
-        doc.setFontSize(9);
-        doc.setFont("helvetica", "bold");
-        doc.text("Word Counter Plus", margin, footerY + 10);
-        
-        doc.setFont("helvetica", "normal");
+        doc.setTextColor(100, 100, 100);
         doc.setFontSize(8);
-        doc.setTextColor(100, 100, 100);
-        doc.text("www.wordcounterplusapp.com", margin, footerY + 16);
-        
-        doc.setTextColor(brandColor.r, brandColor.g, brandColor.b);
-        doc.setFont("helvetica", "bold");
-        doc.text(`Page ${pageNum}`, pageWidth - margin, footerY + 10, { align: 'right' });
-        
-        doc.setFont("helvetica", "normal");
-        doc.setTextColor(100, 100, 100);
-        const date = new Date().toLocaleDateString('en-US', { 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric' 
-        });
-        doc.text(date, pageWidth - margin, footerY + 16, { align: 'right' });
+        doc.text("www.wordcounterplusapp.com", margin, footerY + 8);
+        doc.text(`Page ${pageNum}`, pageWidth - margin, footerY + 8, { align: 'right' });
       };
 
-      let yPosition = 50;
+      let yPosition = 40;
       const lineHeight = 7;
       let pageNum = 1;
       
@@ -515,7 +469,7 @@ export function exportTextComparePDF(data: TextCompareData): void {
           doc.addPage();
           pageNum++;
           addHeader(pageNum);
-          yPosition = 50;
+          yPosition = 40;
         }
         
         doc.setFillColor(lightGray.r, lightGray.g, lightGray.b);
@@ -552,7 +506,7 @@ export function exportTextComparePDF(data: TextCompareData): void {
               doc.addPage();
               pageNum++;
               addHeader(pageNum);
-              yPosition = 50;
+              yPosition = 40;
             }
             
             const bgY = yPosition - 5;
@@ -577,7 +531,7 @@ export function exportTextComparePDF(data: TextCompareData): void {
               doc.addPage();
               pageNum++;
               addHeader(pageNum);
-              yPosition = 50;
+              yPosition = 40;
             }
             
             if (index % 2 === 0) {
@@ -680,7 +634,7 @@ export function exportTextComparePDF(data: TextCompareData): void {
           doc.addPage();
           pageNum++;
           addHeader(pageNum);
-          yPosition = 50;
+          yPosition = 40;
           
           doc.setFillColor(255, 255, 255);
           doc.setDrawColor(borderGray.r, borderGray.g, borderGray.b);
