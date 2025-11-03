@@ -95,10 +95,22 @@ export function exportPDF(data: ExportData): void {
         doc.setLineWidth(2);
         doc.line(0, 35, pageWidth, 35);
         
+        doc.setFillColor(255, 255, 255);
+        doc.circle(margin + 3.5, 17, 3.5, 'F');
+        
+        doc.setFillColor(brandColor.r, brandColor.g, brandColor.b);
+        const logoX = margin + 2.5;
+        const logoY = 14;
+        doc.moveTo(logoX, logoY);
+        doc.lineTo(logoX + 2, logoY + 6);
+        doc.lineTo(logoX + 1, logoY + 6.5);
+        doc.lineTo(logoX - 1, logoY + 0.5);
+        doc.fill();
+        
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(24);
         doc.setFont("helvetica", "bold");
-        doc.text("Word Counter Plus", margin, 15);
+        doc.text("Word Counter Plus", margin + 12, 15);
         
         if (pageNum > 1) {
           doc.setFontSize(9);
@@ -416,10 +428,22 @@ export function exportTextComparePDF(data: TextCompareData): void {
         doc.setLineWidth(2);
         doc.line(0, 35, pageWidth, 35);
         
+        doc.setFillColor(255, 255, 255);
+        doc.circle(margin + 3.5, 17, 3.5, 'F');
+        
+        doc.setFillColor(brandColor.r, brandColor.g, brandColor.b);
+        const logoX = margin + 2.5;
+        const logoY = 14;
+        doc.moveTo(logoX, logoY);
+        doc.lineTo(logoX + 2, logoY + 6);
+        doc.lineTo(logoX + 1, logoY + 6.5);
+        doc.lineTo(logoX - 1, logoY + 0.5);
+        doc.fill();
+        
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(24);
         doc.setFont("helvetica", "bold");
-        doc.text("Word Counter Plus", margin, 15);
+        doc.text("Word Counter Plus", margin + 12, 15);
         
         if (pageNum > 1) {
           doc.setFontSize(9);
@@ -428,14 +452,37 @@ export function exportTextComparePDF(data: TextCompareData): void {
       };
       
       const addFooter = (pageNum: number) => {
-        const footerY = pageHeight - 10;
+        const footerY = pageHeight - 25;
         
-        doc.setTextColor(0, 0, 0);
+        doc.setDrawColor(brandColor.r, brandColor.g, brandColor.b);
+        doc.setLineWidth(1.5);
+        doc.line(margin, footerY, pageWidth - margin, footerY);
+        
+        doc.setFillColor(lightGray.r, lightGray.g, lightGray.b);
+        doc.rect(0, footerY + 2, pageWidth, 23, 'F');
+        
+        doc.setTextColor(darkGray.r, darkGray.g, darkGray.b);
         doc.setFontSize(9);
-        doc.setFont("helvetica", "normal");
-        doc.text("www.wordcounterplusapp.com", margin, footerY);
+        doc.setFont("helvetica", "bold");
+        doc.text("Word Counter Plus", margin, footerY + 10);
         
-        doc.text(`Page ${pageNum}`, pageWidth - margin, footerY, { align: 'right' });
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8);
+        doc.setTextColor(100, 100, 100);
+        doc.text("www.wordcounterplusapp.com", margin, footerY + 16);
+        
+        doc.setTextColor(brandColor.r, brandColor.g, brandColor.b);
+        doc.setFont("helvetica", "bold");
+        doc.text(`Page ${pageNum}`, pageWidth - margin, footerY + 10, { align: 'right' });
+        
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(100, 100, 100);
+        const date = new Date().toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        });
+        doc.text(date, pageWidth - margin, footerY + 16, { align: 'right' });
       };
 
       let yPosition = 50;
