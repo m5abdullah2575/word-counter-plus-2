@@ -375,6 +375,44 @@ export interface TextCompareData {
   }>;
 }
 
+export function exportTextCompare(data: TextCompareData): void {
+  const txtContent = `Text Comparison Report
+Generated: ${new Date().toLocaleString()}
+
+COMPARISON SUMMARY:
+Similarity Score: ${data.similarity}%
+Total Changes: ${data.additions + data.deletions + data.changes}
+Additions: ${data.additions}
+Deletions: ${data.deletions}
+Replacements: ${data.changes}
+Matching Segments: ${data.diffResult.filter(r => r.type === 'equal').length}
+
+TEXT STATISTICS:
+Original Words: ${data.words1}
+Original Characters: ${data.chars1}
+Modified Words: ${data.words2}
+Modified Characters: ${data.chars2}
+Word Difference: ${data.words2 - data.words1 >= 0 ? '+' : ''}${data.words2 - data.words1}
+Character Difference: ${data.chars2 - data.chars1 >= 0 ? '+' : ''}${data.chars2 - data.chars1}
+
+DETAILED COMPARISON:
+${data.diffResult.map(diff => {
+  if (diff.type === 'equal') return diff.value;
+  if (diff.type === 'insert') return `+ ${diff.value}`;
+  if (diff.type === 'delete') return `- ${diff.value}`;
+  if (diff.type === 'replace') return `~ ${diff.oldValue} → ${diff.newValue}`;
+  return '';
+}).join('')}`;
+
+  prepareDownload({
+    content: txtContent,
+    filename: 'text-comparison.pdf',
+    fileType: 'pdf',
+    mimeType: 'application/pdf',
+    sourceToolId: 'text-compare'
+  });
+}
+
 export function exportTextComparePDF(data: TextCompareData): void {
   Promise.all([
     import("jspdf"),

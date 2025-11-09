@@ -29,7 +29,7 @@ import useFileUpload from '@/hooks/useFileUpload';
 import RelatedToolsSidebar from '@/components/common/RelatedToolsSidebar';
 import { UploadButton } from '@/components/ui/upload-button';
 import { prepareDownload } from '@/lib/downloadHelper';
-import { exportTextComparePDF } from '@/lib/exportUtils';
+import { exportTextCompare } from '@/lib/exportUtils';
 
 interface DiffResult {
   type: 'equal' | 'insert' | 'delete' | 'replace';
@@ -250,7 +250,7 @@ export default function TextCompare() {
   };
 
   const downloadDiff = () => {
-    exportTextComparePDF({
+    exportTextCompare({
       text1,
       text2,
       additions: stats.additions,
@@ -262,11 +262,6 @@ export default function TextCompare() {
       words1: stats.words1,
       words2: stats.words2,
       diffResult
-    });
-    
-    toast({
-      title: "PDF Generated",
-      description: "Professional comparison report has been downloaded.",
     });
   };
 
